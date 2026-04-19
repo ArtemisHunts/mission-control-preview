@@ -1,0 +1,214 @@
+{
+  "meta": {
+    "title": "Asteroid Campus",
+    "goal": "Deliver autonomous and continuous development",
+    "updatedAt": "2026-04-19T20:40:00Z"
+  },
+  "agents": [
+    {
+      "id": "artemis",
+      "name": "Artemis",
+      "role": "Orchestrator",
+      "specialty": "Delegation, triage, sequencing, approvals",
+      "skills": ["orchestration", "planning", "review", "shipping"],
+      "location": "command-dome",
+      "status": "working",
+      "autoPick": true,
+      "load": 87,
+      "currentTaskId": "task-campus-rebuild"
+    },
+    {
+      "id": "forge",
+      "name": "Forge",
+      "role": "Builder",
+      "specialty": "Frontend systems, simulation UI, interaction work",
+      "skills": ["frontend", "phaser", "ui", "interaction"],
+      "location": "forge-bay",
+      "status": "working",
+      "autoPick": true,
+      "load": 73,
+      "currentTaskId": "task-world-render"
+    },
+    {
+      "id": "sentinel",
+      "name": "Sentinel",
+      "role": "Reviewer",
+      "specialty": "QA, safety gates, regression checks",
+      "skills": ["review", "qa", "testing"],
+      "location": "war-room",
+      "status": "reviewing",
+      "autoPick": true,
+      "load": 61,
+      "currentTaskId": "task-world-events"
+    },
+    {
+      "id": "quartermaster",
+      "name": "Quartermaster",
+      "role": "Ops Engineer",
+      "specialty": "Pipelines, event bridge, data plumbing",
+      "skills": ["api", "events", "infra", "deploy"],
+      "location": "dock-ring",
+      "status": "staged",
+      "autoPick": true,
+      "load": 42,
+      "currentTaskId": "task-activity-bridge"
+    },
+    {
+      "id": "prospector",
+      "name": "Prospector",
+      "role": "Research Miner",
+      "specialty": "Signals, memory, requirement extraction",
+      "skills": ["research", "memory", "requirements"],
+      "location": "observatory",
+      "status": "idle",
+      "autoPick": true,
+      "load": 18,
+      "currentTaskId": null
+    },
+    {
+      "id": "navigator",
+      "name": "Navigator",
+      "role": "Strategist",
+      "specialty": "OKRs, dependency mapping, roadmap",
+      "skills": ["strategy", "okr", "planning"],
+      "location": "war-room",
+      "status": "idle",
+      "autoPick": false,
+      "load": 14,
+      "currentTaskId": null
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task-campus-rebuild",
+      "title": "Rebuild Mission Control as a visual 2D campus",
+      "description": "Move from dashboard-first UI to an actual world where agents are visible, spatial, and state-driven.",
+      "project": "Mission Control",
+      "priority": 1,
+      "status": "active",
+      "requester": "Michael",
+      "assigneeId": "artemis",
+      "room": "command-dome",
+      "autoAssignable": true,
+      "tags": ["campus", "phaser", "world"],
+      "createdAt": "2026-04-19T20:30:00Z",
+      "updatedAt": "2026-04-19T20:32:00Z"
+    },
+    {
+      "id": "task-world-render",
+      "title": "Render rooms and agents inside the asteroid base",
+      "description": "Build a spatial scene with rooms, paths, and agent avatars moving to work zones.",
+      "project": "Mission Control",
+      "priority": 1,
+      "status": "active",
+      "requester": "Artemis",
+      "assigneeId": "forge",
+      "room": "forge-bay",
+      "autoAssignable": true,
+      "tags": ["phaser", "rendering", "agents"],
+      "createdAt": "2026-04-19T20:31:00Z",
+      "updatedAt": "2026-04-19T20:34:00Z"
+    },
+    {
+      "id": "task-world-events",
+      "title": "Map task states to visible agent behavior",
+      "description": "Working, idle, review, and staged states should visibly change agent movement and effects.",
+      "project": "Mission Control",
+      "priority": 1,
+      "status": "review",
+      "requester": "Artemis",
+      "assigneeId": "sentinel",
+      "room": "war-room",
+      "autoAssignable": true,
+      "tags": ["animation", "state", "review"],
+      "createdAt": "2026-04-19T20:32:00Z",
+      "updatedAt": "2026-04-19T20:36:00Z"
+    },
+    {
+      "id": "task-activity-bridge",
+      "title": "Wire event bridge for task and agent telemetry",
+      "description": "The scene should eventually consume real OpenClaw state, not static demo data.",
+      "project": "Mission Control",
+      "priority": 2,
+      "status": "queued",
+      "requester": "Michael",
+      "assigneeId": "quartermaster",
+      "room": "dock-ring",
+      "autoAssignable": true,
+      "tags": ["events", "telemetry", "backend"],
+      "createdAt": "2026-04-19T20:33:00Z",
+      "updatedAt": "2026-04-19T20:33:00Z"
+    },
+    {
+      "id": "task-subagent-lanes",
+      "title": "Visualize subagents as temporary workers and couriers",
+      "description": "Short-lived child sessions should appear as helpers moving through the base.",
+      "project": "Mission Control",
+      "priority": 2,
+      "status": "queued",
+      "requester": "Michael",
+      "assigneeId": null,
+      "room": "cargo-spine",
+      "autoAssignable": true,
+      "tags": ["subagents", "visualization"],
+      "createdAt": "2026-04-19T20:35:00Z",
+      "updatedAt": "2026-04-19T20:35:00Z"
+    },
+    {
+      "id": "task-human-console",
+      "title": "Keep a compact command board attached to the world",
+      "description": "Spatial campus does not replace workflow management. It has to sit beside it.",
+      "project": "Mission Control",
+      "priority": 2,
+      "status": "intake",
+      "requester": "Michael",
+      "assigneeId": null,
+      "room": "command-dome",
+      "autoAssignable": true,
+      "tags": ["board", "workflow"],
+      "createdAt": "2026-04-19T20:36:00Z",
+      "updatedAt": "2026-04-19T20:36:00Z"
+    },
+    {
+      "id": "task-okr-layer",
+      "title": "Map every mission to the autonomous dev OKR",
+      "description": "The world should make it obvious which work matters and why.",
+      "project": "Mission Control",
+      "priority": 3,
+      "status": "committed",
+      "requester": "Navigator",
+      "assigneeId": "navigator",
+      "room": "war-room",
+      "autoAssignable": false,
+      "tags": ["okr", "alignment"],
+      "createdAt": "2026-04-19T20:10:00Z",
+      "updatedAt": "2026-04-19T20:20:00Z"
+    }
+  ],
+  "activity": [
+    {
+      "id": "evt-1",
+      "type": "shift",
+      "agentId": "artemis",
+      "taskId": "task-campus-rebuild",
+      "message": "Artemis redirected the frontend from dashboard theater into a real spatial campus prototype.",
+      "createdAt": "2026-04-19T20:32:00Z"
+    },
+    {
+      "id": "evt-2",
+      "type": "build",
+      "agentId": "forge",
+      "taskId": "task-world-render",
+      "message": "Forge is laying out the asteroid rooms and visual agent positions in the scene.",
+      "createdAt": "2026-04-19T20:34:00Z"
+    },
+    {
+      "id": "evt-3",
+      "type": "review",
+      "agentId": "sentinel",
+      "taskId": "task-world-events",
+      "message": "Sentinel is validating whether visible behavior actually reflects state instead of faking it.",
+      "createdAt": "2026-04-19T20:36:00Z"
+    }
+  ]
+}

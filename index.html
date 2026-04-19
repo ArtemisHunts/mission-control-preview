@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mission Control // Asteroid Campus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar panel">
+      <div class="sidebar-header">
+        <p class="eyebrow">ArtemisHunts // Mission Control</p>
+        <h1>Asteroid Campus</h1>
+        <p class="subhead">2D campus prototype for visualizing agents as workers inside a live operating base.</p>
+      </div>
+
+      <section class="panel-block">
+        <div class="block-topline">
+          <h2>World state</h2>
+          <span class="badge badge-live" id="world-status">syncing</span>
+        </div>
+        <div class="stat-grid" id="metric-grid"></div>
+      </section>
+
+      <section class="panel-block">
+        <div class="block-topline">
+          <h2>Selected agent</h2>
+          <span class="badge" id="selected-agent-status">none</span>
+        </div>
+        <div id="selected-agent-card" class="selected-agent empty-card">
+          Click an agent in the world.
+        </div>
+      </section>
+
+      <section class="panel-block">
+        <div class="block-topline">
+          <h2>Fleet roster</h2>
+          <span class="badge" id="fleet-count">0</span>
+        </div>
+        <div class="roster-list" id="roster-list"></div>
+      </section>
+    </aside>
+
+    <main class="main-stage">
+      <header class="stage-header panel">
+        <div>
+          <p class="eyebrow">Spatial ops layer</p>
+          <h2>State-driven campus</h2>
+        </div>
+        <div class="stage-actions">
+          <button class="btn" id="dispatch-btn">Auto-dispatch</button>
+          <button class="btn" id="simulate-btn">Simulate shift</button>
+          <button class="btn btn-primary" id="new-task-btn">+ New mission</button>
+        </div>
+      </header>
+
+      <section class="game-panel panel">
+        <div class="world-meta">
+          <div>
+            <strong>Campus zones:</strong>
+            Command Dome, Forge Bay, Cargo Spine, Dock Ring, War Room, Observatory
+          </div>
+          <div id="world-hint">Agents path into rooms based on live work state.</div>
+        </div>
+        <div id="game-root"></div>
+      </section>
+
+      <section class="bottom-grid">
+        <article class="panel board-panel">
+          <div class="block-topline">
+            <h2>Workflow board</h2>
+            <span class="badge" id="task-count">0 missions</span>
+          </div>
+          <div class="board-columns" id="board-columns"></div>
+        </article>
+
+        <article class="panel feed-panel">
+          <div class="block-topline">
+            <h2>Activity feed</h2>
+            <span class="badge">live log</span>
+          </div>
+          <div class="feed-list" id="feed-list"></div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal hidden" id="task-modal">
+    <div class="modal-card panel">
+      <div class="block-topline">
+        <h2 id="modal-title">New mission</h2>
+        <button class="icon-btn" id="close-modal-btn">✕</button>
+      </div>
+
+      <form id="task-form" class="task-form">
+        <input type="hidden" id="task-id" />
+
+        <label>
+          <span>Mission title</span>
+          <input type="text" id="task-title" required placeholder="Visualize agent handoffs in campus" />
+        </label>
+
+        <label>
+          <span>Description</span>
+          <textarea id="task-description" rows="4" placeholder="What should happen?"></textarea>
+        </label>
+
+        <div class="form-grid">
+          <label>
+            <span>Project</span>
+            <input type="text" id="task-project" placeholder="Mission Control" />
+          </label>
+          <label>
+            <span>Priority</span>
+            <select id="task-priority">
+              <option value="1">P1</option>
+              <option value="2">P2</option>
+              <option value="3">P3</option>
+              <option value="4">P4</option>
+            </select>
+          </label>
+          <label>
+            <span>Status</span>
+            <select id="task-status"></select>
+          </label>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            <span>Assign to</span>
+            <select id="task-assignee"></select>
+          </label>
+          <label>
+            <span>Submitted by</span>
+            <input type="text" id="task-requester" placeholder="Michael / Artemis" />
+          </label>
+          <label>
+            <span>Target room</span>
+            <select id="task-room"></select>
+          </label>
+        </div>
+
+        <label>
+          <span>Tags</span>
+          <input type="text" id="task-tags" placeholder="phaser, visualization, agents" />
+        </label>
+
+        <div class="modal-actions">
+          <button type="button" class="btn" id="delete-task-btn">Delete</button>
+          <div class="modal-actions-right">
+            <button type="button" class="btn" id="cancel-task-btn">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save mission</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
