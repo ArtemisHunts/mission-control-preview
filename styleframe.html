@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mission Control // Isometric Pixel-Art Styleframe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styleframe.css" />
+</head>
+<body>
+  <div class="frame-shell">
+    <header class="masthead panel">
+      <div>
+        <p class="eyebrow">Mission Control // Styleframe pass</p>
+        <h1>Isometric pixel-art asteroid facility</h1>
+        <p class="lede">Industrial sci-fi, gritty utilitarian, less dashboard theater. More carved-rock command base with actual working rooms, routes, and operator presence.</p>
+      </div>
+      <div class="stamp-wrap">
+        <div class="status-stamp">Direction locked</div>
+        <div class="status-sub">styleframe only · not final implementation</div>
+      </div>
+    </header>
+
+    <main class="content-grid">
+      <section class="scene-panel panel">
+        <div class="panel-topline">
+          <div>
+            <p class="eyebrow">Base silhouette + room placement</p>
+            <h2>Asteroid operations deck</h2>
+          </div>
+          <div class="mini-legend">
+            <span class="chip chip-live">active work</span>
+            <span class="chip chip-review">review</span>
+            <span class="chip chip-logistics">logistics</span>
+          </div>
+        </div>
+
+        <div class="scene-stage">
+          <div class="rock-mass rock-a"></div>
+          <div class="rock-mass rock-b"></div>
+          <div class="iso-world">
+            <div class="walkway w1"></div>
+            <div class="walkway w2"></div>
+            <div class="walkway w3"></div>
+            <div class="walkway w4"></div>
+
+            <div class="room command" style="--x: 330px; --y: 120px; --w: 220px; --h: 116px; --tone: #64748b; --side: #334155; --accent: #78dce8;">
+              <span class="room-name">Command Dome</span>
+              <span class="room-note">routing · approvals · mission view</span>
+            </div>
+
+            <div class="room forge" style="--x: 128px; --y: 190px; --w: 250px; --h: 130px; --tone: #6b7280; --side: #3f3f46; --accent: #f59e0b;">
+              <span class="room-name">Forge Bay</span>
+              <span class="room-note">build floor · UI fabrication · tools</span>
+            </div>
+
+            <div class="room cargo" style="--x: 350px; --y: 270px; --w: 290px; --h: 100px; --tone: #78716c; --side: #44403c; --accent: #facc15;">
+              <span class="room-name">Cargo Spine</span>
+              <span class="room-note">intake · assignment lanes · courier flow</span>
+            </div>
+
+            <div class="room dock" style="--x: 610px; --y: 190px; --w: 220px; --h: 124px; --tone: #475569; --side: #1e293b; --accent: #38bdf8;">
+              <span class="room-name">Dock Ring</span>
+              <span class="room-note">deploy pipe · event bridge · external traffic</span>
+            </div>
+
+            <div class="room war" style="--x: 565px; --y: 355px; --w: 220px; --h: 118px; --tone: #57534e; --side: #292524; --accent: #fb7185;">
+              <span class="room-name">War Room</span>
+              <span class="room-note">review · QA · conflict resolution</span>
+            </div>
+
+            <div class="room observatory" style="--x: 118px; --y: 365px; --w: 210px; --h: 118px; --tone: #52525b; --side: #27272a; --accent: #a78bfa;">
+              <span class="room-name">Observatory</span>
+              <span class="room-note">research · memory scans · signals</span>
+            </div>
+
+            <div class="agent agent-a working" style="--x: 252px; --y: 258px;"></div>
+            <div class="agent agent-b working" style="--x: 710px; --y: 242px;"></div>
+            <div class="agent agent-c review" style="--x: 656px; --y: 402px;"></div>
+            <div class="agent agent-d idle" style="--x: 224px; --y: 424px;"></div>
+            <div class="agent agent-e courier" style="--x: 495px; --y: 304px;"></div>
+
+            <div class="beacon beacon-1"></div>
+            <div class="beacon beacon-2"></div>
+            <div class="beacon beacon-3"></div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side-stack">
+        <section class="panel info-panel">
+          <div class="panel-topline">
+            <div>
+              <p class="eyebrow">Palette</p>
+              <h2>Material + signal colors</h2>
+            </div>
+          </div>
+          <div class="palette-grid">
+            <div class="swatch"><span style="background:#1a1c23"></span><strong>Hull black</strong><small>#1A1C23</small></div>
+            <div class="swatch"><span style="background:#2d313b"></span><strong>Steel</strong><small>#2D313B</small></div>
+            <div class="swatch"><span style="background:#6b7280"></span><strong>Plate gray</strong><small>#6B7280</small></div>
+            <div class="swatch"><span style="background:#9ca3af"></span><strong>Dust metal</strong><small>#9CA3AF</small></div>
+            <div class="swatch"><span style="background:#f59e0b"></span><strong>Hazard amber</strong><small>#F59E0B</small></div>
+            <div class="swatch"><span style="background:#78dce8"></span><strong>Terminal cyan</strong><small>#78DCE8</small></div>
+            <div class="swatch"><span style="background:#fb7185"></span><strong>Review red</strong><small>#FB7185</small></div>
+            <div class="swatch"><span style="background:#a78bfa"></span><strong>Signal violet</strong><small>#A78BFA</small></div>
+          </div>
+        </section>
+
+        <section class="panel info-panel">
+          <div class="panel-topline">
+            <div>
+              <p class="eyebrow">Agent language</p>
+              <h2>Small sprites, clear states</h2>
+            </div>
+          </div>
+          <div class="sprite-list">
+            <div class="sprite-row"><span class="sprite working"></span><div><strong>Working</strong><small>welding glow / typing / moving to station</small></div></div>
+            <div class="sprite-row"><span class="sprite review"></span><div><strong>Review</strong><small>amber monitor light in War Room</small></div></div>
+            <div class="sprite-row"><span class="sprite courier"></span><div><strong>Courier</strong><small>temporary subagent carrying task packets</small></div></div>
+            <div class="sprite-row"><span class="sprite idle"></span><div><strong>Idle</strong><small>parked at observatory, break nook, or queue rail</small></div></div>
+          </div>
+        </section>
+
+        <section class="panel info-panel">
+          <div class="panel-topline">
+            <div>
+              <p class="eyebrow">UI framing</p>
+              <h2>Embedded, not dominant</h2>
+            </div>
+          </div>
+          <ul class="rule-list">
+            <li>World takes most of the screen.</li>
+            <li>Ops UI docks to edges like in-base terminals.</li>
+            <li>Workflow board becomes a compact mission rail, not five giant SaaS columns.</li>
+            <li>Activity feed reads like system logs on a rugged console.</li>
+            <li>Everything should feel fabricated from steel, conduit, glass, and rock dust.</li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>
