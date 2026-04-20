@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Asteroid Campus",
+    "title": "Asteroid Operations Deck",
     "goal": "Deliver autonomous and continuous development",
     "updatedAt": "2026-04-19T20:40:00Z"
   },
@@ -81,8 +81,8 @@
   "tasks": [
     {
       "id": "task-campus-rebuild",
-      "title": "Rebuild Mission Control as a visual 2D campus",
-      "description": "Move from dashboard-first UI to an actual world where agents are visible, spatial, and state-driven.",
+      "title": "Rebuild Mission Control as a visual isometric ops deck",
+      "description": "Move from dashboard theater into a world-first interface where rooms and operators actually matter.",
       "project": "Mission Control",
       "priority": 1,
       "status": "active",
@@ -90,14 +90,14 @@
       "assigneeId": "artemis",
       "room": "command-dome",
       "autoAssignable": true,
-      "tags": ["campus", "phaser", "world"],
+      "tags": ["campus", "isometric", "world"],
       "createdAt": "2026-04-19T20:30:00Z",
       "updatedAt": "2026-04-19T20:32:00Z"
     },
     {
       "id": "task-world-render",
-      "title": "Render rooms and agents inside the asteroid base",
-      "description": "Build a spatial scene with rooms, paths, and agent avatars moving to work zones.",
+      "title": "Render rugged rooms and operator positions",
+      "description": "Build the asteroid facility silhouette, room modules, and embedded industrial framing.",
       "project": "Mission Control",
       "priority": 1,
       "status": "active",
@@ -105,14 +105,14 @@
       "assigneeId": "forge",
       "room": "forge-bay",
       "autoAssignable": true,
-      "tags": ["phaser", "rendering", "agents"],
+      "tags": ["rendering", "rooms", "pixel-art"],
       "createdAt": "2026-04-19T20:31:00Z",
       "updatedAt": "2026-04-19T20:34:00Z"
     },
     {
       "id": "task-world-events",
-      "title": "Map task states to visible agent behavior",
-      "description": "Working, idle, review, and staged states should visibly change agent movement and effects.",
+      "title": "Map task state to visible room behavior",
+      "description": "Review, work, queue, and idle need to read at a glance in the world and the mission deck.",
       "project": "Mission Control",
       "priority": 1,
       "status": "review",
@@ -120,14 +120,14 @@
       "assigneeId": "sentinel",
       "room": "war-room",
       "autoAssignable": true,
-      "tags": ["animation", "state", "review"],
+      "tags": ["state", "review", "behavior"],
       "createdAt": "2026-04-19T20:32:00Z",
       "updatedAt": "2026-04-19T20:36:00Z"
     },
     {
       "id": "task-activity-bridge",
-      "title": "Wire event bridge for task and agent telemetry",
-      "description": "The scene should eventually consume real OpenClaw state, not static demo data.",
+      "title": "Wire event bridge for agent telemetry",
+      "description": "Eventually replace demo state with real OpenClaw activity and session flow.",
       "project": "Mission Control",
       "priority": 2,
       "status": "queued",
@@ -141,8 +141,8 @@
     },
     {
       "id": "task-subagent-lanes",
-      "title": "Visualize subagents as temporary workers and couriers",
-      "description": "Short-lived child sessions should appear as helpers moving through the base.",
+      "title": "Visualize subagents as temporary couriers",
+      "description": "Short-lived workers should appear as couriers moving through the cargo lanes.",
       "project": "Mission Control",
       "priority": 2,
       "status": "queued",
@@ -150,14 +150,14 @@
       "assigneeId": null,
       "room": "cargo-spine",
       "autoAssignable": true,
-      "tags": ["subagents", "visualization"],
+      "tags": ["subagents", "visualization", "couriers"],
       "createdAt": "2026-04-19T20:35:00Z",
       "updatedAt": "2026-04-19T20:35:00Z"
     },
     {
       "id": "task-human-console",
-      "title": "Keep a compact command board attached to the world",
-      "description": "Spatial campus does not replace workflow management. It has to sit beside it.",
+      "title": "Keep the mission deck functional and compact",
+      "description": "The world should dominate, but the workflow controls still need to be real and useful.",
       "project": "Mission Control",
       "priority": 2,
       "status": "intake",
@@ -165,14 +165,14 @@
       "assigneeId": null,
       "room": "command-dome",
       "autoAssignable": true,
-      "tags": ["board", "workflow"],
+      "tags": ["board", "workflow", "console"],
       "createdAt": "2026-04-19T20:36:00Z",
       "updatedAt": "2026-04-19T20:36:00Z"
     },
     {
       "id": "task-okr-layer",
       "title": "Map every mission to the autonomous dev OKR",
-      "description": "The world should make it obvious which work matters and why.",
+      "description": "The base should still make it obvious what matters and what is just noise.",
       "project": "Mission Control",
       "priority": 3,
       "status": "committed",
@@ -191,7 +191,7 @@
       "type": "shift",
       "agentId": "artemis",
       "taskId": "task-campus-rebuild",
-      "message": "Artemis redirected the frontend from dashboard theater into a real spatial campus prototype.",
+      "message": "Artemis pivoted the frontend into a world-first industrial ops layout.",
       "createdAt": "2026-04-19T20:32:00Z"
     },
     {
@@ -199,7 +199,7 @@
       "type": "build",
       "agentId": "forge",
       "taskId": "task-world-render",
-      "message": "Forge is laying out the asteroid rooms and visual agent positions in the scene.",
+      "message": "Forge is fabricating the asteroid rooms, terminal framing, and operator positions.",
       "createdAt": "2026-04-19T20:34:00Z"
     },
     {
@@ -207,7 +207,7 @@
       "type": "review",
       "agentId": "sentinel",
       "taskId": "task-world-events",
-      "message": "Sentinel is validating whether visible behavior actually reflects state instead of faking it.",
+      "message": "Sentinel is checking whether room behavior actually tracks task state instead of faking it.",
       "createdAt": "2026-04-19T20:36:00Z"
     }
   ]
