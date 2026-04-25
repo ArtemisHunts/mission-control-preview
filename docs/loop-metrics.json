@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "cadenceMs": 1200000,
+  "policy": {
+    "targetCadenceMinutes": "15-20",
+    "writeModel": "parallel read-only subagents, serialized main-integrator writes",
+    "adjustmentRule": "If average completed loop duration exceeds 80% of cadence or any run times out, increase cadence. If average stays below 50% of cadence for 3+ runs, decrease cadence or increase scope."
+  },
+  "runs": [],
+  "stats": {
+    "count": 0,
+    "minMs": null,
+    "maxMs": null,
+    "avgMs": null,
+    "subagents": {
+      "count": 0,
+      "minMs": null,
+      "maxMs": null,
+      "avgMs": null
+    }
+  }
+}
