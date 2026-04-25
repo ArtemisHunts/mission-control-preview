@@ -3,73 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mission Control // 3D Office</title>
-  <meta name="description" content="ArtemisHunts Mission Control — a browser-native 3D operations office." />
+  <title>Mission Control // Environment Prototype</title>
+  <meta name="description" content="ArtemisHunts Mission Control — a browser-native 3D asteroid-base environment prototype." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="office-canvas" aria-label="3D Mission Control office scene"></div>
+  <div id="office-canvas" aria-label="3D asteroid-base Mission Control environment"></div>
 
-  <main class="hud-shell">
-    <header class="hero-card glass-panel">
-      <div>
-        <p class="eyebrow">ArtemisHunts // Mission Control</p>
-        <h1>3D Operations Office</h1>
-        <p class="lede">
-          A navigable browser-native command room for visualizing agents, missions, reviews, research, and deployment flow.
-          Click a workspace or use the dock to move through the asteroid-base office.
-        </p>
-      </div>
-      <div class="build-badge">
-        <span class="pulse-dot"></span>
-        Three.js prototype
-      </div>
-    </header>
-
-    <aside class="right-rail">
-      <section class="glass-panel telemetry-panel">
-        <div class="panel-heading">
-          <p class="eyebrow">Telemetry</p>
-          <h2>Office pulse</h2>
-        </div>
-        <div class="metric-grid">
-          <div class="metric-card cyan"><span id="metric-agents">6</span><label>agents</label></div>
-          <div class="metric-card gold"><span id="metric-missions">12</span><label>missions</label></div>
-          <div class="metric-card green"><span id="metric-active">4</span><label>active</label></div>
-          <div class="metric-card coral"><span id="metric-review">3</span><label>review</label></div>
-        </div>
-      </section>
-
-      <section class="glass-panel telemetry-panel">
-        <div class="panel-heading">
-          <p class="eyebrow">Focus</p>
-          <h2 id="focus-title">Command Deck</h2>
-        </div>
-        <p id="focus-body" class="focus-body">
-          Click the central holo-table or a workspace platform. The camera will fly into that room and show the agents stationed there.
-        </p>
-      </section>
-
-      <section class="glass-panel feed-panel">
-        <div class="panel-heading">
-          <p class="eyebrow">Activity</p>
-          <h2>Signal feed</h2>
-        </div>
-        <div id="feed-list" class="feed-list"></div>
-      </section>
-    </aside>
+  <main class="environment-shell" aria-label="Environment navigation">
+    <div class="room-readout" id="room-readout">
+      <span class="readout-kicker">ASTEROID BASE</span>
+      <strong id="focus-title">Environment Overview</strong>
+      <span id="focus-body">Click a room marker or use the minimal nav to move through the base.</span>
+    </div>
 
     <footer class="bottom-dock glass-panel">
       <button class="dock-button active" data-mode="overview">Overview</button>
       <button class="dock-button" data-mode="command">Holo-table</button>
-      <button class="dock-button" data-mode="build">Build Floor</button>
+      <button class="dock-button" data-mode="build">Build</button>
       <button class="dock-button" data-mode="review">Review</button>
       <button class="dock-button" data-mode="deploy">Deploy</button>
       <button class="dock-button" data-mode="observatory">Observatory</button>
-      <button class="dock-button" id="shuffle-btn">Simulate shift</button>
+      <button class="dock-button" id="shuffle-btn">Shift</button>
     </footer>
   </main>
 

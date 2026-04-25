@@ -209,6 +209,9 @@ function buildOffice() {
   buildRooms();
   buildHoloTable();
   buildSignalLanes();
+  buildRailingsAndCatwalks();
+  buildCableConduits();
+  buildServiceDrones();
   buildArchitecturalRibs();
   buildTowers();
   buildOperators();
@@ -477,6 +480,61 @@ function buildSignalLanes() {
   });
 }
 
+function buildRailingsAndCatwalks() {
+  const railMat = mat(COLORS.brushedSteel, { roughness: 0.32, metalness: 0.76 });
+  const glowMat = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.65, transparent: true, opacity: 0.64 });
+  const posts = [];
+  for (let i = 0; i < 36; i += 1) {
+    const a = (i / 36) * Math.PI * 2;
+    const r = 2.35;
+    const x = Math.cos(a) * r;
+    const z = 0.45 + Math.sin(a) * r;
+    posts.push([x, z]);
+    box('central pit rail post', [0.045, 0.42, 0.045], [x, 0.36, z], railMat);
+  }
+  for (let i = 0; i < posts.length; i += 2) {
+    const [x, z] = posts[i];
+    const a = Math.atan2(z - 0.45, x);
+    const rail = box('central pit rail glow', [0.34, 0.035, 0.035], [x, 0.58, z], glowMat);
+    rail.rotation.y = -a;
+  }
+  [[-5.4, 0.1], [5.4, 0.1], [-3.7, -2.75], [3.7, -2.75]].forEach(([x, z]) => {
+    box('catwalk edge', [1.5, 0.08, 0.08], [x, 0.32, z + 0.86], railMat);
+    box('catwalk edge', [1.5, 0.08, 0.08], [x, 0.32, z - 0.86], railMat);
+  });
+}
+
+function buildCableConduits() {
+  const paths = [
+    [[-5.9, 3.2, -4.2], [-3.7, 3.45, -3.2], [-1.2, 3.55, -4.55]],
+    [[5.9, 3.1, -4.0], [3.4, 3.38, -3.25], [1.2, 3.5, -4.55]],
+    [[-6.1, 2.4, 1.8], [-3.9, 2.55, 0.2], [-1.8, 2.75, 0.1]],
+    [[6.1, 2.4, 1.8], [3.9, 2.55, 0.2], [1.8, 2.75, 0.1]]
+  ];
+  paths.forEach((points, index) => {
+    const curve = new THREE.CatmullRomCurve3(points.map((p) => new THREE.Vector3(...p)));
+    const cable = new THREE.Mesh(new THREE.TubeGeometry(curve, 28, 0.025, 8, false), mat(index % 2 ? 0x1f2937 : 0x101827, { roughness: 0.6, metalness: 0.3 }));
+    root.add(cable);
+  });
+}
+
+function buildServiceDrones() {
+  for (let i = 0; i < 3; i += 1) {
+    const drone = new THREE.Group();
+    drone.position.set(-1.6 + i * 1.6, 1.55 + i * 0.18, -0.7 - i * 0.55);
+    root.add(drone);
+    const body = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), mat(COLORS.blackMetal, { roughness: 0.22, metalness: 0.7 }));
+    drone.add(body);
+    box('drone eye', [0.06, 0.03, 0.018], [0, 0.02, 0.115], mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 1.5, transparent: true, opacity: 0.88 }), drone);
+    signalOrbs.push({ mesh: body, index: 10 + i, base: 1 });
+    animated.push((t) => {
+      drone.position.y = 1.52 + i * 0.18 + Math.sin(t * 1.3 + i) * 0.12;
+      drone.position.x += Math.sin(t * 0.5 + i) * 0.0015;
+      drone.rotation.y += 0.012;
+    });
+  }
+}
+
 function buildTowers() {
   const metrics = [
     ['AGENTS', 6, COLORS.cyan, -5.1, -3.6],
@@ -550,17 +608,25 @@ function buildSignalOrbs() {
 }
 
 function updateHud() {
-  document.getElementById('metric-agents').textContent = state.metrics.agents;
-  document.getElementById('metric-missions').textContent = state.metrics.missions;
-  document.getElementById('metric-active').textContent = state.metrics.active;
-  document.getElementById('metric-review').textContent = state.metrics.review;
-
   const room = ROOMS[state.mode];
-  document.getElementById('focus-title').textContent = room.title;
-  document.getElementById('focus-body').textContent = room.body;
+  const title = document.getElementById('focus-title');
+  const body = document.getElementById('focus-body');
+  if (title) title.textContent = room.title;
+  if (body) body.textContent = room.body;
+
+  const metrics = {
+    'metric-agents': state.metrics.agents,
+    'metric-missions': state.metrics.missions,
+    'metric-active': state.metrics.active,
+    'metric-review': state.metrics.review
+  };
+  Object.entries(metrics).forEach(([id, value]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  });
 
   const feed = document.getElementById('feed-list');
-  feed.innerHTML = state.feed.slice(0, 5).map(([who, what]) => `<div class="feed-item"><strong>${who}</strong> ${what}</div>`).join('');
+  if (feed) feed.innerHTML = state.feed.slice(0, 5).map(([who, what]) => `<div class="feed-item"><strong>${who}</strong> ${what}</div>`).join('');
 }
 
 function setMode(modeName) {
