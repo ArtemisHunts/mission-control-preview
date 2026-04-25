@@ -6,7 +6,7 @@
   --text: #f6f8ff;
   --muted: rgba(221, 231, 255, 0.62);
   --cyan: #59f1ff;
-  --gold: #ffbf1f;
+  --gold: #e6a93a;
   --green: #86f18a;
   --coral: #ff6f61;
   --violet: #9d7cff;
@@ -51,20 +51,17 @@ body::before {
 }
 
 .glass-panel {
-  border: 1px solid var(--line);
-  background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.035));
-  box-shadow: 0 28px 120px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(22px);
+  border: 1px solid rgba(230, 169, 58, 0.18);
+  background: linear-gradient(135deg, rgba(7, 10, 18, 0.58), rgba(16, 24, 44, 0.3));
+  box-shadow: 0 22px 90px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.055);
+  backdrop-filter: blur(10px);
 }
 
 .hero-card {
-  width: min(760px, calc(100vw - 32px));
-  border-radius: 30px;
-  padding: clamp(20px, 3vw, 34px);
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 24px;
+  width: min(420px, calc(100vw - 32px));
+  border-radius: 18px;
+  padding: 16px 18px;
+  display: block;
 }
 
 .eyebrow {
@@ -81,11 +78,11 @@ h2,
 p { margin-top: 0; }
 
 h1 {
-  margin-bottom: 14px;
-  max-width: 660px;
-  font-size: clamp(42px, 7vw, 88px);
-  line-height: 0.88;
-  letter-spacing: -0.07em;
+  margin-bottom: 10px;
+  max-width: 360px;
+  font-size: clamp(28px, 3vw, 42px);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
   font-weight: 900;
 }
 
@@ -96,15 +93,15 @@ h2 {
 }
 
 .lede {
-  max-width: 640px;
+  max-width: 360px;
   margin-bottom: 0;
   color: var(--muted);
-  font-size: 15px;
-  line-height: 1.7;
+  font-size: 12px;
+  line-height: 1.55;
 }
 
 .build-badge {
-  flex: 0 0 auto;
+  margin-top: 12px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -132,16 +129,17 @@ h2 {
   position: fixed;
   right: clamp(16px, 2.2vw, 32px);
   top: clamp(16px, 2.2vw, 32px);
-  width: min(380px, calc(100vw - 32px));
+  width: min(320px, calc(100vw - 32px));
   display: grid;
-  gap: 14px;
+  gap: 10px;
   pointer-events: auto;
+  opacity: 0.88;
 }
 
 .telemetry-panel,
 .feed-panel {
-  border-radius: 24px;
-  padding: 18px;
+  border-radius: 16px;
+  padding: 14px;
 }
 
 .panel-heading {
@@ -219,17 +217,17 @@ h2 {
   bottom: clamp(16px, 2.2vw, 32px);
   transform: translateX(-50%);
   display: flex;
-  gap: 8px;
-  border-radius: 999px;
-  padding: 8px;
+  gap: 6px;
+  border-radius: 12px;
+  padding: 7px;
   pointer-events: auto;
 }
 
 .dock-button {
   appearance: none;
   border: 1px solid transparent;
-  border-radius: 999px;
-  padding: 12px 16px;
+  border-radius: 8px;
+  padding: 10px 13px;
   background: transparent;
   color: rgba(255, 255, 255, 0.68);
   font: inherit;
