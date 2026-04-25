@@ -106,7 +106,7 @@ renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.08;
+renderer.toneMappingExposure = 0.9;
 container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
@@ -197,13 +197,15 @@ function addLight(type, color, intensity, position, distance) {
 }
 
 function buildOffice() {
-  scene.add(new THREE.AmbientLight(0xffffff, 0.16));
-  addLight('directional', 0xffffff, 2.35, [4, 7, 5]);
-  addLight('point', COLORS.cyan, 18, [-4.5, 3.2, -3.1], 12);
-  addLight('point', COLORS.coral, 12, [4.2, 2.4, 2.4], 10);
-  addLight('point', COLORS.gold, 8, [-2.9, 2.3, 1.2], 8);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.09));
+  addLight('directional', 0xc8dcff, 1.45, [4, 7, 5]);
+  addLight('point', COLORS.cyan, 9, [0, 1.35, 0.45], 6.5);
+  addLight('point', COLORS.amber, 2.2, [-3.8, 3.45, -1.6], 3.2);
+  addLight('point', COLORS.amber, 2.2, [3.8, 3.45, -1.6], 3.2);
+  addLight('point', COLORS.coral, 3.2, [4.2, 1.8, 1.2], 4.8);
 
   buildShell();
+  buildCeilingAndBulkheads();
   buildRockCave();
   buildAsteroidField();
   buildExteriorVista();
@@ -220,12 +222,14 @@ function buildOffice() {
   buildOperators();
   buildSignalOrbs();
 
-  const title = makeTextSprite('MISSION CONTROL', '#f8fbff', 104);
-  title.position.set(0, 3.32, -4.32);
+  const title = makeTextSprite('MISSION CONTROL', '#f8fbff', 86);
+  title.position.set(0, 3.26, -4.32);
+  title.material.opacity = 0.42;
   root.add(title);
-  const sub = makeTextSprite('CLICK A ROOM · FOLLOW THE AGENTS', '#9fb5e7', 48);
+  const sub = makeTextSprite('CLICK A ROOM · FOLLOW THE AGENTS', '#9fb5e7', 38);
   sub.position.set(0, 2.92, -4.32);
-  sub.scale.set(3.15, 0.78, 1);
+  sub.scale.set(2.65, 0.58, 1);
+  sub.material.opacity = 0.34;
   root.add(sub);
 }
 
@@ -272,12 +276,34 @@ function buildShell() {
 }
 
 function buildWindowWall() {
-  const windowMat = mat(0x030815, { emissive: 0x0a2740, emissiveIntensity: 0.3, transparent: true, opacity: 0.68, roughness: 0.08, metalness: 0.25 });
-  [-2.9, 0, 2.9].forEach((x) => {
-    const pane = box('panoramic window', [2.35, 1.2, 0.055], [x, 2.08, -4.66], windowMat);
-    pane.castShadow = false;
-    box('window amber sill', [2.55, 0.035, 0.08], [x, 1.42, -4.60], mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.9, transparent: true, opacity: 0.72 }));
+  const windowMat = mat(0x020611, { emissive: 0x061a2a, emissiveIntensity: 0.13, transparent: true, opacity: 0.52, roughness: 0.05, metalness: 0.28 });
+  const pane = box('armored hangar aperture glass', [7.85, 1.72, 0.055], [0, 2.12, -4.66], windowMat);
+  pane.castShadow = false;
+  const frameMat = mat(COLORS.blackMetal, { roughness: 0.34, metalness: 0.68 });
+  box('hangar aperture top frame', [8.18, 0.18, 0.18], [0, 3.08, -4.57], frameMat);
+  box('hangar aperture bottom frame', [8.18, 0.16, 0.18], [0, 1.16, -4.57], frameMat);
+  box('hangar aperture left frame', [0.18, 1.92, 0.18], [-4.18, 2.12, -4.57], frameMat);
+  box('hangar aperture right frame', [0.18, 1.92, 0.18], [4.18, 2.12, -4.57], frameMat);
+  [-1.35, 1.35].forEach((x) => box('hangar aperture mullion', [0.08, 1.72, 0.12], [x, 2.12, -4.55], frameMat));
+  box('hangar cyan rim top', [7.7, 0.035, 0.08], [0, 3.22, -4.50], mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.55, transparent: true, opacity: 0.42 }));
+  box('hangar amber sill', [7.85, 0.045, 0.09], [0, 1.34, -4.50], mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.7, transparent: true, opacity: 0.55 }));
+}
+
+function buildCeilingAndBulkheads() {
+  const ceilingMat = mat(COLORS.blackMetal, { roughness: 0.48, metalness: 0.55 });
+  box('heavy ceiling slab left', [5.3, 0.18, 9.6], [-3.95, 4.08, -0.1], ceilingMat);
+  box('heavy ceiling slab right', [5.3, 0.18, 9.6], [3.95, 4.08, -0.1], ceilingMat);
+  box('rear ceiling cap', [13.0, 0.2, 1.15], [0, 4.08, -4.15], ceilingMat);
+  box('front ceiling bulkhead', [13.0, 0.28, 0.7], [0, 3.92, 4.95], ceilingMat);
+  box('front left bulkhead', [2.45, 3.05, 0.44], [-5.35, 2.28, 5.1], mat(COLORS.wallDark, { roughness: 0.62, metalness: 0.26 }));
+  box('front right bulkhead', [2.45, 3.05, 0.44], [5.35, 2.28, 5.1], mat(COLORS.wallDark, { roughness: 0.62, metalness: 0.26 }));
+  [-4.2, -2.1, 2.1, 4.2].forEach((x) => {
+    box('ceiling inset amber strip', [0.045, 0.035, 5.8], [x, 3.94, -0.45], mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.52, transparent: true, opacity: 0.46 }));
   });
+  const recess = new THREE.Mesh(new THREE.TorusGeometry(2.35, 0.035, 10, 96), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.48, transparent: true, opacity: 0.24 }));
+  recess.position.set(0, 3.93, 0.45);
+  recess.rotation.x = Math.PI / 2;
+  root.add(recess);
 }
 
 function buildRockCave() {
@@ -334,9 +360,16 @@ function buildRooms() {
     platform.userData.mode = id;
     roomMeshes.push(platform);
 
+    const alcoveMat = mat(COLORS.gunmetal, { roughness: 0.48, metalness: 0.42 });
+    box(`${room.label} alcove back wall`, [2.35, 1.08, 0.08], [0, 0.78, -0.86], alcoveMat, group);
+    box(`${room.label} alcove left fin`, [0.08, 0.9, 1.12], [-1.18, 0.72, -0.32], alcoveMat, group);
+    box(`${room.label} alcove right fin`, [0.08, 0.9, 1.12], [1.18, 0.72, -0.32], alcoveMat, group);
+    box(`${room.label} alcove canopy`, [2.28, 0.08, 1.35], [0, 1.34, -0.24], mat(COLORS.blackMetal, { roughness: 0.42, metalness: 0.58 }), group);
+    box(`${room.label} alcove light bar`, [1.85, 0.035, 0.055], [0, 1.24, -0.81], mat(room.accent, { emissive: room.accent, emissiveIntensity: 0.45, transparent: true, opacity: 0.42 }), group);
+
     const glow = new THREE.Mesh(
       new THREE.PlaneGeometry(2.55, 1.85),
-      mat(room.accent, { emissive: room.accent, emissiveIntensity: 0.9, transparent: true, opacity: 0.13, side: THREE.DoubleSide })
+      mat(room.accent, { emissive: room.accent, emissiveIntensity: 0.32, transparent: true, opacity: 0.05, side: THREE.DoubleSide })
     );
     glow.rotation.x = -Math.PI / 2;
     glow.position.y = 0.195;
@@ -344,7 +377,7 @@ function buildRooms() {
     glow.userData.mode = id;
     roomMeshes.push(glow);
 
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(1.05, 0.018, 8, 72), mat(room.accent, { emissive: room.accent, emissiveIntensity: 1.2, transparent: true, opacity: 0.72 }));
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(1.05, 0.018, 8, 72), mat(room.accent, { emissive: room.accent, emissiveIntensity: 0.55, transparent: true, opacity: 0.36 }));
     ring.rotation.x = Math.PI / 2;
     ring.position.y = 0.28;
     group.add(ring);
@@ -352,14 +385,15 @@ function buildRooms() {
     const label = makeTextSprite(room.label, `#${room.accent.toString(16).padStart(6, '0')}`, room.label.length > 7 ? 52 : 68);
     label.position.set(0, 0.62, -0.64);
     label.scale.set(room.label.length > 7 ? 1.55 : 1.28, 0.34, 1);
+    label.material.opacity = 0.38;
     group.add(label);
 
     buildWorkspaceProps(id, group, room.accent);
 
-    const tower = box(`${room.label} beacon`, [0.08, 0.88, 0.08], [0.94, 0.66, 0.58], mat(room.accent, { emissive: room.accent, emissiveIntensity: 1.0, transparent: true, opacity: 0.82 }), group);
+    const tower = box(`${room.label} beacon`, [0.08, 0.88, 0.08], [0.94, 0.66, 0.58], mat(room.accent, { emissive: room.accent, emissiveIntensity: 0.48, transparent: true, opacity: 0.42 }), group);
     animated.push((t) => {
       ring.rotation.z += 0.004;
-      glow.material.opacity = 0.10 + Math.sin(t * 1.7 + x) * 0.035;
+      glow.material.opacity = 0.035 + Math.sin(t * 1.7 + x) * 0.012;
       tower.scale.y = 0.9 + Math.sin(t * 2.1 + z) * 0.14;
     });
   });
@@ -477,9 +511,9 @@ function buildSignalLanes() {
       new THREE.Vector3((from[0] + to[0]) / 2, 0.03, (from[2] + to[2]) / 2),
       new THREE.Vector3(...to)
     ]);
-    const tube = new THREE.Mesh(new THREE.TubeGeometry(curve, 32, 0.018, 8, false), mat(color, { emissive: color, emissiveIntensity: 1.1, transparent: true, opacity: 0.74 }));
+    const tube = new THREE.Mesh(new THREE.TubeGeometry(curve, 32, 0.018, 8, false), mat(color, { emissive: color, emissiveIntensity: 0.55, transparent: true, opacity: 0.42 }));
     root.add(tube);
-    animated.push((t) => { tube.material.opacity = 0.48 + Math.sin(t * 1.6 + index) * 0.2; });
+    animated.push((t) => { tube.material.opacity = 0.30 + Math.sin(t * 1.6 + index) * 0.08; });
   });
 }
 
@@ -622,7 +656,7 @@ function buildTowers() {
     root.add(group);
     box(`${label} pedestal`, [0.42, 0.16, 0.42], [0, 0.08, 0], mat(0x18213a, { roughness: 0.55 }), group);
     const height = 0.55 + Math.min(value, 14) * 0.105;
-    const tower = box(`${label} tower`, [0.26, height, 0.26], [0, 0.16 + height / 2, 0], mat(color, { emissive: color, emissiveIntensity: 0.75, transparent: true, opacity: 0.92 }), group);
+    const tower = box(`${label} tower`, [0.26, height, 0.26], [0, 0.16 + height / 2, 0], mat(color, { emissive: color, emissiveIntensity: 0.42, transparent: true, opacity: 0.58 }), group);
     towers.push({ mesh: tower, value, base: height, color });
   });
 }

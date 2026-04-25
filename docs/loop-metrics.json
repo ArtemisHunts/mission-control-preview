@@ -13,10 +13,30 @@
     "maxMs": null,
     "avgMs": null,
     "subagents": {
-      "count": 0,
-      "minMs": null,
-      "maxMs": null,
-      "avgMs": null
+      "count": 3,
+      "minMs": 47000,
+      "maxMs": 49000,
+      "avgMs": 48000
     }
-  }
+  },
+  "auditRuns": [
+    {
+      "label": "mc-architecture-shell-audit",
+      "durationMs": 49000,
+      "type": "read-only subagent audit",
+      "date": "2026-04-25"
+    },
+    {
+      "label": "mc-material-lighting-audit",
+      "durationMs": 48000,
+      "type": "read-only subagent audit",
+      "date": "2026-04-25"
+    },
+    {
+      "label": "mc-operators-props-audit",
+      "durationMs": 47000,
+      "type": "read-only subagent audit",
+      "date": "2026-04-25"
+    }
+  ]
 }
