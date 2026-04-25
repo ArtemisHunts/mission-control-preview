@@ -19,8 +19,8 @@
         <p class="eyebrow">ArtemisHunts // Mission Control</p>
         <h1>3D Operations Office</h1>
         <p class="lede">
-          A live browser-native command room for visualizing agents, missions, reviews, and deployment flow.
-          The old flat office is gone; this is the first spatial pass.
+          A navigable browser-native command room for visualizing agents, missions, reviews, research, and deployment flow.
+          Click a workspace or use the dock to move through the asteroid-base office.
         </p>
       </div>
       <div class="build-badge">
@@ -49,7 +49,7 @@
           <h2 id="focus-title">Command Deck</h2>
         </div>
         <p id="focus-body" class="focus-body">
-          Orbit the room. Watch towers, operators, and signal orbs pulse as the simulated work state changes.
+          Click the central holo-table or a workspace platform. The camera will fly into that room and show the agents stationed there.
         </p>
       </section>
 
@@ -64,9 +64,11 @@
 
     <footer class="bottom-dock glass-panel">
       <button class="dock-button active" data-mode="overview">Overview</button>
+      <button class="dock-button" data-mode="command">Holo-table</button>
       <button class="dock-button" data-mode="build">Build Floor</button>
       <button class="dock-button" data-mode="review">Review</button>
       <button class="dock-button" data-mode="deploy">Deploy</button>
+      <button class="dock-button" data-mode="observatory">Observatory</button>
       <button class="dock-button" id="shuffle-btn">Simulate shift</button>
     </footer>
   </main>
