@@ -1,0 +1,180 @@
+# Mission Control — Autonomous Development Loop
+
+_Last updated: 2026-04-25_
+
+This document defines how Artemis should use `docs/target-design-spec.md` during recurring development loops to move Mission Control from low-fidelity prototype to high-quality 3D environment.
+
+## 1. Source of truth
+
+Primary design target:
+
+- `docs/target-design-spec.md`
+
+Primary visual references:
+
+- `docs/moodboards/world-architecture.png`
+- `docs/moodboards/materials-avatars.png`
+- `docs/moodboards/holographic-ui.png`
+- `docs/moodboards/mission-control-design-boards-combined.jpg`
+
+The target spec is not decorative. Every loop should map its work to one or more explicit sections of the spec.
+
+---
+
+## 2. Loop contract
+
+Each autonomous loop must do one meaningful pass. Do not churn tiny cosmetic edits unless they support a larger fidelity goal.
+
+Required loop sequence:
+
+1. **Inspect current state**
+   - `git status -sb`
+   - latest commits
+   - live GitHub Pages markers if relevant
+   - current app.js / CSS structure
+
+2. **Pick the largest gap**
+   - Compare current site against `target-design-spec.md`.
+   - Choose one high-impact area from the fidelity bar.
+   - State the chosen gap before coding.
+
+3. **Implement one coherent pass**
+   - Examples:
+     - architectural shell pass
+     - central holo-table pass
+     - room physicalization pass
+     - operator/avatar pass
+     - material/lighting pass
+     - exterior vista/scale pass
+   - Avoid random scattered tweaks.
+
+4. **Smoke test locally**
+   - `node --check app.js`
+   - static server + `curl` markers when HTML/JS changed
+   - no broken imports
+
+5. **Commit cleanly**
+   - clear commit message
+   - no secrets
+   - no Zoophoria credentials/remotes
+
+6. **Push to ArtemisHunts only**
+   - repo: `ArtemisHunts/mission-control-preview`
+   - use ArtemisHunts credential only
+
+7. **Verify or queue Pages deploy check**
+   - if Pages is live, verify markers
+   - if Pages is lagging, schedule a deploy verification check
+
+8. **Post concise update**
+   - commit hash
+   - commit message
+   - what changed
+   - smoke test status
+   - GitHub Pages status
+
+---
+
+## 3. Fidelity scorecard
+
+At the start or end of each major pass, score the current site honestly from 0–5.
+
+| Category | 0 | 3 | 5 |
+|---|---|---|---|
+| Environment ownership | website/HUD dominates | scene is visible but UI competes | full-screen environment owns experience |
+| Architectural shell | flat floor/walls | some ribs/windows/rock | believable asteroid-base room with depth |
+| Holo-table spectacle | small/simple prop | recognizable table | hero object with premium hologram/lighting |
+| Room physicalization | colored pads | primitive props | believable specialized workspaces |
+| Materials | flat colors | basic metal/glass/rock hints | rich graphite/steel/glass/rock contrast |
+| Lighting | even/toy-like | some contrast | cinematic, layered, readable silhouettes |
+| Operators | markers/bobbleheads | basic suited figures | believable operators with role identity |
+| Scale/detail | sparse | props added | dense enough to feel lived-in and large |
+| Interaction/camera | static/orbit only | room nav works | composed cinematic room navigation |
+| Performance/readiness | broken/heavy | works locally | deployable, responsive, controlled budgets |
+
+Target before calling it “high quality”: mostly 4s, no category below 3.
+
+Target before calling it “moodboard-close”: mostly 5s, no category below 4.
+
+---
+
+## 4. Current priority ladder
+
+Work should generally climb this ladder unless a blocker appears:
+
+1. **Environment-first framing** — keep UI out of the way.
+2. **Architectural shell** — make the room believable.
+3. **Holo-table hero object** — make the center visually iconic.
+4. **Room physicalization** — replace pads with real workspaces.
+5. **Material richness** — graphite, black glass, brushed steel, rock.
+6. **Cinematic lighting** — table glow, window rim, amber practicals.
+7. **Operators and life** — suited agents, drones, subtle motion.
+8. **Asset pipeline** — move from primitives to GLB modules.
+9. **Embedded UI** — bring functionality back through in-world consoles.
+
+---
+
+## 5. What to avoid
+
+- Do not add large website panels/marketing hero back into the scene.
+- Do not mistake more neon for more fidelity.
+- Do not keep adding colored primitive boxes without improving material/shape language.
+- Do not work on menus before the environment reads correctly.
+- Do not push vague “polish” commits; every commit should map to a target spec gap.
+- Do not touch Zoophoria for this project.
+
+---
+
+## 6. When to request human input
+
+Ask Michael only when the decision materially affects direction:
+
+- choosing between major art styles
+- approving a new asset pipeline/tooling dependency
+- switching deploy platform
+- using paid asset packs
+- introducing generated/contracted art
+- changing the core room metaphor
+
+Do not ask for permission for normal implementation loops.
+
+---
+
+## 7. Escalation plan for quality
+
+If primitive Three.js geometry stops producing meaningful fidelity gains, move to an asset pipeline:
+
+1. Define modular GLB asset list.
+2. Generate or source blockout GLBs.
+3. Install/use Blender headless if available.
+4. Replace primitives with modular room shells, consoles, chairs, props, and operators.
+5. Keep procedural animation and interaction in Three.js.
+
+Likely GLB modules:
+
+- command-table kit
+- wall/rib/window modules
+- floor panel kit
+- console kit
+- chair kit
+- cargo/crate kit
+- operator suit kit
+- drone kit
+- cable/conduit kit
+- rock/asteroid kit
+
+---
+
+## 8. Definition of done for the current phase
+
+The current phase is done when:
+
+- the app feels environment-first immediately on load
+- central holo-table is the obvious visual anchor
+- each workspace is visually distinct and believable
+- agents visibly belong to workspaces
+- material/lighting reads premium sci-fi, not toy neon
+- screenshot can sit beside moodboards 1 and 3 without looking like a wireframe
+- GitHub Pages deploy is stable
+
+Until then, keep looping.
