@@ -206,12 +206,15 @@ function buildOffice() {
   buildShell();
   buildRockCave();
   buildAsteroidField();
+  buildExteriorVista();
   buildRooms();
   buildHoloTable();
   buildSignalLanes();
   buildRailingsAndCatwalks();
   buildCableConduits();
   buildServiceDrones();
+  buildIndustrialSetDressing();
+  buildVolumetricLightPlanes();
   buildArchitecturalRibs();
   buildTowers();
   buildOperators();
@@ -533,6 +536,77 @@ function buildServiceDrones() {
       drone.rotation.y += 0.012;
     });
   }
+}
+
+function buildExteriorVista() {
+  const planetCanvas = document.createElement('canvas');
+  planetCanvas.width = 512;
+  planetCanvas.height = 512;
+  const ctx = planetCanvas.getContext('2d');
+  const grd = ctx.createRadialGradient(230, 210, 40, 256, 256, 240);
+  grd.addColorStop(0, 'rgba(145, 210, 255, 0.95)');
+  grd.addColorStop(0.45, 'rgba(56, 104, 152, 0.7)');
+  grd.addColorStop(1, 'rgba(8, 16, 34, 0)');
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, 512, 512);
+  const tex = new THREE.CanvasTexture(planetCanvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  const planet = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, opacity: 0.46 }));
+  planet.position.set(4.2, 2.8, -12.5);
+  planet.scale.set(3.2, 3.2, 1);
+  scene.add(planet);
+
+  const ship = new THREE.Group();
+  ship.position.set(-2.6, 2.05, -7.4);
+  scene.add(ship);
+  box('distant dock ship hull', [1.5, 0.16, 0.34], [0, 0, 0], mat(0x111827, { roughness: 0.42, metalness: 0.6 }), ship);
+  box('distant dock ship nose', [0.36, 0.12, 0.26], [0.9, 0.01, 0], mat(0x1f2937, { roughness: 0.4, metalness: 0.65 }), ship);
+  box('distant dock ship amber running light', [0.06, 0.035, 0.035], [-0.72, 0.09, 0.18], mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 1.2, transparent: true, opacity: 0.8 }), ship);
+  animated.push((t) => { ship.position.y = 2.05 + Math.sin(t * 0.35) * 0.04; });
+}
+
+function buildIndustrialSetDressing() {
+  const crateMat = mat(0x2a231d, { roughness: 0.72, metalness: 0.18 });
+  const steel = mat(COLORS.brushedSteel, { roughness: 0.35, metalness: 0.76 });
+  const black = mat(COLORS.blackMetal, { roughness: 0.5, metalness: 0.52 });
+  const crateStacks = [[-5.45, 3.25], [-4.85, 3.75], [5.2, 3.2], [4.7, 3.85], [5.6, -1.65], [-5.55, -1.45]];
+  crateStacks.forEach(([x, z], i) => {
+    const h = 0.22 + (i % 3) * 0.08;
+    box('environment cargo crate', [0.42, h, 0.42], [x, 0.13 + h / 2, z], crateMat);
+    box('crate metal band', [0.45, 0.025, 0.45], [x, 0.18 + h, z], steel);
+  });
+  [[-5.8, 1.0], [5.85, 0.85], [-5.35, -3.3], [5.35, -3.35]].forEach(([x, z]) => {
+    const tank = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.9, 18), black);
+    tank.position.set(x, 0.55, z);
+    tank.rotation.z = Math.PI / 2;
+    tank.castShadow = true;
+    tank.receiveShadow = true;
+    root.add(tank);
+    box('tank status strip', [0.02, 0.34, 0.035], [x, 0.55, z + 0.19], mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.7, transparent: true, opacity: 0.62 }));
+  });
+  // workstation chairs around the central table for scale
+  [[-1.15, 1.55], [1.15, 1.55], [-1.35, -0.55], [1.35, -0.55]].forEach(([x, z], i) => {
+    box('operator chair base', [0.26, 0.06, 0.26], [x, 0.26, z], black);
+    box('operator chair back', [0.28, 0.36, 0.05], [x, 0.52, z - 0.13], mat(0x222c3d, { roughness: 0.45, metalness: 0.35 }));
+  });
+}
+
+function buildVolumetricLightPlanes() {
+  const beams = [
+    [-2.9, 2.35, -4.35, COLORS.cyan],
+    [0, 2.35, -4.35, COLORS.amber],
+    [2.9, 2.35, -4.35, COLORS.cyan]
+  ];
+  beams.forEach(([x, y, z, color], i) => {
+    const beam = new THREE.Mesh(
+      new THREE.PlaneGeometry(1.7, 3.2),
+      mat(color, { emissive: color, emissiveIntensity: 0.22, transparent: true, opacity: 0.055, side: THREE.DoubleSide, roughness: 0.1 })
+    );
+    beam.position.set(x, y, z + 0.08);
+    beam.rotation.x = -0.22;
+    root.add(beam);
+    animated.push((t) => { beam.material.opacity = 0.04 + Math.sin(t * 0.8 + i) * 0.015; });
+  });
 }
 
 function buildTowers() {
