@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "cadenceMs": 1200000,
+  "cadenceMs": 300000,
   "policy": {
-    "targetCadenceMinutes": "15-20",
+    "targetCadenceMinutes": "5",
     "writeModel": "parallel read-only subagents, serialized main-integrator writes",
-    "adjustmentRule": "If average completed loop duration exceeds 80% of cadence or any run times out, increase cadence. If average stays below 50% of cadence for 3+ runs, decrease cadence or increase scope."
+    "adjustmentRule": "At 5-minute cadence, loops must stay tiny and shippable. If average run duration exceeds 240s, if Pages deploy checks pile up, or if dirty work overlaps, increase cadence or split planning/audit from implementation."
   },
   "runs": [],
   "stats": {
