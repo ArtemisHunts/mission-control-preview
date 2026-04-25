@@ -3,196 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mission Control // Industrial Isometric Ops</title>
+  <title>Mission Control // 3D Office</title>
+  <meta name="description" content="ArtemisHunts Mission Control — a browser-native 3D operations office." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app-shell">
-    <header class="masthead panel">
+  <div id="office-canvas" aria-label="3D Mission Control office scene"></div>
+
+  <main class="hud-shell">
+    <header class="hero-card glass-panel">
       <div>
         <p class="eyebrow">ArtemisHunts // Mission Control</p>
-        <h1>Asteroid Operations Deck</h1>
-        <p class="lede">A functional isometric control surface for routing missions, seeing who is working where, and keeping the base moving.</p>
+        <h1>3D Operations Office</h1>
+        <p class="lede">
+          A live browser-native command room for visualizing agents, missions, reviews, and deployment flow.
+          The old flat office is gone; this is the first spatial pass.
+        </p>
       </div>
-      <div class="masthead-right">
-        <div class="status-pill status-live" id="world-status">syncing</div>
-        <div class="stamp">industrial isometric build</div>
+      <div class="build-badge">
+        <span class="pulse-dot"></span>
+        Three.js prototype
       </div>
     </header>
 
-    <main class="workspace-grid">
-      <section class="world-panel panel">
-        <div class="panel-topline world-topline">
-          <div>
-            <p class="eyebrow">Spatial ops layer</p>
-            <h2>Base state</h2>
-          </div>
-          <div class="action-row">
-            <button class="btn" id="dispatch-btn">Auto-dispatch</button>
-            <button class="btn" id="simulate-btn">Simulate shift</button>
-            <button class="btn btn-primary" id="new-task-btn">+ New mission</button>
-          </div>
+    <aside class="right-rail">
+      <section class="glass-panel telemetry-panel">
+        <div class="panel-heading">
+          <p class="eyebrow">Telemetry</p>
+          <h2>Office pulse</h2>
         </div>
-
-        <div class="world-stage" id="world-stage">
-          <div class="rock rock-a"></div>
-          <div class="rock rock-b"></div>
-          <div class="asteroid-grid"></div>
-
-          <div class="walkway w1"></div>
-          <div class="walkway w2"></div>
-          <div class="walkway w3"></div>
-          <div class="walkway w4"></div>
-          <div class="walkway w5"></div>
-
-          <div id="room-layer"></div>
-          <div id="agent-layer"></div>
-          <div id="courier-layer"></div>
-        </div>
-
-        <div class="world-footer">
-          <div class="footer-chip"><span class="dot dot-active"></span> active work</div>
-          <div class="footer-chip"><span class="dot dot-review"></span> review cycle</div>
-          <div class="footer-chip"><span class="dot dot-logistics"></span> queued logistics</div>
-          <div class="footer-chip"><span class="dot dot-idle"></span> idle / standby</div>
+        <div class="metric-grid">
+          <div class="metric-card cyan"><span id="metric-agents">6</span><label>agents</label></div>
+          <div class="metric-card gold"><span id="metric-missions">12</span><label>missions</label></div>
+          <div class="metric-card green"><span id="metric-active">4</span><label>active</label></div>
+          <div class="metric-card coral"><span id="metric-review">3</span><label>review</label></div>
         </div>
       </section>
 
-      <aside class="console-stack">
-        <section class="panel console-panel">
-          <div class="panel-topline">
-            <div>
-              <p class="eyebrow">Base telemetry</p>
-              <h2>Live counters</h2>
-            </div>
-          </div>
-          <div class="metric-grid" id="metric-grid"></div>
-        </section>
-
-        <section class="panel console-panel">
-          <div class="panel-topline">
-            <div>
-              <p class="eyebrow">Focus</p>
-              <h2 id="focus-title">Nothing selected</h2>
-            </div>
-          </div>
-          <div id="focus-card" class="focus-card empty-card">Click a room, agent, or mission.</div>
-        </section>
-
-        <section class="panel console-panel">
-          <div class="panel-topline">
-            <div>
-              <p class="eyebrow">Crew roster</p>
-              <h2>Operators</h2>
-            </div>
-            <div class="status-pill" id="fleet-count">0 agents</div>
-          </div>
-          <div id="roster-list" class="roster-list"></div>
-        </section>
-      </aside>
-    </main>
-
-    <section class="dock-grid">
-      <article class="panel dock-panel">
-        <div class="panel-topline">
-          <div>
-            <p class="eyebrow">Mission deck</p>
-            <h2>Work queue</h2>
-          </div>
-          <div class="status-pill" id="task-count">0 missions</div>
+      <section class="glass-panel telemetry-panel">
+        <div class="panel-heading">
+          <p class="eyebrow">Focus</p>
+          <h2 id="focus-title">Command Deck</h2>
         </div>
-        <div id="mission-deck" class="mission-deck"></div>
-      </article>
+        <p id="focus-body" class="focus-body">
+          Orbit the room. Watch towers, operators, and signal orbs pulse as the simulated work state changes.
+        </p>
+      </section>
 
-      <article class="panel dock-panel activity-panel">
-        <div class="panel-topline">
-          <div>
-            <p class="eyebrow">System log</p>
-            <h2>Activity feed</h2>
-          </div>
+      <section class="glass-panel feed-panel">
+        <div class="panel-heading">
+          <p class="eyebrow">Activity</p>
+          <h2>Signal feed</h2>
         </div>
         <div id="feed-list" class="feed-list"></div>
-      </article>
-    </section>
-  </div>
+      </section>
+    </aside>
 
-  <div class="modal hidden" id="task-modal">
-    <div class="modal-card panel">
-      <div class="panel-topline">
-        <div>
-          <p class="eyebrow">Mission editor</p>
-          <h2 id="modal-title">New mission</h2>
-        </div>
-        <button class="icon-btn" id="close-modal-btn">✕</button>
-      </div>
+    <footer class="bottom-dock glass-panel">
+      <button class="dock-button active" data-mode="overview">Overview</button>
+      <button class="dock-button" data-mode="build">Build Floor</button>
+      <button class="dock-button" data-mode="review">Review</button>
+      <button class="dock-button" data-mode="deploy">Deploy</button>
+      <button class="dock-button" id="shuffle-btn">Simulate shift</button>
+    </footer>
+  </main>
 
-      <form id="task-form" class="task-form">
-        <input type="hidden" id="task-id" />
+  <div class="vignette"></div>
 
-        <label>
-          <span>Mission title</span>
-          <input type="text" id="task-title" required placeholder="Wire the courier lanes into dispatch" />
-        </label>
-
-        <label>
-          <span>Description</span>
-          <textarea id="task-description" rows="4" placeholder="What actually needs to happen?"></textarea>
-        </label>
-
-        <div class="form-grid">
-          <label>
-            <span>Project</span>
-            <input type="text" id="task-project" placeholder="Mission Control" />
-          </label>
-          <label>
-            <span>Priority</span>
-            <select id="task-priority">
-              <option value="1">P1</option>
-              <option value="2">P2</option>
-              <option value="3">P3</option>
-              <option value="4">P4</option>
-            </select>
-          </label>
-          <label>
-            <span>Status</span>
-            <select id="task-status"></select>
-          </label>
-        </div>
-
-        <div class="form-grid">
-          <label>
-            <span>Assign to</span>
-            <select id="task-assignee"></select>
-          </label>
-          <label>
-            <span>Submitted by</span>
-            <input type="text" id="task-requester" placeholder="Michael / Artemis" />
-          </label>
-          <label>
-            <span>Target room</span>
-            <select id="task-room"></select>
-          </label>
-        </div>
-
-        <label>
-          <span>Tags</span>
-          <input type="text" id="task-tags" placeholder="dispatch, subagents, rendering" />
-        </label>
-
-        <div class="modal-actions">
-          <button type="button" class="btn" id="delete-task-btn">Delete</button>
-          <div class="action-row">
-            <button type="button" class="btn" id="cancel-task-btn">Cancel</button>
-            <button type="submit" class="btn btn-primary">Save mission</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <script src="app.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
