@@ -67,13 +67,21 @@
       "status": "shipped",
       "type": "asset pipeline pass",
       "notes": "Replaced primitive console/chair station blocks with hand-blocked kit details: plinths, black-glass terminal frames, support struts, tactile key strips, swivel bases, bucket seats, high backs, headrests, and wraparound monitor slabs."
+    },
+    {
+      "date": "2026-04-26",
+      "label": "vertical slice asteroid container and lighting pass",
+      "durationMs": 150000,
+      "status": "shipped",
+      "type": "composition pass",
+      "notes": "Reprioritized outside-in work: added heavier vertical-slice asteroid masses, exposed cut planes, jagged borders, sediment seams, rear cavern darkness, and lowered ambient lighting with stronger rim/practical lights."
     }
   ],
   "stats": {
-    "count": 8,
+    "count": 9,
     "minMs": 90000,
     "maxMs": 180000,
-    "avgMs": 125000,
+    "avgMs": 127778,
     "subagents": {
       "count": 3,
       "minMs": 47000,

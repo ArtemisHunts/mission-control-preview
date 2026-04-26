@@ -105,17 +105,21 @@ Target before calling it “moodboard-close”: mostly 5s, no category below 4.
 
 ## 4. Current priority ladder
 
+Current Michael directive: **work outside-in before more interior detail.** The container is the product read: asteroid borders, vertical-slice cross-section, cavern depth, and lighting must sell “looking into a production base carved into rock.” Interior props/assets are paused unless they directly support that container read.
+
 Work should generally climb this ladder unless a blocker appears:
 
-1. **Environment-first framing** — keep UI out of the way.
-2. **Architectural shell** — make the room believable.
-3. **Holo-table hero object** — make the center visually iconic.
-4. **Room physicalization** — replace pads with real workspaces.
-5. **Material richness** — graphite, black glass, brushed steel, rock.
-6. **Cinematic lighting** — table glow, window rim, amber practicals.
-7. **Operators and life** — suited agents, drones, subtle motion.
-8. **Asset pipeline** — move from primitives to GLB modules using `docs/concept-to-3d-asset-pipeline.md`.
-9. **Embedded UI** — bring functionality back through in-world consoles.
+1. **Vertical-slice container** — heavy asteroid borders, exposed cut planes, foreground sill/crown, rear cavern darkness.
+2. **Lighting reset** — lower ambient wash; stronger rim, practical, hangar, and table sources with readable silhouettes.
+3. **Environment-first framing** — keep UI out of the way.
+4. **Architectural shell** — make the room believable from the outside-in.
+5. **Facility scale/depth** — distant hangar/service layers, negative space, station separation.
+6. **Holo-table hero object** — make the center visually iconic only after the container reads.
+7. **Room physicalization** — replace pads with real workspaces.
+8. **Material richness** — graphite, black glass, brushed steel, rock.
+9. **Operators and life** — suited agents, drones, subtle motion.
+10. **Asset pipeline** — move from primitives to GLB modules using `docs/concept-to-3d-asset-pipeline.md` after the container/lighting passes are strong.
+11. **Embedded UI** — bring functionality back through in-world consoles.
 
 ---
 

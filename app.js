@@ -106,12 +106,12 @@ renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.9;
+renderer.toneMappingExposure = 0.82;
 container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
-scene.fog = new THREE.Fog(COLORS.bg, 14, 42);
+scene.fog = new THREE.Fog(COLORS.bg, 10, 36);
 
 const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 90);
 camera.position.set(...ROOMS.overview.camera);
@@ -206,18 +206,21 @@ function addLight(type, color, intensity, position, distance) {
 }
 
 function buildOffice() {
-  scene.add(new THREE.AmbientLight(0xffffff, 0.09));
-  addLight('directional', 0xc8dcff, 1.45, [4, 7, 5]);
-  addLight('point', COLORS.cyan, 9, [0, 1.35, 0.45], 6.5);
-  addLight('point', COLORS.amber, 2.2, [-3.8, 3.45, -1.6], 3.2);
-  addLight('point', COLORS.amber, 2.2, [3.8, 3.45, -1.6], 3.2);
-  addLight('point', COLORS.coral, 3.2, [4.2, 1.8, 1.2], 4.8);
+  scene.add(new THREE.AmbientLight(0x9fb6d8, 0.035));
+  addLight('directional', 0x9ebcff, 0.78, [4, 7, 5]);
+  addLight('directional', 0x24385c, 0.52, [-5, 5.8, -8]);
+  addLight('point', COLORS.cyan, 5.4, [0, 1.35, 0.45], 6.2);
+  addLight('point', COLORS.amber, 2.7, [-8.6, 3.65, 4.9], 6.4);
+  addLight('point', COLORS.amber, 2.7, [8.6, 3.65, 4.9], 6.4);
+  addLight('point', 0x5aa5ff, 3.1, [0, 4.6, -10.6], 9.5);
+  addLight('point', COLORS.coral, 1.35, [4.2, 1.8, 1.2], 4.8);
 
   buildShell();
   buildCeilingAndBulkheads();
   buildRockCave();
   buildAsteroidRim();
   buildForegroundCutawayFrame();
+  buildVerticalSliceContainer();
   buildAsteroidField();
   buildExteriorVista();
   buildDistantFacilityDepth();
@@ -434,6 +437,75 @@ function buildForegroundCutawayFrame() {
       sideSeam.rotation.z = side * (0.08 + i * 0.015);
     });
   }
+}
+
+function buildVerticalSliceContainer() {
+  const outerRock = mat(0x100d14, { roughness: 0.98, metalness: 0.01 });
+  const innerRock = mat(0x211a23, { roughness: 0.96, metalness: 0.01 });
+  const deepShadow = mat(0x020309, { roughness: 1.0, metalness: 0.0 });
+  const cutPlane = mat(0x302633, { roughness: 0.92, metalness: 0.02 });
+  const coolRim = mat(0x5aa5ff, { emissive: 0x5aa5ff, emissiveIntensity: 0.22, transparent: true, opacity: 0.24 });
+  const warmWorkLight = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.48, transparent: true, opacity: 0.38 });
+
+  // Big occluding silhouette: the base is a vertical slice cut into an asteroid, not a room floating in space.
+  box('vertical slice outer left asteroid mass', [1.65, 6.8, 22.5], [-16.25, 2.95, -2.15], outerRock);
+  box('vertical slice outer right asteroid mass', [1.65, 6.8, 22.5], [16.25, 2.95, -2.15], outerRock);
+  box('vertical slice overhead asteroid crown', [32.4, 1.35, 13.4], [0, 5.85, -3.6], outerRock);
+  box('vertical slice lower fractured sill', [32.2, 0.95, 2.2], [0, -0.18, 6.95], deepShadow);
+  box('vertical slice rear cavern darkness', [30.4, 6.8, 0.34], [0, 3.05, -13.05], deepShadow);
+
+  const sideFaces = [
+    [-14.95, 3.05, -4.8, 0.18], [14.95, 3.05, -4.8, -0.18],
+    [-14.65, 2.35, 1.8, -0.12], [14.65, 2.35, 1.8, 0.12]
+  ];
+  sideFaces.forEach(([x, y, z, rz], i) => {
+    const face = box('vertical slice exposed cut plane', [0.18, 4.2 + (i % 2) * 0.9, 6.6], [x, y, z], cutPlane);
+    face.rotation.z = rz;
+  });
+
+  // Jagged visible border around the viewport-like opening.
+  for (let i = 0; i < 28; i += 1) {
+    const z = 6.65 - i * 0.72;
+    [-1, 1].forEach((side) => {
+      const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.52 + (i % 5) * 0.12, 0), i % 3 ? innerRock : outerRock);
+      rock.name = 'vertical slice jagged side border rock';
+      rock.position.set(side * (14.9 + Math.sin(i * 0.75) * 0.46), 0.7 + (i % 6) * 0.68, z);
+      rock.rotation.set(i * 0.31, side * i * 0.43, i * 0.17);
+      rock.scale.set(1.35 + (i % 4) * 0.22, 1.05 + (i % 3) * 0.28, 1.65);
+      rock.castShadow = true;
+      rock.receiveShadow = true;
+      root.add(rock);
+    });
+  }
+
+  for (let i = 0; i < 22; i += 1) {
+    const x = -14.6 + i * 1.4;
+    const crown = new THREE.Mesh(new THREE.DodecahedronGeometry(0.58 + (i % 4) * 0.14, 0), i % 2 ? innerRock : outerRock);
+    crown.name = 'vertical slice jagged overhead crown rock';
+    crown.position.set(x, 5.35 + Math.sin(i * 0.58) * 0.36, -7.9 + Math.cos(i * 0.43) * 1.2);
+    crown.rotation.set(i * 0.27, i * 0.39, i * 0.51);
+    crown.scale.set(1.55, 0.85 + (i % 3) * 0.22, 1.45);
+    crown.castShadow = true;
+    crown.receiveShadow = true;
+    root.add(crown);
+  }
+
+  // Stratified cross-section bands and embedded work lights clarify this as carved rock.
+  for (let i = 0; i < 9; i += 1) {
+    const y = 1.05 + i * 0.46;
+    [-1, 1].forEach((side) => {
+      const seam = box('vertical slice side sediment seam', [0.075, 0.035, 4.2 + (i % 2) * 1.1], [side * 14.34, y, 3.65 - i * 1.18], i % 3 ? cutPlane : deepShadow);
+      seam.rotation.z = side * (0.04 + i * 0.012);
+      seam.rotation.y = side * 0.05;
+    });
+  }
+
+  [-11.8, -7.4, -3.1, 3.1, 7.4, 11.8].forEach((x, i) => {
+    box('container amber inspection lamp', [0.08, 0.045, 0.62], [x, 5.03 + Math.sin(i) * 0.08, 2.85 - (i % 2) * 0.7], warmWorkLight);
+  });
+  [-13.75, 13.75].forEach((x) => {
+    box('cool blue depth rim on cutaway wall', [0.05, 3.9, 0.08], [x, 2.9, -10.2], coolRim);
+  });
 }
 
 function buildAsteroidField() {
