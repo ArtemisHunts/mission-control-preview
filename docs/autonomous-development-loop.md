@@ -109,7 +109,7 @@ Current Michael directive: **work outside-in before more interior detail.** The 
 
 Work should generally climb this ladder unless a blocker appears:
 
-1. **Wide cutaway camera** — pull far enough back that the full vertical-slice asteroid container reads before interior detail.
+1. **Wide cutaway camera** — pull far enough back that the full vertical-slice asteroid container and all station districts read before interior detail; avoid trapping the user inside the room.
 2. **Vertical-slice container** — heavy asteroid borders, exposed cut planes, foreground sill/crown, rear cavern darkness.
 3. **Lighting reset** — lower ambient wash; stronger rim, practical, hangar, and table sources with readable silhouettes.
 4. **Environment-first framing** — keep UI out of the way.

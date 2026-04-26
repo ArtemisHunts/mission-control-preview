@@ -83,13 +83,21 @@
       "status": "shipped",
       "type": "composition pass",
       "notes": "Pulled the fixed front-facing camera much farther back with a wider FOV/far plane so the asteroid cutaway container reads before interior details."
+    },
+    {
+      "date": "2026-04-26",
+      "label": "untrapped wide overview and lighting fix",
+      "durationMs": 90000,
+      "status": "shipped",
+      "type": "composition pass",
+      "notes": "Pulled the camera much farther outside the vertical slice, widened FOV/fog range, centered the overview on the full footprint, and raised ambient/hemisphere/top/rim lighting so all station districts are visible."
     }
   ],
   "stats": {
-    "count": 10,
+    "count": 11,
     "minMs": 90000,
     "maxMs": 180000,
-    "avgMs": 124000,
+    "avgMs": 120909,
     "subagents": {
       "count": 3,
       "minMs": 47000,
