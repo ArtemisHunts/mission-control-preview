@@ -51,13 +51,21 @@
       "status": "shipped",
       "type": "asset pipeline pass",
       "notes": "Added hand-blocked remote bay maintenance drone proxies with bay-accent optics, clamp arms, and repair spark animation to prove the contained asset pipeline in-scene."
+    },
+    {
+      "date": "2026-04-26",
+      "label": "operator avatar kit proxy asset pass",
+      "durationMs": 115000,
+      "status": "shipped",
+      "type": "asset pipeline pass",
+      "notes": "Added hand-blocked operator suit kit details: shoulder yokes, chest plates, role stripes, backpack blocks, gauntlets, and boot stance bars so agents read as suited operators at facility distance."
     }
   ],
   "stats": {
-    "count": 6,
+    "count": 7,
     "minMs": 90000,
     "maxMs": 180000,
-    "avgMs": 127500,
+    "avgMs": 125714,
     "subagents": {
       "count": 3,
       "minMs": 47000,

@@ -937,10 +937,21 @@ function buildOperators() {
     body.castShadow = true;
     group.add(body);
 
-    box('operator backpack', [0.18, 0.28, 0.08], [0, -0.08, -0.16], mat(COLORS.blackMetal, { roughness: 0.4, metalness: 0.5 }), group);
-    box('left arm', [0.055, 0.28, 0.055], [-0.18, -0.12, 0.02], mat(0xd4d6da, { roughness: 0.42, metalness: 0.18 }), group);
-    box('right arm', [0.055, 0.28, 0.055], [0.18, -0.12, 0.02], mat(0xd4d6da, { roughness: 0.42, metalness: 0.18 }), group);
-    box('status light', [0.045, 0.045, 0.025], [0.11, 0.02, 0.14], mat(agent.color, { emissive: agent.color, emissiveIntensity: 1.4, transparent: true, opacity: 0.92 }), group);
+    const suitPanel = mat(0xd4d6da, { roughness: 0.42, metalness: 0.18 });
+    const suitJoint = mat(COLORS.blackMetal, { roughness: 0.48, metalness: 0.44 });
+    const roleGlow = mat(agent.color, { emissive: agent.color, emissiveIntensity: 1.15, transparent: true, opacity: 0.82 });
+
+    // Asset pipeline pass: hand-blocked operator avatar kit with stronger suit silhouette and role-read panels.
+    box('operator avatar kit shoulder yoke', [0.42, 0.075, 0.18], [0, 0.02, 0], suitPanel, group);
+    box('operator avatar kit chest plate', [0.26, 0.2, 0.055], [0, -0.1, 0.13], suitPanel, group);
+    box('operator avatar kit role chest stripe', [0.19, 0.035, 0.022], [0, -0.045, 0.165], roleGlow, group);
+    box('operator avatar kit backpack block', [0.22, 0.34, 0.09], [0, -0.08, -0.17], suitJoint, group);
+    box('operator avatar kit left gauntlet arm', [0.065, 0.32, 0.06], [-0.22, -0.12, 0.025], suitPanel, group);
+    box('operator avatar kit right gauntlet arm', [0.065, 0.32, 0.06], [0.22, -0.12, 0.025], suitPanel, group);
+    box('operator avatar kit left boot leg', [0.075, 0.24, 0.075], [-0.075, -0.42, 0.015], suitJoint, group);
+    box('operator avatar kit right boot leg', [0.075, 0.24, 0.075], [0.075, -0.42, 0.015], suitJoint, group);
+    box('operator avatar kit boot stance bar', [0.28, 0.045, 0.13], [0, -0.55, 0.02], suitJoint, group);
+    box('status light', [0.045, 0.045, 0.025], [0.11, 0.02, 0.14], roleGlow, group);
 
     const tag = makeTextSprite(agent.name.toUpperCase(), '#dfe9ff', 40);
     tag.position.set(0, 0.72, 0);
