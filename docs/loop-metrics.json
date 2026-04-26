@@ -99,13 +99,21 @@
       "status": "shipped",
       "type": "wide camera/framing pass",
       "notes": "Pulled the default camera farther outside the asteroid slice, widened FOV/fog/far plane, and centered the overview target so the full cutaway container and four station districts fit before interior detail."
+    },
+    {
+      "date": "2026-04-26",
+      "label": "macro outside-in reveal and container read pass",
+      "durationMs": 180000,
+      "status": "shipped",
+      "type": "container read pass",
+      "notes": "Macro outside-in pass: added wider asteroid shoulder/crown/sill masses for the pulled-back camera, nested rear cavern darkness/rim layers for depth, and district reveal lighting/glow planes so all four station bays read without flat wash."
     }
   ],
   "stats": {
-    "count": 12,
+    "count": 13,
     "minMs": 90000,
     "maxMs": 180000,
-    "avgMs": 120833,
+    "avgMs": 125385,
     "subagents": {
       "count": 3,
       "minMs": 47000,

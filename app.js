@@ -206,15 +206,15 @@ function addLight(type, color, intensity, position, distance) {
 }
 
 function buildOffice() {
-  scene.add(new THREE.AmbientLight(0xb8c7e6, 0.085));
-  scene.add(new THREE.HemisphereLight(0x9ebcff, 0x120c08, 0.32));
-  addLight('directional', 0xb8ccff, 1.05, [5.5, 9.5, 8.5]);
-  addLight('directional', 0x2d4168, 0.62, [-6, 7.2, -10]);
-  addLight('point', COLORS.cyan, 5.8, [0, 1.35, 0.45], 7.4);
-  addLight('point', COLORS.amber, 3.6, [-10.4, 4.2, 5.4], 9.5);
-  addLight('point', COLORS.amber, 3.6, [10.4, 4.2, 5.4], 9.5);
-  addLight('point', 0x5aa5ff, 4.6, [0, 5.2, -10.6], 13.5);
-  addLight('point', COLORS.coral, 1.35, [4.2, 1.8, 1.2], 5.8);
+  scene.add(new THREE.AmbientLight(0xb8c7e6, 0.105));
+  scene.add(new THREE.HemisphereLight(0xa9c6ff, 0x160d09, 0.4));
+  addLight('directional', 0xc2d4ff, 1.12, [5.5, 9.5, 8.5]);
+  addLight('directional', 0x365582, 0.74, [-6, 7.2, -10]);
+  addLight('point', COLORS.cyan, 6.4, [0, 1.35, 0.45], 8.4);
+  addLight('point', COLORS.amber, 4.1, [-10.4, 4.2, 5.4], 10.5);
+  addLight('point', COLORS.amber, 4.1, [10.4, 4.2, 5.4], 10.5);
+  addLight('point', 0x6ab2ff, 5.6, [0, 5.2, -10.6], 16.5);
+  addLight('point', COLORS.coral, 1.55, [4.2, 1.8, 1.2], 6.4);
 
   buildShell();
   buildCeilingAndBulkheads();
@@ -222,6 +222,9 @@ function buildOffice() {
   buildAsteroidRim();
   buildForegroundCutawayFrame();
   buildVerticalSliceContainer();
+  buildMacroCutawayFrame();
+  buildRearCavernDepthGate();
+  buildMacroRevealLighting();
   buildAsteroidField();
   buildExteriorVista();
   buildDistantFacilityDepth();
@@ -507,6 +510,78 @@ function buildVerticalSliceContainer() {
   [-13.75, 13.75].forEach((x) => {
     box('cool blue depth rim on cutaway wall', [0.05, 3.9, 0.08], [x, 2.9, -10.2], coolRim);
   });
+}
+
+function buildMacroCutawayFrame() {
+  const outerRock = mat(0x0b0910, { roughness: 0.99, metalness: 0.0 });
+  const cutFace = mat(0x2a222d, { roughness: 0.95, metalness: 0.01 });
+  const seam = mat(0x463846, { roughness: 0.9, metalness: 0.02 });
+
+  // Macro container read pass: oversized shoulders/crown/sill stay visible from the pulled-back overview.
+  box('macro cutaway left asteroid shoulder mass', [2.2, 8.2, 25.5], [-18.7, 3.4, -2.1], outerRock);
+  box('macro cutaway right asteroid shoulder mass', [2.2, 8.2, 25.5], [18.7, 3.4, -2.1], outerRock);
+  box('macro cutaway upper crown mass', [37.0, 1.15, 16.5], [0, 7.0, -3.1], outerRock);
+  box('macro cutaway foreground sill mass', [37.0, 0.85, 2.7], [0, -0.52, 7.85], outerRock);
+
+  [-17.15, 17.15].forEach((x, sideIndex) => {
+    const side = sideIndex === 0 ? -1 : 1;
+    box('macro exposed vertical cut face', [0.22, 6.6, 8.8], [x, 3.35, 0.8], cutFace).rotation.z = side * 0.08;
+    for (let i = 0; i < 8; i += 1) {
+      const band = box('macro container sediment band', [0.07, 0.035, 4.9], [side * 16.72, 1.0 + i * 0.62, 5.0 - i * 1.55], seam);
+      band.rotation.z = side * (0.06 + i * 0.01);
+    }
+  });
+
+  for (let i = 0; i < 18; i += 1) {
+    const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.72 + (i % 5) * 0.16, 0), outerRock);
+    rock.name = 'macro cutaway crown silhouette rock';
+    rock.position.set(-16.5 + i * 1.95, 6.45 + Math.sin(i * 0.7) * 0.38, 1.7 - (i % 3) * 1.7);
+    rock.rotation.set(i * 0.29, i * 0.41, i * 0.18);
+    rock.scale.set(1.75, 0.9 + (i % 3) * 0.2, 1.5);
+    rock.castShadow = true;
+    rock.receiveShadow = true;
+    root.add(rock);
+  }
+}
+
+function buildRearCavernDepthGate() {
+  const voidMat = mat(0x010207, { roughness: 1.0, metalness: 0.0 });
+  const steelShadow = mat(0x070d16, { roughness: 0.62, metalness: 0.5 });
+  const rim = mat(0x5aa5ff, { emissive: 0x5aa5ff, emissiveIntensity: 0.36, transparent: true, opacity: 0.26 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.34, transparent: true, opacity: 0.34 });
+
+  [-15.0, -17.4, -20.2].forEach((z, i) => {
+    box('macro rear cavern nested darkness plane', [27 - i * 3.8, 4.8 - i * 0.5, 0.16], [0, 3.0 + i * 0.16, z], voidMat);
+    box('macro rear cavern upper service rim', [24 - i * 3.6, 0.07, 0.06], [0, 5.18 - i * 0.12, z + 0.12], i % 2 ? amber : rim);
+    [-1, 1].forEach((side) => {
+      box('macro rear cavern side rim', [0.06, 3.8 - i * 0.3, 0.06], [side * (13.0 - i * 1.8), 3.15, z + 0.14], rim);
+      box('macro distant service shaft silhouette', [0.24, 2.7 - i * 0.28, 0.16], [side * (9.4 - i * 1.2), 2.6, z + 0.35], steelShadow);
+    });
+  });
+}
+
+function buildMacroRevealLighting() {
+  const districtGlow = (roomId, color, label) => {
+    const [x, , z] = ROOMS[roomId].pos;
+    addLight('point', color, 1.85, [x, 2.35, z + 1.0], 7.2);
+    const pool = new THREE.Mesh(
+      new THREE.PlaneGeometry(4.8, 2.3),
+      mat(color, { emissive: color, emissiveIntensity: 0.24, transparent: true, opacity: 0.038, side: THREE.DoubleSide, roughness: 0.1 })
+    );
+    pool.name = `macro ${label} station reveal glow plane`;
+    pool.position.set(x, 1.32, z + 0.42);
+    pool.rotation.x = -0.18;
+    root.add(pool);
+    animated.push((t) => { pool.material.opacity = 0.028 + Math.sin(t * 0.65 + x) * 0.007; });
+  };
+
+  districtGlow('build', COLORS.gold, 'build');
+  districtGlow('review', COLORS.coral, 'review');
+  districtGlow('deploy', COLORS.green, 'deploy');
+  districtGlow('observatory', COLORS.violet, 'observatory');
+
+  addLight('point', 0x8ebcff, 2.8, [0, 6.3, -17.2], 24);
+  addLight('point', COLORS.amber, 2.1, [0, 5.9, 6.5], 19);
 }
 
 function buildAsteroidField() {
