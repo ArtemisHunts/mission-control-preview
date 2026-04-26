@@ -30,13 +30,19 @@
       "label": "embedded remote bay visual scale pass",
       "durationMs": 165000,
       "notes": "Converted room pads into larger embedded asteroid-wall bay frames and pushed districts farther apart across a larger facility footprint."
+    },
+    {
+      "date": "2026-04-25",
+      "label": "foreground asteroid cutaway frame pass",
+      "durationMs": 90000,
+      "notes": "Added heavy foreground/side/upper asteroid cutaway framing so the fixed camera reads like looking into a carved facility."
     }
   ],
   "stats": {
-    "count": 3,
-    "minMs": 135000,
+    "count": 4,
+    "minMs": 90000,
     "maxMs": 180000,
-    "avgMs": 160000,
+    "avgMs": 142500,
     "subagents": {
       "count": 3,
       "minMs": 47000,

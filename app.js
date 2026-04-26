@@ -217,6 +217,7 @@ function buildOffice() {
   buildCeilingAndBulkheads();
   buildRockCave();
   buildAsteroidRim();
+  buildForegroundCutawayFrame();
   buildAsteroidField();
   buildExteriorVista();
   buildDistantFacilityDepth();
@@ -355,6 +356,56 @@ function buildAsteroidRim() {
     rock.castShadow = true;
     rock.receiveShadow = true;
     root.add(rock);
+  });
+}
+
+function buildForegroundCutawayFrame() {
+  const rockMat = mat(COLORS.rock, { roughness: 0.96, metalness: 0.01 });
+  const shadowMat = mat(0x03050b, { roughness: 0.9, metalness: 0.02 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.26, transparent: true, opacity: 0.28 });
+
+  box('foreground asteroid cutaway shadow sill', [29.5, 0.34, 0.85], [0, 0.25, 7.35], shadowMat);
+  box('upper asteroid cutaway shadow lip', [29.5, 0.44, 0.92], [0, 5.32, -2.4], shadowMat);
+  box('left asteroid cutaway side shadow', [0.7, 4.8, 18.5], [-15.15, 2.6, -2.25], shadowMat);
+  box('right asteroid cutaway side shadow', [0.7, 4.8, 18.5], [15.15, 2.6, -2.25], shadowMat);
+
+  for (let i = 0; i < 18; i += 1) {
+    const x = -14.4 + i * 1.7;
+    const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.55 + (i % 4) * 0.13, 0), rockMat);
+    rock.position.set(x, 0.58 + (i % 3) * 0.08, 7.0 + Math.sin(i * 0.7) * 0.35);
+    rock.rotation.set(i * 0.42, i * 0.25, i * 0.63);
+    rock.scale.set(1.8, 0.72 + (i % 2) * 0.24, 1.12);
+    rock.castShadow = true;
+    rock.receiveShadow = true;
+    root.add(rock);
+  }
+
+  for (let i = 0; i < 16; i += 1) {
+    const z = 5.8 - i * 1.08;
+    [-1, 1].forEach((side) => {
+      const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.66 + (i % 5) * 0.12, 0), rockMat);
+      rock.position.set(side * (14.2 + Math.sin(i) * 0.28), 1.2 + (i % 4) * 0.38, z);
+      rock.rotation.set(i * 0.31, side * i * 0.47, i * 0.19);
+      rock.scale.set(1.1, 1.35, 1.65);
+      rock.castShadow = true;
+      rock.receiveShadow = true;
+      root.add(rock);
+    });
+  }
+
+  for (let i = 0; i < 14; i += 1) {
+    const x = -13 + i * 2;
+    const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.62 + (i % 3) * 0.16, 0), rockMat);
+    rock.position.set(x, 5.12 + Math.sin(i * 0.4) * 0.22, -8.4 + Math.cos(i * 0.7) * 0.55);
+    rock.rotation.set(i * 0.22, i * 0.52, i * 0.4);
+    rock.scale.set(1.55, 0.72, 1.22);
+    rock.castShadow = true;
+    rock.receiveShadow = true;
+    root.add(rock);
+  }
+
+  [-10.8, -5.4, 0, 5.4, 10.8].forEach((x) => {
+    box('cutaway maintenance glint', [0.06, 0.035, 0.42], [x, 0.74, 6.7], amber);
   });
 }
 
