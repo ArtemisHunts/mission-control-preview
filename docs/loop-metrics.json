@@ -115,13 +115,21 @@
       "status": "shipped",
       "type": "facility depth pass",
       "notes": "Added layered production terraces, vertical service shafts, diagonal braces, district-to-rear conduits, distant production-window scale markers, and a longer fog falloff so the pulled-back cutaway reads as a deep asteroid facility instead of a flat room."
+    },
+    {
+      "date": "2026-04-26",
+      "label": "wide exterior aperture and rear void pass",
+      "durationMs": 420000,
+      "status": "shipped",
+      "type": "outside-in composition pass",
+      "notes": "Pulled the default composition farther outside the asteroid slice, added a wider exterior asteroid proscenium with cut-face survey marks, expanded rear production void layers, and rebuilt wide-overview readability lighting so the full container and four districts read at once."
     }
   ],
   "stats": {
-    "count": 14,
+    "count": 16,
     "minMs": 90000,
-    "maxMs": 180000,
-    "avgMs": 129286,
+    "maxMs": 420000,
+    "avgMs": 148667,
     "subagents": {
       "count": 3,
       "minMs": 47000,

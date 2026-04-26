@@ -26,8 +26,8 @@ const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
     body: 'A full spatial read of Mission Control: central holo-table, room clusters, visible operators, signal lanes, and deploy traffic.',
-    camera: [0, 21.5, 51.8],
-    target: [0, 1.9, -3.2],
+    camera: [0, 25.4, 66.8],
+    target: [0, 2.35, -3.9],
     accent: COLORS.cyan
   },
   command: {
@@ -42,8 +42,8 @@ const ROOMS = {
   build: {
     title: 'Build Floor',
     body: 'Forge works here: UI fabrication, interaction passes, scene construction, and the hands-on production lane.',
-    camera: [0, 21.5, 51.8],
-    target: [-12.45, 0.9, -0.25],
+    camera: [0, 25.4, 66.8],
+    target: [-12.45, 1.05, -0.25],
     accent: COLORS.gold,
     pos: [-12.75, 0, -0.25],
     label: 'BUILD'
@@ -51,8 +51,8 @@ const ROOMS = {
   review: {
     title: 'Review Chamber',
     body: 'Sentinel owns this room. Coral containment rings mark QA, safety checks, regressions, and work that needs a sharper eye.',
-    camera: [0, 21.5, 51.8],
-    target: [12.45, 0.9, -0.45],
+    camera: [0, 25.4, 66.8],
+    target: [12.45, 1.05, -0.45],
     accent: COLORS.coral,
     pos: [12.75, 0, -0.45],
     label: 'REVIEW'
@@ -60,8 +60,8 @@ const ROOMS = {
   deploy: {
     title: 'Deploy Dock',
     body: 'Quartermaster stages releases here. Green-lit launch rails show what is ready to ship, publish, or route into production.',
-    camera: [0, 21.5, 51.8],
-    target: [12.65, 0.92, -10.55],
+    camera: [0, 25.4, 66.8],
+    target: [12.65, 1.05, -10.55],
     accent: COLORS.green,
     pos: [12.85, 0, -10.65],
     label: 'DEPLOY'
@@ -69,8 +69,8 @@ const ROOMS = {
   observatory: {
     title: 'Observatory',
     body: 'Prospector watches the signal room: research, memory, requirements, references, and the weird clues hiding in the noise.',
-    camera: [0, 21.5, 51.8],
-    target: [-12.65, 0.95, -10.55],
+    camera: [0, 25.4, 66.8],
+    target: [-12.65, 1.05, -10.55],
     accent: COLORS.violet,
     pos: [-12.85, 0, -10.65],
     label: 'OBSERVATORY'
@@ -111,9 +111,9 @@ container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
-scene.fog = new THREE.Fog(COLORS.bg, 22, 108);
+scene.fog = new THREE.Fog(COLORS.bg, 34, 168);
 
-const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 190);
+const camera = new THREE.PerspectiveCamera(66, window.innerWidth / window.innerHeight, 0.1, 260);
 camera.position.set(...ROOMS.overview.camera);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -146,8 +146,8 @@ const clickTarget = new THREE.Vector3();
 const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
-const fixedCameraOffset = new THREE.Vector3(0, 19.6, 55.0);
-const facilityBounds = { minX: -14.4, maxX: 14.4, minZ: -12.4, maxZ: 3.4 };
+const fixedCameraOffset = new THREE.Vector3(0, 23.05, 70.7);
+const facilityBounds = { minX: -15.2, maxX: 15.2, minZ: -13.8, maxZ: 4.2 };
 
 function mat(color, options = {}) {
   return new THREE.MeshStandardMaterial({
@@ -223,8 +223,12 @@ function buildOffice() {
   buildForegroundCutawayFrame();
   buildVerticalSliceContainer();
   buildMacroCutawayFrame();
+  buildExteriorObservationShell();
+  buildVerticalSliceSurveyMarks();
+  buildRearProductionVoidExpansion();
   buildRearCavernDepthGate();
   buildMacroFacilityDepthMarkers();
+  buildWideOverviewLightingScaffold();
   buildMacroRevealLighting();
   buildAsteroidField();
   buildExteriorVista();
@@ -543,6 +547,239 @@ function buildMacroCutawayFrame() {
     rock.receiveShadow = true;
     root.add(rock);
   }
+}
+
+
+function buildExteriorObservationShell() {
+  const outerRock = mat(0x07060b, { roughness: 1.0, metalness: 0.0 });
+  const innerRock = mat(0x17121b, { roughness: 0.98, metalness: 0.01 });
+  const cutFace = mat(0x332936, { roughness: 0.94, metalness: 0.02 });
+  const blueEdge = mat(0x467ecb, { emissive: 0x467ecb, emissiveIntensity: 0.2, transparent: true, opacity: 0.2 });
+  const amberEdge = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.26, transparent: true, opacity: 0.25 });
+
+  // Outside-in framing pass: build a readable exterior proscenium around the whole base at the default camera distance.
+  // These masses intentionally sit beyond the previous room shell so the first read is "asteroid container", not interior wall.
+  const masses = [
+    ['wide overview outer left asteroid cheek', [2.9, 10.4, 31.5], [-22.6, 3.35, -3.2], -0.02],
+    ['wide overview outer right asteroid cheek', [2.9, 10.4, 31.5], [22.6, 3.35, -3.2], 0.02],
+    ['wide overview upper asteroid canopy', [43.8, 1.95, 20.2], [0, 8.45, -3.95], 0],
+    ['wide overview lower asteroid observation sill', [43.4, 1.22, 4.2], [0, -1.05, 7.72], 0],
+    ['wide overview rear upper cavern cap', [37.8, 1.28, 5.8], [0, 6.35, -15.45], 0],
+    ['wide overview rear lower cavern floor lip', [35.4, 0.72, 4.6], [0, 0.22, -14.8], 0]
+  ];
+
+  masses.forEach(([name, size, position, rz]) => {
+    const shell = box(name, size, position, outerRock);
+    shell.rotation.z = rz;
+  });
+
+  [
+    [-20.72, 3.65, 1.6, -0.06],
+    [20.72, 3.65, 1.6, 0.06],
+    [-20.24, 2.88, -7.2, 0.04],
+    [20.24, 2.88, -7.2, -0.04],
+    [-18.85, 4.85, -13.0, -0.03],
+    [18.85, 4.85, -13.0, 0.03]
+  ].forEach(([x, y, z, rz], i) => {
+    const face = box('wide overview exposed asteroid cut cheek', [0.28, 6.8 - (i % 3) * 0.75, 6.4 + (i % 2) * 1.6], [x, y, z], cutFace);
+    face.rotation.z = rz;
+    face.rotation.y = x < 0 ? 0.05 : -0.05;
+  });
+
+  for (let i = 0; i < 34; i += 1) {
+    const z = 8.0 - i * 0.72;
+    [-1, 1].forEach((side) => {
+      const radius = 0.82 + (i % 6) * 0.12;
+      const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(radius, 0), i % 4 === 0 ? cutFace : outerRock);
+      rock.name = 'wide overview jagged exterior side silhouette';
+      rock.position.set(side * (20.4 + Math.sin(i * 0.57) * 0.95), 0.32 + (i % 8) * 0.78, z + Math.cos(i * 0.43) * 0.42);
+      rock.rotation.set(i * 0.22, side * i * 0.39, i * 0.31);
+      rock.scale.set(1.55 + (i % 4) * 0.2, 1.08 + (i % 3) * 0.18, 1.75 + (i % 2) * 0.18);
+      rock.castShadow = true;
+      rock.receiveShadow = true;
+      root.add(rock);
+    });
+  }
+
+  for (let i = 0; i < 30; i += 1) {
+    const x = -20.4 + i * 1.42;
+    const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.76 + (i % 5) * 0.13, 0), i % 3 === 0 ? innerRock : outerRock);
+    rock.name = 'wide overview crown broken asteroid teeth';
+    rock.position.set(x + Math.sin(i * 1.2) * 0.2, 7.52 + Math.sin(i * 0.52) * 0.55, 2.65 - (i % 5) * 1.06);
+    rock.rotation.set(i * 0.28, i * 0.42, i * 0.18);
+    rock.scale.set(1.78, 0.92 + (i % 4) * 0.16, 1.45 + (i % 3) * 0.12);
+    rock.castShadow = true;
+    rock.receiveShadow = true;
+    root.add(rock);
+  }
+
+  for (let i = 0; i < 28; i += 1) {
+    const x = -19.2 + i * 1.42;
+    const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.68 + (i % 4) * 0.14, 0), i % 3 ? outerRock : innerRock);
+    rock.name = 'wide overview foreground sill broken asteroid teeth';
+    rock.position.set(x + Math.cos(i * 0.81) * 0.32, 0.28 + (i % 3) * 0.11, 8.72 + Math.sin(i * 0.65) * 0.54);
+    rock.rotation.set(i * 0.34, i * 0.2, i * 0.44);
+    rock.scale.set(1.82, 0.76 + (i % 2) * 0.2, 1.28);
+    rock.castShadow = true;
+    rock.receiveShadow = true;
+    root.add(rock);
+  }
+
+  for (let i = 0; i < 12; i += 1) {
+    const y = 0.88 + i * 0.56;
+    [-1, 1].forEach((side) => {
+      const strip = box('wide overview blue cut-plane edge cue', [0.065, 0.035, 3.35 + (i % 3) * 0.85], [side * 19.62, y, 6.7 - i * 1.58], i % 2 ? blueEdge : amberEdge);
+      strip.rotation.z = side * (0.03 + i * 0.008);
+      strip.rotation.y = side * 0.08;
+    });
+  }
+}
+
+function buildVerticalSliceSurveyMarks() {
+  const shadow = mat(0x050409, { roughness: 1.0, metalness: 0.0 });
+  const strataDark = mat(0x211923, { roughness: 0.98, metalness: 0.01 });
+  const strataLight = mat(0x443746, { roughness: 0.92, metalness: 0.02 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.22, transparent: true, opacity: 0.24 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.2, transparent: true, opacity: 0.2 });
+
+  // Survey-style slice marks make the shell thickness readable from the pulled-back default view.
+  const sideLevels = [
+    [0.95, 7.15, 4.1],
+    [1.55, 5.92, 3.65],
+    [2.15, 4.35, 4.9],
+    [2.78, 2.86, 3.4],
+    [3.38, 1.25, 4.55],
+    [3.98, -0.42, 3.7],
+    [4.58, -2.15, 4.35],
+    [5.16, -3.92, 3.2],
+    [5.72, -5.65, 4.2],
+    [6.26, -7.32, 3.55]
+  ];
+
+  sideLevels.forEach(([y, z, length], i) => {
+    [-1, 1].forEach((side) => {
+      const topBand = box('wide overview sidewall sediment datum', [0.09, 0.035, length], [side * 20.02, y, z], i % 2 ? strataLight : strataDark);
+      topBand.rotation.z = side * (0.04 + i * 0.006);
+      topBand.rotation.y = side * (0.09 - i * 0.004);
+
+      const undercut = box('wide overview sidewall undercut shadow groove', [0.07, 0.026, length * 0.78], [side * 19.82, y - 0.18, z - 0.18], shadow);
+      undercut.rotation.z = side * (0.02 + i * 0.004);
+      undercut.rotation.y = side * 0.04;
+    });
+  });
+
+  for (let i = 0; i < 14; i += 1) {
+    const x = -18.2 + i * 2.8;
+    const z = 5.85 - (i % 5) * 1.42;
+    const crownBand = box('wide overview crown layered cut shelf', [1.65 + (i % 3) * 0.44, 0.055, 0.09], [x, 7.28 + Math.sin(i) * 0.08, z], i % 2 ? strataDark : strataLight);
+    crownBand.rotation.y = -0.24 + (i % 4) * 0.13;
+
+    const crownShadow = box('wide overview crown shelf shadow reveal', [1.22 + (i % 2) * 0.38, 0.04, 0.07], [x + 0.4, 7.04 + Math.cos(i) * 0.08, z - 0.42], shadow);
+    crownShadow.rotation.y = 0.18 - (i % 3) * 0.11;
+  }
+
+  for (let i = 0; i < 13; i += 1) {
+    const x = -17.1 + i * 2.85;
+    const sillBand = box('wide overview foreground sill stratigraphy band', [1.85 + (i % 3) * 0.34, 0.05, 0.08], [x, 0.82 + Math.sin(i * 0.4) * 0.06, 8.12 + Math.cos(i) * 0.12], i % 2 ? strataLight : strataDark);
+    sillBand.rotation.y = 0.2 - (i % 5) * 0.08;
+
+    const locator = box('wide overview exterior amber survey locator', [0.08, 0.04, 0.35], [x + 0.75, 0.98 + (i % 2) * 0.05, 7.66], i % 3 === 0 ? cyan : amber);
+    locator.rotation.y = sillBand.rotation.y;
+  }
+
+  [-14.8, -7.4, 0, 7.4, 14.8].forEach((x, i) => {
+    const hanger = box('wide overview hanging plumb-line scale marker', [0.035, 1.4 + (i % 2) * 0.32, 0.035], [x, 5.95, 5.0 - (i % 3) * 1.1], i % 2 ? cyan : amber);
+    hanger.rotation.z = (i - 2) * 0.015;
+    box('wide overview plumb-line bottom weight', [0.16, 0.1, 0.16], [x, 5.16 - (i % 2) * 0.16, 5.0 - (i % 3) * 1.1], shadow);
+  });
+}
+
+function buildRearProductionVoidExpansion() {
+  const voidMat = mat(0x010208, { roughness: 1.0, metalness: 0.0 });
+  const matteBlue = mat(0x07101f, { roughness: 0.86, metalness: 0.18 });
+  const steel = mat(0x1a2635, { roughness: 0.5, metalness: 0.62 });
+  const dimCyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.22, transparent: true, opacity: 0.18 });
+  const dimAmber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.2, transparent: true, opacity: 0.18 });
+
+  // Push the back of the slice outward with negative space. The station floor should feel like one balcony in a larger asteroid plant.
+  [
+    [-18.6, 29.0, 5.6, 0],
+    [-22.4, 22.4, 4.7, 0.22],
+    [-26.0, 16.8, 3.85, -0.12],
+    [-30.2, 11.2, 3.0, 0.1]
+  ].forEach(([z, width, height, ry], i) => {
+    const voidPlane = box('wide overview rear production void matte layer', [width, height, 0.14], [0, 3.05 + i * 0.12, z], voidMat);
+    voidPlane.rotation.y = ry * 0.03;
+    box('wide overview rear production catwalk silhouette', [width * 0.78, 0.08, 0.42], [0, 1.22 + i * 0.52, z + 0.35], matteBlue);
+    box('wide overview rear production upper truss silhouette', [width * 0.72, 0.075, 0.08], [0, 4.92 - i * 0.28, z + 0.22], steel);
+    [-1, 1].forEach((side) => {
+      box('wide overview rear production side pressure rib', [0.16, height * 0.76, 0.12], [side * (width * 0.42), 3.0, z + 0.24], steel);
+      const diagonal = box('wide overview rear production diagonal support', [0.08, height * 0.62, 0.08], [side * (width * 0.33), 3.0, z + 0.28], matteBlue);
+      diagonal.rotation.z = side * (0.18 + i * 0.03);
+    });
+  });
+
+  for (let row = 0; row < 4; row += 1) {
+    const z = -17.4 - row * 3.15;
+    const width = 24.5 - row * 4.1;
+    for (let i = 0; i < 9 - row; i += 1) {
+      const x = -width * 0.42 + i * (width * 0.84 / (8 - row));
+      const y = 2.0 + (i % 4) * 0.38 + row * 0.22;
+      const window = box('wide overview far production bay pinlight', [0.18, 0.055, 0.035], [x, y, z], (i + row) % 2 ? dimCyan : dimAmber);
+      window.rotation.y = (i - 4) * 0.015;
+    }
+  }
+
+  [
+    [-13.4, -16.2, COLORS.violet],
+    [13.4, -16.2, COLORS.green],
+    [-9.4, -20.8, COLORS.gold],
+    [9.4, -20.8, COLORS.coral]
+  ].forEach(([x, z, color], i) => {
+    const shaftMat = mat(color, { emissive: color, emissiveIntensity: 0.18, transparent: true, opacity: 0.14 });
+    const shaft = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 7.2 - i * 0.65), shaftMat);
+    shaft.name = 'wide overview rear atmospheric depth shaft';
+    shaft.position.set(x, 3.24, z);
+    shaft.rotation.x = -0.03;
+    shaft.rotation.z = x < 0 ? 0.04 : -0.04;
+    root.add(shaft);
+    animated.push((t) => { shaft.material.opacity = 0.11 + Math.sin(t * 0.42 + i) * 0.018; });
+  });
+}
+
+function buildWideOverviewLightingScaffold() {
+  const topFill = addLight('directional', 0xd5e3ff, 0.62, [0, 13.0, 18.0]);
+  topFill.target.position.set(0, 1.8, -5.2);
+  scene.add(topFill.target);
+  addLight('point', 0x8ebcff, 3.2, [-18.0, 6.8, 9.2], 18.5);
+  addLight('point', 0x8ebcff, 3.2, [18.0, 6.8, 9.2], 18.5);
+  addLight('point', COLORS.amber, 2.45, [-16.2, 1.2, 7.6], 14.0);
+  addLight('point', COLORS.amber, 2.45, [16.2, 1.2, 7.6], 14.0);
+
+  const beamMat = (color, opacity) => mat(color, {
+    emissive: color,
+    emissiveIntensity: 0.16,
+    transparent: true,
+    opacity,
+    side: THREE.DoubleSide,
+    roughness: 0.1,
+    metalness: 0.0
+  });
+
+  [
+    [-11.2, 2.4, 2.4, COLORS.gold, 0.035],
+    [11.2, 2.4, 2.4, COLORS.coral, 0.035],
+    [-11.4, 2.5, -8.2, COLORS.violet, 0.032],
+    [11.4, 2.5, -8.2, COLORS.green, 0.032]
+  ].forEach(([x, y, z, color, opacity], i) => {
+    const plane = new THREE.Mesh(new THREE.PlaneGeometry(5.4, 2.1), beamMat(color, opacity));
+    plane.name = 'wide overview district readability wash';
+    plane.position.set(x, y, z);
+    plane.rotation.x = -0.24;
+    plane.rotation.z = x < 0 ? -0.04 : 0.04;
+    root.add(plane);
+    animated.push((t) => { plane.material.opacity = opacity + Math.sin(t * 0.5 + i) * 0.006; });
+  });
 }
 
 function buildRearCavernDepthGate() {
