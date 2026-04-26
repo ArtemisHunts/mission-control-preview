@@ -1,6 +1,6 @@
 # Mission Control — Autonomous Development Loop
 
-_Last updated: 2026-04-25_
+_Last updated: 2026-04-26_
 
 This document defines how Artemis should use `docs/target-design-spec.md` during recurring development loops to move Mission Control from low-fidelity prototype to high-quality 3D environment.
 
@@ -16,6 +16,10 @@ Primary visual references:
 - `docs/moodboards/materials-avatars.png`
 - `docs/moodboards/holographic-ui.png`
 - `docs/moodboards/mission-control-design-boards-combined.jpg`
+
+Asset pipeline reference:
+
+- `docs/concept-to-3d-asset-pipeline.md`
 
 The target spec is not decorative. Every loop should map its work to one or more explicit sections of the spec.
 
@@ -44,6 +48,7 @@ Required loop sequence:
      - central holo-table pass
      - room physicalization pass
      - operator/avatar pass
+     - concept-to-3D asset pass
      - material/lighting pass
      - exterior vista/scale pass
    - Avoid random scattered tweaks.
@@ -109,7 +114,7 @@ Work should generally climb this ladder unless a blocker appears:
 5. **Material richness** — graphite, black glass, brushed steel, rock.
 6. **Cinematic lighting** — table glow, window rim, amber practicals.
 7. **Operators and life** — suited agents, drones, subtle motion.
-8. **Asset pipeline** — move from primitives to GLB modules.
+8. **Asset pipeline** — move from primitives to GLB modules using `docs/concept-to-3d-asset-pipeline.md`.
 9. **Embedded UI** — bring functionality back through in-world consoles.
 
 ---
@@ -142,7 +147,7 @@ Do not ask for permission for normal implementation loops.
 
 ## 7. Escalation plan for quality
 
-If primitive Three.js geometry stops producing meaningful fidelity gains, move to an asset pipeline:
+If primitive Three.js geometry stops producing meaningful fidelity gains, move to the concept-to-3D asset pipeline in `docs/concept-to-3d-asset-pipeline.md`:
 
 1. Define modular GLB asset list.
 2. Generate or source blockout GLBs.
@@ -165,7 +170,21 @@ Likely GLB modules:
 
 ---
 
-## 8. Definition of done for the current phase
+## 8. Concept-to-3D operating rule
+
+Generated 3D assets are now part of the art process, but only under discipline:
+
+- Use concept-to-3D for contained assets: drones, operators, consoles, chairs, cargo, tools, ship silhouettes, bay dressing.
+- Do **not** use it to replace the main asteroid-base composition work. The facility still needs hand-directed camera, scale, silhouette, negative space, traversal, and depth.
+- Test generated assets in the live Three.js scene immediately. If they do not read in the actual camera, fix silhouette/scale/materials before polishing.
+- Prefer low-poly/mid-poly GLB assets with clean pivots, few materials, and baked/painted detail.
+- Every loop should explicitly choose: composition pass or asset pipeline pass. Do not blur both into a messy mega-pass.
+
+Recommended first proof asset: **remote bay maintenance drone**.
+
+---
+
+## 9. Definition of done for the current phase
 
 The current phase is done when:
 
