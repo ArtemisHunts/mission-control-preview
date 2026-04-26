@@ -91,13 +91,21 @@
       "status": "shipped",
       "type": "composition pass",
       "notes": "Pulled the camera much farther outside the vertical slice, widened FOV/fog range, centered the overview on the full footprint, and raised ambient/hemisphere/top/rim lighting so all station districts are visible."
+    },
+    {
+      "date": "2026-04-26",
+      "label": "full cutaway overview framing pass",
+      "durationMs": 120000,
+      "status": "shipped",
+      "type": "wide camera/framing pass",
+      "notes": "Pulled the default camera farther outside the asteroid slice, widened FOV/fog/far plane, and centered the overview target so the full cutaway container and four station districts fit before interior detail."
     }
   ],
   "stats": {
-    "count": 11,
+    "count": 12,
     "minMs": 90000,
     "maxMs": 180000,
-    "avgMs": 120909,
+    "avgMs": 120833,
     "subagents": {
       "count": 3,
       "minMs": 47000,

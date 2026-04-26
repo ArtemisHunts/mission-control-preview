@@ -26,8 +26,8 @@ const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
     body: 'A full spatial read of Mission Control: central holo-table, room clusters, visible operators, signal lanes, and deploy traffic.',
-    camera: [0, 18.0, 42.0],
-    target: [0, 1.6, -4.0],
+    camera: [0, 21.5, 51.8],
+    target: [0, 1.9, -3.2],
     accent: COLORS.cyan
   },
   command: {
@@ -42,7 +42,7 @@ const ROOMS = {
   build: {
     title: 'Build Floor',
     body: 'Forge works here: UI fabrication, interaction passes, scene construction, and the hands-on production lane.',
-    camera: [0, 18.0, 42.0],
+    camera: [0, 21.5, 51.8],
     target: [-12.45, 0.9, -0.25],
     accent: COLORS.gold,
     pos: [-12.75, 0, -0.25],
@@ -51,7 +51,7 @@ const ROOMS = {
   review: {
     title: 'Review Chamber',
     body: 'Sentinel owns this room. Coral containment rings mark QA, safety checks, regressions, and work that needs a sharper eye.',
-    camera: [0, 18.0, 42.0],
+    camera: [0, 21.5, 51.8],
     target: [12.45, 0.9, -0.45],
     accent: COLORS.coral,
     pos: [12.75, 0, -0.45],
@@ -60,7 +60,7 @@ const ROOMS = {
   deploy: {
     title: 'Deploy Dock',
     body: 'Quartermaster stages releases here. Green-lit launch rails show what is ready to ship, publish, or route into production.',
-    camera: [0, 18.0, 42.0],
+    camera: [0, 21.5, 51.8],
     target: [12.65, 0.92, -10.55],
     accent: COLORS.green,
     pos: [12.85, 0, -10.65],
@@ -69,7 +69,7 @@ const ROOMS = {
   observatory: {
     title: 'Observatory',
     body: 'Prospector watches the signal room: research, memory, requirements, references, and the weird clues hiding in the noise.',
-    camera: [0, 18.0, 42.0],
+    camera: [0, 21.5, 51.8],
     target: [-12.65, 0.95, -10.55],
     accent: COLORS.violet,
     pos: [-12.85, 0, -10.65],
@@ -111,9 +111,9 @@ container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
-scene.fog = new THREE.Fog(COLORS.bg, 18, 70);
+scene.fog = new THREE.Fog(COLORS.bg, 24, 92);
 
-const camera = new THREE.PerspectiveCamera(54, window.innerWidth / window.innerHeight, 0.1, 160);
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 190);
 camera.position.set(...ROOMS.overview.camera);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -146,7 +146,7 @@ const clickTarget = new THREE.Vector3();
 const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
-const fixedCameraOffset = new THREE.Vector3(0, 16.4, 42.0);
+const fixedCameraOffset = new THREE.Vector3(0, 19.6, 55.0);
 const facilityBounds = { minX: -14.4, maxX: 14.4, minZ: -12.4, maxZ: 3.4 };
 
 function mat(color, options = {}) {
