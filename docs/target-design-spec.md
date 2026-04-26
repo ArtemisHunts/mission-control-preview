@@ -39,11 +39,13 @@ Immediate impression:
 
 > “I’m looking into a real operations room carved into an asteroid, with a glowing holo-table at the center and specialized agent workspaces around it.”
 
+Scale correction from Michael: the facility should feel **large — borderline massive**. Individual stations should read as small parts of a much larger asteroid base, not as evenly spaced kiosks in a compact diorama. Separation, negative space, catwalk distance, background structures, and exterior hangar depth should do more of the work than extra HUD.
+
 Composition:
 
 1. **Center foreground/midground** — large circular holo-table / tactical pit.
 2. **Surrounding ring** — walkways, railings, operators, workstations.
-3. **Room clusters** — Build Floor, Review Chamber, Deploy Dock, Observatory.
+3. **Room clusters** — Build Floor, Review Chamber, Deploy Dock, Observatory, spaced far enough apart that navigation feels like moving through a facility.
 4. **Rear wall** — panoramic window into space / asteroid hangar.
 5. **Background exterior** — distant ship silhouettes, planet/glow, asteroid field.
 6. **Ceiling** — heavy ribs, cables, practical amber strip lights.
@@ -51,6 +53,25 @@ Composition:
 ---
 
 ## 4. Environment layout
+
+### Facility scale principle
+
+The world should sell a large carved-out asteroid facility first, and individual workstations second.
+
+Use:
+
+- longer catwalk spans between stations
+- larger empty floor/air volume around the central pit
+- distant maintenance decks, hangar ribs, and service platforms
+- background silhouettes that imply the base continues beyond the playable/viewable area
+- smaller station props relative to the shell
+- camera compositions that show depth before detail
+
+Avoid:
+
+- evenly spaced mini-rooms that feel like a board-game layout
+- agents/workstations scaled too large relative to architecture
+- filling every gap with glowing UI just to make the frame busy
 
 ### Central Command / Holo-table
 
