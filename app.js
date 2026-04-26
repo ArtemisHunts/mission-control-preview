@@ -26,8 +26,8 @@ const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
     body: 'A full spatial read of Mission Control: central holo-table, room clusters, visible operators, signal lanes, and deploy traffic.',
-    camera: [8.3, 5.4, 9.2],
-    target: [0, 1.05, -0.35],
+    camera: [12.8, 7.2, 12.8],
+    target: [0, 1.15, -0.85],
     accent: COLORS.cyan
   },
   command: {
@@ -42,37 +42,37 @@ const ROOMS = {
   build: {
     title: 'Build Floor',
     body: 'Forge works here: UI fabrication, interaction passes, scene construction, and the hands-on production lane.',
-    camera: [-5.8, 3.4, 4.65],
-    target: [-3.35, 0.85, 0.35],
+    camera: [-9.4, 4.6, 5.8],
+    target: [-6.1, 0.9, 0.15],
     accent: COLORS.gold,
-    pos: [-3.65, 0, 0.45],
+    pos: [-6.25, 0, 0.25],
     label: 'BUILD'
   },
   review: {
     title: 'Review Chamber',
     body: 'Sentinel owns this room. Coral containment rings mark QA, safety checks, regressions, and work that needs a sharper eye.',
-    camera: [5.4, 3.6, 4.45],
-    target: [3.25, 0.9, 0.1],
+    camera: [9.3, 4.7, 5.55],
+    target: [6.1, 0.9, 0.0],
     accent: COLORS.coral,
-    pos: [3.65, 0, 0.25],
+    pos: [6.25, 0, 0.05],
     label: 'REVIEW'
   },
   deploy: {
     title: 'Deploy Dock',
     body: 'Quartermaster stages releases here. Green-lit launch rails show what is ready to ship, publish, or route into production.',
-    camera: [5.3, 3.5, -4.9],
-    target: [3.7, 0.9, -2.55],
+    camera: [9.6, 4.8, -7.1],
+    target: [6.35, 0.92, -4.55],
     accent: COLORS.green,
-    pos: [3.7, 0, -2.75],
+    pos: [6.45, 0, -4.65],
     label: 'DEPLOY'
   },
   observatory: {
     title: 'Observatory',
     body: 'Prospector watches the signal room: research, memory, requirements, references, and the weird clues hiding in the noise.',
-    camera: [-5.4, 3.7, -4.8],
-    target: [-3.55, 0.95, -2.65],
+    camera: [-9.6, 4.9, -7.0],
+    target: [-6.25, 0.95, -4.55],
     accent: COLORS.violet,
-    pos: [-3.7, 0, -2.75],
+    pos: [-6.45, 0, -4.65],
     label: 'OBSERVATORY'
   }
 };
@@ -111,7 +111,7 @@ container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
-scene.fog = new THREE.Fog(COLORS.bg, 10, 29);
+scene.fog = new THREE.Fog(COLORS.bg, 14, 42);
 
 const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 90);
 camera.position.set(...ROOMS.overview.camera);
@@ -122,8 +122,8 @@ controls.dampingFactor = 0.08;
 controls.enablePan = false;
 controls.autoRotate = true;
 controls.autoRotateSpeed = 0.12;
-controls.minDistance = 5.2;
-controls.maxDistance = 15;
+controls.minDistance = 6.2;
+controls.maxDistance = 23;
 controls.minPolarAngle = 0.68;
 controls.maxPolarAngle = 1.34;
 controls.target.set(...ROOMS.overview.target);
@@ -209,6 +209,7 @@ function buildOffice() {
   buildRockCave();
   buildAsteroidField();
   buildExteriorVista();
+  buildDistantFacilityDepth();
   buildRooms();
   buildHoloTable();
   buildSignalLanes();
@@ -223,25 +224,25 @@ function buildOffice() {
   buildSignalOrbs();
 
   const title = makeTextSprite('MISSION CONTROL', '#f8fbff', 86);
-  title.position.set(0, 3.26, -4.32);
+  title.position.set(0, 3.92, -6.52);
   title.material.opacity = 0.42;
   root.add(title);
   const sub = makeTextSprite('CLICK A ROOM · FOLLOW THE AGENTS', '#9fb5e7', 38);
-  sub.position.set(0, 2.92, -4.32);
+  sub.position.set(0, 3.52, -6.52);
   sub.scale.set(2.65, 0.58, 1);
   sub.material.opacity = 0.34;
   root.add(sub);
 }
 
 function buildShell() {
-  const floor = new THREE.Mesh(new THREE.PlaneGeometry(14.5, 12.2), mat(COLORS.floor, { roughness: 0.62, metalness: 0.28 }));
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(22.5, 17.5), mat(COLORS.floor, { roughness: 0.62, metalness: 0.28 }));
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
   root.add(floor);
 
   // Paneled metal floor with glass tech trenches.
-  for (let x = -5.4; x <= 5.4; x += 1.8) {
-    for (let z = -4.4; z <= 4.2; z += 1.55) {
+  for (let x = -9.0; x <= 9.0; x += 1.8) {
+    for (let z = -6.8; z <= 6.0; z += 1.55) {
       const panel = box('floor panel', [1.65, 0.025, 1.34], [x, 0.018, z], mat(0x121a2c, { roughness: 0.48, metalness: 0.48 }));
       panel.castShadow = false;
       const edges = new THREE.LineSegments(new THREE.EdgesGeometry(panel.geometry), new THREE.LineBasicMaterial({ color: 0x26344f, transparent: true, opacity: 0.42 }));
@@ -249,59 +250,59 @@ function buildShell() {
     }
   }
 
-  [-2.7, 2.7].forEach((x) => {
-    const glass = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.035, 8.9), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.45, transparent: true, opacity: 0.14, roughness: 0.12, metalness: 0.1 }));
-    glass.position.set(x, 0.04, -0.35);
+  [-4.4, 4.4].forEach((x) => {
+    const glass = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.035, 13.6), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.45, transparent: true, opacity: 0.14, roughness: 0.12, metalness: 0.1 }));
+    glass.position.set(x, 0.04, -0.75);
     glass.receiveShadow = true;
     root.add(glass);
   });
 
-  box('rear wall', [13.4, 4.7, 0.25], [0, 2.25, -4.8], mat(COLORS.wall, { roughness: 0.56, metalness: 0.22 }));
-  const leftWall = box('left wall', [9.8, 4.25, 0.2], [-6.5, 2.08, -0.05], mat(COLORS.wallDark, { roughness: 0.7, metalness: 0.18 }));
+  box('rear wall', [20.4, 5.7, 0.25], [0, 2.65, -7.15], mat(COLORS.wall, { roughness: 0.56, metalness: 0.22 }));
+  const leftWall = box('left wall', [14.8, 5.2, 0.2], [-10.3, 2.5, -0.55], mat(COLORS.wallDark, { roughness: 0.7, metalness: 0.18 }));
   leftWall.rotation.y = Math.PI / 2;
-  const rightWall = box('right wall', [9.8, 4.25, 0.2], [6.5, 2.08, -0.05], mat(COLORS.wallDark, { roughness: 0.7, metalness: 0.18 }));
+  const rightWall = box('right wall', [14.8, 5.2, 0.2], [10.3, 2.5, -0.55], mat(COLORS.wallDark, { roughness: 0.7, metalness: 0.18 }));
   rightWall.rotation.y = Math.PI / 2;
 
   buildWindowWall();
 
-  [-4.8, -2.4, 0, 2.4, 4.8].forEach((x) => {
-    const strip = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.035, 10.4), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.55, transparent: true, opacity: 0.38 }));
-    strip.position.set(x, 0.055, -0.15);
+  [-8.2, -5.1, -2.1, 2.1, 5.1, 8.2].forEach((x) => {
+    const strip = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.035, 14.4), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.55, transparent: true, opacity: 0.38 }));
+    strip.position.set(x, 0.055, -0.8);
     root.add(strip);
   });
 
-  [-3.1, -1.55, 0, 1.55, 3.1].forEach((x) => {
-    box('wall monitor', [1.05, 0.46, 0.08], [x, 2.85, -4.61], mat(0x182742, { emissive: 0x183f60, emissiveIntensity: 0.52 }));
+  [-6.2, -3.1, 0, 3.1, 6.2].forEach((x) => {
+    box('wall monitor', [1.05, 0.46, 0.08], [x, 3.35, -6.96], mat(0x182742, { emissive: 0x183f60, emissiveIntensity: 0.52 }));
   });
 }
 
 function buildWindowWall() {
   const windowMat = mat(0x020611, { emissive: 0x061a2a, emissiveIntensity: 0.13, transparent: true, opacity: 0.52, roughness: 0.05, metalness: 0.28 });
-  const pane = box('armored hangar aperture glass', [7.85, 1.72, 0.055], [0, 2.12, -4.66], windowMat);
+  const pane = box('armored hangar aperture glass', [12.8, 2.18, 0.055], [0, 2.55, -7.0], windowMat);
   pane.castShadow = false;
   const frameMat = mat(COLORS.blackMetal, { roughness: 0.34, metalness: 0.68 });
-  box('hangar aperture top frame', [8.18, 0.18, 0.18], [0, 3.08, -4.57], frameMat);
-  box('hangar aperture bottom frame', [8.18, 0.16, 0.18], [0, 1.16, -4.57], frameMat);
-  box('hangar aperture left frame', [0.18, 1.92, 0.18], [-4.18, 2.12, -4.57], frameMat);
-  box('hangar aperture right frame', [0.18, 1.92, 0.18], [4.18, 2.12, -4.57], frameMat);
-  [-1.35, 1.35].forEach((x) => box('hangar aperture mullion', [0.08, 1.72, 0.12], [x, 2.12, -4.55], frameMat));
-  box('hangar cyan rim top', [7.7, 0.035, 0.08], [0, 3.22, -4.50], mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.55, transparent: true, opacity: 0.42 }));
-  box('hangar amber sill', [7.85, 0.045, 0.09], [0, 1.34, -4.50], mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.7, transparent: true, opacity: 0.55 }));
+  box('hangar aperture top frame', [13.1, 0.18, 0.18], [0, 3.74, -6.91], frameMat);
+  box('hangar aperture bottom frame', [13.1, 0.16, 0.18], [0, 1.36, -6.91], frameMat);
+  box('hangar aperture left frame', [0.18, 1.92, 0.18], [-6.65, 2.55, -6.91], frameMat);
+  box('hangar aperture right frame', [0.18, 1.92, 0.18], [6.65, 2.55, -6.91], frameMat);
+  [-4.1, -1.35, 1.35, 4.1].forEach((x) => box('hangar aperture mullion', [0.08, 2.18, 0.12], [x, 2.55, -6.89], frameMat));
+  box('hangar cyan rim top', [12.6, 0.035, 0.08], [0, 3.92, -6.84], mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.55, transparent: true, opacity: 0.42 }));
+  box('hangar amber sill', [12.8, 0.045, 0.09], [0, 1.54, -6.84], mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.7, transparent: true, opacity: 0.55 }));
 }
 
 function buildCeilingAndBulkheads() {
   const ceilingMat = mat(COLORS.blackMetal, { roughness: 0.48, metalness: 0.55 });
-  box('heavy ceiling slab left', [5.3, 0.18, 9.6], [-3.95, 4.08, -0.1], ceilingMat);
-  box('heavy ceiling slab right', [5.3, 0.18, 9.6], [3.95, 4.08, -0.1], ceilingMat);
-  box('rear ceiling cap', [13.0, 0.2, 1.15], [0, 4.08, -4.15], ceilingMat);
-  box('front ceiling bulkhead', [13.0, 0.28, 0.7], [0, 3.92, 4.95], ceilingMat);
-  box('front left bulkhead', [2.45, 3.05, 0.44], [-5.35, 2.28, 5.1], mat(COLORS.wallDark, { roughness: 0.62, metalness: 0.26 }));
-  box('front right bulkhead', [2.45, 3.05, 0.44], [5.35, 2.28, 5.1], mat(COLORS.wallDark, { roughness: 0.62, metalness: 0.26 }));
-  [-4.2, -2.1, 2.1, 4.2].forEach((x) => {
-    box('ceiling inset amber strip', [0.045, 0.035, 5.8], [x, 3.94, -0.45], mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.52, transparent: true, opacity: 0.46 }));
+  box('heavy ceiling slab left', [8.0, 0.18, 14.0], [-6.2, 4.75, -0.7], ceilingMat);
+  box('heavy ceiling slab right', [8.0, 0.18, 14.0], [6.2, 4.75, -0.7], ceilingMat);
+  box('rear ceiling cap', [20.0, 0.2, 1.4], [0, 4.75, -6.45], ceilingMat);
+  box('front ceiling bulkhead', [20.0, 0.28, 0.9], [0, 4.45, 6.35], ceilingMat);
+  box('front left bulkhead', [2.45, 3.05, 0.44], [-8.9, 2.75, 6.55], mat(COLORS.wallDark, { roughness: 0.62, metalness: 0.26 }));
+  box('front right bulkhead', [2.45, 3.05, 0.44], [8.9, 2.75, 6.55], mat(COLORS.wallDark, { roughness: 0.62, metalness: 0.26 }));
+  [-7.4, -4.2, -1.4, 1.4, 4.2, 7.4].forEach((x) => {
+    box('ceiling inset amber strip', [0.045, 0.035, 9.2], [x, 4.58, -0.75], mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.52, transparent: true, opacity: 0.46 }));
   });
   const recess = new THREE.Mesh(new THREE.TorusGeometry(2.35, 0.035, 10, 96), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.48, transparent: true, opacity: 0.24 }));
-  recess.position.set(0, 3.93, 0.45);
+  recess.position.set(0, 4.45, 0.45);
   recess.rotation.x = Math.PI / 2;
   root.add(recess);
 }
@@ -309,8 +310,8 @@ function buildCeilingAndBulkheads() {
 function buildRockCave() {
   const rockMat = mat(COLORS.rock, { roughness: 0.92, metalness: 0.02 });
   const clusters = [
-    [-6.8, 0.65, -4.7, 1.4], [-6.9, 1.6, 2.2, 1.1], [6.8, 0.8, -4.4, 1.25], [6.9, 1.8, 2.5, 1.05],
-    [-4.3, 0.35, 5.3, 0.9], [4.4, 0.35, 5.25, 0.95], [0, 3.9, -5.2, 1.25]
+    [-10.7, 0.65, -7.2, 1.8], [-10.8, 1.7, 3.1, 1.35], [10.7, 0.8, -7.0, 1.65], [10.8, 1.9, 3.4, 1.3],
+    [-7.4, 0.35, 6.7, 1.15], [7.5, 0.35, 6.65, 1.18], [0, 4.55, -7.8, 1.6]
   ];
   clusters.forEach(([x, y, z, scale], index) => {
     const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(scale, 0), rockMat);
@@ -327,7 +328,7 @@ function buildAsteroidField() {
   const matRock = mat(0x262235, { roughness: 0.86 });
   for (let i = 0; i < 34; i += 1) {
     const rock = new THREE.Mesh(new THREE.IcosahedronGeometry(0.035 + Math.random() * 0.12, 0), matRock);
-    rock.position.set(-5.8 + Math.random() * 11.6, 1.4 + Math.random() * 3.4, -8.4 - Math.random() * 7);
+    rock.position.set(-8.8 + Math.random() * 17.6, 1.4 + Math.random() * 3.4, -11.4 - Math.random() * 10);
     rock.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
     scene.add(rock);
     animated.push((t) => { rock.rotation.y += 0.001 + i * 0.00002; rock.position.x += Math.sin(t * 0.08 + i) * 0.0008; });
@@ -335,14 +336,14 @@ function buildAsteroidField() {
 }
 
 function buildArchitecturalRibs() {
-  [-5.2, -3.45, -1.7, 0, 1.7, 3.45, 5.2].forEach((x, index) => {
-    const rib = box('overhead rib', [0.16, 0.16, 8.6], [x, 3.9, -0.45], mat(COLORS.brushedSteel, { roughness: 0.34, metalness: 0.72 }));
+  [-8.2, -5.4, -2.7, 0, 2.7, 5.4, 8.2].forEach((x, index) => {
+    const rib = box('overhead rib', [0.18, 0.18, 12.6], [x, 4.45, -0.9], mat(COLORS.brushedSteel, { roughness: 0.34, metalness: 0.72 }));
     rib.rotation.x = index % 2 ? 0.08 : -0.08;
-    const lamp = box('rib amber practical', [0.055, 0.055, 6.8], [x, 3.76, -0.45], mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.8, transparent: true, opacity: 0.76 }));
+    const lamp = box('rib amber practical', [0.055, 0.055, 6.8], [x, 4.28, -0.9], mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.8, transparent: true, opacity: 0.76 }));
     lamp.rotation.x = rib.rotation.x;
   });
   const ring = new THREE.Mesh(new THREE.TorusGeometry(2.15, 0.035, 10, 96), mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 1.1, transparent: true, opacity: 0.84 }));
-  ring.position.set(0, 3.35, 0.45);
+  ring.position.set(0, 3.95, 0.45);
   ring.rotation.x = Math.PI / 2;
   root.add(ring);
   animated.push(() => { ring.rotation.z += 0.002; });
@@ -527,10 +528,10 @@ function buildHoloTable() {
 
 function buildSignalLanes() {
   const lanes = [
-    [[0, 0.025, 0.45], [-3.65, 0.025, 0.45], COLORS.gold],
-    [[0, 0.025, 0.45], [3.65, 0.025, 0.25], COLORS.coral],
-    [[0, 0.025, 0.45], [3.7, 0.025, -2.75], COLORS.green],
-    [[0, 0.025, 0.45], [-3.7, 0.025, -2.75], COLORS.violet]
+    [[0, 0.025, 0.45], [-6.25, 0.025, 0.25], COLORS.gold],
+    [[0, 0.025, 0.45], [6.25, 0.025, 0.05], COLORS.coral],
+    [[0, 0.025, 0.45], [6.45, 0.025, -4.65], COLORS.green],
+    [[0, 0.025, 0.45], [-6.45, 0.025, -4.65], COLORS.violet]
   ];
   lanes.forEach(([from, to, color], index) => {
     const curve = new THREE.CatmullRomCurve3([
@@ -546,7 +547,27 @@ function buildSignalLanes() {
 
 function buildRailingsAndCatwalks() {
   const railMat = mat(COLORS.brushedSteel, { roughness: 0.32, metalness: 0.76 });
+  const deckMat = mat(0x101827, { roughness: 0.5, metalness: 0.52 });
   const glowMat = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.65, transparent: true, opacity: 0.64 });
+  const catwalkSpan = (toX, toZ, color) => {
+    const from = new THREE.Vector2(0, 0.45);
+    const to = new THREE.Vector2(toX, toZ);
+    const mid = from.clone().add(to).multiplyScalar(0.5);
+    const length = from.distanceTo(to) - 2.0;
+    const angle = Math.atan2(toZ - from.y, toX - from.x);
+    const deck = box('long facility catwalk deck', [length, 0.055, 0.42], [mid.x, 0.16, mid.y], deckMat);
+    deck.rotation.y = -angle;
+    [-0.31, 0.31].forEach((side) => {
+      const rail = box('long facility catwalk rail', [length, 0.035, 0.035], [mid.x + Math.sin(angle) * side, 0.42, mid.y + Math.cos(angle) * side], railMat);
+      rail.rotation.y = -angle;
+    });
+    const centerline = box('catwalk distance glow seam', [length * 0.86, 0.018, 0.025], [mid.x, 0.205, mid.y], mat(color, { emissive: color, emissiveIntensity: 0.35, transparent: true, opacity: 0.32 }));
+    centerline.rotation.y = -angle;
+  };
+  catwalkSpan(-6.25, 0.25, COLORS.gold);
+  catwalkSpan(6.25, 0.05, COLORS.coral);
+  catwalkSpan(6.45, -4.65, COLORS.green);
+  catwalkSpan(-6.45, -4.65, COLORS.violet);
   const posts = [];
   for (let i = 0; i < 36; i += 1) {
     const a = (i / 36) * Math.PI * 2;
@@ -562,7 +583,7 @@ function buildRailingsAndCatwalks() {
     const rail = box('central pit rail glow', [0.34, 0.035, 0.035], [x, 0.58, z], glowMat);
     rail.rotation.y = -a;
   }
-  [[-5.4, 0.1], [5.4, 0.1], [-3.7, -2.75], [3.7, -2.75]].forEach(([x, z]) => {
+  [[-8.2, 0.0], [8.2, 0.0], [-6.45, -4.65], [6.45, -4.65]].forEach(([x, z]) => {
     box('catwalk edge', [1.5, 0.08, 0.08], [x, 0.32, z + 0.86], railMat);
     box('catwalk edge', [1.5, 0.08, 0.08], [x, 0.32, z - 0.86], railMat);
   });
@@ -570,10 +591,10 @@ function buildRailingsAndCatwalks() {
 
 function buildCableConduits() {
   const paths = [
-    [[-5.9, 3.2, -4.2], [-3.7, 3.45, -3.2], [-1.2, 3.55, -4.55]],
-    [[5.9, 3.1, -4.0], [3.4, 3.38, -3.25], [1.2, 3.5, -4.55]],
-    [[-6.1, 2.4, 1.8], [-3.9, 2.55, 0.2], [-1.8, 2.75, 0.1]],
-    [[6.1, 2.4, 1.8], [3.9, 2.55, 0.2], [1.8, 2.75, 0.1]]
+    [[-9.6, 3.7, -6.6], [-6.4, 3.95, -4.8], [-1.8, 4.05, -5.4]],
+    [[9.6, 3.6, -6.4], [6.4, 3.9, -4.85], [1.8, 4.0, -5.4]],
+    [[-9.6, 2.9, 2.6], [-6.7, 3.05, 0.4], [-2.4, 3.2, 0.15]],
+    [[9.6, 2.9, 2.6], [6.7, 3.05, 0.4], [2.4, 3.2, 0.15]]
   ];
   paths.forEach((points, index) => {
     const curve = new THREE.CatmullRomCurve3(points.map((p) => new THREE.Vector3(...p)));
@@ -626,6 +647,32 @@ function buildExteriorVista() {
   animated.push((t) => { ship.position.y = 2.05 + Math.sin(t * 0.35) * 0.04; });
 }
 
+function buildDistantFacilityDepth() {
+  const shadowSteel = mat(0x0b101b, { roughness: 0.58, metalness: 0.48 });
+  const dimAmber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.32, transparent: true, opacity: 0.34 });
+  const dimCyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.26, transparent: true, opacity: 0.24 });
+
+  [-7.8, 0, 7.8].forEach((x, i) => {
+    box('distant hangar service deck', [3.2, 0.1, 0.55], [x, 1.22 + i * 0.18, -8.55 - i * 0.5], shadowSteel);
+    box('distant hangar lower rail', [3.1, 0.035, 0.035], [x, 1.45 + i * 0.18, -8.26 - i * 0.5], dimAmber);
+    box('distant maintenance pylon', [0.16, 1.8, 0.16], [x - 1.45, 2.0 + i * 0.18, -8.45 - i * 0.5], shadowSteel);
+    box('distant maintenance pylon', [0.16, 1.8, 0.16], [x + 1.45, 2.0 + i * 0.18, -8.45 - i * 0.5], shadowSteel);
+  });
+
+  [-9.2, -4.6, 4.6, 9.2].forEach((x, i) => {
+    const rib = box('far hangar depth rib', [0.13, 3.2, 0.18], [x, 2.75, -9.15], shadowSteel);
+    rib.rotation.z = x < 0 ? -0.1 : 0.1;
+    box('far hangar marker light', [0.055, 0.055, 0.055], [x, 4.24, -8.95], i % 2 ? dimAmber : dimCyan);
+  });
+
+  const shuttle = new THREE.Group();
+  shuttle.position.set(5.7, 1.82, -10.2);
+  root.add(shuttle);
+  box('tiny docked utility shuttle hull', [1.15, 0.13, 0.26], [0, 0, 0], shadowSteel, shuttle);
+  box('tiny docked utility shuttle cockpit', [0.25, 0.09, 0.18], [0.62, 0.04, 0], dimCyan, shuttle);
+  animated.push((t) => { shuttle.position.y = 1.82 + Math.sin(t * 0.28) * 0.025; });
+}
+
 function buildIndustrialSetDressing() {
   const crateMat = mat(0x2a231d, { roughness: 0.72, metalness: 0.18 });
   const steel = mat(COLORS.brushedSteel, { roughness: 0.35, metalness: 0.76 });
@@ -654,13 +701,13 @@ function buildIndustrialSetDressing() {
 
 function buildVolumetricLightPlanes() {
   const beams = [
-    [-2.9, 2.35, -4.35, COLORS.cyan],
-    [0, 2.35, -4.35, COLORS.amber],
-    [2.9, 2.35, -4.35, COLORS.cyan]
+    [-5.6, 2.85, -6.65, COLORS.cyan],
+    [0, 2.95, -6.65, COLORS.amber],
+    [5.6, 2.85, -6.65, COLORS.cyan]
   ];
   beams.forEach(([x, y, z, color], i) => {
     const beam = new THREE.Mesh(
-      new THREE.PlaneGeometry(1.7, 3.2),
+      new THREE.PlaneGeometry(2.8, 4.4),
       mat(color, { emissive: color, emissiveIntensity: 0.22, transparent: true, opacity: 0.055, side: THREE.DoubleSide, roughness: 0.1 })
     );
     beam.position.set(x, y, z + 0.08);
