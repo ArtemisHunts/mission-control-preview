@@ -278,19 +278,22 @@ Avoid:
 
 The environment should be navigable.
 
+Michael correction: the default experience should feel closer to a **front-facing fixed facility view** than an orbiting product showcase. The camera should look into the asteroid base like a cinematic cross-section / command-floor window, with dark asteroid borders framing the scene. Navigation should happen **inside the facility** via WASD / arrow-key panning and point-and-click traversal, closer to Diablo-style movement than orbit controls.
+
 Primary interactions:
 
-- click room/workspace to fly camera into it
+- WASD / arrow keys pan the fixed view through the base
+- click floor/catwalk positions to move the view target there
+- click room/workspace to focus that bay without changing into a spinny orbit camera
 - minimal nav strip as fallback
-- orbit/inspect the base
 - eventually click an agent to see task context
 - eventually click the holo-table to open mission graph
 
 Camera behavior:
 
-- overview starts wide and cinematic
-- room transitions should feel like guided camera moves
-- auto-rotate only in overview, not in focused rooms
+- default view should be fixed/front-facing and cinematic
+- avoid free orbit as the primary page navigation
+- room transitions should feel like moving/panning through a massive facility
 - target should settle on actual room work, not empty platform center
 
 ---

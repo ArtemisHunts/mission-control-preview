@@ -18,13 +18,19 @@
       "label": "facility scale and hangar depth pass",
       "durationMs": 135000,
       "notes": "Expanded scene footprint/room separation and added distant hangar service depth."
+    },
+    {
+      "date": "2026-04-25",
+      "label": "fixed facility navigation and asteroid rim pass",
+      "durationMs": 180000,
+      "notes": "Pivoted from orbit showcase to fixed front-facing WASD/click facility traversal with wider room separation and asteroid rim framing."
     }
   ],
   "stats": {
-    "count": 1,
+    "count": 2,
     "minMs": 135000,
-    "maxMs": 135000,
-    "avgMs": 135000,
+    "maxMs": 180000,
+    "avgMs": 157500,
     "subagents": {
       "count": 3,
       "minMs": 47000,

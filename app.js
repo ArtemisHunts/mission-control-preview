@@ -26,8 +26,8 @@ const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
     body: 'A full spatial read of Mission Control: central holo-table, room clusters, visible operators, signal lanes, and deploy traffic.',
-    camera: [12.8, 7.2, 12.8],
-    target: [0, 1.15, -0.85],
+    camera: [0, 8.9, 12.4],
+    target: [0, 1.1, -1.6],
     accent: COLORS.cyan
   },
   command: {
@@ -42,37 +42,37 @@ const ROOMS = {
   build: {
     title: 'Build Floor',
     body: 'Forge works here: UI fabrication, interaction passes, scene construction, and the hands-on production lane.',
-    camera: [-9.4, 4.6, 5.8],
-    target: [-6.1, 0.9, 0.15],
+    camera: [0, 8.9, 12.4],
+    target: [-9.1, 0.9, 0.0],
     accent: COLORS.gold,
-    pos: [-6.25, 0, 0.25],
+    pos: [-9.25, 0, 0.05],
     label: 'BUILD'
   },
   review: {
     title: 'Review Chamber',
     body: 'Sentinel owns this room. Coral containment rings mark QA, safety checks, regressions, and work that needs a sharper eye.',
-    camera: [9.3, 4.7, 5.55],
-    target: [6.1, 0.9, 0.0],
+    camera: [0, 8.9, 12.4],
+    target: [9.1, 0.9, -0.15],
     accent: COLORS.coral,
-    pos: [6.25, 0, 0.05],
+    pos: [9.25, 0, -0.15],
     label: 'REVIEW'
   },
   deploy: {
     title: 'Deploy Dock',
     body: 'Quartermaster stages releases here. Green-lit launch rails show what is ready to ship, publish, or route into production.',
-    camera: [9.6, 4.8, -7.1],
-    target: [6.35, 0.92, -4.55],
+    camera: [0, 8.9, 12.4],
+    target: [9.35, 0.92, -7.35],
     accent: COLORS.green,
-    pos: [6.45, 0, -4.65],
+    pos: [9.45, 0, -7.45],
     label: 'DEPLOY'
   },
   observatory: {
     title: 'Observatory',
     body: 'Prospector watches the signal room: research, memory, requirements, references, and the weird clues hiding in the noise.',
-    camera: [-9.6, 4.9, -7.0],
-    target: [-6.25, 0.95, -4.55],
+    camera: [0, 8.9, 12.4],
+    target: [-9.35, 0.95, -7.35],
     accent: COLORS.violet,
-    pos: [-6.45, 0, -4.65],
+    pos: [-9.45, 0, -7.45],
     label: 'OBSERVATORY'
   }
 };
@@ -119,9 +119,11 @@ camera.position.set(...ROOMS.overview.camera);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
+controls.enableRotate = false;
+controls.enableZoom = false;
 controls.enablePan = false;
-controls.autoRotate = true;
-controls.autoRotateSpeed = 0.12;
+controls.autoRotate = false;
+controls.autoRotateSpeed = 0;
 controls.minDistance = 6.2;
 controls.maxDistance = 23;
 controls.minPolarAngle = 0.68;
@@ -139,6 +141,13 @@ const signalOrbs = [];
 const roomMeshes = [];
 const pointer = new THREE.Vector2();
 const raycaster = new THREE.Raycaster();
+const floorPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+const clickTarget = new THREE.Vector3();
+const navKeys = new Set();
+const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
+const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
+const fixedCameraOffset = new THREE.Vector3(0, 7.8, 14.0);
+const facilityBounds = { minX: -11.2, maxX: 11.2, minZ: -8.7, maxZ: 2.8 };
 
 function mat(color, options = {}) {
   return new THREE.MeshStandardMaterial({
@@ -207,6 +216,7 @@ function buildOffice() {
   buildShell();
   buildCeilingAndBulkheads();
   buildRockCave();
+  buildAsteroidRim();
   buildAsteroidField();
   buildExteriorVista();
   buildDistantFacilityDepth();
@@ -318,6 +328,30 @@ function buildRockCave() {
     rock.position.set(x, y, z);
     rock.rotation.set(index * 0.7, index * 0.33, index * 0.49);
     rock.scale.set(1.35, 0.8 + (index % 2) * 0.35, 0.95);
+    rock.castShadow = true;
+    rock.receiveShadow = true;
+    root.add(rock);
+  });
+}
+
+function buildAsteroidRim() {
+  const rimMat = mat(COLORS.rock, { roughness: 0.95, metalness: 0.01 });
+  const rimPoints = [];
+  for (let i = 0; i < 24; i += 1) {
+    const z = -9.6 + i * 0.75;
+    rimPoints.push([-12.4 + Math.sin(i * 0.9) * 0.4, z, 0.75 + (i % 4) * 0.18]);
+    rimPoints.push([12.4 + Math.cos(i * 0.8) * 0.4, z, 0.75 + ((i + 2) % 4) * 0.18]);
+  }
+  for (let i = 0; i < 18; i += 1) {
+    const x = -11.2 + i * 1.32;
+    rimPoints.push([x, 4.95 + Math.sin(i) * 0.3, 0.65 + (i % 3) * 0.22]);
+    rimPoints.push([x, -10.2 + Math.cos(i) * 0.25, 0.9 + ((i + 1) % 3) * 0.24]);
+  }
+  rimPoints.forEach(([x, z, scale], index) => {
+    const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(scale, 0), rimMat);
+    rock.position.set(x, 0.18 + (index % 5) * 0.08, z);
+    rock.rotation.set(index * 0.37, index * 0.61, index * 0.23);
+    rock.scale.set(1.5 + (index % 3) * 0.22, 0.65 + (index % 4) * 0.16, 1.1);
     rock.castShadow = true;
     rock.receiveShadow = true;
     root.add(rock);
@@ -528,10 +562,10 @@ function buildHoloTable() {
 
 function buildSignalLanes() {
   const lanes = [
-    [[0, 0.025, 0.45], [-6.25, 0.025, 0.25], COLORS.gold],
-    [[0, 0.025, 0.45], [6.25, 0.025, 0.05], COLORS.coral],
-    [[0, 0.025, 0.45], [6.45, 0.025, -4.65], COLORS.green],
-    [[0, 0.025, 0.45], [-6.45, 0.025, -4.65], COLORS.violet]
+    [[0, 0.025, 0.45], [-9.25, 0.025, 0.05], COLORS.gold],
+    [[0, 0.025, 0.45], [9.25, 0.025, -0.15], COLORS.coral],
+    [[0, 0.025, 0.45], [9.45, 0.025, -7.45], COLORS.green],
+    [[0, 0.025, 0.45], [-9.45, 0.025, -7.45], COLORS.violet]
   ];
   lanes.forEach(([from, to, color], index) => {
     const curve = new THREE.CatmullRomCurve3([
@@ -564,10 +598,10 @@ function buildRailingsAndCatwalks() {
     const centerline = box('catwalk distance glow seam', [length * 0.86, 0.018, 0.025], [mid.x, 0.205, mid.y], mat(color, { emissive: color, emissiveIntensity: 0.35, transparent: true, opacity: 0.32 }));
     centerline.rotation.y = -angle;
   };
-  catwalkSpan(-6.25, 0.25, COLORS.gold);
-  catwalkSpan(6.25, 0.05, COLORS.coral);
-  catwalkSpan(6.45, -4.65, COLORS.green);
-  catwalkSpan(-6.45, -4.65, COLORS.violet);
+  catwalkSpan(-9.25, 0.05, COLORS.gold);
+  catwalkSpan(9.25, -0.15, COLORS.coral);
+  catwalkSpan(9.45, -7.45, COLORS.green);
+  catwalkSpan(-9.45, -7.45, COLORS.violet);
   const posts = [];
   for (let i = 0; i < 36; i += 1) {
     const a = (i / 36) * Math.PI * 2;
@@ -583,7 +617,7 @@ function buildRailingsAndCatwalks() {
     const rail = box('central pit rail glow', [0.34, 0.035, 0.035], [x, 0.58, z], glowMat);
     rail.rotation.y = -a;
   }
-  [[-8.2, 0.0], [8.2, 0.0], [-6.45, -4.65], [6.45, -4.65]].forEach(([x, z]) => {
+  [[-10.9, 0.0], [10.9, -0.2], [-9.45, -7.45], [9.45, -7.45]].forEach(([x, z]) => {
     box('catwalk edge', [1.5, 0.08, 0.08], [x, 0.32, z + 0.86], railMat);
     box('catwalk edge', [1.5, 0.08, 0.08], [x, 0.32, z - 0.86], railMat);
   });
@@ -814,8 +848,26 @@ function updateHud() {
 function setMode(modeName) {
   state.mode = modeName;
   document.querySelectorAll('.dock-button[data-mode]').forEach((button) => button.classList.toggle('active', button.dataset.mode === modeName));
-  controls.autoRotate = modeName === 'overview';
+  const room = ROOMS[modeName];
+  if (room?.target) facilityTarget.set(room.target[0], room.target[1], room.target[2]);
   updateHud();
+}
+
+function clampFacilityTarget(target) {
+  target.x = THREE.MathUtils.clamp(target.x, facilityBounds.minX, facilityBounds.maxX);
+  target.z = THREE.MathUtils.clamp(target.z, facilityBounds.minZ, facilityBounds.maxZ);
+  return target;
+}
+
+function updateFacilityNavigation(delta) {
+  const speed = navKeys.has('shift') ? 7.6 : 4.4;
+  const step = speed * delta;
+  if (navKeys.has('w') || navKeys.has('arrowup')) facilityTarget.z -= step;
+  if (navKeys.has('s') || navKeys.has('arrowdown')) facilityTarget.z += step;
+  if (navKeys.has('a') || navKeys.has('arrowleft')) facilityTarget.x -= step;
+  if (navKeys.has('d') || navKeys.has('arrowright')) facilityTarget.x += step;
+  clampFacilityTarget(facilityTarget);
+  facilityFocus.lerp(facilityTarget, 0.08);
 }
 
 function simulateShift() {
@@ -840,13 +892,26 @@ function onPointer(event, click = false) {
   pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
   raycaster.setFromCamera(pointer, camera);
   const hit = raycaster.intersectObjects(roomMeshes, false)[0];
-  renderer.domElement.style.cursor = hit ? 'pointer' : 'grab';
-  if (click && hit?.object?.userData?.mode) setMode(hit.object.userData.mode);
+  renderer.domElement.style.cursor = hit ? 'pointer' : 'crosshair';
+  if (!click) return;
+  if (hit?.object?.userData?.mode) {
+    setMode(hit.object.userData.mode);
+    return;
+  }
+  if (raycaster.ray.intersectPlane(floorPlane, clickTarget)) {
+    facilityTarget.set(clickTarget.x, 1.05, clickTarget.z);
+    clampFacilityTarget(facilityTarget);
+    state.mode = 'overview';
+    document.querySelectorAll('.dock-button[data-mode]').forEach((button) => button.classList.toggle('active', button.dataset.mode === 'overview'));
+    updateHud();
+  }
 }
 
 function animate() {
   requestAnimationFrame(animate);
-  const t = clock.getElapsedTime();
+  const delta = Math.min(clock.getDelta(), 0.05);
+  const t = clock.elapsedTime;
+  updateFacilityNavigation(delta);
   animated.forEach((fn) => fn(t));
   towers.forEach((tower, index) => {
     const pulse = 1 + Math.sin(t * 2.1 + tower.value + index) * 0.045;
@@ -864,9 +929,9 @@ function animate() {
     orb.mesh.rotation.y += 0.008;
   });
 
-  const room = ROOMS[state.mode];
-  camera.position.lerp(new THREE.Vector3(...room.camera), 0.03);
-  controls.target.lerp(new THREE.Vector3(...room.target), 0.035);
+  const desiredCamera = new THREE.Vector3(facilityFocus.x + fixedCameraOffset.x, fixedCameraOffset.y, facilityFocus.z + fixedCameraOffset.z);
+  camera.position.lerp(desiredCamera, 0.06);
+  controls.target.lerp(facilityFocus, 0.08);
   controls.update();
   renderer.render(scene, camera);
 }
@@ -879,6 +944,14 @@ window.addEventListener('resize', () => {
 
 renderer.domElement.addEventListener('pointermove', (event) => onPointer(event));
 renderer.domElement.addEventListener('pointerdown', (event) => onPointer(event, true));
+window.addEventListener('keydown', (event) => {
+  const key = event.key.toLowerCase();
+  if (['w', 'a', 's', 'd', 'arrowup', 'arrowleft', 'arrowdown', 'arrowright', 'shift'].includes(key)) {
+    navKeys.add(key);
+    event.preventDefault();
+  }
+});
+window.addEventListener('keyup', (event) => navKeys.delete(event.key.toLowerCase()));
 document.querySelectorAll('.dock-button[data-mode]').forEach((button) => button.addEventListener('click', () => setMode(button.dataset.mode)));
 document.getElementById('shuffle-btn').addEventListener('click', simulateShift);
 
