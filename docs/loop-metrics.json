@@ -59,13 +59,21 @@
       "status": "shipped",
       "type": "asset pipeline pass",
       "notes": "Added hand-blocked operator suit kit details: shoulder yokes, chest plates, role stripes, backpack blocks, gauntlets, and boot stance bars so agents read as suited operators at facility distance."
+    },
+    {
+      "date": "2026-04-26",
+      "label": "console chair kit proxy asset pass",
+      "durationMs": 120000,
+      "status": "shipped",
+      "type": "asset pipeline pass",
+      "notes": "Replaced primitive console/chair station blocks with hand-blocked kit details: plinths, black-glass terminal frames, support struts, tactile key strips, swivel bases, bucket seats, high backs, headrests, and wraparound monitor slabs."
     }
   ],
   "stats": {
-    "count": 7,
+    "count": 8,
     "minMs": 90000,
     "maxMs": 180000,
-    "avgMs": 125714,
+    "avgMs": 125000,
     "subagents": {
       "count": 3,
       "minMs": 47000,

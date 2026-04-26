@@ -546,8 +546,15 @@ function buildWorkspaceProps(id, group, accent) {
     return s;
   };
   const consoleDesk = (x, z) => {
-    box('console desk', [0.72, 0.18, 0.32], [x, 0.31, z], mat(COLORS.gunmetal, { roughness: 0.42, metalness: 0.52 }), group);
-    screen(x, z - 0.18);
+    const dark = mat(COLORS.blackMetal, { roughness: 0.4, metalness: 0.62 });
+    const steel = mat(COLORS.brushedSteel, { roughness: 0.34, metalness: 0.74 });
+    box('console chair kit workstation plinth', [0.78, 0.08, 0.38], [x, 0.26, z + 0.02], dark, group);
+    box('console chair kit angled desk shell', [0.72, 0.18, 0.32], [x, 0.36, z], mat(COLORS.gunmetal, { roughness: 0.42, metalness: 0.52 }), group);
+    const terminalFrame = box('console chair kit black glass terminal frame', [0.54, 0.36, 0.035], [x, 0.58, z - 0.21], dark, group);
+    terminalFrame.rotation.x = -0.12;
+    screen(x, z - 0.235, 0.44, 0.24);
+    [-0.24, 0.24].forEach((sx) => box('console chair kit support strut', [0.035, 0.28, 0.035], [x + sx, 0.42, z - 0.05], steel, group));
+    [-0.18, 0, 0.18].forEach((sx) => box('console chair kit tactile key strip', [0.055, 0.012, 0.025], [x + sx, 0.47, z - 0.09], mat(accent, { emissive: accent, emissiveIntensity: 0.82, transparent: true, opacity: 0.65 }), group));
   };
   const operatorStation = (x, z, rotation = 0) => {
     const station = new THREE.Group();
@@ -556,18 +563,21 @@ function buildWorkspaceProps(id, group, accent) {
     group.add(station);
     const dark = mat(COLORS.blackMetal, { roughness: 0.42, metalness: 0.55 });
     const steel = mat(COLORS.brushedSteel, { roughness: 0.36, metalness: 0.7 });
-    box('operator station pedestal', [0.5, 0.09, 0.34], [0, 0.22, 0.18], dark, station);
-    box('operator station seat', [0.3, 0.07, 0.28], [0, 0.34, 0.15], mat(0x20293a, { roughness: 0.5, metalness: 0.28 }), station);
-    box('operator station backrest', [0.32, 0.38, 0.055], [0, 0.56, 0.31], mat(0x253044, { roughness: 0.46, metalness: 0.32 }), station);
-    box('operator station left arm', [0.055, 0.16, 0.22], [-0.22, 0.44, 0.15], steel, station);
-    box('operator station right arm', [0.055, 0.16, 0.22], [0.22, 0.44, 0.15], steel, station);
-    box('operator console slab', [0.64, 0.11, 0.24], [0, 0.48, -0.26], mat(COLORS.gunmetal, { roughness: 0.36, metalness: 0.62 }), station);
+    const cushion = mat(0x20293a, { roughness: 0.5, metalness: 0.28 });
+    box('console chair kit operator pedestal', [0.5, 0.09, 0.34], [0, 0.22, 0.18], dark, station);
+    box('console chair kit chair swivel base', [0.18, 0.24, 0.18], [0, 0.28, 0.16], steel, station);
+    box('console chair kit bucket seat cushion', [0.34, 0.075, 0.3], [0, 0.36, 0.15], cushion, station);
+    box('console chair kit high back shell', [0.34, 0.42, 0.055], [0, 0.58, 0.31], cushion, station);
+    box('console chair kit headrest block', [0.24, 0.095, 0.06], [0, 0.82, 0.3], dark, station);
+    box('console chair kit left arm rail', [0.06, 0.17, 0.24], [-0.23, 0.46, 0.14], steel, station);
+    box('console chair kit right arm rail', [0.06, 0.17, 0.24], [0.23, 0.46, 0.14], steel, station);
+    box('console chair kit wraparound console slab', [0.68, 0.11, 0.26], [0, 0.49, -0.26], mat(COLORS.gunmetal, { roughness: 0.36, metalness: 0.62 }), station);
     [-0.22, 0, 0.22].forEach((sx) => {
-      const monitor = box('operator angled monitor', [0.18, 0.18, 0.035], [sx, 0.68, -0.39], mat(accent, { emissive: accent, emissiveIntensity: 0.55, transparent: true, opacity: 0.46 }), station);
+      const monitor = box('console chair kit angled monitor glass', [0.18, 0.18, 0.035], [sx, 0.68, -0.39], mat(accent, { emissive: accent, emissiveIntensity: 0.55, transparent: true, opacity: 0.46 }), station);
       monitor.rotation.x = -0.22;
     });
     [-0.18, -0.06, 0.06, 0.18].forEach((px) => {
-      box('operator data pip', [0.035, 0.012, 0.02], [px, 0.56, -0.13], mat(accent, { emissive: accent, emissiveIntensity: 0.9, transparent: true, opacity: 0.72 }), station);
+      box('console chair kit data pip row', [0.035, 0.012, 0.02], [px, 0.56, -0.13], mat(accent, { emissive: accent, emissiveIntensity: 0.9, transparent: true, opacity: 0.72 }), station);
     });
   };
   if (id === 'build') {
