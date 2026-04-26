@@ -25,8 +25,9 @@ Do **not** use it as the primary method for the whole asteroid facility. The mai
    - Prefer three-quarter views, strong silhouette, simple material zones, and no noisy background.
 
 2. **Image to 3D mesh**
-   - Candidate tools: Hunyuan3D, Tripo, Meshy, or equivalent.
-   - Goal is a rough GLB/blockout, not final art.
+   - Candidate tools: TRELLIS/TRELLIS.2, Hunyuan3D, Tripo, Meshy, or equivalent.
+   - Treat TRELLIS-style PBR output as a strong candidate for props and hard-surface dressing, pending license/runtime verification.
+   - Goal is a rough-to-usable GLB/blockout that still gets inspected in-engine, not blindly accepted final art.
 
 3. **Cleanup**
    - Use Blender/Meshy/Tripo cleanup to fix scale, pivots, normals, mesh names, and obvious topology junk.
@@ -56,6 +57,14 @@ Before an asset stays in the scene, it must pass these gates:
 
 ## 4. Browser constraints
 
+TRELLIS/TRELLIS.2-style output may include attractive PBR textures and dense detail. That is useful, but browser performance still wins. Before importing to the app, run every generated model through a web-readiness pass:
+
+- export or convert to `.glb`/`.gltf`
+- inspect triangle count, material count, texture sizes, normals, UVs, pivots, and mesh hierarchy
+- decimate/merge where needed
+- compress with Meshopt/Draco and KTX2/Basis when useful
+- verify it renders correctly under Mission Control lighting, not just in a turntable demo
+
 Default to:
 
 - low-poly or mid-poly geometry
@@ -72,6 +81,7 @@ Avoid:
 - huge texture stacks
 - reflective shader complexity before the scene composition works
 - polishing assets outside the app for hours before testing them in-engine
+- treating generated hard-surface detail as mechanically meaningful without inspection
 
 ## 5. Current best first asset candidates
 
@@ -81,6 +91,14 @@ Avoid:
 4. **Cargo/tool kit** — adds scale and use to hangar/deploy areas.
 
 Recommended first test: a remote bay maintenance drone. It is low-risk, small, and useful for proving the pipeline.
+
+Recommended TRELLIS-style proof tests:
+
+1. **Console/chair kit** — PBR materials matter, topology does not need to deform.
+2. **Cargo/tool kit** — cheap scene richness and scale cues.
+3. **Hangar/service props** — pipes, ducts, sensor boxes, repair arms, compact machinery.
+
+Do not start with hero characters or the full asteroid shell. Those need controlled topology/composition.
 
 ## 6. Loop integration rule
 
