@@ -43,36 +43,36 @@ const ROOMS = {
     title: 'Build Floor',
     body: 'Forge works here: UI fabrication, interaction passes, scene construction, and the hands-on production lane.',
     camera: [0, 8.9, 12.4],
-    target: [-9.1, 0.9, 0.0],
+    target: [-12.45, 0.9, -0.25],
     accent: COLORS.gold,
-    pos: [-9.25, 0, 0.05],
+    pos: [-12.75, 0, -0.25],
     label: 'BUILD'
   },
   review: {
     title: 'Review Chamber',
     body: 'Sentinel owns this room. Coral containment rings mark QA, safety checks, regressions, and work that needs a sharper eye.',
     camera: [0, 8.9, 12.4],
-    target: [9.1, 0.9, -0.15],
+    target: [12.45, 0.9, -0.45],
     accent: COLORS.coral,
-    pos: [9.25, 0, -0.15],
+    pos: [12.75, 0, -0.45],
     label: 'REVIEW'
   },
   deploy: {
     title: 'Deploy Dock',
     body: 'Quartermaster stages releases here. Green-lit launch rails show what is ready to ship, publish, or route into production.',
     camera: [0, 8.9, 12.4],
-    target: [9.35, 0.92, -7.35],
+    target: [12.65, 0.92, -10.55],
     accent: COLORS.green,
-    pos: [9.45, 0, -7.45],
+    pos: [12.85, 0, -10.65],
     label: 'DEPLOY'
   },
   observatory: {
     title: 'Observatory',
     body: 'Prospector watches the signal room: research, memory, requirements, references, and the weird clues hiding in the noise.',
     camera: [0, 8.9, 12.4],
-    target: [-9.35, 0.95, -7.35],
+    target: [-12.65, 0.95, -10.55],
     accent: COLORS.violet,
-    pos: [-9.45, 0, -7.45],
+    pos: [-12.85, 0, -10.65],
     label: 'OBSERVATORY'
   }
 };
@@ -147,7 +147,7 @@ const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
 const fixedCameraOffset = new THREE.Vector3(0, 7.8, 14.0);
-const facilityBounds = { minX: -11.2, maxX: 11.2, minZ: -8.7, maxZ: 2.8 };
+const facilityBounds = { minX: -14.4, maxX: 14.4, minZ: -12.4, maxZ: 3.4 };
 
 function mat(color, options = {}) {
   return new THREE.MeshStandardMaterial({
@@ -245,14 +245,14 @@ function buildOffice() {
 }
 
 function buildShell() {
-  const floor = new THREE.Mesh(new THREE.PlaneGeometry(22.5, 17.5), mat(COLORS.floor, { roughness: 0.62, metalness: 0.28 }));
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(30, 25), mat(COLORS.floor, { roughness: 0.62, metalness: 0.28 }));
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
   root.add(floor);
 
   // Paneled metal floor with glass tech trenches.
-  for (let x = -9.0; x <= 9.0; x += 1.8) {
-    for (let z = -6.8; z <= 6.0; z += 1.55) {
+  for (let x = -13.5; x <= 13.5; x += 1.8) {
+    for (let z = -10.6; z <= 7.0; z += 1.55) {
       const panel = box('floor panel', [1.65, 0.025, 1.34], [x, 0.018, z], mat(0x121a2c, { roughness: 0.48, metalness: 0.48 }));
       panel.castShadow = false;
       const edges = new THREE.LineSegments(new THREE.EdgesGeometry(panel.geometry), new THREE.LineBasicMaterial({ color: 0x26344f, transparent: true, opacity: 0.42 }));
@@ -260,44 +260,44 @@ function buildShell() {
     }
   }
 
-  [-4.4, 4.4].forEach((x) => {
-    const glass = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.035, 13.6), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.45, transparent: true, opacity: 0.14, roughness: 0.12, metalness: 0.1 }));
-    glass.position.set(x, 0.04, -0.75);
+  [-6.6, 6.6].forEach((x) => {
+    const glass = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.035, 20.2), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.45, transparent: true, opacity: 0.14, roughness: 0.12, metalness: 0.1 }));
+    glass.position.set(x, 0.04, -1.8);
     glass.receiveShadow = true;
     root.add(glass);
   });
 
-  box('rear wall', [20.4, 5.7, 0.25], [0, 2.65, -7.15], mat(COLORS.wall, { roughness: 0.56, metalness: 0.22 }));
-  const leftWall = box('left wall', [14.8, 5.2, 0.2], [-10.3, 2.5, -0.55], mat(COLORS.wallDark, { roughness: 0.7, metalness: 0.18 }));
+  box('rear wall', [28.0, 6.1, 0.25], [0, 2.9, -12.05], mat(COLORS.wall, { roughness: 0.56, metalness: 0.22 }));
+  const leftWall = box('left wall', [22.0, 5.6, 0.2], [-14.8, 2.75, -1.55], mat(COLORS.wallDark, { roughness: 0.7, metalness: 0.18 }));
   leftWall.rotation.y = Math.PI / 2;
-  const rightWall = box('right wall', [14.8, 5.2, 0.2], [10.3, 2.5, -0.55], mat(COLORS.wallDark, { roughness: 0.7, metalness: 0.18 }));
+  const rightWall = box('right wall', [22.0, 5.6, 0.2], [14.8, 2.75, -1.55], mat(COLORS.wallDark, { roughness: 0.7, metalness: 0.18 }));
   rightWall.rotation.y = Math.PI / 2;
 
   buildWindowWall();
 
-  [-8.2, -5.1, -2.1, 2.1, 5.1, 8.2].forEach((x) => {
-    const strip = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.035, 14.4), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.55, transparent: true, opacity: 0.38 }));
-    strip.position.set(x, 0.055, -0.8);
+  [-12.4, -8.2, -5.1, -2.1, 2.1, 5.1, 8.2, 12.4].forEach((x) => {
+    const strip = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.035, 21.0), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.55, transparent: true, opacity: 0.38 }));
+    strip.position.set(x, 0.055, -1.9);
     root.add(strip);
   });
 
-  [-6.2, -3.1, 0, 3.1, 6.2].forEach((x) => {
-    box('wall monitor', [1.05, 0.46, 0.08], [x, 3.35, -6.96], mat(0x182742, { emissive: 0x183f60, emissiveIntensity: 0.52 }));
+  [-10.8, -5.4, 0, 5.4, 10.8].forEach((x) => {
+    box('wall monitor', [1.05, 0.46, 0.08], [x, 3.6, -11.86], mat(0x182742, { emissive: 0x183f60, emissiveIntensity: 0.52 }));
   });
 }
 
 function buildWindowWall() {
   const windowMat = mat(0x020611, { emissive: 0x061a2a, emissiveIntensity: 0.13, transparent: true, opacity: 0.52, roughness: 0.05, metalness: 0.28 });
-  const pane = box('armored hangar aperture glass', [12.8, 2.18, 0.055], [0, 2.55, -7.0], windowMat);
+  const pane = box('armored hangar aperture glass', [18.4, 2.42, 0.055], [0, 2.8, -11.9], windowMat);
   pane.castShadow = false;
   const frameMat = mat(COLORS.blackMetal, { roughness: 0.34, metalness: 0.68 });
-  box('hangar aperture top frame', [13.1, 0.18, 0.18], [0, 3.74, -6.91], frameMat);
-  box('hangar aperture bottom frame', [13.1, 0.16, 0.18], [0, 1.36, -6.91], frameMat);
-  box('hangar aperture left frame', [0.18, 1.92, 0.18], [-6.65, 2.55, -6.91], frameMat);
-  box('hangar aperture right frame', [0.18, 1.92, 0.18], [6.65, 2.55, -6.91], frameMat);
-  [-4.1, -1.35, 1.35, 4.1].forEach((x) => box('hangar aperture mullion', [0.08, 2.18, 0.12], [x, 2.55, -6.89], frameMat));
-  box('hangar cyan rim top', [12.6, 0.035, 0.08], [0, 3.92, -6.84], mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.55, transparent: true, opacity: 0.42 }));
-  box('hangar amber sill', [12.8, 0.045, 0.09], [0, 1.54, -6.84], mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.7, transparent: true, opacity: 0.55 }));
+  box('hangar aperture top frame', [18.7, 0.18, 0.18], [0, 4.08, -11.81], frameMat);
+  box('hangar aperture bottom frame', [18.7, 0.16, 0.18], [0, 1.48, -11.81], frameMat);
+  box('hangar aperture left frame', [0.18, 1.92, 0.18], [-9.45, 2.8, -11.81], frameMat);
+  box('hangar aperture right frame', [0.18, 1.92, 0.18], [9.45, 2.8, -11.81], frameMat);
+  [-6.2, -3.1, 0, 3.1, 6.2].forEach((x) => box('hangar aperture mullion', [0.08, 2.42, 0.12], [x, 2.8, -11.79], frameMat));
+  box('hangar cyan rim top', [18.1, 0.035, 0.08], [0, 4.26, -11.74], mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.55, transparent: true, opacity: 0.42 }));
+  box('hangar amber sill', [18.4, 0.045, 0.09], [0, 1.66, -11.74], mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.7, transparent: true, opacity: 0.55 }));
 }
 
 function buildCeilingAndBulkheads() {
@@ -391,19 +391,21 @@ function buildRooms() {
     group.position.set(x, 0.02, z);
     root.add(group);
 
-    const platform = box(`${room.label} platform`, [2.35, 0.18, 1.65], [0, 0.09, 0], mat(0x151d35, { roughness: 0.56, metalness: 0.12 }), group);
+    buildEmbeddedBayFrame(room.label, group, room.accent);
+
+    const platform = box(`${room.label} inset bay deck`, [3.15, 0.18, 2.18], [0, 0.09, 0.08], mat(0x151d35, { roughness: 0.56, metalness: 0.12 }), group);
     platform.userData.mode = id;
     roomMeshes.push(platform);
 
     const alcoveMat = mat(COLORS.gunmetal, { roughness: 0.48, metalness: 0.42 });
-    box(`${room.label} alcove back wall`, [2.35, 1.08, 0.08], [0, 0.78, -0.86], alcoveMat, group);
-    box(`${room.label} alcove left fin`, [0.08, 0.9, 1.12], [-1.18, 0.72, -0.32], alcoveMat, group);
-    box(`${room.label} alcove right fin`, [0.08, 0.9, 1.12], [1.18, 0.72, -0.32], alcoveMat, group);
-    box(`${room.label} alcove canopy`, [2.28, 0.08, 1.35], [0, 1.34, -0.24], mat(COLORS.blackMetal, { roughness: 0.42, metalness: 0.58 }), group);
-    box(`${room.label} alcove light bar`, [1.85, 0.035, 0.055], [0, 1.24, -0.81], mat(room.accent, { emissive: room.accent, emissiveIntensity: 0.45, transparent: true, opacity: 0.42 }), group);
+    box(`${room.label} alcove back wall`, [3.25, 1.16, 0.1], [0, 0.82, -0.98], alcoveMat, group);
+    box(`${room.label} alcove left fin`, [0.1, 1.05, 1.48], [-1.66, 0.8, -0.34], alcoveMat, group);
+    box(`${room.label} alcove right fin`, [0.1, 1.05, 1.48], [1.66, 0.8, -0.34], alcoveMat, group);
+    box(`${room.label} alcove canopy`, [3.38, 0.1, 1.75], [0, 1.46, -0.22], mat(COLORS.blackMetal, { roughness: 0.42, metalness: 0.58 }), group);
+    box(`${room.label} alcove light bar`, [2.62, 0.035, 0.055], [0, 1.32, -0.94], mat(room.accent, { emissive: room.accent, emissiveIntensity: 0.45, transparent: true, opacity: 0.42 }), group);
 
     const glow = new THREE.Mesh(
-      new THREE.PlaneGeometry(2.55, 1.85),
+      new THREE.PlaneGeometry(3.65, 2.48),
       mat(room.accent, { emissive: room.accent, emissiveIntensity: 0.32, transparent: true, opacity: 0.05, side: THREE.DoubleSide })
     );
     glow.rotation.x = -Math.PI / 2;
@@ -412,7 +414,7 @@ function buildRooms() {
     glow.userData.mode = id;
     roomMeshes.push(glow);
 
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(1.05, 0.018, 8, 72), mat(room.accent, { emissive: room.accent, emissiveIntensity: 0.55, transparent: true, opacity: 0.36 }));
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(1.36, 0.018, 8, 72), mat(room.accent, { emissive: room.accent, emissiveIntensity: 0.55, transparent: true, opacity: 0.36 }));
     ring.rotation.x = Math.PI / 2;
     ring.position.y = 0.28;
     group.add(ring);
@@ -431,6 +433,31 @@ function buildRooms() {
       glow.material.opacity = 0.035 + Math.sin(t * 1.7 + x) * 0.012;
       tower.scale.y = 0.9 + Math.sin(t * 2.1 + z) * 0.14;
     });
+  });
+}
+
+function buildEmbeddedBayFrame(label, group, accent) {
+  const rockMat = mat(COLORS.rock, { roughness: 0.94, metalness: 0.02 });
+  const steel = mat(COLORS.brushedSteel, { roughness: 0.38, metalness: 0.72 });
+  const shadow = mat(0x090d18, { roughness: 0.64, metalness: 0.28 });
+  const accentMat = mat(accent, { emissive: accent, emissiveIntensity: 0.4, transparent: true, opacity: 0.38 });
+
+  box(`${label} recessed bay shadow`, [4.25, 1.65, 0.24], [0, 0.94, -1.24], shadow, group);
+  box(`${label} embedded bay sill`, [4.05, 0.18, 0.34], [0, 0.28, -1.0], steel, group);
+  box(`${label} embedded bay upper truss`, [4.35, 0.16, 0.28], [0, 1.7, -0.84], steel, group);
+  box(`${label} embedded bay left column`, [0.18, 1.55, 0.32], [-2.12, 0.92, -0.75], steel, group);
+  box(`${label} embedded bay right column`, [0.18, 1.55, 0.32], [2.12, 0.92, -0.75], steel, group);
+  box(`${label} district depth marker`, [3.65, 0.035, 0.045], [0, 1.58, -1.05], accentMat, group);
+  box(`${label} bay floor threshold glow`, [3.75, 0.025, 0.05], [0, 0.22, 1.1], accentMat, group);
+
+  [[-2.55, 0.48, -0.72], [2.55, 0.5, -0.68], [-2.35, 1.38, -0.95], [2.35, 1.42, -0.92]].forEach(([x, y, z], index) => {
+    const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.42 + (index % 2) * 0.12, 0), rockMat);
+    rock.position.set(x, y, z);
+    rock.rotation.set(index * 0.7, index * 0.31, index * 0.44);
+    rock.scale.set(1.45, 0.82, 1.05);
+    rock.castShadow = true;
+    rock.receiveShadow = true;
+    group.add(rock);
   });
 }
 
@@ -562,10 +589,10 @@ function buildHoloTable() {
 
 function buildSignalLanes() {
   const lanes = [
-    [[0, 0.025, 0.45], [-9.25, 0.025, 0.05], COLORS.gold],
-    [[0, 0.025, 0.45], [9.25, 0.025, -0.15], COLORS.coral],
-    [[0, 0.025, 0.45], [9.45, 0.025, -7.45], COLORS.green],
-    [[0, 0.025, 0.45], [-9.45, 0.025, -7.45], COLORS.violet]
+    [[0, 0.025, 0.45], [-12.75, 0.025, -0.25], COLORS.gold],
+    [[0, 0.025, 0.45], [12.75, 0.025, -0.45], COLORS.coral],
+    [[0, 0.025, 0.45], [12.85, 0.025, -10.65], COLORS.green],
+    [[0, 0.025, 0.45], [-12.85, 0.025, -10.65], COLORS.violet]
   ];
   lanes.forEach(([from, to, color], index) => {
     const curve = new THREE.CatmullRomCurve3([
@@ -598,10 +625,10 @@ function buildRailingsAndCatwalks() {
     const centerline = box('catwalk distance glow seam', [length * 0.86, 0.018, 0.025], [mid.x, 0.205, mid.y], mat(color, { emissive: color, emissiveIntensity: 0.35, transparent: true, opacity: 0.32 }));
     centerline.rotation.y = -angle;
   };
-  catwalkSpan(-9.25, 0.05, COLORS.gold);
-  catwalkSpan(9.25, -0.15, COLORS.coral);
-  catwalkSpan(9.45, -7.45, COLORS.green);
-  catwalkSpan(-9.45, -7.45, COLORS.violet);
+  catwalkSpan(-12.75, -0.25, COLORS.gold);
+  catwalkSpan(12.75, -0.45, COLORS.coral);
+  catwalkSpan(12.85, -10.65, COLORS.green);
+  catwalkSpan(-12.85, -10.65, COLORS.violet);
   const posts = [];
   for (let i = 0; i < 36; i += 1) {
     const a = (i / 36) * Math.PI * 2;
@@ -617,7 +644,7 @@ function buildRailingsAndCatwalks() {
     const rail = box('central pit rail glow', [0.34, 0.035, 0.035], [x, 0.58, z], glowMat);
     rail.rotation.y = -a;
   }
-  [[-10.9, 0.0], [10.9, -0.2], [-9.45, -7.45], [9.45, -7.45]].forEach(([x, z]) => {
+  [[-14.1, -0.25], [14.1, -0.45], [-12.85, -10.65], [12.85, -10.65]].forEach(([x, z]) => {
     box('catwalk edge', [1.5, 0.08, 0.08], [x, 0.32, z + 0.86], railMat);
     box('catwalk edge', [1.5, 0.08, 0.08], [x, 0.32, z - 0.86], railMat);
   });
