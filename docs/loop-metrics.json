@@ -43,13 +43,21 @@
       "durationMs": 90000,
       "status": "shipped",
       "notes": "Added layered shadow shelves, mineral veins, and side fracture seams to make the asteroid cutaway read as carved rock instead of a flat frame."
+    },
+    {
+      "date": "2026-04-26",
+      "label": "remote bay maintenance drone proxy asset pass",
+      "durationMs": 105000,
+      "status": "shipped",
+      "type": "asset pipeline pass",
+      "notes": "Added hand-blocked remote bay maintenance drone proxies with bay-accent optics, clamp arms, and repair spark animation to prove the contained asset pipeline in-scene."
     }
   ],
   "stats": {
-    "count": 5,
+    "count": 6,
     "minMs": 90000,
     "maxMs": 180000,
-    "avgMs": 132000,
+    "avgMs": 127500,
     "subagents": {
       "count": 3,
       "minMs": 47000,

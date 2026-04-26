@@ -227,6 +227,7 @@ function buildOffice() {
   buildRailingsAndCatwalks();
   buildCableConduits();
   buildServiceDrones();
+  buildRemoteBayMaintenanceDrones();
   buildIndustrialSetDressing();
   buildVolumetricLightPlanes();
   buildArchitecturalRibs();
@@ -756,6 +757,45 @@ function buildServiceDrones() {
       drone.rotation.y += 0.012;
     });
   }
+}
+
+function buildRemoteBayMaintenanceDrones() {
+  // Asset pipeline pass: hand-blocked proxy for a compact remote-bay maintenance drone kit.
+  const bayIds = ['build', 'review', 'deploy', 'observatory'];
+  bayIds.forEach((id, index) => {
+    const room = ROOMS[id];
+    const [rx, , rz] = room.pos;
+    const side = rx < 0 ? 1 : -1;
+    const drone = new THREE.Group();
+    drone.name = `${room.label} remote bay maintenance drone proxy`;
+    drone.position.set(rx + side * 1.48, 1.08, rz + 0.84);
+    drone.rotation.y = side > 0 ? -0.42 : 0.42;
+    root.add(drone);
+
+    const body = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.18, 0.26), mat(0x111827, { roughness: 0.34, metalness: 0.68 }));
+    body.castShadow = true;
+    body.receiveShadow = true;
+    drone.add(body);
+
+    const nose = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.115, 0.18, 16), mat(COLORS.brushedSteel, { roughness: 0.28, metalness: 0.76 }));
+    nose.rotation.x = Math.PI / 2;
+    nose.position.z = -0.2;
+    nose.castShadow = true;
+    drone.add(nose);
+
+    box('remote bay drone optic slit', [0.18, 0.035, 0.018], [0, 0.025, -0.335], mat(room.accent, { emissive: room.accent, emissiveIntensity: 1.4, transparent: true, opacity: 0.82 }), drone);
+    box('remote bay drone top antenna', [0.035, 0.24, 0.035], [0.11 * side, 0.2, 0.02], mat(COLORS.brushedSteel, { roughness: 0.32, metalness: 0.82 }), drone);
+    box('remote bay drone left clamp arm', [0.05, 0.05, 0.32], [-0.22, -0.035, -0.02], mat(COLORS.brushedSteel, { roughness: 0.36, metalness: 0.78 }), drone);
+    box('remote bay drone right clamp arm', [0.05, 0.05, 0.32], [0.22, -0.035, -0.02], mat(COLORS.brushedSteel, { roughness: 0.36, metalness: 0.78 }), drone);
+    box('remote bay drone service tool glow', [0.035, 0.035, 0.22], [0.22, -0.08, -0.23], mat(room.accent, { emissive: room.accent, emissiveIntensity: 1.05, transparent: true, opacity: 0.72 }), drone);
+
+    const repairSpark = box('remote bay drone repair spark marker', [0.045, 0.045, 0.045], [side * -0.28, -0.12, -0.34], mat(room.accent, { emissive: room.accent, emissiveIntensity: 1.8, transparent: true, opacity: 0.88 }), drone);
+    animated.push((t) => {
+      drone.position.y = 1.08 + Math.sin(t * 1.35 + index) * 0.08;
+      drone.rotation.z = Math.sin(t * 0.9 + index) * 0.045;
+      repairSpark.material.opacity = 0.48 + Math.max(0, Math.sin(t * 4.2 + index)) * 0.42;
+    });
+  });
 }
 
 function buildExteriorVista() {
