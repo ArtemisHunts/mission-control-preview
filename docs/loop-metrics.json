@@ -6,7 +6,14 @@
     "writeModel": "parallel read-only subagents, serialized main-integrator writes",
     "adjustmentRule": "At 5-minute cadence, loops must stay tiny and shippable. If average run duration exceeds 240s, if Pages deploy checks pile up, or if dirty work overlaps, increase cadence or split planning/audit from implementation."
   },
-  "runs": [],
+  "runs": [
+    {
+      "date": "2026-04-25",
+      "label": "operator workstation believability pass",
+      "durationMs": null,
+      "commitPending": true
+    }
+  ],
   "stats": {
     "count": 0,
     "minMs": null,
