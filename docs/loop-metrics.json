@@ -107,13 +107,21 @@
       "status": "shipped",
       "type": "container read pass",
       "notes": "Macro outside-in pass: added wider asteroid shoulder/crown/sill masses for the pulled-back camera, nested rear cavern darkness/rim layers for depth, and district reveal lighting/glow planes so all four station bays read without flat wash."
+    },
+    {
+      "date": "2026-04-26",
+      "label": "macro facility depth and scale marker pass",
+      "durationMs": 180000,
+      "status": "shipped",
+      "type": "facility depth pass",
+      "notes": "Added layered production terraces, vertical service shafts, diagonal braces, district-to-rear conduits, distant production-window scale markers, and a longer fog falloff so the pulled-back cutaway reads as a deep asteroid facility instead of a flat room."
     }
   ],
   "stats": {
-    "count": 13,
+    "count": 14,
     "minMs": 90000,
     "maxMs": 180000,
-    "avgMs": 125385,
+    "avgMs": 129286,
     "subagents": {
       "count": 3,
       "minMs": 47000,

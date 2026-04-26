@@ -111,7 +111,7 @@ container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
-scene.fog = new THREE.Fog(COLORS.bg, 24, 92);
+scene.fog = new THREE.Fog(COLORS.bg, 22, 108);
 
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 190);
 camera.position.set(...ROOMS.overview.camera);
@@ -224,6 +224,7 @@ function buildOffice() {
   buildVerticalSliceContainer();
   buildMacroCutawayFrame();
   buildRearCavernDepthGate();
+  buildMacroFacilityDepthMarkers();
   buildMacroRevealLighting();
   buildAsteroidField();
   buildExteriorVista();
@@ -558,6 +559,58 @@ function buildRearCavernDepthGate() {
       box('macro distant service shaft silhouette', [0.24, 2.7 - i * 0.28, 0.16], [side * (9.4 - i * 1.2), 2.6, z + 0.35], steelShadow);
     });
   });
+}
+
+function buildMacroFacilityDepthMarkers() {
+  const deckMat = mat(0x0a111d, { roughness: 0.62, metalness: 0.48 });
+  const railMat = mat(0x223044, { roughness: 0.46, metalness: 0.62 });
+  const dimCyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.34, transparent: true, opacity: 0.24 });
+  const dimAmber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.28, transparent: true, opacity: 0.26 });
+
+  // Facility depth pass: repeated terraces and shafts make the four districts feel embedded in a much deeper production base.
+  [
+    [-5.8, 1.18, 25.0],
+    [-8.8, 1.72, 22.0],
+    [-12.1, 2.25, 18.2],
+    [-15.6, 2.78, 14.8]
+  ].forEach(([z, y, width], i) => {
+    box('macro facility depth terrace deck', [width, 0.08, 0.58], [0, y, z], deckMat);
+    box('macro facility depth terrace front rail', [width * 0.94, 0.035, 0.04], [0, y + 0.26, z + 0.31], i % 2 ? dimAmber : dimCyan);
+    box('macro facility depth terrace rear rail', [width * 0.86, 0.03, 0.035], [0, y + 0.22, z - 0.28], railMat);
+    [-1, 1].forEach((side) => {
+      box('macro facility vertical service shaft', [0.16, 4.15 - i * 0.35, 0.16], [side * (13.7 - i * 1.15), y + 1.65, z - 0.2], railMat);
+      const brace = box('macro facility diagonal depth brace', [0.08, 2.2, 0.08], [side * (12.65 - i * 1.05), y + 0.9, z + 0.05], deckMat);
+      brace.rotation.z = side * 0.24;
+    });
+  });
+
+  [
+    ['build', COLORS.gold, -10.8],
+    ['review', COLORS.coral, 10.8],
+    ['deploy', COLORS.green, 8.4],
+    ['observatory', COLORS.violet, -8.4]
+  ].forEach(([roomId, color, shaftX], i) => {
+    const room = ROOMS[roomId];
+    const [x, , z] = room.pos;
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(x * 0.82, 1.85, z - 0.25),
+      new THREE.Vector3((x + shaftX) * 0.45, 2.25 + i * 0.12, z - 3.4),
+      new THREE.Vector3(shaftX, 2.55 + i * 0.12, -14.6)
+    ]);
+    const conduit = new THREE.Mesh(
+      new THREE.TubeGeometry(curve, 28, 0.022, 8, false),
+      mat(color, { emissive: color, emissiveIntensity: 0.3, transparent: true, opacity: 0.22 })
+    );
+    conduit.name = `macro ${room.label.toLowerCase()} district depth conduit`;
+    root.add(conduit);
+  });
+
+  for (let i = 0; i < 18; i += 1) {
+    const x = -10.2 + (i % 9) * 2.55;
+    const z = -13.9 - Math.floor(i / 9) * 2.25;
+    const y = 2.15 + (i % 3) * 0.42;
+    box('macro distant production window scale marker', [0.16, 0.055, 0.035], [x, y, z], i % 2 ? dimAmber : dimCyan);
+  }
 }
 
 function buildMacroRevealLighting() {
