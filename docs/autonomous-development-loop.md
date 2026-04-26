@@ -27,7 +27,22 @@ The target spec is not decorative. Every loop should map its work to one or more
 
 ## 2. Loop contract
 
-Each autonomous loop must do one meaningful pass. Do not churn tiny cosmetic edits unless they support a larger fidelity goal.
+Each autonomous loop should now be a **macro pass**, not a tiny tweak. Progress was too slow when every run changed one small detail. A good loop should move one whole visual pillar enough that Michael can see the difference immediately.
+
+Default budget:
+
+- **60–90 minutes per macro pass** instead of short micro-passes.
+- **2–4 coordinated changes** are allowed when they support one visual outcome.
+- One commit is still preferred, but the commit may span camera, lighting, shell, and depth if they are all part of the same composition goal.
+
+Macro-pass examples:
+
+- **Untrap + reveal pass:** camera, FOV, station visibility, fog, base fill lighting.
+- **Container read pass:** asteroid border silhouette, cross-section mass, cut planes, rear darkness, scale markers.
+- **Lighting rebuild pass:** ambient balance, key/rim/practical lights, emissive tuning, fog/readability.
+- **Facility depth pass:** background decks, service shafts, hangar layers, distant silhouettes, station separation.
+
+Still avoid random grab-bag edits. The unit of work is bigger, but it must have one clear visual thesis.
 
 Required loop sequence:
 
@@ -42,15 +57,17 @@ Required loop sequence:
    - Choose one high-impact area from the fidelity bar.
    - State the chosen gap before coding.
 
-3. **Implement one coherent pass**
+3. **Implement one coherent macro pass**
    - Examples:
+     - wide camera + station reveal pass
+     - asteroid container + cut-plane pass
+     - lighting + fog readability pass
+     - facility depth + station separation pass
      - architectural shell pass
      - central holo-table pass
      - room physicalization pass
-     - operator/avatar pass
-     - concept-to-3D asset pass
-     - material/lighting pass
-     - exterior vista/scale pass
+     - concept-to-3D asset pass, only after container/framing/lighting are strong
+   - 2–4 coordinated edits are allowed if they serve the same visual thesis.
    - Avoid random scattered tweaks.
 
 4. **Smoke test locally**
