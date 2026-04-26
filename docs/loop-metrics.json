@@ -36,13 +36,20 @@
       "label": "foreground asteroid cutaway frame pass",
       "durationMs": 90000,
       "notes": "Added heavy foreground/side/upper asteroid cutaway framing so the fixed camera reads like looking into a carved facility."
+    },
+    {
+      "date": "2026-04-26",
+      "label": "cutaway rock strata material pass",
+      "durationMs": 90000,
+      "status": "shipped",
+      "notes": "Added layered shadow shelves, mineral veins, and side fracture seams to make the asteroid cutaway read as carved rock instead of a flat frame."
     }
   ],
   "stats": {
-    "count": 4,
+    "count": 5,
     "minMs": 90000,
     "maxMs": 180000,
-    "avgMs": 142500,
+    "avgMs": 132000,
     "subagents": {
       "count": 3,
       "minMs": 47000,

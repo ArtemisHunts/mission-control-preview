@@ -407,6 +407,32 @@ function buildForegroundCutawayFrame() {
   [-10.8, -5.4, 0, 5.4, 10.8].forEach((x) => {
     box('cutaway maintenance glint', [0.06, 0.035, 0.42], [x, 0.74, 6.7], amber);
   });
+
+  const seamMat = mat(0x2c2531, { roughness: 0.98, metalness: 0.01 });
+  const mineralMat = mat(0x3d3143, { emissive: 0x19111c, emissiveIntensity: 0.18, roughness: 0.88, metalness: 0.03 });
+
+  for (let i = 0; i < 9; i += 1) {
+    const x = -12.8 + i * 3.2;
+    const ledge = box('foreground cutaway layered strata shelf', [2.35 + (i % 3) * 0.28, 0.045, 0.075], [x, 0.92 + (i % 2) * 0.09, 6.64 + Math.sin(i) * 0.12], seamMat);
+    ledge.rotation.y = Math.sin(i * 1.7) * 0.16;
+
+    const vein = box('foreground cutaway mineral vein', [1.25 + (i % 2) * 0.42, 0.024, 0.045], [x + 0.32, 1.08 + (i % 3) * 0.08, 6.58 + Math.cos(i) * 0.1], mineralMat);
+    vein.rotation.y = -0.22 + (i % 4) * 0.11;
+  }
+
+  for (let i = 0; i < 7; i += 1) {
+    const x = -11.6 + i * 3.85;
+    const ceilingSeam = box('upper cutaway compressed rock seam', [1.7 + (i % 2) * 0.52, 0.035, 0.06], [x, 4.86 + Math.sin(i * 0.8) * 0.1, -8.02 + Math.cos(i) * 0.18], seamMat);
+    ceilingSeam.rotation.y = 0.18 - (i % 3) * 0.14;
+  }
+
+  for (let i = 0; i < 6; i += 1) {
+    const z = 4.55 - i * 2.45;
+    [-1, 1].forEach((side) => {
+      const sideSeam = box('side cutaway vertical fracture seam', [0.045, 0.82 + (i % 2) * 0.28, 0.07], [side * 14.02, 1.48 + (i % 3) * 0.42, z], seamMat);
+      sideSeam.rotation.z = side * (0.08 + i * 0.015);
+    });
+  }
 }
 
 function buildAsteroidField() {
