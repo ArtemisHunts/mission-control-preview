@@ -41,7 +41,7 @@ Immediate impression:
 
 Scale correction from Michael: the facility should feel **large — borderline massive**. Individual stations should read as small parts of a much larger asteroid base, not as evenly spaced kiosks in a compact diorama. Separation, negative space, catwalk distance, background structures, and exterior hangar depth should do more of the work than extra HUD.
 
-Current container priority from Michael: the scene should read as if the viewer is looking into a **vertical slice of a production base carved through an asteroid**. Build the outside container first: heavy irregular asteroid borders, exposed cut planes, foreground sill/crown, rear cavern darkness, and lighting that reveals silhouettes instead of flattening everything. Pause further interior element work until the container and lighting are convincing.
+Current container priority from Michael: the scene should read as if the viewer is looking into a **vertical slice of a production base carved through an asteroid**. Build the outside container first: heavy irregular asteroid borders, exposed cut planes, foreground sill/crown, rear cavern darkness, and lighting that reveals silhouettes instead of flattening everything. The default camera should be pulled far enough back to see the whole cutaway container before interior detail. Pause further interior element work until the container, wide framing, and lighting are convincing.
 
 Composition:
 

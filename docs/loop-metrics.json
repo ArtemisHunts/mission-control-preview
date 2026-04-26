@@ -75,13 +75,21 @@
       "status": "shipped",
       "type": "composition pass",
       "notes": "Reprioritized outside-in work: added heavier vertical-slice asteroid masses, exposed cut planes, jagged borders, sediment seams, rear cavern darkness, and lowered ambient lighting with stronger rim/practical lights."
+    },
+    {
+      "date": "2026-04-26",
+      "label": "wide vertical-slice camera pass",
+      "durationMs": 90000,
+      "status": "shipped",
+      "type": "composition pass",
+      "notes": "Pulled the fixed front-facing camera much farther back with a wider FOV/far plane so the asteroid cutaway container reads before interior details."
     }
   ],
   "stats": {
-    "count": 9,
+    "count": 10,
     "minMs": 90000,
     "maxMs": 180000,
-    "avgMs": 127778,
+    "avgMs": 124000,
     "subagents": {
       "count": 3,
       "minMs": 47000,
