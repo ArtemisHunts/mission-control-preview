@@ -61,11 +61,14 @@ Required loop sequence:
    - live GitHub Pages markers if relevant
    - current app.js / CSS structure
 
-2. **Route through Game Studio**
+2. **Actively apply Game Studio before coding**
    - Start with `game-studio` classification.
    - Default route: `web-game-foundations` → `three-webgl-game` → `web-3d-asset-pipeline` → `game-playtest`.
    - Add `game-ui-frontend` when UI/HUD/labels change.
    - Declare pass type before coding: `composition`, `lighting`, `asset-pipeline`, `UI`, `performance`, or `playtest-fix`.
+   - Write a pre-code Game Studio application note before editing runtime files.
+   - Use the note to define camera/readability target, render/material/fog changes, modular asset stance, UI stance, and playtest proof.
+   - If implementation drifts, stop and revise the note before continuing.
 
 3. **Pick the largest gap**
    - Compare current site against `target-design-spec.md`.

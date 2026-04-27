@@ -66,6 +66,13 @@ if (requireVisual) {
       skillFocus: /^Skill focus:\s*\S+/mi.test(text),
       assetPipelineStance: /^Asset pipeline stance:\s*(primitive-blockout|modular-GLB-planned|GLB-integrated|not-applicable)\b/mi.test(text),
       playtestStatus: /^Playtest status:\s*(screenshot-captured|screenshot-blocked|needs-human-browser-check)\b/mi.test(text),
+      preCodeApplication: /^Pre-code Game Studio application:/mi.test(text)
+        && /^- game-studio:\s*\S+/mi.test(text)
+        && /^- web-game-foundations:\s*\S+/mi.test(text)
+        && /^- three-webgl-game:\s*\S+/mi.test(text)
+        && /^- web-3d-asset-pipeline:\s*\S+/mi.test(text)
+        && /^- game-ui-frontend:\s*(applicable|not-applicable)\b/mi.test(text)
+        && /^- game-playtest:\s*\S+/mi.test(text),
       verdictCloser: /^North-star verdict:\s*closer\b/mi.test(text),
       containerScore: /^Container\/shell:\s*[0-5]\//mi.test(text),
       stationScore: /^Station visibility:\s*[0-5]\//mi.test(text),

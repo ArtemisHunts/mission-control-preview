@@ -58,6 +58,50 @@ Use these pass types:
 - `performance`: mesh count, loops, draw-call pressure, disposal, loaders, frame stability.
 - `playtest-fix`: screenshot/readability/interaction issue found during QA.
 
+
+## Active development protocol
+
+Game Studio is not an end-of-pass label. Use it before and during implementation.
+
+Every non-trivial Mission Control pass must produce a short **pre-code skill application note** before editing runtime files. This can live in the visual review draft, implementation notes, or the work log, but it must be written before code changes.
+
+Required pre-code sequence:
+
+1. **game-studio routing**
+   - Classify the task and name the specialist route.
+   - State why this is composition, lighting, asset-pipeline, UI, performance, or playtest-fix work.
+2. **web-game-foundations application**
+   - Name the state/render/input boundary touched.
+   - Decide whether this is scene structure, camera behavior, interaction, or diagnostics.
+3. **three-webgl-game application**
+   - Define the camera/readability target.
+   - Identify render graph/material/light/fog changes before writing them.
+   - State the performance risk: mesh count, loops, draw-call pressure, or none.
+4. **web-3d-asset-pipeline application**
+   - Treat even primitive geometry as future asset blockout.
+   - Name the modular kit being approximated: asteroid shell, bay wall, console island, holo-table, catwalk, operator, drone, etc.
+   - State whether the pass is still primitive-blockout or moving toward GLB/glTF.
+5. **game-ui-frontend application, if relevant**
+   - State whether HUD/labels/menus/DOM overlays changed.
+   - Keep UI low-chrome unless the task explicitly calls for UI work.
+6. **game-playtest plan**
+   - Define what screenshot/readability/camera/interaction check will prove the pass.
+   - If screenshot capture is blocked, name the public deploy check or human browser check needed.
+
+Required pre-code note format:
+
+```md
+Pre-code Game Studio application:
+- game-studio: ...
+- web-game-foundations: ...
+- three-webgl-game: ...
+- web-3d-asset-pipeline: ...
+- game-ui-frontend: applicable | not-applicable — ...
+- game-playtest: ...
+```
+
+During implementation, keep the route live. If the code starts drifting away from the pre-code note, stop and rewrite the note before continuing. That is the point: the skills shape the pass, not merely certify it afterward.
+
 ## Skill responsibilities
 
 ### game-studio
@@ -137,21 +181,22 @@ Required checks:
 A pass is not done until it has:
 
 1. A coherent visual thesis.
-2. A declared Game Studio route.
-3. A declared pass type and skill focus.
-4. Source checks:
-   - `node --check app.js`
+2. A pre-code Game Studio application note.
+3. A declared Game Studio route.
+4. A declared pass type and skill focus.
+5. Source checks:
+   - `node --check --input-type=module < app.js`
    - `git diff --check`
-5. Macro gate:
+6. Macro gate:
    - `node scripts/macro-gate.mjs --min-source-lines=120 --max-app-lines=2600 --max-mesh-constructors=70 --max-loop-markers=75`
-6. A visual review with:
+7. A visual review with:
    - screenshot path or explicit blocker
    - references benchmarked
    - Game Studio route
    - asset pipeline stance
    - lighting/readability note
    - next visual fix
-7. Clean commit and push to `ArtemisHunts/mission-control-preview`.
+8. Clean commit and push to `ArtemisHunts/mission-control-preview`.
 
 ## Current recommended route for the next scene pass
 

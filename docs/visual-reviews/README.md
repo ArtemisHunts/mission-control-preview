@@ -15,6 +15,15 @@ Pass type: composition | lighting | asset-pipeline | UI | performance | playtest
 Skill focus: ...
 Asset pipeline stance: primitive-blockout | modular-GLB-planned | GLB-integrated | not-applicable
 Playtest status: screenshot-captured | screenshot-blocked | needs-human-browser-check
+
+Pre-code Game Studio application:
+- game-studio: ...
+- web-game-foundations: ...
+- three-webgl-game: ...
+- web-3d-asset-pipeline: ...
+- game-ui-frontend: applicable | not-applicable — ...
+- game-playtest: ...
+
 North-star question: Are we actually closer to the final product with this update or not?
 North-star verdict: closer
 
@@ -27,6 +36,7 @@ Lighting/readability note:
 - Exposure/fill/key/rim/fog changes or explicit reason no lighting change was needed.
 
 Game Studio checklist:
+- pre-code skill application followed or intentionally revised before implementation.
 - three-webgl-game: camera/render/material/performance boundaries checked.
 - web-3d-asset-pipeline: modularity/scale/material/GLB-readiness checked.
 - game-playtest: screenshot/readability/interaction/performance checked or blocker recorded.
