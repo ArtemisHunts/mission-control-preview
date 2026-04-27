@@ -299,13 +299,21 @@
       "status": "shipped",
       "type": "direction correction prune/composition/performance pass",
       "notes": "Michael correction pass: kept the asteroid as a side/crown/sill proscenium, tightened the over-wide cutaway camera so the active frame is interior-dominant, moved station districts inward so operators sit inside the production hall, restored a central holo-table/tactical pit, aligned catwalks to the new bay positions, and deleted inactive legacy slab/detail function bodies to reduce app size and protect FPS. Active runtime favors fewer large architectural forms. Browser screenshot capture remained blocked/pending and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "corrective active runtime prune and interior ratio lock",
+      "durationMs": 420000,
+      "status": "shipped",
+      "type": "direction correction prune/composition/performance pass",
+      "notes": "Follow-up Michael correction: pruned active runtime calls/function bodies for wide overview translucent wash planes, the central fabrication-line micro machinery, per-room workcell props, and volumetric light cards. The current frame relies on fewer larger cutaway, bay, command-table, catwalk, and rear-depth forms; station positions remain pulled inward and the asteroid stays as side/crown/sill border. Browser screenshot capture remained blocked by policy and is documented."
     }
   ],
   "stats": {
     "count": 38,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 271081,
+    "avgMs": 275000,
     "subagents": {
       "count": 3,
       "minMs": 47000,

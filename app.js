@@ -248,14 +248,11 @@ function buildOffice() {
   buildCeilingAndBulkheads();
   buildCalibratedAsteroidProscenium();
   buildTargetCutawayMissionControl();
-  buildWideOverviewLightingScaffold();
   buildReadabilityHotfixLighting();
   buildDistantFacilityDepth();
   buildRooms();
   buildCommandHoloTableHero();
-  buildCentralFabricationLine();
   buildRailingsAndCatwalks();
-  buildVolumetricLightPlanes();
   buildOperators();
 
   const title = makeTextSprite('MISSION CONTROL', '#f8fbff', 86);
@@ -464,41 +461,6 @@ function buildCommandHoloTableHero() {
 }
 
 
-function buildWideOverviewLightingScaffold() {
-  const topFill = addLight('directional', 0xd5e3ff, 0.62, [0, 13.0, 18.0]);
-  topFill.target.position.set(0, 1.8, -5.2);
-  scene.add(topFill.target);
-  addLight('point', 0x8ebcff, 3.2, [-18.0, 6.8, 9.2], 18.5);
-  addLight('point', 0x8ebcff, 3.2, [18.0, 6.8, 9.2], 18.5);
-  addLight('point', COLORS.amber, 2.45, [-16.2, 1.2, 7.6], 14.0);
-  addLight('point', COLORS.amber, 2.45, [16.2, 1.2, 7.6], 14.0);
-
-  const beamMat = (color, opacity) => mat(color, {
-    emissive: color,
-    emissiveIntensity: 0.16,
-    transparent: true,
-    opacity,
-    side: THREE.DoubleSide,
-    roughness: 0.1,
-    metalness: 0.0
-  });
-
-  [
-    [-11.2, 2.4, 2.4, COLORS.gold, 0.035],
-    [11.2, 2.4, 2.4, COLORS.coral, 0.035],
-    [-11.4, 2.5, -8.2, COLORS.violet, 0.032],
-    [11.4, 2.5, -8.2, COLORS.green, 0.032]
-  ].forEach(([x, y, z, color, opacity], i) => {
-    const plane = new THREE.Mesh(new THREE.PlaneGeometry(5.4, 2.1), beamMat(color, opacity));
-    plane.name = 'wide overview district readability wash';
-    plane.position.set(x, y, z);
-    plane.rotation.x = -0.24;
-    plane.rotation.z = x < 0 ? -0.04 : 0.04;
-    root.add(plane);
-  });
-}
-
-
 
 function buildReadabilityHotfixLighting() {
   const coolFlood = mat(0xaecbff, {
@@ -549,49 +511,6 @@ function buildReadabilityHotfixLighting() {
 }
 
 
-function buildCentralFabricationLine() {
-  const deck = mat(0x111a2b, { roughness: 0.48, metalness: 0.58 });
-  const dark = mat(0x02050d, { roughness: 0.92, metalness: 0.12 });
-  const steel = mat(COLORS.brushedSteel, { roughness: 0.34, metalness: 0.76 });
-  const graphite = mat(0x1b2638, { roughness: 0.42, metalness: 0.68 });
-  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.22, transparent: true, opacity: 0.16 });
-  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.22, transparent: true, opacity: 0.16 });
-
-  // Performance-safe production read: a few big fabrication forms replace animated signal tracks/cables.
-  box('fabrication line central conveyor bed', [3.4, 0.24, 11.8], [0, 0.98, -2.7], deck);
-  box('fabrication line black service slot', [1.25, 0.28, 10.4], [0, 1.17, -2.85], dark);
-  box('fabrication line cyan inspection glass', [0.46, 0.045, 8.2], [0, 1.36, -3.3], cyan);
-  box('fabrication line front command bridge', [10.4, 0.28, 0.82], [0, 1.42, 2.85], graphite);
-  box('fabrication line rear assembly bridge', [13.8, 0.3, 0.92], [0, 2.08, -6.9], graphite);
-  box('fabrication line overhead crane rail left', [0.22, 0.2, 11.2], [-2.6, 3.56, -2.85], steel);
-  box('fabrication line overhead crane rail right', [0.22, 0.2, 11.2], [2.6, 3.56, -2.85], steel);
-  box('fabrication line overhead crane carriage', [5.8, 0.42, 0.82], [0, 3.34, -1.2], graphite);
-  box('fabrication line crane shadow block', [3.2, 0.78, 0.32], [0, 2.82, -1.2], dark);
-  box('fabrication line suspended component silhouette', [2.3, 0.42, 1.36], [0, 2.42, -2.05], steel);
-  box('fabrication line suspended component cyan scan edge', [1.7, 0.04, 0.055], [0, 2.68, -1.34], cyan);
-
-  const arms = [
-    ['left forward clamp arm', -4.2, 1.82, 0.4, 0.34, amber],
-    ['right forward clamp arm', 4.2, 1.82, 0.4, -0.34, cyan],
-    ['left rear clamp arm', -4.6, 2.28, -5.35, 0.42, cyan],
-    ['right rear clamp arm', 4.6, 2.28, -5.35, -0.42, amber]
-  ];
-
-  arms.forEach(([name, x, y, z, tilt, accent]) => {
-    const shoulder = box(`fabrication line ${name} shoulder block`, [0.82, 0.54, 0.82], [x, y, z], graphite);
-    shoulder.rotation.z = tilt * 0.25;
-    const boom = box(`fabrication line ${name} broad boom`, [2.05, 0.2, 0.28], [x * 0.84, y + 0.15, z - 0.12], steel);
-    boom.rotation.z = tilt;
-    boom.rotation.y = x < 0 ? -0.18 : 0.18;
-    box(`fabrication line ${name} clamp head`, [0.48, 0.36, 0.42], [x * 0.68, y + 0.04, z - 0.28], dark);
-    box(`fabrication line ${name} status edge`, [0.42, 0.035, 0.04], [x * 0.68, y + 0.28, z - 0.02], accent);
-  });
-
-  box('fabrication line left logistics deck mass', [4.4, 0.22, 5.6], [-6.9, 1.0, -2.6], graphite);
-  box('fabrication line right logistics deck mass', [4.4, 0.22, 5.6], [6.9, 1.0, -2.6], graphite);
-  box('fabrication line left logistics amber aisle', [3.2, 0.04, 0.05], [-6.9, 1.18, 0.0], amber);
-  box('fabrication line right logistics cyan aisle', [3.2, 0.04, 0.05], [6.9, 1.18, 0.0], cyan);
-}
 
 function buildRooms() {
   Object.entries(ROOMS).forEach(([id, room]) => {
@@ -636,8 +555,6 @@ function buildRooms() {
     label.material.opacity = 0.38;
     group.add(label);
 
-    buildWorkspaceProps(id, group, room.accent);
-
     // No per-room beacons, circular pads, or animated attention poles; broad bay geometry carries the read.
     glow.material.opacity = 0.035;
   });
@@ -661,47 +578,6 @@ function buildEmbeddedBayFrame(label, group, accent) {
   box(`${label} broad left carved cheek`, [0.42, 1.48, 0.42], [-2.38, 0.96, -0.82], rockMat, group);
   box(`${label} broad right carved cheek`, [0.42, 1.48, 0.42], [2.38, 0.96, -0.82], rockMat, group);
 }
-
-function buildWorkspaceProps(id, group, accent) {
-  const dark = mat(COLORS.blackMetal, { roughness: 0.44, metalness: 0.58 });
-  const hull = mat(COLORS.gunmetal, { roughness: 0.42, metalness: 0.62 });
-  const steel = mat(COLORS.brushedSteel, { roughness: 0.34, metalness: 0.74 });
-  const glass = mat(accent, { emissive: accent, emissiveIntensity: 0.46, transparent: true, opacity: 0.34 });
-
-  // Pruned the console/chair micro-kit into big production workcells. Operators still provide scale.
-  const workcell = (name, x, z, width = 1.55, depth = 0.78) => {
-    box(`${name} broad production plinth`, [width, 0.22, depth], [x, 0.35, z], dark, group);
-    box(`${name} angled machinery face`, [width * 0.82, 0.48, 0.08], [x, 0.72, z - depth * 0.38], hull, group).rotation.x = -0.08;
-    box(`${name} single readable status band`, [width * 0.64, 0.04, 0.04], [x, 0.96, z - depth * 0.44], glass, group);
-    box(`${name} front safety rail`, [width * 0.78, 0.055, 0.045], [x, 0.58, z + depth * 0.48], steel, group);
-  };
-
-  const fixture = (name, x, z, width = 1.1, height = 0.62) => {
-    box(`${name} vertical process slab`, [width, height, 0.1], [x, 0.62, z], hull, group);
-    box(`${name} black recessed work window`, [width * 0.72, height * 0.48, 0.055], [x, 0.68, z + 0.07], dark, group);
-    box(`${name} accent read line`, [width * 0.58, 0.035, 0.04], [x, 0.98, z + 0.1], glass, group);
-  };
-
-  if (id === 'build') {
-    workcell('build bay assembly bench', -0.42, 0.12, 1.8, 0.86);
-    fixture('build bay parts rack', 0.72, -0.22, 0.74, 0.82);
-    box('build bay large material crate', [0.72, 0.34, 0.5], [0.55, 0.42, 0.68], steel, group);
-  } else if (id === 'review') {
-    workcell('review bay inspection console', 0, 0.42, 1.65, 0.82);
-    fixture('review bay containment plate', 0, -0.28, 1.25, 0.94);
-  } else if (id === 'deploy') {
-    workcell('deploy bay logistics console', -0.48, 0.36, 1.52, 0.8);
-    box('deploy bay sealed airlock slab', [1.24, 0.76, 0.1], [0.48, 0.72, -0.58], dark, group);
-    box('deploy bay broad launch lane', [1.4, 0.06, 1.18], [0.18, 0.36, 0.12], glass, group);
-  } else if (id === 'observatory') {
-    workcell('observatory bay signal console', 0.4, 0.34, 1.56, 0.82);
-    fixture('observatory bay sensor wall', -0.55, -0.26, 0.9, 0.88);
-  } else if (id === 'command') {
-    workcell('command left operations island', -0.78, 0.34, 1.18, 0.72);
-    workcell('command right operations island', 0.78, 0.34, 1.18, 0.72);
-  }
-}
-
 
 
 function buildRailingsAndCatwalks() {
@@ -765,17 +641,6 @@ function buildDistantFacilityDepth() {
 
 
 
-function buildVolumetricLightPlanes() {
-  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.16, transparent: true, opacity: 0.045, side: THREE.DoubleSide, roughness: 0.1 });
-  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.15, transparent: true, opacity: 0.04, side: THREE.DoubleSide, roughness: 0.1 });
-  const shellBlue = mat(0x8ebcff, { emissive: 0x8ebcff, emissiveIntensity: 0.12, transparent: true, opacity: 0.032, side: THREE.DoubleSide, roughness: 0.1 });
-
-  // Static broad readability washes: no animated haze spam, just large interior value separation.
-  box('interior canyon left bay cool readability wash', [4.2, 2.1, 0.035], [-7.8, 2.4, -6.2], cyan);
-  box('interior canyon right bay warm readability wash', [4.2, 2.1, 0.035], [7.8, 2.4, -6.2], amber);
-  box('interior canyon rear shell low blue wash', [16.8, 2.4, 0.035], [0, 3.0, -10.15], shellBlue);
-  box('interior canyon command table glow catcher', [8.4, 1.35, 0.035], [0, 1.64, 0.2], cyan);
-}
 
 function buildOperators() {
   AGENTS.forEach((agent, index) => {
