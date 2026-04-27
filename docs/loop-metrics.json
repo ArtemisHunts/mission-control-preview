@@ -267,13 +267,21 @@
       "status": "shipped",
       "type": "direction correction prune/composition/performance pass",
       "notes": "Continued Michael correction: replaced loop-built mini bay/side machinery/gantry/roof baffle fragments with one explicit production superstructure of broad floor, wall, bay, gantry, roof, and mask forms. This keeps the calibrated asteroid proscenium as border while making the interior facility read through fewer larger architectural masses. Mesh constructor count stayed at 10 and loop markers at zero. Browser screenshot capture remained policy-blocked and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "readability hotfix lighting lock",
+      "durationMs": 900000,
+      "status": "shipped",
+      "type": "lighting hotfix pass",
+      "notes": "Emergency Game Studio lighting pass after Michael reported the landing page looked blank. Public browser check showed UI loaded but the WebGL environment was black-crushed. Raised exposure, ambient/hemisphere fill, key/rim/practical lights, fog distance, and added broad industrial work-light/witness forms so the 3D production environment reads on first frame."
     }
   ],
   "stats": {
-    "count": 33,
+    "count": 35,
     "minMs": 90000,
-    "maxMs": 420000,
-    "avgMs": 245758,
+    "maxMs": 900000,
+    "avgMs": 265000,
     "subagents": {
       "count": 3,
       "minMs": 47000,

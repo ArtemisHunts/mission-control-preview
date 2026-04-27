@@ -2,10 +2,10 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const COLORS = {
-  bg: 0x050712,
-  floor: 0x0c1224,
-  wall: 0x10182c,
-  wallDark: 0x070b17,
+  bg: 0x07101d,
+  floor: 0x111a2d,
+  wall: 0x172238,
+  wallDark: 0x0c1220,
   panel: 0x1a233a,
   metal: 0x2c3448,
   gunmetal: 0x151b28,
@@ -106,12 +106,12 @@ renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.shadowMap.enabled = false;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.82;
+renderer.toneMappingExposure = 1.42;
 container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
-scene.fog = new THREE.Fog(COLORS.bg, 12, 70);
+scene.fog = new THREE.Fog(COLORS.bg, 24, 112);
 
 const camera = new THREE.PerspectiveCamera(44, window.innerWidth / window.innerHeight, 0.1, 115);
 camera.position.set(...ROOMS.overview.camera);
@@ -203,15 +203,16 @@ function addLight(type, color, intensity, position, distance) {
 }
 
 function buildOffice() {
-  scene.add(new THREE.AmbientLight(0xb8c7e6, 0.105));
-  scene.add(new THREE.HemisphereLight(0xa9c6ff, 0x160d09, 0.4));
-  addLight('directional', 0xc2d4ff, 1.12, [5.5, 9.5, 8.5]);
-  addLight('directional', 0x365582, 0.74, [-6, 7.2, -10]);
-  addLight('point', COLORS.cyan, 6.4, [0, 1.35, 0.45], 8.4);
-  addLight('point', COLORS.amber, 4.1, [-10.4, 4.2, 5.4], 10.5);
-  addLight('point', COLORS.amber, 4.1, [10.4, 4.2, 5.4], 10.5);
-  addLight('point', 0x6ab2ff, 5.6, [0, 5.2, -10.6], 16.5);
-  addLight('point', COLORS.coral, 1.55, [4.2, 1.8, 1.2], 6.4);
+  scene.add(new THREE.AmbientLight(0xc8d8f4, 0.34));
+  scene.add(new THREE.HemisphereLight(0xc4dcff, 0x271a14, 0.92));
+  addLight('directional', 0xe8f1ff, 2.35, [6.0, 10.8, 9.5]);
+  addLight('directional', 0x86b8ff, 1.35, [-7.5, 8.4, -11.5]);
+  addLight('directional', 0xffcf8a, 0.86, [0, 5.8, 13.5]);
+  addLight('point', COLORS.cyan, 9.8, [0, 2.25, 0.45], 12.5);
+  addLight('point', COLORS.amber, 7.6, [-10.4, 4.2, 5.4], 15.0);
+  addLight('point', COLORS.amber, 7.6, [10.4, 4.2, 5.4], 15.0);
+  addLight('point', 0x8fc7ff, 9.2, [0, 5.8, -10.6], 24.0);
+  addLight('point', COLORS.coral, 3.2, [4.2, 2.2, 1.2], 9.2);
 
   buildShell();
   buildCeilingAndBulkheads();
@@ -221,6 +222,7 @@ function buildOffice() {
   buildInteriorFrameLock();
   buildBroadProductionBayBackplates();
   buildWideOverviewLightingScaffold();
+  buildReadabilityHotfixLighting();
   buildDistantFacilityDepth();
   buildRooms();
   buildCommandProcessCore();
@@ -435,6 +437,55 @@ function buildWideOverviewLightingScaffold() {
   });
 }
 
+
+
+function buildReadabilityHotfixLighting() {
+  const coolFlood = mat(0xaecbff, {
+    emissive: 0x8fc7ff,
+    emissiveIntensity: 0.72,
+    transparent: true,
+    opacity: 0.34,
+    roughness: 0.2,
+    metalness: 0.0
+  });
+  const warmFlood = mat(0xffc46b, {
+    emissive: COLORS.amber,
+    emissiveIntensity: 0.78,
+    transparent: true,
+    opacity: 0.32,
+    roughness: 0.2,
+    metalness: 0.0
+  });
+  const cyanDatum = mat(COLORS.cyan, {
+    emissive: COLORS.cyan,
+    emissiveIntensity: 0.95,
+    transparent: true,
+    opacity: 0.42,
+    roughness: 0.1,
+    metalness: 0.0
+  });
+  const readableSteel = mat(0x3b4963, {
+    emissive: 0x15243c,
+    emissiveIntensity: 0.18,
+    roughness: 0.42,
+    metalness: 0.58
+  });
+
+  // Production hotfix: public page had the environment black-crushed into the background.
+  // These are broad industrial light cards, not decorative neon: they force a readable first-frame silhouette.
+  box('readability lock overhead cool wash bar', [18.8, 0.075, 0.22], [0, 4.18, 1.65], coolFlood);
+  box('readability lock rear warm silhouette bar', [19.4, 0.09, 0.24], [0, 3.76, -9.92], warmFlood);
+  box('readability lock central cyan production spine', [0.22, 2.9, 0.075], [0, 2.24, -5.82], cyanDatum);
+  box('readability lock left bay overhead worklight', [5.6, 0.065, 0.2], [-7.25, 3.58, 0.42], coolFlood);
+  box('readability lock right bay overhead worklight', [5.6, 0.065, 0.2], [7.25, 3.58, 0.42], warmFlood);
+  box('readability lock rear plant left worklight', [5.0, 0.065, 0.2], [-7.15, 3.84, -6.98], cyanDatum);
+  box('readability lock rear plant right worklight', [5.0, 0.065, 0.2], [7.15, 3.84, -6.98], coolFlood);
+
+  // Light-colored structural witness marks make it obvious the 3D scene loaded even before screenshots are pixel-checked.
+  box('readability lock left vertical witness pier', [0.18, 3.1, 0.2], [-12.64, 2.74, -2.4], readableSteel);
+  box('readability lock right vertical witness pier', [0.18, 3.1, 0.2], [12.64, 2.74, -2.4], readableSteel);
+  box('readability lock rear factory horizon witness', [16.8, 0.16, 0.18], [0, 2.18, -10.32], readableSteel);
+}
 
 function buildPrunedDominantProductionHall() {
   const deck = mat(0x101827, { roughness: 0.5, metalness: 0.52 });
