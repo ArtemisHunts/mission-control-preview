@@ -25,9 +25,9 @@ const COLORS = {
 const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
-    body: 'A full spatial read of Mission Control: central holo-table, room clusters, visible operators, signal lanes, and deploy traffic.',
-    camera: [0, 9.25, 28.8],
-    target: [0, 1.82, -3.85],
+    body: 'A full spatial read of Mission Control: fabrication line, central holo-table, production bays, visible operators, and deploy traffic.',
+    camera: [0, 9.0, 27.6],
+    target: [0, 1.86, -3.95],
     accent: COLORS.cyan
   },
   command: {
@@ -144,7 +144,7 @@ const clickTarget = new THREE.Vector3();
 const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
-const fixedCameraOffset = new THREE.Vector3(0, 9.1, 29.8);
+const fixedCameraOffset = new THREE.Vector3(0, 8.85, 28.4);
 const facilityBounds = { minX: -14.8, maxX: 14.8, minZ: -13.6, maxZ: 4.4 };
 
 function mat(color, options = {}) {
@@ -681,74 +681,42 @@ function buildEmbeddedBayFrame(label, group, accent) {
 }
 
 function buildWorkspaceProps(id, group, accent) {
-  const screen = (x, z, w = 0.42, h = 0.32) => {
-    const s = box('workspace screen', [w, h, 0.04], [x, 0.56, z], mat(accent, { emissive: accent, emissiveIntensity: 1.05, transparent: true, opacity: 0.58 }), group);
-    s.rotation.x = -0.12;
-    return s;
+  const dark = mat(COLORS.blackMetal, { roughness: 0.44, metalness: 0.58 });
+  const hull = mat(COLORS.gunmetal, { roughness: 0.42, metalness: 0.62 });
+  const steel = mat(COLORS.brushedSteel, { roughness: 0.34, metalness: 0.74 });
+  const glass = mat(accent, { emissive: accent, emissiveIntensity: 0.46, transparent: true, opacity: 0.34 });
+
+  // Pruned the console/chair micro-kit into big production workcells. Operators still provide scale.
+  const workcell = (name, x, z, width = 1.55, depth = 0.78) => {
+    box(`${name} broad production plinth`, [width, 0.22, depth], [x, 0.35, z], dark, group);
+    box(`${name} angled machinery face`, [width * 0.82, 0.48, 0.08], [x, 0.72, z - depth * 0.38], hull, group).rotation.x = -0.08;
+    box(`${name} single readable status band`, [width * 0.64, 0.04, 0.04], [x, 0.96, z - depth * 0.44], glass, group);
+    box(`${name} front safety rail`, [width * 0.78, 0.055, 0.045], [x, 0.58, z + depth * 0.48], steel, group);
   };
-  const consoleDesk = (x, z) => {
-    const dark = mat(COLORS.blackMetal, { roughness: 0.4, metalness: 0.62 });
-    const steel = mat(COLORS.brushedSteel, { roughness: 0.34, metalness: 0.74 });
-    box('console chair kit workstation plinth', [0.78, 0.08, 0.38], [x, 0.26, z + 0.02], dark, group);
-    box('console chair kit angled desk shell', [0.72, 0.18, 0.32], [x, 0.36, z], mat(COLORS.gunmetal, { roughness: 0.42, metalness: 0.52 }), group);
-    const terminalFrame = box('console chair kit black glass terminal frame', [0.54, 0.36, 0.035], [x, 0.58, z - 0.21], dark, group);
-    terminalFrame.rotation.x = -0.12;
-    screen(x, z - 0.235, 0.44, 0.24);
-    [-0.24, 0.24].forEach((sx) => box('console chair kit support strut', [0.035, 0.28, 0.035], [x + sx, 0.42, z - 0.05], steel, group));
-    [-0.18, 0, 0.18].forEach((sx) => box('console chair kit tactile key strip', [0.055, 0.012, 0.025], [x + sx, 0.47, z - 0.09], mat(accent, { emissive: accent, emissiveIntensity: 0.82, transparent: true, opacity: 0.65 }), group));
+
+  const fixture = (name, x, z, width = 1.1, height = 0.62) => {
+    box(`${name} vertical process slab`, [width, height, 0.1], [x, 0.62, z], hull, group);
+    box(`${name} black recessed work window`, [width * 0.72, height * 0.48, 0.055], [x, 0.68, z + 0.07], dark, group);
+    box(`${name} accent read line`, [width * 0.58, 0.035, 0.04], [x, 0.98, z + 0.1], glass, group);
   };
-  const operatorStation = (x, z, rotation = 0) => {
-    const station = new THREE.Group();
-    station.position.set(x, 0, z);
-    station.rotation.y = rotation;
-    group.add(station);
-    const dark = mat(COLORS.blackMetal, { roughness: 0.42, metalness: 0.55 });
-    const steel = mat(COLORS.brushedSteel, { roughness: 0.36, metalness: 0.7 });
-    const cushion = mat(0x20293a, { roughness: 0.5, metalness: 0.28 });
-    box('console chair kit operator pedestal', [0.5, 0.09, 0.34], [0, 0.22, 0.18], dark, station);
-    box('console chair kit chair swivel base', [0.18, 0.24, 0.18], [0, 0.28, 0.16], steel, station);
-    box('console chair kit bucket seat cushion', [0.34, 0.075, 0.3], [0, 0.36, 0.15], cushion, station);
-    box('console chair kit high back shell', [0.34, 0.42, 0.055], [0, 0.58, 0.31], cushion, station);
-    box('console chair kit headrest block', [0.24, 0.095, 0.06], [0, 0.82, 0.3], dark, station);
-    box('console chair kit left arm rail', [0.06, 0.17, 0.24], [-0.23, 0.46, 0.14], steel, station);
-    box('console chair kit right arm rail', [0.06, 0.17, 0.24], [0.23, 0.46, 0.14], steel, station);
-    box('console chair kit wraparound console slab', [0.68, 0.11, 0.26], [0, 0.49, -0.26], mat(COLORS.gunmetal, { roughness: 0.36, metalness: 0.62 }), station);
-    [-0.22, 0, 0.22].forEach((sx) => {
-      const monitor = box('console chair kit angled monitor glass', [0.18, 0.18, 0.035], [sx, 0.68, -0.39], mat(accent, { emissive: accent, emissiveIntensity: 0.55, transparent: true, opacity: 0.46 }), station);
-      monitor.rotation.x = -0.22;
-    });
-    [-0.18, -0.06, 0.06, 0.18].forEach((px) => {
-      box('console chair kit data pip row', [0.035, 0.012, 0.02], [px, 0.56, -0.13], mat(accent, { emissive: accent, emissiveIntensity: 0.9, transparent: true, opacity: 0.72 }), station);
-    });
-  };
+
   if (id === 'build') {
-    operatorStation(-0.62, -0.12, 0.12);
-    consoleDesk(-0.42, 0.1);
-    box('fabrication bench', [0.9, 0.18, 0.36], [0.38, 0.31, 0.2], mat(COLORS.brushedSteel, { roughness: 0.38, metalness: 0.68 }), group);
-    [-0.05, 0.2, 0.48].forEach((x, i) => box('crate stack', [0.22, 0.18 + i * 0.07, 0.22], [x, 0.34 + i * 0.03, 0.58], mat(0x4b3a25, { roughness: 0.64, metalness: 0.12 }), group));
+    workcell('build bay assembly bench', -0.42, 0.12, 1.8, 0.86);
+    fixture('build bay parts rack', 0.72, -0.22, 0.74, 0.82);
+    box('build bay large material crate', [0.72, 0.34, 0.5], [0.55, 0.42, 0.68], steel, group);
   } else if (id === 'review') {
-    operatorStation(0, 0.45, Math.PI);
-    const chamber = new THREE.Mesh(new THREE.TorusGeometry(0.62, 0.018, 8, 72), mat(accent, { emissive: accent, emissiveIntensity: 1.25, transparent: true, opacity: 0.72 }));
-    chamber.rotation.x = Math.PI / 2;
-    chamber.position.y = 0.52;
-    group.add(chamber);
-    screen(-0.48, -0.1); screen(0.48, -0.1);
+    workcell('review bay inspection console', 0, 0.42, 1.65, 0.82);
+    fixture('review bay containment plate', 0, -0.28, 1.25, 0.94);
   } else if (id === 'deploy') {
-    operatorStation(-0.62, 0.38, -0.25);
-    box('deploy rail left', [0.08, 0.08, 1.24], [-0.34, 0.29, 0.02], mat(accent, { emissive: accent, emissiveIntensity: 0.9, transparent: true, opacity: 0.66 }), group);
-    box('deploy rail right', [0.08, 0.08, 1.24], [0.34, 0.29, 0.02], mat(accent, { emissive: accent, emissiveIntensity: 0.9, transparent: true, opacity: 0.66 }), group);
-    box('dock door', [0.86, 0.62, 0.07], [0, 0.62, -0.72], mat(COLORS.blackMetal, { roughness: 0.38, metalness: 0.62 }), group);
+    workcell('deploy bay logistics console', -0.48, 0.36, 1.52, 0.8);
+    box('deploy bay sealed airlock slab', [1.24, 0.76, 0.1], [0.48, 0.72, -0.58], dark, group);
+    box('deploy bay broad launch lane', [1.4, 0.06, 1.18], [0.18, 0.36, 0.12], glass, group);
   } else if (id === 'observatory') {
-    operatorStation(0.42, 0.38, -0.38);
-    screen(0, -0.26, 0.72, 0.38);
-    const dish = new THREE.Mesh(new THREE.ConeGeometry(0.32, 0.28, 32, 1, true), mat(accent, { emissive: accent, emissiveIntensity: 0.55, transparent: true, opacity: 0.34, side: THREE.DoubleSide }));
-    dish.position.set(-0.48, 0.58, 0.28);
-    dish.rotation.z = -0.7;
-    group.add(dish);
+    workcell('observatory bay signal console', 0.4, 0.34, 1.56, 0.82);
+    fixture('observatory bay sensor wall', -0.55, -0.26, 0.9, 0.88);
   } else if (id === 'command') {
-    operatorStation(-0.95, 0.04, Math.PI / 2);
-    operatorStation(0.95, 0.04, -Math.PI / 2);
-    consoleDesk(-0.58, 0.42); consoleDesk(0.58, 0.42);
+    workcell('command left operations island', -0.78, 0.34, 1.18, 0.72);
+    workcell('command right operations island', 0.78, 0.34, 1.18, 0.72);
   }
 }
 
@@ -839,24 +807,20 @@ function buildRailingsAndCatwalks() {
   catwalkSpan(12.75, -0.45, COLORS.coral);
   catwalkSpan(12.85, -10.65, COLORS.green);
   catwalkSpan(-12.85, -10.65, COLORS.violet);
-  const posts = [];
-  for (let i = 0; i < 12; i += 1) {
-    const a = (i / 12) * Math.PI * 2;
-    const r = 2.35;
-    const x = Math.cos(a) * r;
-    const z = 0.45 + Math.sin(a) * r;
-    posts.push([x, z]);
-    box('central pit rail post', [0.045, 0.42, 0.045], [x, 0.36, z], railMat);
-  }
-  for (let i = 0; i < posts.length; i += 1) {
-    const [x, z] = posts[i];
-    const a = Math.atan2(z - 0.45, x);
-    const rail = box('central pit rail glow', [0.34, 0.035, 0.035], [x, 0.58, z], glowMat);
-    rail.rotation.y = -a;
-  }
+
+  // Fewer large guard forms around command pit; no post loop or tiny rail necklace.
+  box('command pit front broad guard rail', [4.4, 0.16, 0.12], [0, 0.58, 2.72], railMat);
+  box('command pit rear broad guard rail', [4.4, 0.16, 0.12], [0, 0.58, -1.82], railMat);
+  box('command pit left broad guard rail', [0.12, 0.16, 3.8], [-2.52, 0.58, 0.45], railMat);
+  box('command pit right broad guard rail', [0.12, 0.16, 3.8], [2.52, 0.58, 0.45], railMat);
+  box('command pit front amber safety datum', [3.6, 0.04, 0.045], [0, 0.76, 2.58], glowMat);
+  box('command pit rear amber safety datum', [3.6, 0.04, 0.045], [0, 0.76, -1.68], glowMat);
+  box('command pit left amber safety datum', [0.045, 0.04, 2.9], [-2.36, 0.76, 0.45], glowMat);
+  box('command pit right amber safety datum', [0.045, 0.04, 2.9], [2.36, 0.76, 0.45], glowMat);
+
   [[-14.1, -0.25], [14.1, -0.45], [-12.85, -10.65], [12.85, -10.65]].forEach(([x, z]) => {
-    box('catwalk edge', [1.5, 0.08, 0.08], [x, 0.32, z + 0.86], railMat);
-    box('catwalk edge', [1.5, 0.08, 0.08], [x, 0.32, z - 0.86], railMat);
+    box('catwalk edge broad stop', [1.5, 0.08, 0.08], [x, 0.32, z + 0.86], railMat);
+    box('catwalk edge broad stop', [1.5, 0.08, 0.08], [x, 0.32, z - 0.86], railMat);
   });
 }
 
