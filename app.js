@@ -245,6 +245,13 @@ function buildOffice() {
   buildViewportBlastShutterHierarchy();
   buildExternalDockedSilhouetteNetwork();
   buildMassiveHullLoadRibs();
+  buildLayeredHabitationDeckRings();
+  buildSteppedObservationGalleryStrata();
+  buildInsetViewportSlitBands();
+  buildDeckRingLightHierarchy();
+  buildRockToHullCompressionLayers();
+  buildOuterApertureTransitScale();
+  buildDeckRingWayfindingBeacons();
   buildBaseNetworkSignalArcs();
   buildCommandLightingHierarchy();
   buildExteriorColdVistaScale();
@@ -2329,6 +2336,449 @@ function buildMassiveHullLoadRibs() {
   }
 }
 
+
+
+function buildLayeredHabitationDeckRings() {
+  const hullDark = mat(0x070c15, { roughness: 0.62, metalness: 0.58 });
+  const hullMid = mat(0x152033, { roughness: 0.5, metalness: 0.68 });
+  const rail = mat(0x2c3d55, { roughness: 0.44, metalness: 0.72 });
+  const glass = mat(0x031021, { roughness: 0.14, metalness: 0.24, transparent: true, opacity: 0.42, emissive: 0x061a32, emissiveIntensity: 0.08 });
+  const shadow = mat(0x000105, { roughness: 1.0, metalness: 0.0, transparent: true, opacity: 0.68 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.18, transparent: true, opacity: 0.15 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.16, transparent: true, opacity: 0.14 });
+
+  // North-star thesis: the command room sits inside an inhabited pressure shell with stacked deck rings, not a single cave wall.
+  // These bands are macro architecture only: readable pressure-hull strata, viewport slits, and scale marks at overview distance.
+  const deckRings = [
+    ['upper habitation deck ring left', -11.8, 6.25, -7.8, 13.2, 0.12, -0.035],
+    ['upper habitation deck ring right', 11.8, 6.25, -7.8, 13.2, 0.12, 0.035],
+    ['middle habitation deck ring left', -13.4, 4.72, -4.1, 11.4, 0.1, 0.025],
+    ['middle habitation deck ring right', 13.4, 4.72, -4.1, 11.4, 0.1, -0.025],
+    ['lower habitation deck ring left', -11.2, 2.92, -1.4, 9.8, 0.09, -0.02],
+    ['lower habitation deck ring right', 11.2, 2.92, -1.4, 9.8, 0.09, 0.02],
+    ['rear crown habitation deck ring', 0, 6.85, -15.4, 23.0, 0.1, 0],
+    ['rear lower habitation deck ring', 0, 2.05, -16.0, 19.0, 0.08, 0]
+  ];
+
+  deckRings.forEach(([name, x, y, z, width, thickness, rz], index) => {
+    const group = new THREE.Group();
+    group.name = `north-star ${name}`;
+    group.position.set(x, 0, z);
+    group.rotation.z = rz;
+    root.add(group);
+
+    const half = width * 0.5;
+    box('layered habitation ring black negative-space pocket', [width + 0.7, 0.92, 0.16], [0, y, -0.18], shadow, group);
+    box('layered habitation ring main pressure deck band', [width, thickness, 0.58], [0, y, 0.08], index % 2 ? hullDark : hullMid, group);
+    box('layered habitation ring underside shadow seam', [width * 0.92, 0.05, 0.08], [0, y - 0.22, 0.34], shadow, group);
+    box('layered habitation ring top service rail', [width * 0.86, 0.045, 0.055], [0, y + 0.22, 0.32], index % 2 ? cyan : amber, group);
+    box('layered habitation ring black-glass viewport band', [width * 0.74, 0.34, 0.045], [0, y + 0.03, 0.46], glass, group);
+    box('layered habitation ring rear pressure beam', [width * 0.8, 0.06, 0.06], [0, y + 0.38, -0.05], rail, group);
+
+    [-1, 1].forEach((side) => {
+      box('layered habitation ring side bulkhead stop', [0.12, 0.72, 0.08], [side * half, y + 0.02, 0.18], rail, group);
+      const brace = box('layered habitation ring angled support strut', [0.055, 0.74, 0.055], [side * half * 0.82, y - 0.04, 0.24], index % 2 ? hullMid : hullDark, group);
+      brace.rotation.z = side * (0.22 + index * 0.01);
+    });
+
+    for (let i = 0; i < 8; i += 1) {
+      const px = -width * 0.36 + i * (width * 0.72 / 7);
+      const viewport = box('layered habitation tiny viewport slit', [0.34, 0.035, 0.035], [px, y + 0.15 + (i % 2) * 0.08, 0.5], i % 2 ? cyan : amber, group);
+      viewport.rotation.y = -0.05 + i * 0.012;
+      box('layered habitation repeating mullion silhouette', [0.045, 0.46, 0.04], [px + 0.18, y, 0.45], i % 2 ? rail : hullDark, group);
+    }
+  });
+
+  const curvedRingSegments = [
+    [0, 5.72, 2.8, 15.8, COLORS.cyan, 0],
+    [0, 4.18, 4.1, 18.6, COLORS.amber, 0],
+    [0, 2.66, 5.25, 21.4, COLORS.cyan, 0]
+  ];
+
+  curvedRingSegments.forEach(([x, y, z, width, color], index) => {
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-width * 0.5, y, z),
+      new THREE.Vector3(-width * 0.2, y + 0.2, z - 0.62 - index * 0.16),
+      new THREE.Vector3(0, y + 0.28, z - 0.82 - index * 0.2),
+      new THREE.Vector3(width * 0.2, y + 0.2, z - 0.62 - index * 0.16),
+      new THREE.Vector3(width * 0.5, y, z)
+    ]);
+    const tube = new THREE.Mesh(new THREE.TubeGeometry(curve, 48, 0.045, 8, false), index % 2 ? hullMid : hullDark);
+    tube.name = 'north-star curved habitation deck-ring silhouette';
+    root.add(tube);
+    const glow = new THREE.Mesh(new THREE.TubeGeometry(curve, 48, 0.013, 8, false), mat(color, { emissive: color, emissiveIntensity: 0.16, transparent: true, opacity: 0.11 }));
+    glow.name = 'north-star curved habitation deck-ring low edge light';
+    root.add(glow);
+  });
+}
+
+function buildSteppedObservationGalleryStrata() {
+  const voidMat = mat(0x000106, { roughness: 1.0, metalness: 0.0 });
+  const graphite = mat(0x111b2a, { roughness: 0.5, metalness: 0.66 });
+  const darkSteel = mat(0x060a12, { roughness: 0.64, metalness: 0.56 });
+  const rail = mat(0x2b3d56, { roughness: 0.44, metalness: 0.72 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.16, transparent: true, opacity: 0.13 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.15, transparent: true, opacity: 0.12 });
+  const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.13, transparent: true, opacity: 0.11 });
+  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.13, transparent: true, opacity: 0.11 });
+
+  // Offset gallery strata create parallax between exterior aperture and interior districts, like nested rooms in the references.
+  const galleries = [
+    [-18.8, 5.5, 1.6, 4.8, 2.4, amber, -0.08],
+    [18.8, 5.5, 1.6, 4.8, 2.4, cyan, 0.08],
+    [-19.4, 4.2, -5.2, 5.5, 2.7, violet, -0.05],
+    [19.4, 4.2, -5.2, 5.5, 2.7, green, 0.05],
+    [-17.2, 3.0, -11.8, 4.4, 2.1, cyan, -0.035],
+    [17.2, 3.0, -11.8, 4.4, 2.1, amber, 0.035]
+  ];
+
+  galleries.forEach(([x, y, z, depth, height, accent, rz], index) => {
+    const side = x < 0 ? -1 : 1;
+    const group = new THREE.Group();
+    group.name = 'north-star stepped observation gallery stratum';
+    group.position.set(x, 0, z);
+    group.rotation.z = rz;
+    root.add(group);
+
+    box('stepped gallery black inhabited void', [0.22, height, depth], [0, y, 0], voidMat, group);
+    box('stepped gallery foreground armor jamb', [0.18, height * 1.05, 0.16], [side * -0.06, y, depth * 0.5], index % 2 ? graphite : darkSteel, group);
+    box('stepped gallery rear armor jamb', [0.14, height * 0.82, 0.12], [side * -0.12, y + 0.02, -depth * 0.5], rail, group);
+    box('stepped gallery balcony slab', [0.72, 0.08, depth * 0.78], [side * 0.18, y - height * 0.35, 0], index % 2 ? darkSteel : graphite, group);
+    box('stepped gallery warm/cool observation rail', [0.055, 0.04, depth * 0.68], [side * 0.52, y - height * 0.18, 0], accent, group);
+    box('stepped gallery upper service raceway', [0.08, 0.06, depth * 0.64], [side * 0.34, y + height * 0.38, -0.05], rail, group);
+
+    for (let i = 0; i < 6; i += 1) {
+      const zz = -depth * 0.35 + i * (depth * 0.14);
+      box('stepped gallery receding pressure mullion', [0.045, height * 0.46, 0.04], [side * 0.4, y - height * 0.03, zz], i % 2 ? rail : darkSteel, group);
+      box('stepped gallery tiny inhabited viewport', [0.042, 0.13, 0.28], [side * 0.5, y + (i % 3) * 0.18, zz + 0.08], i % 2 ? accent : graphite, group);
+    }
+  });
+
+  const balconyFigures = [
+    [-19.1, 4.82, 2.1, -1],
+    [19.1, 4.82, 2.1, 1],
+    [-19.7, 3.55, -5.8, -1],
+    [19.7, 3.55, -5.8, 1],
+    [-17.4, 2.32, -12.1, -1],
+    [17.4, 2.32, -12.1, 1]
+  ];
+
+  balconyFigures.forEach(([x, y, z, side], index) => {
+    const crew = new THREE.Group();
+    crew.name = 'north-star tiny observation gallery crew scale silhouette';
+    crew.position.set(x + side * 0.44, y, z);
+    crew.scale.setScalar(index > 3 ? 0.58 : 0.68);
+    root.add(crew);
+    box('gallery crew torso black silhouette', [0.12, 0.28, 0.07], [0, 0.22, 0], darkSteel, crew);
+    box('gallery crew helmet black silhouette', [0.14, 0.12, 0.09], [0, 0.45, 0], darkSteel, crew);
+    box('gallery crew visor pinline', [0.08, 0.028, 0.025], [0, 0.46, 0.05], index % 2 ? cyan : amber, crew);
+    box('gallery crew foot shadow', [0.24, 0.022, 0.15], [0, 0.02, 0], voidMat, crew);
+  });
+}
+
+function buildInsetViewportSlitBands() {
+  const black = mat(0x000105, { roughness: 1.0, metalness: 0.0, transparent: true, opacity: 0.74 });
+  const glass = mat(0x020813, { roughness: 0.14, metalness: 0.26, transparent: true, opacity: 0.45, emissive: 0x06182d, emissiveIntensity: 0.08 });
+  const hull = mat(0x101827, { roughness: 0.5, metalness: 0.65 });
+  const seam = mat(0x283850, { roughness: 0.46, metalness: 0.72 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.16, transparent: true, opacity: 0.12 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.14, transparent: true, opacity: 0.11 });
+
+  // Long, quiet viewport slits read cleaner than many equal-bright LEDs and match the north-star control-room language.
+  const slitBands = [
+    [-10.8, 5.72, -18.4, 8.8, 0.02],
+    [10.8, 5.72, -18.4, 8.8, -0.02],
+    [-8.4, 4.62, -23.0, 7.0, -0.03],
+    [8.4, 4.62, -23.0, 7.0, 0.03],
+    [0, 3.82, -28.0, 10.2, 0],
+    [0, 6.62, -27.2, 12.0, 0]
+  ];
+
+  slitBands.forEach(([x, y, z, width, rz], index) => {
+    const group = new THREE.Group();
+    group.name = 'north-star inset viewport slit band';
+    group.position.set(x, 0, z);
+    group.rotation.z = rz;
+    root.add(group);
+
+    box('inset viewport slit black recess', [width + 0.6, 0.72, 0.08], [0, y, -0.08], black, group);
+    box('inset viewport slit upper armor lip', [width, 0.075, 0.08], [0, y + 0.34, 0.02], hull, group);
+    box('inset viewport slit lower armor lip', [width * 0.94, 0.065, 0.075], [0, y - 0.34, 0.02], hull, group);
+    box('inset viewport continuous dark glass strip', [width * 0.82, 0.22, 0.04], [0, y, 0.06], glass, group);
+    box('inset viewport sparse edge glint', [width * 0.42, 0.03, 0.035], [0, y + 0.18, 0.1], index % 2 ? cyan : amber, group);
+
+    for (let i = 0; i < 5; i += 1) {
+      const px = -width * 0.36 + i * (width * 0.18);
+      box('inset viewport heavy vertical divider', [0.05, 0.56, 0.04], [px, y, 0.08], i % 2 ? seam : hull, group);
+    }
+  });
+
+  const quietMasks = [
+    [-15.8, 6.2, -21.2, 6.4, 1.2, -0.08],
+    [15.8, 6.2, -21.2, 6.4, 1.2, 0.08],
+    [-15.0, 3.1, -23.8, 5.8, 1.0, 0.06],
+    [15.0, 3.1, -23.8, 5.8, 1.0, -0.06]
+  ];
+
+  quietMasks.forEach(([x, y, z, w, h, rz]) => {
+    const mask = new THREE.Mesh(new THREE.PlaneGeometry(w, h), black);
+    mask.name = 'north-star viewport hierarchy dark quiet mask';
+    mask.position.set(x, y, z);
+    mask.rotation.z = rz;
+    root.add(mask);
+  });
+}
+
+function buildDeckRingLightHierarchy() {
+  const coolBand = mat(0x79b9ff, { emissive: 0x79b9ff, emissiveIntensity: 0.1, transparent: true, opacity: 0.018, side: THREE.DoubleSide });
+  const warmBand = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.08, transparent: true, opacity: 0.014, side: THREE.DoubleSide });
+  const commandMask = mat(0x000105, { roughness: 1.0, metalness: 0.0, transparent: true, opacity: 0.28, side: THREE.DoubleSide });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.18, transparent: true, opacity: 0.12 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.16, transparent: true, opacity: 0.1 });
+
+  // Lighting pass: deck rings are secondary/tertiary; command table remains the brightest organized read.
+  const broadBands = [
+    [0, 5.9, -9.4, 28.0, 2.0, coolBand, -0.06],
+    [0, 4.3, -12.6, 24.0, 1.8, warmBand, -0.04],
+    [0, 2.75, -6.2, 24.0, 1.6, coolBand, -0.08],
+    [-14.8, 3.6, 0.8, 7.8, 1.5, warmBand, -0.18],
+    [14.8, 3.6, 0.8, 7.8, 1.5, warmBand, 0.18]
+  ];
+
+  broadBands.forEach(([x, y, z, w, h, material, rx], index) => {
+    const plane = new THREE.Mesh(new THREE.PlaneGeometry(w, h), material.clone());
+    plane.name = 'north-star layered deck-ring atmospheric light band';
+    plane.position.set(x, y, z);
+    plane.rotation.x = rx;
+    plane.rotation.z = index % 2 ? 0.012 : -0.012;
+    root.add(plane);
+    const baseOpacity = plane.material.opacity;
+    animated.push((t) => { plane.material.opacity = baseOpacity + Math.sin(t * 0.22 + index) * 0.003; });
+  });
+
+  const commandCutouts = [
+    [-10.2, 2.0, 2.6, 6.8, 1.6],
+    [10.2, 2.0, 2.6, 6.8, 1.6],
+    [-10.8, 2.2, -8.9, 6.5, 1.6],
+    [10.8, 2.2, -8.9, 6.5, 1.6]
+  ];
+
+  commandCutouts.forEach(([x, y, z, w, h], index) => {
+    const mask = new THREE.Mesh(new THREE.PlaneGeometry(w, h), commandMask.clone());
+    mask.name = 'north-star deck-ring light hierarchy station matte';
+    mask.position.set(x, y, z);
+    mask.rotation.x = -0.22;
+    mask.rotation.z = x < 0 ? -0.04 : 0.04;
+    root.add(mask);
+    mask.renderOrder = 2;
+  });
+
+  addLight('point', COLORS.cyan, 0.95, [0, 2.8, 0.4], 11.0);
+  addLight('point', 0x85bdff, 0.8, [0, 5.5, -18.0], 28.0);
+  addLight('point', COLORS.amber, 0.55, [-18.0, 5.8, 4.8], 18.0);
+  addLight('point', COLORS.amber, 0.55, [18.0, 5.8, 4.8], 18.0);
+
+  for (let i = 0; i < 20; i += 1) {
+    const x = -18.0 + i * 1.9;
+    const y = i % 2 ? 5.46 : 3.96;
+    const z = i % 2 ? -9.1 : -5.4;
+    const tick = box('north-star deck-ring sparse inhabited light tick', [0.14, 0.032, 0.035], [x, y, z + Math.sin(i) * 0.15], i % 2 ? cyan : amber);
+    tick.rotation.y = -0.12 + i * 0.012;
+  }
+}
+
+
+function buildRockToHullCompressionLayers() {
+  const rockDark = mat(0x07050a, { roughness: 1.0, metalness: 0.0 });
+  const cutRock = mat(0x312735, { roughness: 0.96, metalness: 0.01 });
+  const hull = mat(0x121b2a, { roughness: 0.5, metalness: 0.66 });
+  const shadow = mat(0x000105, { roughness: 1.0, metalness: 0.0, transparent: true, opacity: 0.72 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.14, transparent: true, opacity: 0.11 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.13, transparent: true, opacity: 0.1 });
+
+  // Rock skin -> pressure hull -> inhabited decks. These compression layers make the container read as a thick cross-section.
+  const sideLayers = [
+    [-26.2, 3.6, 5.8, 0.36, 8.2, 8.4, -0.08, rockDark],
+    [-24.8, 3.65, 4.2, 0.24, 7.4, 7.4, -0.05, cutRock],
+    [-23.4, 3.7, 2.7, 0.16, 6.6, 6.2, -0.03, hull],
+    [26.2, 3.6, 5.8, 0.36, 8.2, 8.4, 0.08, rockDark],
+    [24.8, 3.65, 4.2, 0.24, 7.4, 7.4, 0.05, cutRock],
+    [23.4, 3.7, 2.7, 0.16, 6.6, 6.2, 0.03, hull],
+    [-25.4, 4.4, -8.8, 0.3, 6.2, 6.8, -0.04, rockDark],
+    [-23.8, 4.35, -9.8, 0.18, 5.5, 5.8, -0.025, hull],
+    [25.4, 4.4, -8.8, 0.3, 6.2, 6.8, 0.04, rockDark],
+    [23.8, 4.35, -9.8, 0.18, 5.5, 5.8, 0.025, hull]
+  ];
+
+  sideLayers.forEach(([x, y, z, w, h, d, rz, material], index) => {
+    const layer = box('north-star rock-to-hull compression side layer', [w, h, d], [x, y, z], material);
+    layer.rotation.z = rz;
+    layer.rotation.y = x < 0 ? 0.07 : -0.07;
+    if (index % 3 === 2) {
+      const rim = box('north-star rock-to-hull inner pressure edge light', [0.055, h * 0.68, 0.05], [x * 0.99, y, z + d * 0.38], index % 2 ? cyan : amber);
+      rim.rotation.z = rz;
+      rim.rotation.y = layer.rotation.y;
+    }
+  });
+
+  const crownLayers = [
+    [0, 10.7, 1.6, 52.0, 0.78, 9.8, rockDark],
+    [0, 9.95, 0.2, 47.0, 0.48, 8.0, cutRock],
+    [0, 9.28, -1.4, 42.0, 0.32, 6.8, hull],
+    [0, 8.85, -8.8, 36.0, 0.26, 5.2, hull]
+  ];
+
+  crownLayers.forEach(([x, y, z, width, height, depth, material], index) => {
+    const crown = box('north-star rock-to-hull overhead compression layer', [width, height, depth], [x, y, z], material);
+    crown.rotation.z = index % 2 ? 0.01 : -0.01;
+    box('north-star overhead compression dark undercut', [width * 0.72, 0.08, 0.1], [x, y - height * 0.62, z + depth * 0.28], shadow);
+  });
+
+  const sillLayers = [
+    [0, -2.45, 10.5, 52.0, 0.72, 3.2, rockDark],
+    [0, -1.65, 10.0, 46.0, 0.42, 2.6, cutRock],
+    [0, -0.86, 9.48, 40.0, 0.26, 1.8, hull]
+  ];
+
+  sillLayers.forEach(([x, y, z, width, height, depth, material], index) => {
+    const sill = box('north-star rock-to-hull foreground compression sill layer', [width, height, depth], [x, y, z], material);
+    sill.rotation.z = index % 2 ? 0.008 : -0.008;
+    box('north-star foreground compression sliced shadow seam', [width * 0.78, 0.06, 0.08], [x, y + height * 0.6, z - depth * 0.34], shadow);
+  });
+
+  for (let i = 0; i < 18; i += 1) {
+    const x = -22.0 + i * 2.58;
+    const chip = new THREE.Mesh(new THREE.DodecahedronGeometry(0.24 + (i % 4) * 0.04, 0), i % 2 ? cutRock : rockDark);
+    chip.name = 'north-star compression layer exposed aggregate chip';
+    chip.position.set(x, 8.74 + Math.sin(i * 0.5) * 0.08, 4.8 - (i % 6) * 1.06);
+    chip.rotation.set(i * 0.2, i * 0.34, i * 0.18);
+    chip.scale.set(1.5, 0.62, 0.9);
+    chip.castShadow = true;
+    chip.receiveShadow = true;
+    root.add(chip);
+  }
+}
+
+function buildOuterApertureTransitScale() {
+  const dark = mat(0x060a12, { roughness: 0.64, metalness: 0.54 });
+  const hull = mat(0x172235, { roughness: 0.48, metalness: 0.68 });
+  const shadow = mat(0x000105, { roughness: 1.0, metalness: 0.0, transparent: true, opacity: 0.58 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.14, transparent: true, opacity: 0.12 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.13, transparent: true, opacity: 0.11 });
+  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.12, transparent: true, opacity: 0.1 });
+  const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.12, transparent: true, opacity: 0.1 });
+
+  // Transit pods and gantries outside the aperture add inhabited scale without moving into interior prop work.
+  const podTracks = [
+    [-21.5, 1.25, 7.4, -12.0, 2.0, 5.8, amber],
+    [21.5, 1.25, 7.4, 12.0, 2.0, 5.8, cyan],
+    [-18.6, 3.15, -13.0, -7.0, 3.6, -19.6, violet],
+    [18.6, 3.15, -13.0, 7.0, 3.6, -19.6, green]
+  ];
+
+  podTracks.forEach(([x1, y1, z1, x2, y2, z2, material], index) => {
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(x1, y1, z1),
+      new THREE.Vector3((x1 + x2) * 0.5, (y1 + y2) * 0.5 + 0.35, (z1 + z2) * 0.5),
+      new THREE.Vector3(x2, y2, z2)
+    ]);
+    const track = new THREE.Mesh(new THREE.TubeGeometry(curve, 30, 0.028, 8, false), hull);
+    track.name = 'north-star outer aperture transit guide track';
+    root.add(track);
+    const lowGlow = new THREE.Mesh(new THREE.TubeGeometry(curve, 30, 0.01, 8, false), material);
+    lowGlow.name = 'north-star outer aperture transit guide low light';
+    root.add(lowGlow);
+
+    const podPoint = curve.getPoint(0.56);
+    const pod = new THREE.Group();
+    pod.name = 'north-star tiny exterior transit pod scale cue';
+    pod.position.copy(podPoint);
+    pod.rotation.y = index % 2 ? -0.18 : 0.18;
+    pod.scale.setScalar(index > 1 ? 0.68 : 0.78);
+    root.add(pod);
+    box('tiny exterior transit pod dark body', [0.52, 0.18, 0.2], [0, 0, 0], dark, pod);
+    box('tiny exterior transit pod glass face', [0.24, 0.12, 0.035], [0.16, 0.02, 0.12], material, pod);
+    box('tiny exterior transit pod coupling shadow', [0.16, 0.08, 0.16], [-0.34, 0, 0], shadow, pod);
+  });
+
+  const maintenancePlatforms = [
+    [-22.4, 1.55, 2.8, -1],
+    [22.4, 1.55, 2.8, 1],
+    [-20.8, 2.75, -8.8, -1],
+    [20.8, 2.75, -8.8, 1]
+  ];
+
+  maintenancePlatforms.forEach(([x, y, z, side], index) => {
+    const platform = new THREE.Group();
+    platform.name = 'north-star outer aperture maintenance balcony scale cue';
+    platform.position.set(x, 0, z);
+    root.add(platform);
+    box('outer aperture maintenance balcony slab', [1.25, 0.06, 0.38], [0, y, 0], index % 2 ? hull : dark, platform);
+    box('outer aperture maintenance balcony handrail', [1.0, 0.035, 0.04], [0, y + 0.28, side * 0.18], index % 2 ? cyan : amber, platform);
+    box('outer aperture maintenance balcony back post', [0.06, 0.54, 0.05], [side * 0.5, y + 0.2, -side * 0.12], hull, platform);
+    box('outer aperture maintenance balcony shadow pocket', [0.82, 0.04, 0.08], [0.08, y - 0.1, -side * 0.18], shadow, platform);
+  });
+}
+
+
+function buildDeckRingWayfindingBeacons() {
+  const dark = mat(0x050812, { roughness: 0.66, metalness: 0.48 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.18, transparent: true, opacity: 0.13 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.16, transparent: true, opacity: 0.12 });
+  const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.14, transparent: true, opacity: 0.11 });
+  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.14, transparent: true, opacity: 0.11 });
+
+  // Sparse wayfinding beacons clarify inhabited deck-ring scale while avoiding another layer of noisy neon strips.
+  const beaconRows = [
+    [-18.2, 5.84, -7.6, 8, amber, -0.04],
+    [18.2, 5.84, -7.6, 8, cyan, 0.04],
+    [-17.0, 4.34, -4.0, 7, violet, -0.03],
+    [17.0, 4.34, -4.0, 7, green, 0.03],
+    [-14.2, 2.74, -1.2, 6, amber, -0.02],
+    [14.2, 2.74, -1.2, 6, cyan, 0.02]
+  ];
+
+  beaconRows.forEach(([x, y, z, count, material, rz], row) => {
+    for (let i = 0; i < count; i += 1) {
+      const zz = z - i * 0.72;
+      const yy = y + (i % 2) * 0.08;
+      const base = box('deck-ring wayfinding dark beacon housing', [0.12, 0.08, 0.08], [x, yy, zz], dark);
+      base.rotation.z = rz;
+      base.rotation.y = x < 0 ? 0.08 : -0.08;
+      const light = box('deck-ring wayfinding sparse low beacon', [0.055, 0.038, 0.035], [x * 0.995, yy + 0.02, zz + 0.08], material);
+      light.rotation.z = rz;
+      light.rotation.y = base.rotation.y;
+    }
+  });
+
+  [-9.6, -4.8, 0, 4.8, 9.6].forEach((x, index) => {
+    const marker = box('central deck-ring alignment fiducial visible in overview', [0.18, 0.035, 0.08], [x, 5.08 + (index % 2) * 0.08, -7.2], index % 2 ? cyan : amber);
+    marker.rotation.y = -0.1 + index * 0.05;
+  });
+
+  const quietSignage = [
+    [-17.8, 6.18, -3.4, amber],
+    [17.8, 6.18, -3.4, cyan],
+    [-16.4, 4.72, -9.8, violet],
+    [16.4, 4.72, -9.8, green],
+    [-12.0, 3.2, -14.2, cyan],
+    [12.0, 3.2, -14.2, amber]
+  ];
+
+  quietSignage.forEach(([x, y, z, material], index) => {
+    const sign = box('deck-ring quiet inhabited-zone sign plate', [0.42, 0.08, 0.04], [x, y, z], dark);
+    sign.rotation.y = x < 0 ? 0.12 : -0.12;
+    sign.rotation.z = x < 0 ? -0.035 : 0.035;
+    const pip = box('deck-ring quiet inhabited-zone sign pip', [0.08, 0.035, 0.035], [x + (x < 0 ? 0.12 : -0.12), y + 0.01, z + 0.04], material);
+    pip.rotation.y = sign.rotation.y;
+  });
+
+  [-6.4, 0, 6.4].forEach((x, index) => {
+    const bridgeCue = box('deck-ring center bridge depth cue', [0.5, 0.045, 0.055], [x, 4.55 + index * 0.06, -11.6 - index * 0.8], index % 2 ? cyan : amber);
+    bridgeCue.rotation.y = -0.08 + index * 0.08;
+    box('deck-ring center bridge shadow notch', [0.34, 0.03, 0.04], [x + 0.12, 4.46 + index * 0.06, -11.45 - index * 0.8], dark);
+  });
+}
 
 function buildBaseNetworkSignalArcs() {
   const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.18, transparent: true, opacity: 0.13 });
