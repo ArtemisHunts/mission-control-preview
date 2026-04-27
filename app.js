@@ -26,8 +26,8 @@ const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
     body: 'A full spatial read of Mission Control: central holo-table, room clusters, visible operators, signal lanes, and deploy traffic.',
-    camera: [0, 16.4, 47.2],
-    target: [0, 1.78, -3.65],
+    camera: [0, 14.9, 44.6],
+    target: [0, 1.62, -3.1],
     accent: COLORS.cyan
   },
   command: {
@@ -111,9 +111,9 @@ container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
-scene.fog = new THREE.Fog(COLORS.bg, 28, 146);
+scene.fog = new THREE.Fog(COLORS.bg, 22, 118);
 
-const camera = new THREE.PerspectiveCamera(61, window.innerWidth / window.innerHeight, 0.1, 200);
+const camera = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 190);
 camera.position.set(...ROOMS.overview.camera);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -146,7 +146,7 @@ const clickTarget = new THREE.Vector3();
 const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
-const fixedCameraOffset = new THREE.Vector3(0, 14.8, 51.2);
+const fixedCameraOffset = new THREE.Vector3(0, 13.4, 48.2);
 const facilityBounds = { minX: -14.8, maxX: 14.8, minZ: -13.6, maxZ: 4.4 };
 
 function mat(color, options = {}) {
@@ -226,6 +226,7 @@ function buildOffice() {
   buildEnclosedProductionShellStack();
   buildInteriorCommandGalleryCompression();
   buildSealedProductionMegashell();
+  buildInteriorProductionCanyonHierarchy();
   buildRearCavernDepthGate();
   buildMacroFacilityDepthMarkers();
   buildWideOverviewLightingScaffold();
@@ -748,6 +749,91 @@ function buildSealedProductionMegashell() {
   box('sealed production megashell right lower compression cheek', [2.6, 1.2, 0.36], [10.8, 1.08, 4.55], hull);
 }
 
+
+function buildInteriorProductionCanyonHierarchy() {
+  const hull = mat(0x121d30, { roughness: 0.5, metalness: 0.66 });
+  const darkHull = mat(0x050a13, { roughness: 0.72, metalness: 0.36 });
+  const pressure = mat(0x1b2940, { roughness: 0.42, metalness: 0.72 });
+  const shadow = mat(0x000207, { roughness: 1.0, metalness: 0.0 });
+  const glass = mat(0x06182a, { roughness: 0.12, metalness: 0.26, transparent: true, opacity: 0.24, emissive: 0x071f36, emissiveIntensity: 0.08 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.2, transparent: true, opacity: 0.15 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.2, transparent: true, opacity: 0.15 });
+  const gold = mat(COLORS.gold, { emissive: COLORS.gold, emissiveIntensity: 0.17, transparent: true, opacity: 0.13 });
+  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.15, transparent: true, opacity: 0.12 });
+  const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.15, transparent: true, opacity: 0.12 });
+
+  // Interior-first production canyon: one big hierarchy element that owns the hero shot without prop spam.
+  box('production canyon central command spine base', [3.2, 0.28, 12.4], [0, 0.92, -2.9], pressure);
+  box('production canyon central recessed service trench', [1.6, 0.16, 10.2], [0, 1.08, -3.1], shadow);
+  box('production canyon central cyan routing lane', [0.18, 0.04, 9.2], [0, 1.22, -3.2], cyan);
+  box('production canyon command island rear riser', [7.8, 0.42, 1.3], [0, 1.18, -1.45], darkHull);
+  box('production canyon command island front riser', [9.6, 0.34, 1.05], [0, 1.0, 2.74], darkHull);
+  box('production canyon command island glass front fascia', [6.8, 0.58, 0.065], [0, 1.42, 2.18], glass);
+  box('production canyon command island amber lip', [7.4, 0.04, 0.045], [0, 1.72, 2.08], amber);
+
+  const tiers = [
+    ['left build amphitheater tier', -7.3, 1.04, 1.6, 6.2, gold],
+    ['right review amphitheater tier', 7.3, 1.04, 1.6, 6.2, amber],
+    ['left observatory rear tier', -7.4, 1.52, -6.35, 5.6, violet],
+    ['right deploy rear tier', 7.4, 1.52, -6.35, 5.6, green]
+  ];
+
+  tiers.forEach(([name, x, y, z, width, light], index) => {
+    box(`production canyon ${name} broad stepped floor`, [width, 0.24, 1.25], [x, y, z], hull);
+    box(`production canyon ${name} undercroft shadow`, [width * 0.84, 0.6, 0.12], [x, y + 0.2, z - 0.7], shadow);
+    box(`production canyon ${name} identity rail`, [width * 0.74, 0.04, 0.045], [x, y + 0.3, z + 0.68], light);
+    box(`production canyon ${name} rear machinery cap`, [width * 0.72, 0.18, 0.44], [x, y + 0.58, z - 0.54], darkHull);
+    box(`production canyon ${name} side compression pier`, [0.22, 1.18, 0.24], [x + (index % 2 ? -width * 0.46 : width * 0.46), y + 0.64, z], pressure);
+  });
+
+  const gantries = [
+    [0, 2.55, 1.15, 17.8, amber],
+    [0, 2.88, -4.15, 18.6, cyan],
+    [0, 3.18, -8.15, 16.4, amber]
+  ];
+
+  gantries.forEach(([x, y, z, width, light], index) => {
+    box('production canyon transverse operations gantry', [width, 0.16, 0.46], [x, y, z], index % 2 ? hull : pressure);
+    box('production canyon gantry underside dark reveal', [width * 0.86, 0.1, 0.12], [x, y - 0.18, z + 0.14], shadow);
+    box('production canyon gantry controlled light edge', [width * 0.74, 0.035, 0.04], [x, y + 0.12, z + 0.28], light);
+  });
+
+  [-9.9, 9.9].forEach((x, index) => {
+    box('production canyon sidewall stacked machinery mass lower', [1.2, 1.8, 5.4], [x, 1.7, -1.3], darkHull);
+    box('production canyon sidewall stacked machinery mass upper', [1.0, 2.1, 4.8], [x, 3.25, -5.9], pressure);
+    box('production canyon sidewall vertical black service void', [0.14, 2.8, 3.6], [x * 0.982, 2.55, -3.65], shadow);
+    box('production canyon sidewall restrained service glow', [0.04, 2.1, 0.05], [x * 0.94, 2.85, -2.35], index ? cyan : amber);
+  });
+
+  const lowerPlant = [
+    [-4.8, 0.48, -0.38, 3.6, cyan],
+    [4.8, 0.48, -0.38, 3.6, amber],
+    [-4.8, 0.52, -5.55, 3.2, amber],
+    [4.8, 0.52, -5.55, 3.2, cyan]
+  ];
+
+  lowerPlant.forEach(([x, y, z, width, light], index) => {
+    box('production canyon lower visible logistics floor slab', [width, 0.12, 0.72], [x, y, z], darkHull);
+    box('production canyon lower logistics black cut', [width * 0.74, 0.48, 0.1], [x, y + 0.28, z - 0.38], shadow);
+    box('production canyon lower logistics controlled light', [width * 0.58, 0.035, 0.04], [x, y + 0.56, z + 0.36], light);
+    box('production canyon lower logistics vertical load post', [0.12, 0.92, 0.12], [x + (index % 2 ? -width * 0.38 : width * 0.38), y + 0.62, z - 0.04], pressure);
+  });
+
+  box('production canyon rear sealed blast shutter cap', [13.8, 1.18, 0.24], [0, 4.08, -10.08], pressure);
+  box('production canyon rear slit reduced exterior aperture', [7.6, 0.36, 0.06], [0, 3.42, -9.86], shadow);
+  box('production canyon rear slit armored blue glint', [7.2, 0.035, 0.04], [0, 3.64, -9.78], cyan);
+  box('production canyon foreground interior floor occluder', [18.4, 0.28, 0.84], [0, 0.88, 5.54], darkHull);
+  box('production canyon foreground interior cyan datum', [12.8, 0.035, 0.045], [0, 1.08, 5.06], cyan);
+  box('production canyon left foreground side cheek', [2.8, 1.05, 0.38], [-9.4, 1.34, 4.62], pressure);
+  box('production canyon right foreground side cheek', [2.8, 1.05, 0.38], [9.4, 1.34, 4.62], pressure);
+  box('production canyon left overhead occluding baffle', [4.6, 0.32, 1.2], [-6.8, 4.55, 3.1], darkHull);
+  box('production canyon right overhead occluding baffle', [4.6, 0.32, 1.2], [6.8, 4.55, 3.1], darkHull);
+  box('production canyon center overhead mission spine glow', [0.12, 0.035, 7.8], [0, 4.22, -1.3], cyan);
+  box('production canyon rear upper amber production datum', [10.4, 0.035, 0.045], [0, 4.62, -7.4], amber);
+  box('production canyon left asteroid-border cover plate', [2.4, 0.2, 0.48], [-12.2, 4.82, 1.4], hull);
+  box('production canyon right asteroid-border cover plate', [2.4, 0.2, 0.48], [12.2, 4.82, 1.4], hull);
+}
+
 function buildRearCavernDepthGate() {
   const voidMat = mat(0x010207, { roughness: 1.0, metalness: 0.0 });
   const steelShadow = mat(0x070d16, { roughness: 0.62, metalness: 0.5 });
@@ -1192,21 +1278,15 @@ function buildIndustrialSetDressing() {
 }
 
 function buildVolumetricLightPlanes() {
-  const beams = [
-    [-5.6, 2.85, -6.65, COLORS.cyan],
-    [0, 2.95, -6.65, COLORS.amber],
-    [5.6, 2.85, -6.65, COLORS.cyan]
-  ];
-  beams.forEach(([x, y, z, color], i) => {
-    const beam = new THREE.Mesh(
-      new THREE.PlaneGeometry(2.8, 4.4),
-      mat(color, { emissive: color, emissiveIntensity: 0.22, transparent: true, opacity: 0.055, side: THREE.DoubleSide, roughness: 0.1 })
-    );
-    beam.position.set(x, y, z + 0.08);
-    beam.rotation.x = -0.22;
-    root.add(beam);
-    animated.push((t) => { beam.material.opacity = 0.04 + Math.sin(t * 0.8 + i) * 0.015; });
-  });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.16, transparent: true, opacity: 0.045, side: THREE.DoubleSide, roughness: 0.1 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.15, transparent: true, opacity: 0.04, side: THREE.DoubleSide, roughness: 0.1 });
+  const shellBlue = mat(0x8ebcff, { emissive: 0x8ebcff, emissiveIntensity: 0.12, transparent: true, opacity: 0.032, side: THREE.DoubleSide, roughness: 0.1 });
+
+  // Static broad readability washes: no animated haze spam, just large interior value separation.
+  box('interior canyon left bay cool readability wash', [4.2, 2.1, 0.035], [-7.8, 2.4, -6.2], cyan);
+  box('interior canyon right bay warm readability wash', [4.2, 2.1, 0.035], [7.8, 2.4, -6.2], amber);
+  box('interior canyon rear shell low blue wash', [16.8, 2.4, 0.035], [0, 3.0, -10.15], shellBlue);
+  box('interior canyon command table glow catcher', [8.4, 1.35, 0.035], [0, 1.64, 0.2], cyan);
 }
 
 function buildTowers() {
