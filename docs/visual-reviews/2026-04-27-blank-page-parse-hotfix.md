@@ -30,6 +30,7 @@ What moved closer:
 - Fixed the actual blank-page cause: a module parse error prevented the Three.js app from booting.
 - Hardened `scripts/macro-gate.mjs` so future passes fail on ES module syntax errors.
 - Updated the loop docs to use the stricter module syntax check.
+- Added an `app.js` cache-busting query in `index.html` so browsers do not keep executing the broken cached module.
 
 What is still off:
 - Need post-push public browser confirmation that the canvas is created and scene renders.

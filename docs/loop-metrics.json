@@ -283,13 +283,21 @@
       "status": "shipped",
       "type": "playtest-fix pass",
       "notes": "Fixed the actual blank landing-page cause: app.js had a missing comma in ROOMS.overview, so the ES module failed before creating the Three.js canvas. Hardened macro-gate and loop docs to use node --check --input-type=module < app.js because node --check app.js returned false confidence in this environment."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "app module cache-bust hotfix",
+      "durationMs": 180000,
+      "status": "shipped",
+      "type": "playtest-fix pass",
+      "notes": "Added app.js version query to index.html after the parse fix so browsers and GitHub Pages edge cache do not keep serving the broken module to the landing page."
     }
   ],
   "stats": {
-    "count": 36,
+    "count": 37,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 271143,
+    "avgMs": 268611,
     "subagents": {
       "count": 3,
       "minMs": 47000,
