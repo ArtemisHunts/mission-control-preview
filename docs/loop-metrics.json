@@ -123,13 +123,21 @@
       "status": "shipped",
       "type": "outside-in composition pass",
       "notes": "Pulled the default composition farther outside the asteroid slice, added a wider exterior asteroid proscenium with cut-face survey marks, expanded rear production void layers, and rebuilt wide-overview readability lighting so the full container and four districts read at once."
+    },
+    {
+      "date": "2026-04-26",
+      "label": "mine-mouth aperture and parallax depth pass",
+      "durationMs": 300000,
+      "status": "shipped",
+      "type": "outside-in composition pass",
+      "notes": "Raised the macro gate to 450 source lines and shipped a larger outside-in pass: pushed the default camera/fog farther out, added an irregular mine-mouth asteroid aperture with occlusion masks, expanded cut-plane datum layers, deepened rear/side production galleries, and added controlled rim/readability lighting for all four districts."
     }
   ],
   "stats": {
-    "count": 16,
+    "count": 17,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 148667,
+    "avgMs": 158125,
     "subagents": {
       "count": 3,
       "minMs": 47000,

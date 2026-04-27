@@ -26,8 +26,8 @@ const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
     body: 'A full spatial read of Mission Control: central holo-table, room clusters, visible operators, signal lanes, and deploy traffic.',
-    camera: [0, 25.4, 66.8],
-    target: [0, 2.35, -3.9],
+    camera: [0, 27.6, 74.8],
+    target: [0, 2.55, -4.35],
     accent: COLORS.cyan
   },
   command: {
@@ -111,9 +111,9 @@ container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
-scene.fog = new THREE.Fog(COLORS.bg, 34, 168);
+scene.fog = new THREE.Fog(COLORS.bg, 42, 218);
 
-const camera = new THREE.PerspectiveCamera(66, window.innerWidth / window.innerHeight, 0.1, 260);
+const camera = new THREE.PerspectiveCamera(69, window.innerWidth / window.innerHeight, 0.1, 320);
 camera.position.set(...ROOMS.overview.camera);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -146,8 +146,8 @@ const clickTarget = new THREE.Vector3();
 const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
-const fixedCameraOffset = new THREE.Vector3(0, 23.05, 70.7);
-const facilityBounds = { minX: -15.2, maxX: 15.2, minZ: -13.8, maxZ: 4.2 };
+const fixedCameraOffset = new THREE.Vector3(0, 25.05, 78.85);
+const facilityBounds = { minX: -16.4, maxX: 16.4, minZ: -15.6, maxZ: 4.8 };
 
 function mat(color, options = {}) {
   return new THREE.MeshStandardMaterial({
@@ -224,11 +224,16 @@ function buildOffice() {
   buildVerticalSliceContainer();
   buildMacroCutawayFrame();
   buildExteriorObservationShell();
+  buildMineMouthOuterAperture();
+  buildApertureDepthOcclusionMasks();
   buildVerticalSliceSurveyMarks();
+  buildCutawayThicknessDatumStack();
   buildRearProductionVoidExpansion();
+  buildProductionCavernParallaxScales();
   buildRearCavernDepthGate();
   buildMacroFacilityDepthMarkers();
   buildWideOverviewLightingScaffold();
+  buildWideReadabilityRimStack();
   buildMacroRevealLighting();
   buildAsteroidField();
   buildExteriorVista();
@@ -779,6 +784,451 @@ function buildWideOverviewLightingScaffold() {
     plane.rotation.z = x < 0 ? -0.04 : 0.04;
     root.add(plane);
     animated.push((t) => { plane.material.opacity = opacity + Math.sin(t * 0.5 + i) * 0.006; });
+  });
+}
+
+
+function buildMineMouthOuterAperture() {
+  const basalt = mat(0x05040a, { roughness: 1.0, metalness: 0.0 });
+  const pressureRock = mat(0x0e0a12, { roughness: 1.0, metalness: 0.0 });
+  const cutFace = mat(0x3a2e3b, { roughness: 0.94, metalness: 0.01 });
+  const shadow = mat(0x010106, { roughness: 1.0, metalness: 0.0 });
+  const coldDust = mat(0x23334a, { emissive: 0x0f2237, emissiveIntensity: 0.12, transparent: true, opacity: 0.22, roughness: 0.92 });
+  const amberDust = mat(0x4a3218, { emissive: COLORS.amber, emissiveIntensity: 0.12, transparent: true, opacity: 0.16, roughness: 0.88 });
+
+  // Mine-mouth pass: a bigger, rougher outside contour sits in front of the room shell.
+  // The camera should read this as a carved asteroid face with the base exposed inside it.
+  const apertureMasses = [
+    ['mine-mouth far left exterior asteroid mass', [4.1, 12.4, 38.0], [-27.2, 3.55, -3.6], -0.055],
+    ['mine-mouth far right exterior asteroid mass', [4.1, 12.4, 38.0], [27.2, 3.55, -3.6], 0.055],
+    ['mine-mouth high overburden asteroid cap', [51.0, 2.45, 24.5], [0, 9.95, -4.5], -0.006],
+    ['mine-mouth lower foreground broken lip', [50.0, 1.7, 5.45], [0, -1.82, 8.88], 0.006],
+    ['mine-mouth back pressure shadow lintel', [43.0, 1.05, 4.6], [0, 7.15, -18.15], 0],
+    ['mine-mouth back lower occluding shelf', [39.5, 0.62, 3.4], [0, 0.05, -17.55], 0]
+  ];
+
+  apertureMasses.forEach(([name, size, position, rz]) => {
+    const mesh = box(name, size, position, basalt);
+    mesh.rotation.z = rz;
+  });
+
+  const cheekFaces = [
+    [-24.3, 3.8, 6.6, 7.8, -0.09],
+    [24.3, 3.8, 6.6, 7.8, 0.09],
+    [-25.0, 4.05, -1.8, 8.8, 0.055],
+    [25.0, 4.05, -1.8, 8.8, -0.055],
+    [-23.5, 4.38, -11.3, 6.8, -0.035],
+    [23.5, 4.38, -11.3, 6.8, 0.035],
+    [-21.2, 5.05, -18.25, 4.2, 0.025],
+    [21.2, 5.05, -18.25, 4.2, -0.025]
+  ];
+
+  cheekFaces.forEach(([x, y, z, depth, rz], i) => {
+    const face = box('mine-mouth broad exposed blasted cut face', [0.34, 7.4 - (i % 4) * 0.58, depth], [x, y, z], i % 3 === 0 ? pressureRock : cutFace);
+    face.rotation.z = rz;
+    face.rotation.y = x < 0 ? 0.07 : -0.07;
+  });
+
+  for (let i = 0; i < 44; i += 1) {
+    const z = 10.2 - i * 0.78;
+    [-1, 1].forEach((side) => {
+      const scale = 0.96 + (i % 7) * 0.14;
+      const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(scale, 0), i % 5 === 0 ? cutFace : basalt);
+      rock.name = 'mine-mouth exterior broken side boulder';
+      rock.position.set(side * (23.6 + Math.sin(i * 0.51) * 1.35), 0.15 + (i % 9) * 0.86, z + Math.cos(i * 0.33) * 0.7);
+      rock.rotation.set(i * 0.22, side * i * 0.36, i * 0.47);
+      rock.scale.set(1.9 + (i % 5) * 0.18, 1.05 + (i % 4) * 0.18, 1.78 + (i % 3) * 0.22);
+      rock.castShadow = true;
+      rock.receiveShadow = true;
+      root.add(rock);
+    });
+  }
+
+  for (let i = 0; i < 38; i += 1) {
+    const x = -23.4 + i * 1.25;
+    const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.88 + (i % 6) * 0.12, 0), i % 4 === 0 ? pressureRock : basalt);
+    rock.name = 'mine-mouth overhead fractured crown tooth';
+    rock.position.set(x + Math.sin(i * 0.82) * 0.28, 8.64 + Math.sin(i * 0.37) * 0.66, 5.6 - (i % 8) * 1.38);
+    rock.rotation.set(i * 0.31, i * 0.26, i * 0.21);
+    rock.scale.set(1.9 + (i % 4) * 0.16, 0.86 + (i % 5) * 0.13, 1.6);
+    rock.castShadow = true;
+    rock.receiveShadow = true;
+    root.add(rock);
+  }
+
+  for (let i = 0; i < 36; i += 1) {
+    const x = -22.8 + i * 1.3;
+    const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.74 + (i % 5) * 0.13, 0), i % 3 === 0 ? pressureRock : basalt);
+    rock.name = 'mine-mouth foreground parallax sill boulder';
+    rock.position.set(x + Math.cos(i * 0.76) * 0.4, -0.18 + (i % 4) * 0.12, 10.15 + Math.sin(i * 0.6) * 0.75);
+    rock.rotation.set(i * 0.44, i * 0.18, i * 0.3);
+    rock.scale.set(2.15, 0.72 + (i % 3) * 0.16, 1.34 + (i % 2) * 0.16);
+    rock.castShadow = true;
+    rock.receiveShadow = true;
+    root.add(rock);
+  }
+
+  [-20.8, -15.4, -10.2, -5.1, 0, 5.1, 10.2, 15.4, 20.8].forEach((x, i) => {
+    const slit = box('mine-mouth foreground shadow slot between rock and glass', [1.55 + (i % 2) * 0.5, 0.07, 0.12], [x, 0.46 + (i % 3) * 0.04, 9.28], shadow);
+    slit.rotation.y = -0.14 + i * 0.035;
+  });
+
+  for (let i = 0; i < 10; i += 1) {
+    const plane = new THREE.Mesh(new THREE.PlaneGeometry(3.7 + (i % 3) * 0.8, 1.25 + (i % 2) * 0.42), i % 2 ? coldDust : amberDust);
+    plane.name = 'mine-mouth exterior dust pocket separating shell from room';
+    plane.position.set(-19.2 + i * 4.25, 1.15 + (i % 4) * 0.72, 8.35 - (i % 3) * 1.24);
+    plane.rotation.x = -0.18;
+    plane.rotation.z = -0.08 + (i % 5) * 0.04;
+    root.add(plane);
+    animated.push((t) => { plane.material.opacity = (i % 2 ? 0.18 : 0.12) + Math.sin(t * 0.28 + i) * 0.018; });
+  }
+}
+
+
+function buildApertureDepthOcclusionMasks() {
+  const black = mat(0x000105, { roughness: 1.0, metalness: 0.0, transparent: true, opacity: 0.74 });
+  const softBlue = mat(0x0a1728, { emissive: 0x102b48, emissiveIntensity: 0.14, transparent: true, opacity: 0.22, roughness: 0.9 });
+  const softAmber = mat(0x211509, { emissive: COLORS.amber, emissiveIntensity: 0.1, transparent: true, opacity: 0.18, roughness: 0.9 });
+  const seam = mat(0x352a35, { roughness: 0.96, metalness: 0.02 });
+
+  // Dark masks intentionally occlude the rectangular room edges so the full frame reads as an irregular rock aperture.
+  const occluders = [
+    ['left aperture occlusion wedge upper', [-23.2, 6.55, 1.8], [0.72, 3.0, 11.0], -0.13],
+    ['left aperture occlusion wedge lower', [-23.0, 1.15, 5.6], [0.82, 2.1, 8.6], 0.1],
+    ['left aperture occlusion wedge rear', [-22.0, 5.2, -13.2], [0.62, 2.8, 7.4], -0.06],
+    ['right aperture occlusion wedge upper', [23.2, 6.55, 1.8], [0.72, 3.0, 11.0], 0.13],
+    ['right aperture occlusion wedge lower', [23.0, 1.15, 5.6], [0.82, 2.1, 8.6], -0.1],
+    ['right aperture occlusion wedge rear', [22.0, 5.2, -13.2], [0.62, 2.8, 7.4], 0.06],
+    ['top aperture occlusion shelf left', [-12.4, 8.36, 1.7], [13.2, 0.74, 9.6], -0.03],
+    ['top aperture occlusion shelf right', [12.4, 8.36, 1.7], [13.2, 0.74, 9.6], 0.03],
+    ['front aperture occlusion sill left', [-12.6, -0.24, 9.9], [13.8, 0.56, 1.34], 0.02],
+    ['front aperture occlusion sill right', [12.6, -0.24, 9.9], [13.8, 0.56, 1.34], -0.02]
+  ];
+
+  occluders.forEach(([name, position, size, rz]) => {
+    const mask = box(name, size, position, black);
+    mask.rotation.z = rz;
+    mask.renderOrder = 2;
+  });
+
+  for (let i = 0; i < 14; i += 1) {
+    const z = 8.8 - i * 1.45;
+    [-1, 1].forEach((side) => {
+      const slot = box('aperture depth alternating side shadow slot', [0.08, 0.34 + (i % 3) * 0.08, 1.0 + (i % 2) * 0.36], [side * 22.42, 1.18 + (i % 6) * 0.76, z], i % 2 ? softBlue : softAmber);
+      slot.rotation.z = side * (0.08 + i * 0.006);
+      slot.rotation.y = side * 0.08;
+    });
+  }
+
+  for (let i = 0; i < 16; i += 1) {
+    const x = -20.0 + i * 2.65;
+    const ceilingCrack = box('aperture top negative-space crack', [1.3 + (i % 4) * 0.35, 0.045, 0.08], [x, 8.05 + Math.sin(i * 0.5) * 0.05, 6.4 - (i % 6) * 1.12], black);
+    ceilingCrack.rotation.y = -0.2 + (i % 5) * 0.1;
+    const lipHighlight = box('aperture top thin sliced edge catchlight', [1.05 + (i % 3) * 0.28, 0.035, 0.06], [x + 0.32, 7.9, 6.08 - (i % 6) * 1.12], i % 2 ? softBlue : seam);
+    lipHighlight.rotation.y = ceilingCrack.rotation.y * 0.75;
+  }
+
+  for (let i = 0; i < 15; i += 1) {
+    const x = -19.6 + i * 2.8;
+    const crack = box('aperture foreground sill negative-space crack', [1.18 + (i % 4) * 0.34, 0.05, 0.07], [x, 0.38 + Math.sin(i * 0.4) * 0.04, 9.72 + Math.cos(i) * 0.1], black);
+    crack.rotation.y = 0.22 - (i % 6) * 0.08;
+    const chip = box('aperture foreground sliced chip highlight', [0.72 + (i % 3) * 0.24, 0.036, 0.055], [x + 0.48, 0.58, 9.44], i % 3 === 0 ? softAmber : seam);
+    chip.rotation.y = crack.rotation.y * 0.8;
+  }
+}
+
+function buildCutawayThicknessDatumStack() {
+  const deep = mat(0x030208, { roughness: 1.0, metalness: 0.0 });
+  const mid = mat(0x241b27, { roughness: 0.96, metalness: 0.01 });
+  const light = mat(0x514050, { roughness: 0.9, metalness: 0.02 });
+  const warm = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.24, transparent: true, opacity: 0.22 });
+  const cool = mat(0x77b7ff, { emissive: 0x77b7ff, emissiveIntensity: 0.2, transparent: true, opacity: 0.2 });
+
+  // These datum layers turn the decorative rock frame into a measured vertical slice of material.
+  const sideStrata = [
+    [0.78, 9.1, 5.2, -0.12],
+    [1.18, 7.95, 4.6, -0.08],
+    [1.62, 6.65, 5.8, -0.04],
+    [2.06, 5.18, 4.7, 0.01],
+    [2.5, 3.75, 6.2, 0.05],
+    [2.92, 2.22, 4.85, 0.09],
+    [3.38, 0.7, 5.6, 0.12],
+    [3.84, -0.95, 4.5, 0.08],
+    [4.32, -2.58, 5.1, 0.04],
+    [4.78, -4.24, 4.4, -0.02],
+    [5.23, -5.88, 5.0, -0.06],
+    [5.68, -7.55, 3.9, -0.1],
+    [6.12, -9.0, 3.4, -0.13]
+  ];
+
+  sideStrata.forEach(([y, z, length, angle], i) => {
+    [-1, 1].forEach((side) => {
+      const material = i % 3 === 0 ? light : i % 3 === 1 ? mid : deep;
+      const band = box('expanded cutaway sidewall geological datum band', [0.11, 0.04, length], [side * 22.1, y, z], material);
+      band.rotation.z = side * (0.035 + i * 0.006);
+      band.rotation.y = side * angle;
+
+      const shadow = box('expanded cutaway sidewall recess shadow under datum', [0.075, 0.032, length * 0.78], [side * 21.74, y - 0.16, z - 0.18], deep);
+      shadow.rotation.z = band.rotation.z * 0.8;
+      shadow.rotation.y = band.rotation.y * 0.65;
+    });
+  });
+
+  for (let i = 0; i < 18; i += 1) {
+    const x = -21.2 + i * 2.5;
+    const z = 7.6 - (i % 7) * 1.05;
+    const layer = box('expanded cutaway overhead compression shelf', [1.72 + (i % 4) * 0.45, 0.06, 0.1], [x, 8.28 + Math.sin(i * 0.5) * 0.08, z], i % 2 ? mid : light);
+    layer.rotation.y = -0.28 + (i % 6) * 0.1;
+    const under = box('expanded cutaway overhead dark undercut', [1.15 + (i % 3) * 0.38, 0.043, 0.08], [x + 0.5, 8.02 + Math.cos(i * 0.7) * 0.08, z - 0.38], deep);
+    under.rotation.y = layer.rotation.y * 0.7;
+  }
+
+  for (let i = 0; i < 17; i += 1) {
+    const x = -20.4 + i * 2.55;
+    const z = 9.18 + Math.sin(i * 0.55) * 0.25;
+    const shelf = box('expanded cutaway foreground sill horizontal layer', [1.8 + (i % 4) * 0.32, 0.055, 0.09], [x, 0.68 + Math.sin(i * 0.45) * 0.05, z], i % 2 ? light : mid);
+    shelf.rotation.y = 0.24 - (i % 6) * 0.07;
+
+    const pocket = box('expanded cutaway foreground occlusion crack', [1.2 + (i % 3) * 0.3, 0.04, 0.07], [x + 0.38, 0.52, z + 0.24], deep);
+    pocket.rotation.y = shelf.rotation.y * 0.8;
+  }
+
+  for (let i = 0; i < 12; i += 1) {
+    const y = 1.0 + i * 0.43;
+    [-1, 1].forEach((side) => {
+      const locator = box('expanded cutaway depth station locator tick', [0.08, 0.04, 0.42], [side * 21.18, y, 8.45 - i * 1.22], i % 2 ? cool : warm);
+      locator.rotation.z = side * 0.08;
+      locator.rotation.y = side * 0.1;
+    });
+  }
+
+  const scalePosts = [
+    [-18.2, 7.58, 5.55, 1.55],
+    [-9.1, 7.74, 3.55, 1.2],
+    [0, 7.62, 4.9, 1.65],
+    [9.1, 7.72, 3.55, 1.2],
+    [18.2, 7.56, 5.55, 1.55]
+  ];
+
+  scalePosts.forEach(([x, y, z, drop], i) => {
+    const line = box('expanded cutaway hanging geologic scale line', [0.035, drop, 0.035], [x, y - drop * 0.5, z], i % 2 ? cool : warm);
+    line.rotation.z = -0.02 + i * 0.01;
+    const weight = box('expanded cutaway hanging scale weight', [0.18, 0.12, 0.18], [x, y - drop - 0.06, z], deep);
+    weight.rotation.y = i * 0.35;
+  });
+
+  for (let i = 0; i < 24; i += 1) {
+    const z = 6.7 - i * 0.58;
+    [-1, 1].forEach((side) => {
+      const pebble = new THREE.Mesh(new THREE.DodecahedronGeometry(0.16 + (i % 4) * 0.035, 0), i % 2 ? mid : light);
+      pebble.name = 'expanded cutaway small exposed aggregate pebble';
+      pebble.position.set(side * (21.35 + Math.sin(i) * 0.25), 0.92 + (i % 7) * 0.67, z);
+      pebble.rotation.set(i * 0.19, side * i * 0.33, i * 0.27);
+      pebble.scale.set(1.4, 0.7 + (i % 3) * 0.15, 0.95);
+      pebble.castShadow = true;
+      pebble.receiveShadow = true;
+      root.add(pebble);
+    });
+  }
+}
+
+function buildProductionCavernParallaxScales() {
+  const voidMat = mat(0x000106, { roughness: 1.0, metalness: 0.0 });
+  const deck = mat(0x07101c, { roughness: 0.68, metalness: 0.42 });
+  const rail = mat(0x263448, { roughness: 0.48, metalness: 0.62 });
+  const graphite = mat(0x101724, { roughness: 0.62, metalness: 0.5 });
+  const dimCyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.18, transparent: true, opacity: 0.16 });
+  const dimAmber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.16, transparent: true, opacity: 0.15 });
+  const vapor = (color, opacity) => mat(color, { emissive: color, emissiveIntensity: 0.12, transparent: true, opacity, side: THREE.DoubleSide, roughness: 0.2 });
+
+  // New negative space: side galleries and back-plane gantries make the four visible districts feel like one slice of a much larger plant.
+  const rearLayers = [
+    [-22.5, 31.5, 5.8, 0.0],
+    [-27.0, 25.5, 5.0, 0.05],
+    [-31.8, 18.5, 4.0, -0.05],
+    [-37.2, 12.0, 3.2, 0.04]
+  ];
+
+  rearLayers.forEach(([z, width, height, tilt], i) => {
+    const portal = box('parallax rear excavated production void layer', [width, height, 0.12], [0, 3.0 + i * 0.18, z], voidMat);
+    portal.rotation.y = tilt;
+    box('parallax rear suspended maintenance deck', [width * 0.76, 0.075, 0.52], [0, 1.08 + i * 0.45, z + 0.45], deck);
+    box('parallax rear upper pipe bridge', [width * 0.72, 0.075, 0.08], [0, 4.92 - i * 0.28, z + 0.24], rail);
+    box('parallax rear lower pipe bridge', [width * 0.54, 0.055, 0.07], [0, 2.1 + i * 0.22, z + 0.22], rail);
+
+    [-1, 1].forEach((side) => {
+      box('parallax rear vertical hoist spine', [0.18, height * 0.75, 0.11], [side * (width * 0.43), 2.95, z + 0.26], graphite);
+      box('parallax rear inner pressure post', [0.11, height * 0.58, 0.09], [side * (width * 0.28), 2.8, z + 0.3], rail);
+      const braceA = box('parallax rear diagonal roof brace', [0.07, height * 0.64, 0.07], [side * (width * 0.34), 3.15, z + 0.34], graphite);
+      braceA.rotation.z = side * (0.22 + i * 0.035);
+      const braceB = box('parallax rear diagonal floor brace', [0.06, height * 0.42, 0.06], [side * (width * 0.18), 1.7 + i * 0.16, z + 0.34], graphite);
+      braceB.rotation.z = side * (-0.28 + i * 0.025);
+    });
+  });
+
+  const sideGalleries = [
+    [-18.7, -6.2, COLORS.violet, 'left observatory service gallery'],
+    [-18.5, 2.4, COLORS.gold, 'left build transfer gallery'],
+    [18.7, -6.2, COLORS.green, 'right deploy service gallery'],
+    [18.5, 2.4, COLORS.coral, 'right review transfer gallery']
+  ];
+
+  sideGalleries.forEach(([x, z, color, label], index) => {
+    const side = x < 0 ? -1 : 1;
+    const accent = mat(color, { emissive: color, emissiveIntensity: 0.26, transparent: true, opacity: 0.22 });
+    const darkAccent = mat(color, { emissive: color, emissiveIntensity: 0.12, transparent: true, opacity: 0.12 });
+    const gallery = new THREE.Group();
+    gallery.name = label;
+    gallery.position.set(x, 0, z);
+    root.add(gallery);
+
+    box('parallax side gallery recessed black mouth', [0.18, 2.4, 4.4], [0, 2.1, 0], voidMat, gallery);
+    box('parallax side gallery exterior pressure frame', [0.24, 2.95, 4.85], [side * -0.16, 2.18, 0], graphite, gallery);
+    box('parallax side gallery catwalk slab', [0.72, 0.08, 3.72], [side * 0.08, 1.0, 0.18], deck, gallery);
+    box('parallax side gallery lit handrail', [0.06, 0.05, 3.42], [side * 0.48, 1.32, 0.16], accent, gallery);
+    box('parallax side gallery rear handrail shadow', [0.04, 0.035, 3.0], [side * 0.18, 1.26, -0.22], rail, gallery);
+
+    for (let i = 0; i < 5; i += 1) {
+      const zz = -1.8 + i * 0.9;
+      box('parallax side gallery vertical bay divider', [0.055, 1.52, 0.045], [side * 0.36, 1.88, zz], rail, gallery);
+      box('parallax side gallery tiny work window', [0.06, 0.16, 0.34], [side * 0.5, 2.0 + (i % 2) * 0.24, zz + 0.12], i % 2 ? accent : darkAccent, gallery);
+    }
+
+    const vaporPlane = new THREE.Mesh(new THREE.PlaneGeometry(1.15, 4.2), vapor(color, 0.035));
+    vaporPlane.name = 'parallax side gallery atmospheric slit';
+    vaporPlane.position.set(x + side * 0.36, 2.18, z + 0.1);
+    vaporPlane.rotation.y = side * Math.PI / 2;
+    root.add(vaporPlane);
+    animated.push((t) => { vaporPlane.material.opacity = 0.025 + Math.sin(t * 0.45 + index) * 0.008; });
+  });
+
+  const roomAnchors = [
+    ['build', COLORS.gold, -14.2, -18.8],
+    ['review', COLORS.coral, 14.2, -18.8],
+    ['observatory', COLORS.violet, -11.2, -24.0],
+    ['deploy', COLORS.green, 11.2, -24.0]
+  ];
+
+  roomAnchors.forEach(([roomId, color, sx, dz], i) => {
+    const [x, , z] = ROOMS[roomId].pos;
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(x * 0.92, 1.65, z - 0.4),
+      new THREE.Vector3((x + sx) * 0.52, 2.0 + i * 0.1, z - 4.8),
+      new THREE.Vector3(sx, 2.65 + i * 0.12, dz)
+    ]);
+    const tube = new THREE.Mesh(
+      new THREE.TubeGeometry(curve, 36, 0.026, 8, false),
+      mat(color, { emissive: color, emissiveIntensity: 0.22, transparent: true, opacity: 0.2 })
+    );
+    tube.name = `parallax ${roomId} district umbilical into rear plant`;
+    root.add(tube);
+  });
+
+  for (let row = 0; row < 5; row += 1) {
+    const z = -19.6 - row * 3.7;
+    const width = 28.0 - row * 4.6;
+    const count = 10 - row;
+    for (let i = 0; i < count; i += 1) {
+      const x = -width * 0.42 + i * (width * 0.84 / Math.max(1, count - 1));
+      const y = 1.72 + row * 0.34 + (i % 4) * 0.26;
+      const lightMat = (row + i) % 2 ? dimCyan : dimAmber;
+      const window = box('parallax far plant tiny readable scale light', [0.14, 0.045, 0.035], [x, y, z], lightMat);
+      window.rotation.y = (i - count / 2) * 0.012;
+    }
+  }
+
+  [
+    [-15.8, -20.4, COLORS.violet, 1.0],
+    [15.8, -20.4, COLORS.green, 0.8],
+    [-10.0, -27.2, COLORS.gold, 0.6],
+    [10.0, -27.2, COLORS.coral, 0.4],
+    [0, -33.5, COLORS.cyan, 0.2]
+  ].forEach(([x, z, color, phase], i) => {
+    const shaft = new THREE.Mesh(new THREE.PlaneGeometry(2.3 - i * 0.18, 8.4 - i * 0.8), vapor(color, 0.026 - i * 0.002));
+    shaft.name = 'parallax rear deep atmospheric shaft';
+    shaft.position.set(x, 3.2 + i * 0.12, z);
+    shaft.rotation.x = -0.025;
+    shaft.rotation.z = x < 0 ? 0.045 : x > 0 ? -0.045 : 0;
+    root.add(shaft);
+    animated.push((t) => { shaft.material.opacity = 0.018 + Math.sin(t * 0.32 + phase) * 0.006; });
+  });
+}
+
+function buildWideReadabilityRimStack() {
+  const topKey = addLight('directional', 0xe0e9ff, 0.48, [0, 16.5, 24.0]);
+  topKey.name = 'wide readability soft top key';
+  topKey.target.position.set(0, 1.8, -5.8);
+  scene.add(topKey.target);
+
+  const rearBlue = addLight('directional', 0x7eb8ff, 0.62, [0, 7.4, -28.0]);
+  rearBlue.name = 'wide readability rear cavern rim key';
+  rearBlue.target.position.set(0, 2.2, -4.4);
+  scene.add(rearBlue.target);
+
+  addLight('point', 0x93c3ff, 2.4, [-22.4, 7.4, 7.6], 24.0);
+  addLight('point', 0x93c3ff, 2.4, [22.4, 7.4, 7.6], 24.0);
+  addLight('point', COLORS.amber, 1.65, [-21.0, 0.85, 9.0], 18.0);
+  addLight('point', COLORS.amber, 1.65, [21.0, 0.85, 9.0], 18.0);
+  addLight('point', 0x6aa7ff, 2.0, [0, 5.2, -24.0], 26.0);
+
+  const beamMat = (color, opacity) => mat(color, {
+    emissive: color,
+    emissiveIntensity: 0.14,
+    transparent: true,
+    opacity,
+    side: THREE.DoubleSide,
+    roughness: 0.1,
+    metalness: 0.0
+  });
+
+  const readableWashes = [
+    [-13.4, 2.35, 1.65, 6.0, 2.35, COLORS.gold, 0.03, -0.08],
+    [13.4, 2.35, 1.65, 6.0, 2.35, COLORS.coral, 0.03, 0.08],
+    [-13.6, 2.45, -8.95, 6.0, 2.45, COLORS.violet, 0.028, -0.07],
+    [13.6, 2.45, -8.95, 6.0, 2.45, COLORS.green, 0.028, 0.07],
+    [0, 2.7, -3.4, 9.8, 2.8, COLORS.cyan, 0.018, 0]
+  ];
+
+  readableWashes.forEach(([x, y, z, w, h, color, opacity, rz], i) => {
+    const wash = new THREE.Mesh(new THREE.PlaneGeometry(w, h), beamMat(color, opacity));
+    wash.name = 'wide readability controlled district silhouette wash';
+    wash.position.set(x, y, z);
+    wash.rotation.x = -0.22;
+    wash.rotation.z = rz;
+    root.add(wash);
+    animated.push((t) => { wash.material.opacity = opacity + Math.sin(t * 0.38 + i) * 0.004; });
+  });
+
+  const rimSegments = [
+    [-21.2, 3.2, 4.4, 0.05, 3.8, COLORS.cyan],
+    [21.2, 3.2, 4.4, 0.05, 3.8, COLORS.cyan],
+    [-21.2, 3.1, -7.4, 0.05, 4.4, COLORS.amber],
+    [21.2, 3.1, -7.4, 0.05, 4.4, COLORS.amber],
+    [-16.4, 6.7, 5.0, 6.2, 0.045, COLORS.cyan],
+    [16.4, 6.7, 5.0, 6.2, 0.045, COLORS.cyan],
+    [-8.2, 6.9, -3.2, 7.0, 0.045, COLORS.amber],
+    [8.2, 6.9, -3.2, 7.0, 0.045, COLORS.amber]
+  ];
+
+  rimSegments.forEach(([x, y, z, width, height, color], i) => {
+    const size = width < 0.1 ? [0.06, height, 0.055] : [width, height, 0.055];
+    const rim = box('wide readability rim highlight along asteroid aperture', size, [x, y, z], beamMat(color, i % 2 ? 0.19 : 0.16));
+    rim.rotation.z = x < 0 ? -0.04 : 0.04;
+  });
+
+  const fogBands = [
+    [0, 3.9, -14.5, 26.0, 3.2, 0x77b7ff, 0.028],
+    [0, 4.5, -20.4, 20.0, 3.0, 0x77b7ff, 0.02],
+    [0, 2.15, 6.7, 32.0, 1.8, COLORS.amber, 0.014]
+  ];
+
+  fogBands.forEach(([x, y, z, w, h, color, opacity], i) => {
+    const fog = new THREE.Mesh(new THREE.PlaneGeometry(w, h), beamMat(color, opacity));
+    fog.name = 'wide readability atmospheric depth veil';
+    fog.position.set(x, y, z);
+    fog.rotation.x = -0.08;
+    root.add(fog);
+    animated.push((t) => { fog.material.opacity = opacity + Math.sin(t * 0.22 + i) * 0.004; });
   });
 }
 
