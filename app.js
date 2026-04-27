@@ -437,98 +437,80 @@ function buildWideOverviewLightingScaffold() {
 
 
 function buildPrunedDominantProductionHall() {
-  const floor = mat(0x101827, { roughness: 0.5, metalness: 0.52 });
-  const floorDark = mat(0x050a13, { roughness: 0.72, metalness: 0.36 });
+  const deck = mat(0x101827, { roughness: 0.5, metalness: 0.52 });
+  const deckDark = mat(0x050a13, { roughness: 0.72, metalness: 0.36 });
   const hull = mat(0x142033, { roughness: 0.48, metalness: 0.66 });
   const pressure = mat(0x1b2940, { roughness: 0.42, metalness: 0.72 });
   const shadow = mat(0x000207, { roughness: 1.0, metalness: 0.0 });
-  const glass = mat(0x06182a, { roughness: 0.12, metalness: 0.24, transparent: true, opacity: 0.28, emissive: 0x071f36, emissiveIntensity: 0.08 });
-  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.18, transparent: true, opacity: 0.14 });
-  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.18, transparent: true, opacity: 0.14 });
-  const gold = mat(COLORS.gold, { emissive: COLORS.gold, emissiveIntensity: 0.16, transparent: true, opacity: 0.12 });
-  const coral = mat(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: 0.15, transparent: true, opacity: 0.11 });
-  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.14, transparent: true, opacity: 0.11 });
-  const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.14, transparent: true, opacity: 0.11 });
+  const glass = mat(0x06182a, { roughness: 0.12, metalness: 0.24, transparent: true, opacity: 0.24, emissive: 0x071f36, emissiveIntensity: 0.07 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.16, transparent: true, opacity: 0.12 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.16, transparent: true, opacity: 0.12 });
+  const gold = mat(COLORS.gold, { emissive: COLORS.gold, emissiveIntensity: 0.14, transparent: true, opacity: 0.1 });
+  const coral = mat(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: 0.13, transparent: true, opacity: 0.1 });
+  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.13, transparent: true, opacity: 0.1 });
+  const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.13, transparent: true, opacity: 0.1 });
 
-  // Michael correction: one dominant interior production facility. Old stacked corrective layers are no longer called.
-  box('pruned hall single dominant production floor', [28.6, 0.12, 18.6], [0, 0.07, -2.45], floor);
-  box('pruned hall dark subfloor canyon', [5.4, 0.18, 13.8], [0, 0.23, -2.25], shadow);
-  box('pruned hall command dais broad foundation', [9.8, 0.3, 4.2], [0, 0.48, 0.9], pressure);
-  box('pruned hall command dais black undercut', [7.1, 0.2, 1.0], [0, 0.72, 2.55], shadow);
-  box('pruned hall cyan central conveyor spine', [0.38, 0.045, 12.0], [0, 0.86, -2.6], cyan);
-  box('pruned hall amber command threshold', [8.4, 0.04, 0.05], [0, 0.94, 3.16], amber);
+  // One readable production superstructure. Fewer loops, fewer mini-bay fragments, stronger factory mass.
+  box('superstructure continuous production floor slab', [28.8, 0.14, 18.8], [0, 0.08, -2.45], deck);
+  box('superstructure central subfloor canyon mass', [5.6, 0.2, 14.4], [0, 0.24, -2.35], shadow);
+  box('superstructure command foundation block', [10.2, 0.32, 4.6], [0, 0.5, 0.95], pressure);
+  box('superstructure command black undercut', [7.4, 0.2, 1.1], [0, 0.74, 2.58], shadow);
+  box('superstructure central cyan process spine', [0.42, 0.045, 12.8], [0, 0.88, -2.75], cyan);
+  box('superstructure command amber threshold', [8.8, 0.04, 0.05], [0, 0.96, 3.2], amber);
 
-  box('pruned hall left continuous interior wall', [1.18, 5.4, 16.8], [-11.85, 2.82, -2.7], hull);
-  box('pruned hall right continuous interior wall', [1.18, 5.4, 16.8], [11.85, 2.82, -2.7], hull);
-  box('pruned hall rear pressure bulkhead', [23.2, 4.15, 0.38], [0, 2.9, -10.92], floorDark);
-  box('pruned hall rear interior observation band', [14.2, 1.05, 0.06], [0, 3.35, -10.62], glass);
-  box('pruned hall overhead service raft', [22.8, 0.64, 5.2], [0, 4.72, -0.8], pressure);
-  box('pruned hall overhead black negative slot', [15.0, 0.18, 2.2], [0, 4.34, 0.6], shadow);
+  box('superstructure left continuous pressure wall', [1.34, 5.5, 17.0], [-11.65, 2.84, -2.65], hull);
+  box('superstructure right continuous pressure wall', [1.34, 5.5, 17.0], [11.65, 2.84, -2.65], hull);
+  box('superstructure rear pressure bulkhead', [23.6, 4.24, 0.42], [0, 2.92, -10.92], deckDark);
+  box('superstructure rear black machinery slot', [15.8, 1.2, 0.12], [0, 3.28, -10.58], shadow);
+  box('superstructure rear operations glass band', [13.8, 0.62, 0.06], [0, 3.42, -10.46], glass);
+  box('superstructure overhead service raft', [23.0, 0.68, 5.4], [0, 4.74, -0.9], pressure);
+  box('superstructure overhead negative service slot', [15.4, 0.2, 2.3], [0, 4.36, 0.58], shadow);
 
-  const bayBlocks = [
-    ['build broad production bay', -7.4, 1.16, 1.35, 6.4, gold],
-    ['review broad QA bay', 7.4, 1.16, 1.35, 6.4, coral],
-    ['observatory broad signal bay', -7.3, 1.62, -6.65, 5.8, violet],
-    ['deploy broad logistics bay', 7.3, 1.62, -6.65, 5.8, green]
-  ];
+  box('superstructure build broad stepped deck', [6.8, 0.32, 1.35], [-7.4, 1.18, 1.35], hull);
+  box('superstructure review broad stepped deck', [6.8, 0.32, 1.35], [7.4, 1.18, 1.35], hull);
+  box('superstructure observatory broad stepped deck', [6.2, 0.34, 1.36], [-7.3, 1.64, -6.65], hull);
+  box('superstructure deploy broad stepped deck', [6.2, 0.34, 1.36], [7.3, 1.64, -6.65], hull);
+  box('superstructure build dark machine volume', [5.5, 0.84, 0.14], [-7.4, 1.64, 0.62], shadow);
+  box('superstructure review dark machine volume', [5.5, 0.84, 0.14], [7.4, 1.64, 0.62], shadow);
+  box('superstructure observatory dark machine volume', [5.0, 0.9, 0.14], [-7.3, 2.08, -7.34], shadow);
+  box('superstructure deploy dark machine volume', [5.0, 0.9, 0.14], [7.3, 2.08, -7.34], shadow);
+  box('superstructure build readable amber rail', [5.0, 0.045, 0.045], [-7.4, 1.78, 2.04], gold);
+  box('superstructure review readable coral rail', [5.0, 0.045, 0.045], [7.4, 1.78, 2.04], coral);
+  box('superstructure observatory readable violet rail', [4.6, 0.045, 0.045], [-7.3, 2.26, -5.95], violet);
+  box('superstructure deploy readable green rail', [4.6, 0.045, 0.045], [7.3, 2.26, -5.95], green);
 
-  bayBlocks.forEach(([name, x, y, z, width, accent], index) => {
-    box(`pruned hall ${name} stepped deck`, [width, 0.28, 1.22], [x, y, z], hull);
-    box(`pruned hall ${name} recessed shadow volume`, [width * 0.82, 0.72, 0.12], [x, y + 0.38, z - 0.7], shadow);
-    box(`pruned hall ${name} readable identity rail`, [width * 0.72, 0.04, 0.045], [x, y + 0.56, z + 0.68], accent);
-    box(`pruned hall ${name} rear machine cap`, [width * 0.68, 0.22, 0.5], [x, y + 0.78, z - 0.55], floorDark);
-    box(`pruned hall ${name} load pier`, [0.2, 1.2, 0.22], [x + (index % 2 ? -width * 0.46 : width * 0.46), y + 0.66, z], pressure);
-  });
+  box('superstructure left forward side machinery mass', [0.86, 2.7, 4.2], [-10.2, 2.48, 1.42], pressure);
+  box('superstructure right forward side machinery mass', [0.86, 2.7, 4.2], [10.2, 2.48, 1.42], pressure);
+  box('superstructure left rear side machinery mass', [0.86, 2.9, 4.8], [-10.2, 2.78, -5.25], pressure);
+  box('superstructure right rear side machinery mass', [0.86, 2.9, 4.8], [10.2, 2.78, -5.25], pressure);
+  box('superstructure left side black service void', [0.12, 2.25, 8.8], [-10.0, 2.62, -1.9], shadow);
+  box('superstructure right side black service void', [0.12, 2.25, 8.8], [10.0, 2.62, -1.9], shadow);
+  box('superstructure left side cyan status seam', [0.045, 0.05, 5.8], [-9.66, 3.28, -2.0], cyan);
+  box('superstructure right side amber status seam', [0.045, 0.05, 5.8], [9.66, 3.28, -2.0], amber);
 
-  const sideBays = [
-    [-10.15, 2.35, 1.7, 3.6, amber],
-    [10.15, 2.35, 1.7, 3.6, cyan],
-    [-10.15, 2.72, -5.0, 4.4, cyan],
-    [10.15, 2.72, -5.0, 4.4, amber]
-  ];
+  box('superstructure front transverse operations gantry', [17.8, 0.22, 0.58], [0, 2.44, 2.3], pressure);
+  box('superstructure center transverse operations gantry', [19.0, 0.22, 0.58], [0, 2.88, -3.35], hull);
+  box('superstructure rear transverse operations gantry', [15.6, 0.22, 0.58], [0, 3.26, -7.65], pressure);
+  box('superstructure front gantry shadow undercut', [13.4, 0.1, 0.1], [0, 2.22, 2.52], shadow);
+  box('superstructure center gantry cyan practical edge', [12.6, 0.035, 0.04], [0, 3.02, -3.02], cyan);
+  box('superstructure rear gantry amber practical edge', [10.2, 0.035, 0.04], [0, 3.42, -7.32], amber);
 
-  sideBays.forEach(([x, y, z, depth, accent]) => {
-    const wall = box('pruned hall side production wall mass', [0.72, 2.8, depth], [x, y, z], pressure);
-    wall.rotation.z = x < 0 ? 0.02 : -0.02;
-    box('pruned hall side wall black service void', [0.12, 1.9, depth * 0.7], [x * 0.985, y, z], shadow);
-    box('pruned hall side wall long status seam', [0.04, 0.05, depth * 0.62], [x * 0.948, y + 0.95, z], accent);
-  });
+  box('superstructure left roof machinery baffle', [5.4, 0.38, 5.2], [-6.2, 4.5, 1.2], deckDark);
+  box('superstructure center roof machinery baffle', [5.8, 0.38, 5.8], [0, 4.58, -2.4], deckDark);
+  box('superstructure right roof machinery baffle', [5.4, 0.38, 5.2], [6.2, 4.5, 1.2], deckDark);
+  box('superstructure roof baffle black underside', [14.8, 0.12, 2.4], [0, 4.26, 0.2], shadow);
+  box('superstructure roof amber production guide', [9.8, 0.035, 0.04], [0, 4.1, 2.78], amber);
 
-  const gantries = [
-    [0, 2.42, 2.3, 17.4, amber],
-    [0, 2.86, -3.35, 18.6, cyan],
-    [0, 3.24, -7.65, 15.2, amber]
-  ];
-
-  gantries.forEach(([x, y, z, width, accent], index) => {
-    box('pruned hall transverse operations gantry slab', [width, 0.18, 0.52], [x, y, z], index % 2 ? hull : pressure);
-    box('pruned hall gantry underside shadow reveal', [width * 0.82, 0.1, 0.1], [x, y - 0.19, z + 0.18], shadow);
-    box('pruned hall gantry restrained practical edge', [width * 0.68, 0.035, 0.04], [x, y + 0.14, z + 0.3], accent);
-  });
-
-  const roofBaffles = [
-    [-6.6, 4.46, 2.3, 4.8, cyan],
-    [0, 4.56, -1.8, 5.6, amber],
-    [6.6, 4.46, 2.3, 4.8, cyan]
-  ];
-
-  roofBaffles.forEach(([x, y, z, depth, accent]) => {
-    box('pruned hall roof machinery baffle', [3.8, 0.34, depth], [x, y, z], floorDark);
-    box('pruned hall roof baffle black underside', [2.9, 0.1, depth * 0.58], [x, y - 0.24, z + 0.18], shadow);
-    box('pruned hall roof baffle guide line', [2.2, 0.035, 0.04], [x, y - 0.42, z + depth * 0.36], accent);
-  });
-
-  box('pruned hall foreground interior balcony lip', [19.4, 0.3, 1.0], [0, 0.88, 5.34], floorDark);
-  box('pruned hall foreground black frame reveal', [12.4, 0.34, 0.12], [0, 1.12, 4.86], shadow);
-  box('pruned hall foreground cyan guide datum', [10.6, 0.035, 0.045], [0, 1.32, 4.72], cyan);
-  box('pruned hall left front compression cheek', [2.8, 1.2, 0.42], [-8.9, 1.28, 4.72], pressure);
-  box('pruned hall right front compression cheek', [2.8, 1.2, 0.42], [8.9, 1.28, 4.72], pressure);
-
-  // These mask the remaining rock to a page-border/proscenium ratio instead of letting it become the subject.
-  box('pruned hall left asteroid-to-interior cover plate', [1.8, 5.2, 1.0], [-12.45, 3.0, 3.2], hull);
-  box('pruned hall right asteroid-to-interior cover plate', [1.8, 5.2, 1.0], [12.45, 3.0, 3.2], hull);
-  box('pruned hall top asteroid-to-interior cover plate', [22.0, 0.42, 1.2], [0, 5.06, 3.08], floorDark);
+  box('superstructure foreground interior balcony lip', [19.8, 0.32, 1.08], [0, 0.9, 5.34], deckDark);
+  box('superstructure foreground black frame reveal', [12.8, 0.34, 0.14], [0, 1.14, 4.86], shadow);
+  box('superstructure foreground cyan guide datum', [10.8, 0.035, 0.045], [0, 1.34, 4.72], cyan);
+  box('superstructure left front compression cheek', [3.0, 1.24, 0.46], [-8.9, 1.3, 4.72], pressure);
+  box('superstructure right front compression cheek', [3.0, 1.24, 0.46], [8.9, 1.3, 4.72], pressure);
+  box('superstructure left asteroid mask cover plate', [1.9, 5.25, 1.04], [-12.45, 3.02, 3.2], hull);
+  box('superstructure right asteroid mask cover plate', [1.9, 5.25, 1.04], [12.45, 3.02, 3.2], hull);
+  box('superstructure top asteroid mask cover plate', [22.2, 0.44, 1.25], [0, 5.08, 3.08], deckDark);
 }
+
 
 function buildInteriorCompressionLock() {
   const hull = mat(0x142033, { roughness: 0.48, metalness: 0.66 });

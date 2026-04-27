@@ -259,13 +259,21 @@
       "status": "shipped",
       "type": "direction correction prune/composition/performance pass",
       "notes": "Continued Michael correction: consolidated small rear monitors, window mullions, ceiling strips, floor trenches, and rear plant marker loops into broad production bands/decks; disabled shadow maps to protect FPS; nudged camera framing tighter; preserved the calibrated asteroid proscenium while the interior facility reads through larger slabs, coves, workflow lanes, and rear plant masses. Mesh constructor count dropped to 10 and loop markers stayed at zero. Browser screenshot capture remained policy-blocked and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "corrective production superstructure consolidation pass",
+      "durationMs": 360000,
+      "status": "shipped",
+      "type": "direction correction prune/composition/performance pass",
+      "notes": "Continued Michael correction: replaced loop-built mini bay/side machinery/gantry/roof baffle fragments with one explicit production superstructure of broad floor, wall, bay, gantry, roof, and mask forms. This keeps the calibrated asteroid proscenium as border while making the interior facility read through fewer larger architectural masses. Mesh constructor count stayed at 10 and loop markers at zero. Browser screenshot capture remained policy-blocked and is documented."
     }
   ],
   "stats": {
-    "count": 32,
+    "count": 33,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 242188,
+    "avgMs": 245758,
     "subagents": {
       "count": 3,
       "minMs": 47000,
