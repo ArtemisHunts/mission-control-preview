@@ -26,8 +26,8 @@ const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
     body: 'A full spatial read of Mission Control: assembly shaft, fabrication line, production bays, visible operators, and deploy traffic.',
-    camera: [0, 8.65, 26.2],
-    target: [0, 1.96, -4.15],
+    camera: [0, 13.2, 48.0],
+    target: [0, 1.75, -3.4],
     accent: COLORS.cyan
   },
   command: {
@@ -113,7 +113,7 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
 scene.fog = new THREE.Fog(COLORS.bg, 24, 112);
 
-const camera = new THREE.PerspectiveCamera(44, window.innerWidth / window.innerHeight, 0.1, 115);
+const camera = new THREE.PerspectiveCamera(54, window.innerWidth / window.innerHeight, 0.1, 180);
 camera.position.set(...ROOMS.overview.camera);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -143,7 +143,7 @@ const clickTarget = new THREE.Vector3();
 const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
-const fixedCameraOffset = new THREE.Vector3(0, 8.35, 26.2);
+const fixedCameraOffset = new THREE.Vector3(0, 12.8, 47.2);
 const facilityBounds = { minX: -14.8, maxX: 14.8, minZ: -13.6, maxZ: 4.4 };
 
 function mat(color, options = {}) {
@@ -161,6 +161,36 @@ function mat(color, options = {}) {
 
 function box(name, size, position, material, parent = root) {
   const mesh = new THREE.Mesh(new THREE.BoxGeometry(...size), material);
+  mesh.name = name;
+  mesh.position.set(...position);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  parent.add(mesh);
+  return mesh;
+}
+
+function cylinder(name, radiusTop, radiusBottom, height, segments, position, material, parent = root) {
+  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radiusTop, radiusBottom, height, segments), material);
+  mesh.name = name;
+  mesh.position.set(...position);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  parent.add(mesh);
+  return mesh;
+}
+
+function sphere(name, radius, segments, position, material, parent = root) {
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(radius, segments, Math.max(8, Math.floor(segments * 0.5))), material);
+  mesh.name = name;
+  mesh.position.set(...position);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  parent.add(mesh);
+  return mesh;
+}
+
+function torus(name, radius, tube, radialSegments, tubularSegments, position, material, parent = root) {
+  const mesh = new THREE.Mesh(new THREE.TorusGeometry(radius, tube, radialSegments, tubularSegments), material);
   mesh.name = name;
   mesh.position.set(...position);
   mesh.castShadow = true;
@@ -217,19 +247,14 @@ function buildOffice() {
   buildShell();
   buildCeilingAndBulkheads();
   buildCalibratedAsteroidProscenium();
-  buildPrunedDominantProductionHall();
-  buildInteriorCompressionLock();
-  buildInteriorFrameLock();
-  buildBroadProductionBayBackplates();
+  buildTargetCutawayMissionControl();
   buildWideOverviewLightingScaffold();
   buildReadabilityHotfixLighting();
   buildDistantFacilityDepth();
   buildRooms();
-  buildCommandProcessCore();
+  buildCommandHoloTableHero();
   buildCentralFabricationLine();
-  buildDominantAssemblyShaft();
   buildRailingsAndCatwalks();
-  buildIndustrialSetDressing();
   buildVolumetricLightPlanes();
   buildOperators();
 
@@ -356,7 +381,87 @@ function buildCalibratedAsteroidProscenium() {
   box('calibrated crown amber edge datum', [12.8, 0.035, 0.045], [0, 4.68, 2.65], amberRim);
   box('calibrated sill amber edge datum', [13.8, 0.035, 0.045], [0, 0.94, 6.0], amberRim);
 }
+function buildTargetCutawayMissionControl() {
+  const rock = mat(0x211a24, { roughness: 0.96, metalness: 0.02 });
+  const cut = mat(0x3a3039, { roughness: 0.9, metalness: 0.02 });
+  const shadow = mat(0x02050c, { roughness: 1.0, metalness: 0.0 });
+  const steel = mat(0x39465d, { roughness: 0.38, metalness: 0.72 });
+  const darkSteel = mat(0x0c1422, { roughness: 0.58, metalness: 0.52 });
+  const glass = mat(0x07192b, { emissive: 0x0d3450, emissiveIntensity: 0.22, transparent: true, opacity: 0.34, roughness: 0.16, metalness: 0.18 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.72, transparent: true, opacity: 0.42, roughness: 0.08 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.58, transparent: true, opacity: 0.38, roughness: 0.12 });
+  const gold = mat(COLORS.gold, { emissive: COLORS.gold, emissiveIntensity: 0.36, transparent: true, opacity: 0.26 });
+  const coral = mat(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: 0.34, transparent: true, opacity: 0.25 });
+  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.34, transparent: true, opacity: 0.25 });
+  const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.34, transparent: true, opacity: 0.25 });
 
+  // Target reset: first read must be a room carved into asteroid, not abstract horizontal bands.
+  box('target reset left asteroid cutaway shoulder', [2.1, 6.2, 14.8], [-15.2, 3.0, -2.4], rock);
+  box('target reset right asteroid cutaway shoulder', [2.1, 6.2, 14.8], [15.2, 3.0, -2.4], rock);
+  box('target reset upper asteroid crown', [28.6, 0.72, 3.1], [0, 5.8, -5.6], rock);
+  box('target reset lower asteroid sill', [28.2, 0.5, 1.1], [0, -0.12, 6.65], rock);
+  box('target reset left bright cut face', [0.18, 4.9, 10.2], [-13.8, 3.0, -2.1], cut);
+  box('target reset right bright cut face', [0.18, 4.9, 10.2], [13.8, 3.0, -2.1], cut);
+  box('target reset top bright cut plane', [22.5, 0.16, 2.2], [0, 5.18, -4.2], cut);
+
+  // Rear hangar/window: depth and sci-fi operations-room backdrop instead of a sealed black wall.
+  box('target reset panoramic rear black glass', [20.8, 2.6, 0.12], [0, 3.0, -11.42], glass);
+  box('target reset rear hangar horizon glow', [17.8, 0.08, 0.05], [0, 3.36, -11.22], cyan);
+  box('target reset distant ship silhouette left', [2.4, 0.28, 0.08], [-5.4, 2.78, -11.16], shadow);
+  box('target reset distant ship silhouette right', [3.2, 0.22, 0.08], [4.8, 2.52, -11.16], shadow);
+  box('target reset rear pressure header', [22.4, 0.28, 0.32], [0, 4.52, -10.95], steel);
+  box('target reset rear pressure sill', [22.4, 0.22, 0.32], [0, 1.36, -10.95], steel);
+
+  // Open floor and catwalk cross: readable spatial plan before detail.
+  box('target reset open command floor plate', [23.8, 0.1, 13.6], [0, 0.16, -1.6], darkSteel);
+  box('target reset central recessed tactical pit', [7.2, 0.16, 5.8], [0, 0.28, 0.18], shadow);
+  box('target reset main amber crosswalk', [22.4, 0.055, 0.32], [0, 0.52, 0.28], amber);
+  box('target reset main cyan spine walk', [0.32, 0.055, 12.4], [0, 0.54, -2.35], cyan);
+  box('target reset left long catwalk span', [8.2, 0.1, 0.5], [-7.4, 0.5, -1.0], steel);
+  box('target reset right long catwalk span', [8.2, 0.1, 0.5], [7.4, 0.5, -1.0], steel);
+
+  const bay = (label, x, z, accentMat) => {
+    box(`target reset ${label} bay architectural wall`, [5.4, 2.45, 0.28], [x, 2.15, z], steel);
+    box(`target reset ${label} bay dark work volume`, [4.3, 1.55, 0.14], [x, 2.12, z + 0.18], shadow);
+    box(`target reset ${label} bay colored system header`, [4.2, 0.06, 0.06], [x, 3.38, z + 0.36], accentMat);
+    box(`target reset ${label} bay console island`, [2.7, 0.46, 1.0], [x, 0.82, z + 1.28], darkSteel);
+    box(`target reset ${label} bay glass display`, [1.8, 0.72, 0.08], [x, 1.42, z + 0.72], glass);
+  };
+  bay('build fabrication', -8.4, 1.35, gold);
+  bay('review containment', 8.4, 1.35, coral);
+  bay('observatory signal', -8.4, -7.2, violet);
+  bay('deploy dock', 8.4, -7.2, green);
+}
+
+function buildCommandHoloTableHero() {
+  const group = new THREE.Group();
+  group.position.set(0, 0.76, 0.38);
+  root.add(group);
+
+  const graphite = mat(0x141b2a, { roughness: 0.36, metalness: 0.78 });
+  const blackGlass = mat(0x050b14, { roughness: 0.12, metalness: 0.28, transparent: true, opacity: 0.82 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.92, transparent: true, opacity: 0.48, roughness: 0.06 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.68, transparent: true, opacity: 0.42, roughness: 0.1 });
+  const holo = mat(0x8ff7ff, { emissive: COLORS.cyan, emissiveIntensity: 1.15, transparent: true, opacity: 0.34, roughness: 0.04 });
+
+  cylinder('target reset command table graphite base', 2.35, 2.75, 0.46, 32, [0, 0.0, 0], graphite, group);
+  cylinder('target reset command table black glass inset', 2.1, 2.1, 0.08, 32, [0, 0.3, 0], blackGlass, group);
+  cylinder('target reset command table cyan tactical surface', 1.78, 1.78, 0.05, 32, [0, 0.38, 0], cyan, group);
+  const ring = torus('target reset amber holo-table trim ring', 2.22, 0.035, 8, 64, [0, 0.45, 0], amber, group);
+  ring.rotation.x = Math.PI / 2;
+  const globe = sphere('target reset floating mission asteroid hologram', 0.62, 24, [0, 1.38, 0], holo, group);
+  globe.scale.set(1.0, 0.72, 1.18);
+  const orbitA = torus('target reset floating orbit ring A', 0.95, 0.018, 8, 56, [0, 1.38, 0], cyan, group);
+  orbitA.rotation.x = Math.PI / 2.35;
+  orbitA.rotation.z = 0.48;
+  const orbitB = torus('target reset floating orbit ring B', 1.18, 0.016, 8, 56, [0, 1.38, 0], amber, group);
+  orbitB.rotation.x = Math.PI / 2.05;
+  orbitB.rotation.z = -0.36;
+
+  box('target reset holo table front operator console', [1.6, 0.34, 0.62], [0, 0.36, 2.75], blackGlass, group);
+  box('target reset holo table left operator console', [1.2, 0.3, 0.54], [-2.9, 0.34, 0.6], blackGlass, group);
+  box('target reset holo table right operator console', [1.2, 0.3, 0.54], [2.9, 0.34, 0.6], blackGlass, group);
+}
 
 function buildBroadProductionBayBackplates() {
   const hull = mat(0x162238, { roughness: 0.46, metalness: 0.66 });

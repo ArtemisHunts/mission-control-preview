@@ -291,13 +291,21 @@
       "status": "shipped",
       "type": "playtest-fix pass",
       "notes": "Added app.js version query to index.html after the parse fix so browsers and GitHub Pages edge cache do not keep serving the broken module to the landing page."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "target cutaway composition reset",
+      "durationMs": 1200000,
+      "status": "shipped",
+      "type": "composition reset pass",
+      "notes": "Game Studio corrective pass after Michael called out the verified render as not close to target. Pulled the overview camera back, widened FOV/far plane, disabled the most abstract slab-stack path in the overview, added a target-readable asteroid cutaway frame, rear hangar glass, open command floor, four explicit station bay walls, and central circular holo-table/tactical pit."
     }
   ],
   "stats": {
-    "count": 37,
+    "count": 38,
     "minMs": 90000,
-    "maxMs": 900000,
-    "avgMs": 268611,
+    "maxMs": 1200000,
+    "avgMs": 293784,
     "subagents": {
       "count": 3,
       "minMs": 47000,
