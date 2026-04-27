@@ -9,17 +9,18 @@ This file exists because the previous autonomous loop shipped too many tiny mark
 Before any autonomous macro pass may commit, it must run:
 
 ```bash
-node scripts/macro-gate.mjs --min-source-lines=450
+node scripts/macro-gate.mjs --min-source-lines=120 --max-app-lines=2600 --max-mesh-constructors=70 --max-loop-markers=75
 ```
 
 The gate requires:
 
-- at least 450 changed source lines across app/CSS/HTML files
+- at least 120 changed source lines across app/CSS/HTML files
 - at least one real source file changed
 - `docs/loop-metrics.json` updated
 - a new/updated `docs/visual-reviews/*.md` file
 - an explicit north-star verdict: `North-star verdict: closer`
 - benchmark scores against the reference moodboards
+- stay under app/performance budgets: app size, mesh constructor count, and procedural loop count
 
 This is not a quality substitute. It is a floor to prevent pebble-stacking and force visual accountability. If the loop repeatedly finishes in under 15 minutes or produces barely visible deltas, raise this threshold again or split the phase into a branch-based visual review workflow.
 
@@ -54,6 +55,25 @@ Spacing is based on observed completion time, not vibes:
 - Do not leave multi-hour idle gaps when the last pass completed cleanly in minutes.
 
 Current setting after observing ~7 minute v3 completion: **60-minute cadence with a 450 source-line gate**.
+
+## Direction correction — 2026-04-26
+
+Michael's correction after the v3 macro runs:
+
+- The asteroid/comet should function as the **page border / proscenium**, not the dominant subject.
+- The majority of the screen should be the **interior production facility**.
+- The current direction drifted too far into exterior asteroid/deck-ring clutter.
+- FPS started degrading, likely from too many procedural rocks, beacons, decks, and marker loops.
+
+Corrective rule:
+
+- Asteroid border target: roughly **15–25% of the frame**.
+- Interior production facility target: roughly **75–85% of the frame**.
+- Prefer fewer, larger architectural forms over many tiny rocks/markers.
+- Any pass that lowers frame rate is not closer to the north star, even if it adds visual detail.
+- Performance cleanup/pruning is valid macro work.
+
+The previous line-count gate created the wrong incentive. It is now paired with ceilings for app size / mesh constructors / procedural loops.
 
 ## Current phase: outside-in scene recomposition
 

@@ -7,8 +7,11 @@ const args = new Map(process.argv.slice(2).map((arg) => {
   return [key, value];
 }));
 
-const minSourceLines = Number(args.get('min-source-lines') ?? 450);
+const minSourceLines = Number(args.get('min-source-lines') ?? 120);
 const minSourceFiles = Number(args.get('min-source-files') ?? 1);
+const maxAppLines = Number(args.get('max-app-lines') ?? 2600);
+const maxMeshConstructors = Number(args.get('max-mesh-constructors') ?? 70);
+const maxLoopMarkers = Number(args.get('max-loop-markers') ?? 75);
 const requireVisual = args.get('require-visual') !== 'false';
 const sourcePattern = /^(app\.js|style\.css|index\.html|styleframe\.css|styleframe\.html)$/;
 const visualPattern = /^docs\/visual-reviews\/.*\.md$/;
@@ -33,6 +36,14 @@ const failures = [];
 if (sourceLines < minSourceLines) failures.push(`source line delta ${sourceLines} < required ${minSourceLines}`);
 if (sourceFiles.size < minSourceFiles) failures.push(`source files changed ${sourceFiles.size} < required ${minSourceFiles}`);
 if (!allFiles.includes('docs/loop-metrics.json')) failures.push('docs/loop-metrics.json was not updated');
+
+const appText = readFileSync('app.js', 'utf8');
+const appLines = appText.split(/\r?\n/).length;
+const meshConstructors = (appText.match(/new THREE\.Mesh/g) || []).length;
+const loopMarkers = (appText.match(/for \(let i = 0; i </g) || []).length;
+if (appLines > maxAppLines) failures.push(`app.js lines ${appLines} > performance/readability budget ${maxAppLines}`);
+if (meshConstructors > maxMeshConstructors) failures.push(`new THREE.Mesh constructors ${meshConstructors} > budget ${maxMeshConstructors}`);
+if (loopMarkers > maxLoopMarkers) failures.push(`procedural loop markers ${loopMarkers} > budget ${maxLoopMarkers}`);
 
 const visualReviews = [];
 if (requireVisual) {
@@ -62,6 +73,12 @@ console.log(JSON.stringify({
   sourceLines,
   minSourceLines,
   sourceFiles: [...sourceFiles],
+  appLines,
+  maxAppLines,
+  meshConstructors,
+  maxMeshConstructors,
+  loopMarkers,
+  maxLoopMarkers,
   visualFiles,
   changedFiles: allFiles,
   visualReviews,

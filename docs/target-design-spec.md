@@ -43,6 +43,8 @@ Scale correction from Michael: the facility should feel **large — borderline m
 
 Current container priority from Michael: the scene should read as if the viewer is looking into a **vertical slice of a production base carved through an asteroid**. Build the outside container first: heavy irregular asteroid borders, exposed cut planes, foreground sill/crown, rear cavern darkness, and lighting that reveals silhouettes instead of flattening everything. The default camera should be pulled far enough back to see the whole cutaway container and all four station districts before interior detail; the user should never feel trapped inside the room. Pause further interior element work until the container, wide framing, and lighting are convincing.
 
+Asteroid/comet border correction: the asteroid should frame the page like a cutaway border/proscenium. It should not dominate the visual field. Most of the screen should be the interior production facility, with the rock shell acting as context and containment. If the user mostly sees asteroid exterior/deck-ring clutter instead of facility, the composition is wrong. Performance is part of the art direction: noisy procedural detail that lowers frame rate moves us farther from the target.
+
 Composition:
 
 1. **Center foreground/midground** — large circular holo-table / tactical pit.
