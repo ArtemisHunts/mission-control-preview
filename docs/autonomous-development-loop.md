@@ -1,6 +1,6 @@
 # Mission Control — Autonomous Development Loop
 
-_Last updated: 2026-04-26_
+_Last updated: 2026-04-27_
 
 This document defines how Artemis should use `docs/target-design-spec.md` during recurring development loops to move Mission Control from low-fidelity prototype to high-quality 3D environment.
 
@@ -20,6 +20,15 @@ Primary visual references:
 Asset pipeline reference:
 
 - `docs/concept-to-3d-asset-pipeline.md`
+
+Game Studio workflow reference:
+
+- `docs/workflows/game-studio-mission-control-loop.md`
+
+Installed Game Studio skill route for this project:
+
+- `game-studio` → `web-game-foundations` → `three-webgl-game` → `web-3d-asset-pipeline` → `game-playtest`
+- Add `game-ui-frontend` whenever labels, HUD, menus, DOM overlays, or text-heavy in-world UI change.
 
 The target spec is not decorative. Every loop should map its work to one or more explicit sections of the spec.
 
@@ -52,12 +61,18 @@ Required loop sequence:
    - live GitHub Pages markers if relevant
    - current app.js / CSS structure
 
-2. **Pick the largest gap**
+2. **Route through Game Studio**
+   - Start with `game-studio` classification.
+   - Default route: `web-game-foundations` → `three-webgl-game` → `web-3d-asset-pipeline` → `game-playtest`.
+   - Add `game-ui-frontend` when UI/HUD/labels change.
+   - Declare pass type before coding: `composition`, `lighting`, `asset-pipeline`, `UI`, `performance`, or `playtest-fix`.
+
+3. **Pick the largest gap**
    - Compare current site against `target-design-spec.md`.
    - Choose one high-impact area from the fidelity bar.
    - State the chosen gap before coding.
 
-3. **Implement one coherent macro pass**
+4. **Implement one coherent macro pass**
    - Examples:
      - wide camera + station reveal pass
      - asteroid container + cut-plane pass
@@ -70,25 +85,31 @@ Required loop sequence:
    - 2–4 coordinated edits are allowed if they serve the same visual thesis.
    - Avoid random scattered tweaks.
 
-4. **Smoke test locally**
+5. **Smoke test locally**
    - `node --check app.js`
+   - `git diff --check`
    - static server + `curl` markers when HTML/JS changed
    - no broken imports
 
-5. **Commit cleanly**
+6. **Run Game Studio playtest gate**
+   - Capture screenshot when tooling allows, or record the blocker plainly.
+   - Check visual hierarchy, lighting/readability, camera subject, interaction, and performance budget.
+   - Update visual review fields required by `scripts/macro-gate.mjs`.
+
+7. **Commit cleanly**
    - clear commit message
    - no secrets
    - no Zoophoria credentials/remotes
 
-6. **Push to ArtemisHunts only**
+8. **Push to ArtemisHunts only**
    - repo: `ArtemisHunts/mission-control-preview`
    - use ArtemisHunts credential only
 
-7. **Verify or queue Pages deploy check**
+9. **Verify or queue Pages deploy check**
    - if Pages is live, verify markers
    - if Pages is lagging, schedule a deploy verification check
 
-8. **Post concise update**
+10. **Post concise update**
    - commit hash
    - commit message
    - what changed
@@ -128,7 +149,7 @@ Work should generally climb this ladder unless a blocker appears:
 
 1. **Wide cutaway camera** — pull far enough back that the full vertical-slice asteroid container and all station districts read before interior detail; avoid trapping the user inside the room.
 2. **Vertical-slice container** — heavy asteroid borders, exposed cut planes, foreground sill/crown, rear cavern darkness.
-3. **Lighting reset** — lower ambient wash; stronger rim, practical, hangar, and table sources with readable silhouettes.
+3. **Lighting reset** — exposure/readability first; broad fill, stronger key/rim/practical work lights, fog control, and readable silhouettes. Do not confuse darkness with premium mood.
 4. **Environment-first framing** — keep UI out of the way.
 5. **Architectural shell** — make the room believable from the outside-in.
 6. **Facility scale/depth** — distant hangar/service layers, negative space, station separation.
@@ -136,7 +157,7 @@ Work should generally climb this ladder unless a blocker appears:
 8. **Room physicalization** — replace pads with real workspaces.
 9. **Material richness** — graphite, black glass, brushed steel, rock.
 10. **Operators and life** — suited agents, drones, subtle motion.
-11. **Asset pipeline** — move from primitives to GLB modules using `docs/concept-to-3d-asset-pipeline.md` after the container/lighting passes are strong.
+11. **Asset pipeline** — move from primitives to GLB/glTF modules using `docs/concept-to-3d-asset-pipeline.md` and the `web-3d-asset-pipeline` skill after the container/lighting passes are strong.
 12. **Embedded UI** — bring functionality back through in-world consoles.
 
 ---

@@ -14,7 +14,7 @@ const maxMeshConstructors = Number(args.get('max-mesh-constructors') ?? 70);
 const maxLoopMarkers = Number(args.get('max-loop-markers') ?? 75);
 const requireVisual = args.get('require-visual') !== 'false';
 const sourcePattern = /^(app\.js|style\.css|index\.html|styleframe\.css|styleframe\.html)$/;
-const visualPattern = /^docs\/visual-reviews\/.*\.md$/;
+const visualPattern = /^docs\/visual-reviews\/(?!README\.md$).*\.md$/;
 
 function sh(cmd) {
   return execSync(cmd, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
@@ -55,11 +55,18 @@ if (requireVisual) {
     const checks = {
       screenshot: /^Screenshot:\s*\S+/mi.test(text),
       refs: /^References benchmarked:/mi.test(text),
+      gameStudioRoute: /^Game Studio route:\s*game-studio\s*->\s*web-game-foundations\s*->\s*three-webgl-game\s*->\s*web-3d-asset-pipeline\s*->\s*game-playtest\b/mi.test(text),
+      passType: /^Pass type:\s*(composition|lighting|asset-pipeline|UI|performance|playtest-fix)\b/mi.test(text),
+      skillFocus: /^Skill focus:\s*\S+/mi.test(text),
+      assetPipelineStance: /^Asset pipeline stance:\s*(primitive-blockout|modular-GLB-planned|GLB-integrated|not-applicable)\b/mi.test(text),
+      playtestStatus: /^Playtest status:\s*(screenshot-captured|screenshot-blocked|needs-human-browser-check)\b/mi.test(text),
       verdictCloser: /^North-star verdict:\s*closer\b/mi.test(text),
       containerScore: /^Container\/shell:\s*[0-5]\//mi.test(text),
       stationScore: /^Station visibility:\s*[0-5]\//mi.test(text),
       lightingScore: /^Lighting\/readability:\s*[0-5]\//mi.test(text),
       depthScore: /^Depth\/scale:\s*[0-5]\//mi.test(text),
+      lightingNote: /^Lighting\/readability note:/mi.test(text),
+      gameStudioChecklist: /^Game Studio checklist:/mi.test(text),
       action: /^Next visual fix:/mi.test(text),
     };
     const missing = Object.entries(checks).filter(([, ok]) => !ok).map(([key]) => key);
