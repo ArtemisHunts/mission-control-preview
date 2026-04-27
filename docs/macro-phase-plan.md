@@ -9,16 +9,27 @@ This file exists because the previous autonomous loop shipped too many tiny mark
 Before any autonomous macro pass may commit, it must run:
 
 ```bash
-node scripts/macro-gate.mjs --min-source-lines=220
+node scripts/macro-gate.mjs --min-source-lines=450
 ```
 
 The gate requires:
 
-- at least 220 changed source lines across app/CSS/HTML files
+- at least 450 changed source lines across app/CSS/HTML files
 - at least one real source file changed
 - `docs/loop-metrics.json` updated
 
-This is not a quality substitute. It is a floor to prevent pebble-stacking.
+This is not a quality substitute. It is a floor to prevent pebble-stacking. If the loop repeatedly finishes in under 15 minutes or produces barely visible deltas, raise this threshold again or split the phase into a branch-based visual review workflow.
+
+## Cadence policy
+
+Spacing is based on observed completion time, not vibes:
+
+- If macro passes finish under 15 minutes, run the next pass within ~60 minutes and raise the gate.
+- If macro passes take 30–75 minutes, keep a 90-minute cadence.
+- If macro passes approach the timeout or hit lock contention, widen cadence to 2–4 hours.
+- Do not leave multi-hour idle gaps when the last pass completed cleanly in minutes.
+
+Current setting after observing ~7 minute v3 completion: **60-minute cadence with a 450 source-line gate**.
 
 ## Current phase: outside-in scene recomposition
 
