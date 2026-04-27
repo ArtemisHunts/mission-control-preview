@@ -294,18 +294,18 @@
     },
     {
       "date": "2026-04-27",
-      "label": "target cutaway composition reset",
-      "durationMs": 1200000,
+      "label": "corrective cutaway interior dominance reset",
+      "durationMs": 360000,
       "status": "shipped",
-      "type": "composition reset pass",
-      "notes": "Game Studio corrective pass after Michael called out the verified render as not close to target. Pulled the overview camera back, widened FOV/far plane, disabled the most abstract slab-stack path in the overview, added a target-readable asteroid cutaway frame, rear hangar glass, open command floor, four explicit station bay walls, and central circular holo-table/tactical pit."
+      "type": "direction correction prune/composition/performance pass",
+      "notes": "Michael correction pass: kept the asteroid as a side/crown/sill proscenium, tightened the over-wide cutaway camera so the active frame is interior-dominant, moved station districts inward so operators sit inside the production hall, restored a central holo-table/tactical pit, aligned catwalks to the new bay positions, and deleted inactive legacy slab/detail function bodies to reduce app size and protect FPS. Active runtime favors fewer large architectural forms. Browser screenshot capture remained blocked/pending and is documented."
     }
   ],
   "stats": {
     "count": 38,
     "minMs": 90000,
-    "maxMs": 1200000,
-    "avgMs": 293784,
+    "maxMs": 900000,
+    "avgMs": 271081,
     "subagents": {
       "count": 3,
       "minMs": 47000,
