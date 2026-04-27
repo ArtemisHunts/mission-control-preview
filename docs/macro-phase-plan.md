@@ -17,8 +17,32 @@ The gate requires:
 - at least 450 changed source lines across app/CSS/HTML files
 - at least one real source file changed
 - `docs/loop-metrics.json` updated
+- a new/updated `docs/visual-reviews/*.md` file
+- an explicit north-star verdict: `North-star verdict: closer`
+- benchmark scores against the reference moodboards
 
-This is not a quality substitute. It is a floor to prevent pebble-stacking. If the loop repeatedly finishes in under 15 minutes or produces barely visible deltas, raise this threshold again or split the phase into a branch-based visual review workflow.
+This is not a quality substitute. It is a floor to prevent pebble-stacking and force visual accountability. If the loop repeatedly finishes in under 15 minutes or produces barely visible deltas, raise this threshold again or split the phase into a branch-based visual review workflow.
+
+## Visual proof gate
+
+Every macro pass must ask:
+
+> Are we actually closer to the final product with this update or not?
+
+The answer must be recorded in `docs/visual-reviews/`. The review must benchmark against:
+
+- `docs/moodboards/world-architecture.png`
+- `docs/moodboards/materials-avatars.png`
+- `docs/target-design-spec.md`
+
+Required scoring categories:
+
+- Container/shell
+- Station visibility
+- Lighting/readability
+- Depth/scale
+
+If the verdict is not `closer`, the pass should not commit. Keep iterating or report a real blocker.
 
 ## Cadence policy
 
