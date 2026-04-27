@@ -26,8 +26,8 @@ const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
     body: 'A full spatial read of Mission Control: central holo-table, room clusters, visible operators, signal lanes, and deploy traffic.',
-    camera: [0, 17.8, 49.8],
-    target: [0, 1.84, -4.0],
+    camera: [0, 16.4, 47.2],
+    target: [0, 1.78, -3.65],
     accent: COLORS.cyan
   },
   command: {
@@ -113,7 +113,7 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
 scene.fog = new THREE.Fog(COLORS.bg, 28, 146);
 
-const camera = new THREE.PerspectiveCamera(64, window.innerWidth / window.innerHeight, 0.1, 220);
+const camera = new THREE.PerspectiveCamera(61, window.innerWidth / window.innerHeight, 0.1, 200);
 camera.position.set(...ROOMS.overview.camera);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -146,7 +146,7 @@ const clickTarget = new THREE.Vector3();
 const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
-const fixedCameraOffset = new THREE.Vector3(0, 15.9, 53.9);
+const fixedCameraOffset = new THREE.Vector3(0, 14.8, 51.2);
 const facilityBounds = { minX: -14.8, maxX: 14.8, minZ: -13.6, maxZ: 4.4 };
 
 function mat(color, options = {}) {
@@ -225,6 +225,7 @@ function buildOffice() {
   buildInteriorFacilityDominance();
   buildEnclosedProductionShellStack();
   buildInteriorCommandGalleryCompression();
+  buildSealedProductionMegashell();
   buildRearCavernDepthGate();
   buildMacroFacilityDepthMarkers();
   buildWideOverviewLightingScaffold();
@@ -675,6 +676,78 @@ function buildInteriorCommandGalleryCompression() {
   box('interior command gallery command pit cyan read line', [7.2, 0.035, 0.05], [0, 0.78, 1.02], cyan);
 }
 
+
+function buildSealedProductionMegashell() {
+  const hull = mat(0x121d30, { roughness: 0.5, metalness: 0.66 });
+  const darkHull = mat(0x050a13, { roughness: 0.72, metalness: 0.36 });
+  const pressure = mat(0x1b2940, { roughness: 0.42, metalness: 0.72 });
+  const shadow = mat(0x000207, { roughness: 1.0, metalness: 0.0 });
+  const glass = mat(0x06182a, { roughness: 0.14, metalness: 0.26, transparent: true, opacity: 0.26, emissive: 0x071f36, emissiveIntensity: 0.08 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.2, transparent: true, opacity: 0.15 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.2, transparent: true, opacity: 0.15 });
+
+  // Final corrective composition lock: a sealed industrial megashell occupies the frame; asteroid is only the outside edge.
+  box('sealed production megashell left armored wall band', [1.25, 5.2, 15.4], [-11.9, 2.72, -2.4], hull);
+  box('sealed production megashell right armored wall band', [1.25, 5.2, 15.4], [11.9, 2.72, -2.4], hull);
+  box('sealed production megashell overhead service spine', [22.0, 0.72, 3.6], [0, 4.72, -0.8], pressure);
+  box('sealed production megashell rear blast bulkhead', [21.2, 3.8, 0.42], [0, 2.86, -10.62], darkHull);
+  box('sealed production megashell rear bounded asteroid slit', [10.8, 0.72, 0.08], [0, 3.38, -10.32], shadow);
+  box('sealed production megashell rear armored glass shield', [11.4, 0.82, 0.055], [0, 3.38, -10.24], glass);
+  box('sealed production megashell command island compression deck', [12.6, 0.34, 4.2], [0, 0.82, 1.85], darkHull);
+  box('sealed production megashell command island cyan front read', [8.2, 0.04, 0.055], [0, 1.04, 3.98], cyan);
+
+  const wallModules = [
+    ['left forward production shutter', -10.72, 1.62, 2.65, 3.1, amber],
+    ['right forward production shutter', 10.72, 1.62, 2.65, 3.1, cyan],
+    ['left rear production shutter', -10.72, 2.15, -5.45, 4.2, cyan],
+    ['right rear production shutter', 10.72, 2.15, -5.45, 4.2, amber]
+  ];
+
+  wallModules.forEach(([name, x, y, z, depth, light], index) => {
+    const module = box(`sealed production megashell ${name} mass`, [0.88, 2.4, depth], [x, y, z], pressure);
+    module.rotation.z = x < 0 ? 0.018 : -0.018;
+    box(`sealed production megashell ${name} black recessed slot`, [0.12, 1.56, depth * 0.72], [x * 0.988, y + 0.08, z], shadow);
+    box(`sealed production megashell ${name} broad status line`, [0.045, 0.05, depth * 0.64], [x * 0.955, y + 0.98, z], light);
+    box(`sealed production megashell ${name} lower hinge block`, [0.52, 0.18, depth * 0.8], [x * 0.966, y - 1.14, z], darkHull);
+    box(`sealed production megashell ${name} upper lock rail`, [0.5, 0.14, depth * 0.72], [x * 0.966, y + 1.22, z], hull);
+  });
+
+  const overheadRibs = [
+    [-8.8, 3.82, 3.2, 5.6],
+    [-4.4, 4.05, -0.8, 6.2],
+    [0, 4.16, -4.2, 6.8],
+    [4.4, 4.05, -0.8, 6.2],
+    [8.8, 3.82, 3.2, 5.6]
+  ];
+
+  overheadRibs.forEach(([x, y, z, depth], index) => {
+    const rib = box('sealed production megashell overhead rib', [0.28, 0.24, depth], [x, y, z], index % 2 ? hull : pressure);
+    rib.rotation.z = (index - 2) * 0.028;
+    box('sealed production megashell rib underside practical', [0.05, 0.035, depth * 0.72], [x, y - 0.22, z + 0.12], index % 2 ? cyan : amber);
+  });
+
+  const floorCuts = [
+    [-5.8, -1.0, 5.4, cyan],
+    [5.8, -1.0, 5.4, amber],
+    [-5.8, -7.4, 4.8, amber],
+    [5.8, -7.4, 4.8, cyan]
+  ];
+
+  floorCuts.forEach(([x, z, width, light], index) => {
+    box('sealed production megashell subfloor dark process cut', [width, 0.12, 0.82], [x, 0.38, z], shadow);
+    box('sealed production megashell subfloor raised machine cap', [width * 0.78, 0.16, 0.44], [x, 0.62, z - 0.06], darkHull);
+    box('sealed production megashell subfloor controlled glow lane', [width * 0.58, 0.035, 0.045], [x, 0.76, z + 0.42], light);
+    box('sealed production megashell subfloor vertical datum post', [0.14, 0.9, 0.14], [x + (index % 2 ? -width * 0.42 : width * 0.42), 1.0, z - 0.22], pressure);
+  });
+
+  box('sealed production megashell foreground frame lock beam', [20.0, 0.22, 0.82], [0, 1.52, 5.46], pressure);
+  box('sealed production megashell foreground black negative space', [15.4, 0.72, 0.12], [0, 1.84, 5.02], shadow);
+  box('sealed production megashell foreground amber guide line', [13.2, 0.04, 0.05], [0, 2.22, 4.94], amber);
+  box('sealed production megashell asteroid border occlusion mask', [27.4, 0.18, 0.38], [0, 5.38, 2.78], darkHull);
+  box('sealed production megashell left lower compression cheek', [2.6, 1.2, 0.36], [-10.8, 1.08, 4.55], hull);
+  box('sealed production megashell right lower compression cheek', [2.6, 1.2, 0.36], [10.8, 1.08, 4.55], hull);
+}
+
 function buildRearCavernDepthGate() {
   const voidMat = mat(0x010207, { roughness: 1.0, metalness: 0.0 });
   const steelShadow = mat(0x070d16, { roughness: 0.62, metalness: 0.5 });
@@ -1096,28 +1169,25 @@ function buildDistantFacilityDepth() {
 }
 
 function buildIndustrialSetDressing() {
-  const crateMat = mat(0x2a231d, { roughness: 0.72, metalness: 0.18 });
+  const darkPlant = mat(0x07101b, { roughness: 0.7, metalness: 0.4 });
   const steel = mat(COLORS.brushedSteel, { roughness: 0.35, metalness: 0.76 });
-  const black = mat(COLORS.blackMetal, { roughness: 0.5, metalness: 0.52 });
-  const crateStacks = [[-5.45, 3.25], [-4.85, 3.75], [5.2, 3.2], [4.7, 3.85], [5.6, -1.65], [-5.55, -1.45]];
-  crateStacks.forEach(([x, z], i) => {
-    const h = 0.22 + (i % 3) * 0.08;
-    box('environment cargo crate', [0.42, h, 0.42], [x, 0.13 + h / 2, z], crateMat);
-    box('crate metal band', [0.45, 0.025, 0.45], [x, 0.18 + h, z], steel);
-  });
-  [[-5.8, 1.0], [5.85, 0.85], [-5.35, -3.3], [5.35, -3.35]].forEach(([x, z]) => {
-    const tank = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.9, 18), black);
-    tank.position.set(x, 0.55, z);
-    tank.rotation.z = Math.PI / 2;
-    tank.castShadow = true;
-    tank.receiveShadow = true;
-    root.add(tank);
-    box('tank status strip', [0.02, 0.34, 0.035], [x, 0.55, z + 0.19], mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.7, transparent: true, opacity: 0.62 }));
-  });
-  // workstation chairs around the central table for scale
-  [[-1.15, 1.55], [1.15, 1.55], [-1.35, -0.55], [1.35, -0.55]].forEach(([x, z], i) => {
-    box('operator chair base', [0.26, 0.06, 0.26], [x, 0.26, z], black);
-    box('operator chair back', [0.28, 0.36, 0.05], [x, 0.52, z - 0.13], mat(0x222c3d, { roughness: 0.45, metalness: 0.35 }));
+  const glass = mat(0x061729, { roughness: 0.16, metalness: 0.24, transparent: true, opacity: 0.28, emissive: 0x08233b, emissiveIntensity: 0.09 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.22, transparent: true, opacity: 0.18 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.22, transparent: true, opacity: 0.18 });
+
+  // Corrective cleanup: replace crates/tanks/chair clutter with a few broad production-machine silhouettes.
+  [
+    ['left subfloor production trench', -6.8, 2.75, 5.2, amber],
+    ['right subfloor production trench', 6.8, 2.75, 5.2, cyan],
+    ['rear left process plinth', -7.4, -6.35, 4.8, cyan],
+    ['rear right process plinth', 7.4, -6.35, 4.8, amber]
+  ].forEach(([name, x, z, width, light], index) => {
+    box(`${name} broad machinery base`, [width, 0.22, 1.05], [x, 0.44, z], darkPlant);
+    box(`${name} recessed black service volume`, [width * 0.78, 0.72, 0.12], [x, 0.88, z - 0.48], mat(0x01030a, { roughness: 1.0, metalness: 0.0 }));
+    box(`${name} restrained production light lane`, [width * 0.66, 0.04, 0.045], [x, 0.86, z + 0.54], light);
+    box(`${name} front steel guard rail`, [width * 0.78, 0.055, 0.05], [x, 0.72, z + 0.58], steel);
+    const panel = box(`${name} large glass process readout`, [width * 0.36, 0.42, 0.055], [x + (index % 2 ? -width * 0.2 : width * 0.2), 1.1, z - 0.56], glass);
+    panel.rotation.x = -0.04;
   });
 }
 

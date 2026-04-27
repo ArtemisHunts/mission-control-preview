@@ -171,13 +171,21 @@
       "status": "shipped",
       "type": "direction correction composition/performance pass",
       "notes": "Added large foreground command gallery, side containment walls, rear pressure-door mass, overhead crossbeams, and bounded rear window forms so the interior production hall owns more of the frame. Replaced exterior planet/ship/shuttle language with interior plant depth, removed service/maintenance drone and signal-orb function bodies/calls, and lowered pixel ratio cap to protect FPS."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "corrective sealed production megashell pass",
+      "durationMs": 240000,
+      "status": "shipped",
+      "type": "direction correction composition/performance pass",
+      "notes": "Added a sealed production megashell with dominant interior wall bands, overhead service spine, rear blast bulkhead, bounded asteroid slit, wall shutters, floor process cuts, foreground compression frame, and broad machinery silhouettes. Replaced small industrial set dressing and nudged camera/FOV tighter so the interior facility owns more of the frame while keeping asteroid as a border."
     }
   ],
   "stats": {
-    "count": 22,
+    "count": 23,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 189048,
+    "avgMs": 191364,
     "subagents": {
       "count": 3,
       "minMs": 47000,
