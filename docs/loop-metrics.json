@@ -235,13 +235,21 @@
       "status": "shipped",
       "type": "direction correction prune/composition/performance pass",
       "notes": "Continued Michael correction: replaced the animated holo-table/mission-node cluster with a compact command process core, simplified operator avatars into low-poly scale silhouettes, added broad overhead plant panels to the interior compression lock, nudged camera framing tighter, and kept the asteroid as border/proscenium. Mesh constructor count dropped to 13 and loop markers remained zero. Browser screenshot capture remained policy-blocked and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "corrective rectangular frame and bay backplate pass",
+      "durationMs": 360000,
+      "status": "shipped",
+      "type": "direction correction prune/composition/performance pass",
+      "notes": "Continued Michael correction: removed the active rock-cave accent pass, replaced remaining circular torus accents in the ceiling and room pads with rectangular production datums, removed the unused animation callback array, added broad engineered frame locks and bay backplates so station districts read as large production walls, and kept asteroid/comet as outer border only. Mesh constructor count dropped to 11 and loop markers remained zero. Browser screenshot capture remained policy-blocked and is documented."
     }
   ],
   "stats": {
-    "count": 29,
+    "count": 30,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 230000,
+    "avgMs": 234333,
     "subagents": {
       "count": 3,
       "minMs": 47000,

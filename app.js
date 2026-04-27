@@ -25,9 +25,9 @@ const COLORS = {
 const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
-    body: 'A full spatial read of Mission Control: fabrication line, central holo-table, production bays, visible operators, and deploy traffic.',
-    camera: [0, 9.0, 27.6],
-    target: [0, 1.86, -3.95],
+    body: 'A full spatial read of Mission Control: fabrication line, compact command core, production bays, visible operators, and deploy traffic.',
+    camera: [0, 8.85, 26.8],
+    target: [0, 1.92, -4.05],
     accent: COLORS.cyan
   },
   command: {
@@ -134,7 +134,6 @@ const root = new THREE.Group();
 scene.add(root);
 
 const clock = new THREE.Clock();
-const animated = [];
 const operators = [];
 const roomMeshes = [];
 const pointer = new THREE.Vector2();
@@ -144,7 +143,7 @@ const clickTarget = new THREE.Vector3();
 const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
-const fixedCameraOffset = new THREE.Vector3(0, 8.7, 27.4);
+const fixedCameraOffset = new THREE.Vector3(0, 8.55, 26.8);
 const facilityBounds = { minX: -14.8, maxX: 14.8, minZ: -13.6, maxZ: 4.4 };
 
 function mat(color, options = {}) {
@@ -216,12 +215,13 @@ function buildOffice() {
 
   buildShell();
   buildCeilingAndBulkheads();
-  buildRockCave();
   buildAsteroidRim();
   buildForegroundCutawayFrame();
   buildVerticalSliceContainer();
   buildPrunedDominantProductionHall();
   buildInteriorCompressionLock();
+  buildInteriorFrameLock();
+  buildBroadProductionBayBackplates();
   buildWideOverviewLightingScaffold();
   buildDistantFacilityDepth();
   buildRooms();
@@ -315,25 +315,11 @@ function buildCeilingAndBulkheads() {
   [-7.4, -4.2, -1.4, 1.4, 4.2, 7.4].forEach((x) => {
     box('ceiling inset amber strip', [0.045, 0.035, 9.2], [x, 4.58, -0.75], mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.52, transparent: true, opacity: 0.46 }));
   });
-  const recess = new THREE.Mesh(new THREE.TorusGeometry(2.35, 0.035, 10, 96), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.48, transparent: true, opacity: 0.24 }));
-  recess.position.set(0, 4.45, 0.45);
-  recess.rotation.x = Math.PI / 2;
-  root.add(recess);
-}
-
-function buildRockCave() {
-  const rockMat = mat(COLORS.rock, { roughness: 0.94, metalness: 0.01 });
-  // Rock is now a restrained page border, not a field of noisy foreground subjects.
-  [
-    ['left lower carved border mass', [1.15, 1.2, 5.2], [-14.2, 0.72, 3.1]],
-    ['right lower carved border mass', [1.15, 1.2, 5.2], [14.2, 0.72, 3.1]],
-    ['left rear carved border mass', [1.0, 1.6, 5.8], [-14.15, 1.4, -7.4]],
-    ['right rear carved border mass', [1.0, 1.6, 5.8], [14.15, 1.4, -7.4]],
-    ['upper rear rock cap accent', [7.4, 0.55, 1.6], [0, 4.9, -8.6]]
-  ].forEach(([name, size, position], index) => {
-    const rock = box(name, size, position, rockMat);
-    rock.rotation.z = (index - 2) * 0.015;
-  });
+  const ceilingDatum = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.28, transparent: true, opacity: 0.18 });
+  box('ceiling rectangular command datum front', [5.4, 0.035, 0.055], [0, 4.34, 2.68], ceilingDatum);
+  box('ceiling rectangular command datum rear', [5.4, 0.035, 0.055], [0, 4.34, -1.78], ceilingDatum);
+  box('ceiling rectangular command datum left', [0.055, 0.035, 4.1], [-2.72, 4.34, 0.45], ceilingDatum);
+  box('ceiling rectangular command datum right', [0.055, 0.035, 4.1], [2.72, 4.34, 0.45], ceilingDatum);
 }
 
 function buildAsteroidRim() {
@@ -392,6 +378,51 @@ function buildVerticalSliceContainer() {
   [-10.4, -5.2, 0, 5.2, 10.4].forEach((x, i) => {
     box('container amber inspection lamp', [0.075, 0.04, 0.48], [x, 5.06 + Math.sin(i) * 0.04, 2.65 - (i % 2) * 0.58], warmWorkLight);
   });
+}
+
+function buildBroadProductionBayBackplates() {
+  const hull = mat(0x162238, { roughness: 0.46, metalness: 0.66 });
+  const dark = mat(0x02050c, { roughness: 0.92, metalness: 0.08 });
+  const steel = mat(0x28344a, { roughness: 0.38, metalness: 0.72 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.14, transparent: true, opacity: 0.1 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.14, transparent: true, opacity: 0.1 });
+  const gold = mat(COLORS.gold, { emissive: COLORS.gold, emissiveIntensity: 0.14, transparent: true, opacity: 0.1 });
+  const coral = mat(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: 0.13, transparent: true, opacity: 0.1 });
+  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.13, transparent: true, opacity: 0.1 });
+  const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.13, transparent: true, opacity: 0.1 });
+
+  // Large bay backplates replace the remaining "mini-room" impression with facility-scale production walls.
+  box('broad backplate build district pressure wall', [7.4, 2.7, 0.24], [-7.8, 2.0, 0.85], hull);
+  box('broad backplate review district pressure wall', [7.4, 2.7, 0.24], [7.8, 2.0, 0.85], hull);
+  box('broad backplate observatory district pressure wall', [7.0, 2.9, 0.24], [-7.9, 2.35, -7.55], hull);
+  box('broad backplate deploy district pressure wall', [7.0, 2.9, 0.24], [7.9, 2.35, -7.55], hull);
+
+  box('broad backplate build dark work void', [5.7, 1.55, 0.12], [-7.8, 2.1, 1.02], dark);
+  box('broad backplate review dark work void', [5.7, 1.55, 0.12], [7.8, 2.1, 1.02], dark);
+  box('broad backplate observatory dark work void', [5.4, 1.68, 0.12], [-7.9, 2.48, -7.38], dark);
+  box('broad backplate deploy dark work void', [5.4, 1.68, 0.12], [7.9, 2.48, -7.38], dark);
+
+  box('broad backplate build amber header', [5.6, 0.055, 0.045], [-7.8, 3.42, 1.18], gold);
+  box('broad backplate review coral header', [5.6, 0.055, 0.045], [7.8, 3.42, 1.18], coral);
+  box('broad backplate observatory violet header', [5.2, 0.055, 0.045], [-7.9, 3.86, -7.22], violet);
+  box('broad backplate deploy green header', [5.2, 0.055, 0.045], [7.9, 3.86, -7.22], green);
+
+  box('broad backplate central rear factory lintel', [15.8, 0.34, 0.5], [0, 3.95, -5.42], steel);
+  box('broad backplate central rear black service band', [12.8, 0.48, 0.18], [0, 3.48, -5.18], dark);
+  box('broad backplate central rear cyan process datum', [10.2, 0.04, 0.045], [0, 3.18, -4.96], cyan);
+  box('broad backplate central rear amber process datum', [10.2, 0.04, 0.045], [0, 2.84, -4.96], amber);
+
+  box('broad backplate left district lower machine shelf', [6.6, 0.26, 0.7], [-7.85, 1.08, -2.2], steel);
+  box('broad backplate right district lower machine shelf', [6.6, 0.26, 0.7], [7.85, 1.08, -2.2], steel);
+  box('broad backplate left shelf shadow bite', [4.8, 0.18, 0.12], [-7.85, 1.22, -1.84], dark);
+  box('broad backplate right shelf shadow bite', [4.8, 0.18, 0.12], [7.85, 1.22, -1.84], dark);
+  box('broad backplate left shelf cyan lane', [4.2, 0.035, 0.045], [-7.85, 1.34, -1.48], cyan);
+  box('broad backplate right shelf amber lane', [4.2, 0.035, 0.045], [7.85, 1.34, -1.48], amber);
+  box('broad backplate left vertical service pier', [0.34, 2.4, 0.34], [-4.25, 2.25, -2.8], hull);
+  box('broad backplate right vertical service pier', [0.34, 2.4, 0.34], [4.25, 2.25, -2.8], hull);
+  box('broad backplate central black loading throat', [3.2, 1.4, 0.18], [0, 2.32, -3.12], dark);
+  box('broad backplate central loading throat cyan lip', [2.4, 0.04, 0.045], [0, 3.04, -2.92], cyan);
+  box('broad backplate central loading throat amber sill', [2.4, 0.04, 0.045], [0, 1.58, -2.92], amber);
 }
 
 function buildWideOverviewLightingScaffold() {
@@ -571,6 +602,30 @@ function buildInteriorCompressionLock() {
   box('compression lock overhead amber production datum', [11.6, 0.035, 0.045], [0, 4.36, -0.8], amber);
 }
 
+function buildInteriorFrameLock() {
+  const hull = mat(0x111c2e, { roughness: 0.5, metalness: 0.64 });
+  const dark = mat(0x01030a, { roughness: 0.96, metalness: 0.04 });
+  const steel = mat(0x28344a, { roughness: 0.38, metalness: 0.72 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.16, transparent: true, opacity: 0.12 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.16, transparent: true, opacity: 0.12 });
+
+  // Final ratio lock for this direction: engineered interior masks the rock edge; asteroid reads only as outer border.
+  box('interior frame left full-height engineered jamb', [1.65, 5.35, 13.8], [-11.62, 3.0, -2.35], hull);
+  box('interior frame right full-height engineered jamb', [1.65, 5.35, 13.8], [11.62, 3.0, -2.35], hull);
+  box('interior frame top full-width service lintel', [22.6, 0.58, 6.2], [0, 5.18, -2.0], hull);
+  box('interior frame lower production sill', [22.2, 0.32, 1.05], [0, 0.72, 5.35], dark);
+
+  box('interior frame left bay black service pocket', [0.18, 3.8, 5.8], [-10.72, 3.0, -3.4], dark);
+  box('interior frame right bay black service pocket', [0.18, 3.8, 5.8], [10.72, 3.0, -3.4], dark);
+  box('interior frame rear factory header slab', [18.6, 0.42, 0.68], [0, 4.25, -8.65], steel);
+  box('interior frame rear lower factory datum', [17.2, 0.18, 0.62], [0, 1.55, -8.35], steel);
+
+  box('interior frame left cyan process line', [0.045, 3.2, 0.055], [-10.44, 3.0, 0.4], cyan);
+  box('interior frame right amber process line', [0.045, 3.2, 0.055], [10.44, 3.0, 0.4], amber);
+  box('interior frame top amber process line', [14.0, 0.035, 0.045], [0, 4.84, 1.28], amber);
+  box('interior frame floor cyan production datum', [12.6, 0.035, 0.045], [0, 0.94, 4.72], cyan);
+}
+
 function buildCentralFabricationLine() {
   const deck = mat(0x111a2b, { roughness: 0.48, metalness: 0.58 });
   const dark = mat(0x02050d, { roughness: 0.92, metalness: 0.12 });
@@ -646,10 +701,11 @@ function buildRooms() {
     glow.userData.mode = id;
     roomMeshes.push(glow);
 
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(1.36, 0.018, 8, 72), mat(room.accent, { emissive: room.accent, emissiveIntensity: 0.55, transparent: true, opacity: 0.36 }));
-    ring.rotation.x = Math.PI / 2;
-    ring.position.y = 0.28;
-    group.add(ring);
+    const landingMat = mat(room.accent, { emissive: room.accent, emissiveIntensity: 0.36, transparent: true, opacity: 0.2 });
+    box(`${room.label} rectangular workcell landing front`, [2.45, 0.035, 0.055], [0, 0.3, 0.98], landingMat, group);
+    box(`${room.label} rectangular workcell landing rear`, [2.45, 0.035, 0.055], [0, 0.3, -0.78], landingMat, group);
+    box(`${room.label} rectangular workcell landing left`, [0.055, 0.035, 1.48], [-1.28, 0.3, 0.1], landingMat, group);
+    box(`${room.label} rectangular workcell landing right`, [0.055, 0.035, 1.48], [1.28, 0.3, 0.1], landingMat, group);
 
     const label = makeTextSprite(room.label, `#${room.accent.toString(16).padStart(6, '0')}`, room.label.length > 7 ? 52 : 68);
     label.position.set(0, 0.62, -0.64);
@@ -659,9 +715,8 @@ function buildRooms() {
 
     buildWorkspaceProps(id, group, room.accent);
 
-    // No per-room beacons or animated attention poles; the broad bay architecture carries the read.
-    ring.rotation.z = x < 0 ? -0.08 : 0.08;
-    glow.material.opacity = 0.04;
+    // No per-room beacons, circular pads, or animated attention poles; broad bay geometry carries the read.
+    glow.material.opacity = 0.035;
   });
 }
 
@@ -973,7 +1028,6 @@ function animate() {
   const delta = Math.min(clock.getDelta(), 0.05);
   const t = clock.elapsedTime;
   updateFacilityNavigation(delta);
-  animated.forEach((fn) => fn(t));
   operators.forEach((operator) => {
     operator.group.position.y = operator.baseY + Math.sin(t * 1.7 + operator.index) * 0.035;
     operator.group.rotation.y += Math.sin(t * 0.3 + operator.index) * 0.0008;
