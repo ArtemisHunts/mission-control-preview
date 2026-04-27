@@ -26,8 +26,8 @@ const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
     body: 'A full spatial read of Mission Control: assembly shaft, fabrication line, production bays, visible operators, and deploy traffic.',
-    camera: [0, 10.8, 34.2],
-    target: [0, 1.9, -2.35],
+    camera: [0, 9.6, 29.8],
+    target: [0, 1.85, -2.05],
     accent: COLORS.cyan
   },
   command: {
@@ -111,9 +111,9 @@ container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
-scene.fog = new THREE.Fog(COLORS.bg, 24, 112);
+scene.fog = new THREE.Fog(COLORS.bg, 18, 96);
 
-const camera = new THREE.PerspectiveCamera(47, window.innerWidth / window.innerHeight, 0.1, 145);
+const camera = new THREE.PerspectiveCamera(44, window.innerWidth / window.innerHeight, 0.1, 125);
 camera.position.set(...ROOMS.overview.camera);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -143,7 +143,7 @@ const clickTarget = new THREE.Vector3();
 const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
-const fixedCameraOffset = new THREE.Vector3(0, 10.4, 33.8);
+const fixedCameraOffset = new THREE.Vector3(0, 9.35, 29.4);
 const facilityBounds = { minX: -10.6, maxX: 10.6, minZ: -8.2, maxZ: 3.6 };
 
 function mat(color, options = {}) {
@@ -248,8 +248,8 @@ function buildOffice() {
   buildCeilingAndBulkheads();
   buildCalibratedAsteroidProscenium();
   buildTargetCutawayMissionControl();
+  buildInteriorDominanceMassing();
   buildReadabilityHotfixLighting();
-  buildDistantFacilityDepth();
   buildRooms();
   buildCommandHoloTableHero();
   buildRailingsAndCatwalks();
@@ -294,7 +294,6 @@ function buildShell() {
   const rightWall = box('right wall', [22.0, 5.6, 0.2], [14.8, 2.75, -1.55], sideMat);
   rightWall.rotation.y = Math.PI / 2;
 
-  buildWindowWall();
 
   box('rear wall continuous operations monitor band', [18.6, 0.42, 0.08], [0, 3.6, -11.86], monitorMat);
   box('rear wall lower production telemetry band', [22.4, 0.16, 0.06], [0, 2.18, -11.82], monitorMat);
@@ -304,27 +303,6 @@ function buildShell() {
   box('front deck broad command transfer lane', [13.2, 0.035, 0.055], [0, 0.28, 5.2], mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.14, transparent: true, opacity: 0.12 }));
 }
 
-
-function buildWindowWall() {
-  const blindMat = mat(0x020611, { roughness: 0.82, metalness: 0.18 });
-  const frameMat = mat(COLORS.blackMetal, { roughness: 0.34, metalness: 0.68 });
-  const glassMat = mat(0x061526, { roughness: 0.14, metalness: 0.25, transparent: true, opacity: 0.2, emissive: 0x071e34, emissiveIntensity: 0.07 });
-  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.28, transparent: true, opacity: 0.22 });
-  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.26, transparent: true, opacity: 0.2 });
-
-  // Rear wall is sealed instrumentation, not exterior subject matter.
-  box('sealed rear production blind', [19.4, 2.34, 0.08], [0, 2.82, -11.88], blindMat);
-  box('sealed rear instrumentation glass band', [13.2, 0.82, 0.055], [0, 3.18, -11.78], glassMat);
-  box('sealed rear top pressure frame', [19.7, 0.18, 0.18], [0, 4.08, -11.74], frameMat);
-  box('sealed rear bottom pressure frame', [19.7, 0.16, 0.18], [0, 1.48, -11.74], frameMat);
-  box('sealed rear left pressure jamb', [0.18, 2.28, 0.18], [-9.92, 2.8, -11.73], frameMat);
-  box('sealed rear right pressure jamb', [0.18, 2.28, 0.18], [9.92, 2.8, -11.73], frameMat);
-  box('sealed rear broad center mullion', [0.12, 1.82, 0.1], [0, 3.0, -11.69], frameMat);
-  box('sealed rear broad left telemetry tile', [4.2, 0.2, 0.055], [-4.2, 2.25, -11.66], cyan);
-  box('sealed rear broad right telemetry tile', [4.2, 0.2, 0.055], [4.2, 2.25, -11.66], amber);
-  box('sealed rear cyan operations datum', [13.8, 0.035, 0.06], [0, 3.78, -11.64], cyan);
-  box('sealed rear amber production datum', [16.6, 0.04, 0.06], [0, 1.78, -11.64], amber);
-}
 
 
 function buildCeilingAndBulkheads() {
@@ -379,8 +357,6 @@ function buildCalibratedAsteroidProscenium() {
   box('calibrated sill amber edge datum', [13.8, 0.035, 0.045], [0, 0.94, 6.0], amberRim);
 }
 function buildTargetCutawayMissionControl() {
-  const rock = mat(0x211a24, { roughness: 0.96, metalness: 0.02 });
-  const cut = mat(0x3a3039, { roughness: 0.9, metalness: 0.02 });
   const shadow = mat(0x02050c, { roughness: 1.0, metalness: 0.0 });
   const steel = mat(0x39465d, { roughness: 0.38, metalness: 0.72 });
   const darkSteel = mat(0x0c1422, { roughness: 0.58, metalness: 0.52 });
@@ -392,20 +368,14 @@ function buildTargetCutawayMissionControl() {
   const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.34, transparent: true, opacity: 0.25 });
   const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.34, transparent: true, opacity: 0.25 });
 
-  // Target reset: first read must be a room carved into asteroid, not abstract horizontal bands.
-  box('target reset left asteroid cutaway shoulder', [2.1, 6.2, 14.8], [-15.2, 3.0, -2.4], rock);
-  box('target reset right asteroid cutaway shoulder', [2.1, 6.2, 14.8], [15.2, 3.0, -2.4], rock);
-  box('target reset upper asteroid crown', [28.6, 0.72, 3.1], [0, 5.8, -5.6], rock);
-  box('target reset lower asteroid sill', [28.2, 0.5, 1.1], [0, -0.12, 6.65], rock);
-  box('target reset left bright cut face', [0.18, 4.9, 10.2], [-13.8, 3.0, -2.1], cut);
-  box('target reset right bright cut face', [0.18, 4.9, 10.2], [13.8, 3.0, -2.1], cut);
-  box('target reset top bright cut plane', [22.5, 0.16, 2.2], [0, 5.18, -4.2], cut);
+  // Target reset now starts inside the calibrated asteroid border: one room, one floor, one rear plane.
+  // Duplicate rock shoulders were pruned so the asteroid stays a page frame instead of becoming the subject.
 
   // Rear hangar/window: depth and sci-fi operations-room backdrop instead of a sealed black wall.
   box('target reset panoramic rear black glass', [20.8, 2.6, 0.12], [0, 3.0, -11.42], glass);
   box('target reset rear hangar horizon glow', [17.8, 0.08, 0.05], [0, 3.36, -11.22], cyan);
-  box('target reset distant ship silhouette left', [2.4, 0.28, 0.08], [-5.4, 2.78, -11.16], shadow);
-  box('target reset distant ship silhouette right', [3.2, 0.22, 0.08], [4.8, 2.52, -11.16], shadow);
+  box('target reset rear factory silhouette left', [5.0, 0.34, 0.08], [-5.2, 2.72, -11.16], shadow);
+  box('target reset rear factory silhouette right', [5.6, 0.28, 0.08], [4.8, 2.52, -11.16], shadow);
   box('target reset rear pressure header', [22.4, 0.28, 0.32], [0, 4.52, -10.95], steel);
   box('target reset rear pressure sill', [22.4, 0.22, 0.32], [0, 1.36, -10.95], steel);
 
@@ -428,6 +398,63 @@ function buildTargetCutawayMissionControl() {
   bay('review containment', 8.4, 1.35, coral);
   bay('observatory signal', -8.4, -7.2, violet);
   bay('deploy dock', 8.4, -7.2, green);
+}
+
+function buildInteriorDominanceMassing() {
+  const hull = mat(0x17243a, { roughness: 0.44, metalness: 0.68 });
+  const dark = mat(0x030711, { roughness: 0.92, metalness: 0.08 });
+  const steel = mat(0x344159, { roughness: 0.36, metalness: 0.76 });
+  const glass = mat(0x071a2c, { emissive: 0x0b3450, emissiveIntensity: 0.16, transparent: true, opacity: 0.22, roughness: 0.16, metalness: 0.2 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.34, transparent: true, opacity: 0.22, roughness: 0.08 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.3, transparent: true, opacity: 0.2, roughness: 0.1 });
+  const gold = mat(COLORS.gold, { emissive: COLORS.gold, emissiveIntensity: 0.24, transparent: true, opacity: 0.18 });
+  const coral = mat(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: 0.22, transparent: true, opacity: 0.17 });
+  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.22, transparent: true, opacity: 0.17 });
+  const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.22, transparent: true, opacity: 0.17 });
+
+  // Interior ratio lock: engineered metal mass steps in front of the asteroid border.
+  // The rock remains readable at the page edge, but the production floor owns the frame.
+  box('dominance left inner pressure jamb', [1.05, 4.95, 13.6], [-12.15, 2.92, -1.85], hull);
+  box('dominance right inner pressure jamb', [1.05, 4.95, 13.6], [12.15, 2.92, -1.85], hull);
+  box('dominance top interior service lintel', [22.4, 0.5, 4.8], [0, 5.02, -0.45], hull);
+  box('dominance lower command sill', [22.2, 0.3, 1.05], [0, 0.72, 5.64], dark);
+  box('dominance rear integrated factory wall', [21.2, 3.7, 0.28], [0, 2.82, -10.78], dark);
+  box('dominance rear glass operations slot', [14.4, 1.1, 0.06], [0, 3.14, -10.48], glass);
+
+  box('dominance broad build upper mezzanine', [6.6, 0.32, 1.22], [-8.35, 1.58, 3.18], hull);
+  box('dominance broad review upper mezzanine', [6.6, 0.32, 1.22], [8.35, 1.58, 3.18], hull);
+  box('dominance broad observatory upper mezzanine', [6.4, 0.32, 1.18], [-8.35, 1.68, -5.32], hull);
+  box('dominance broad deploy upper mezzanine', [6.4, 0.32, 1.18], [8.35, 1.68, -5.32], hull);
+  box('dominance build dark equipment bay', [5.4, 1.08, 0.16], [-8.35, 2.12, 2.4], dark);
+  box('dominance review dark equipment bay', [5.4, 1.08, 0.16], [8.35, 2.12, 2.4], dark);
+  box('dominance observatory dark equipment bay', [5.2, 1.12, 0.16], [-8.35, 2.22, -6.08], dark);
+  box('dominance deploy dark equipment bay', [5.2, 1.12, 0.16], [8.35, 2.22, -6.08], dark);
+
+  box('dominance central production floor mass', [8.8, 0.18, 9.4], [0, 0.52, -1.15], steel);
+  box('dominance command pit black negative space', [5.2, 0.2, 4.2], [0, 0.66, 0.38], dark);
+  box('dominance front command apron block', [12.8, 0.24, 1.18], [0, 0.88, 4.34], hull);
+  box('dominance rear assembly apron block', [13.6, 0.24, 1.28], [0, 1.02, -7.52], hull);
+  box('dominance central cyan production centerline', [0.24, 0.04, 10.8], [0, 1.16, -1.85], cyan);
+  box('dominance command amber threshold line', [9.6, 0.04, 0.045], [0, 1.18, 3.52], amber);
+
+  box('dominance left sidewall machine slab', [0.72, 3.0, 5.6], [-10.65, 2.82, 0.95], steel);
+  box('dominance right sidewall machine slab', [0.72, 3.0, 5.6], [10.65, 2.82, 0.95], steel);
+  box('dominance left rear sidewall machine slab', [0.72, 3.2, 5.8], [-10.65, 2.92, -6.05], steel);
+  box('dominance right rear sidewall machine slab', [0.72, 3.2, 5.8], [10.65, 2.92, -6.05], steel);
+  box('dominance left black service void', [0.12, 2.4, 9.8], [-10.22, 2.86, -2.5], dark);
+  box('dominance right black service void', [0.12, 2.4, 9.8], [10.22, 2.86, -2.5], dark);
+
+  box('dominance front full-width gantry', [18.6, 0.2, 0.48], [0, 2.58, 2.98], steel);
+  box('dominance center full-width gantry', [18.4, 0.2, 0.48], [0, 3.02, -2.36], hull);
+  box('dominance rear full-width gantry', [16.2, 0.2, 0.48], [0, 3.34, -7.48], steel);
+  box('dominance front gantry amber underside', [13.0, 0.04, 0.045], [0, 2.42, 3.28], amber);
+  box('dominance center gantry cyan underside', [12.4, 0.04, 0.045], [0, 2.86, -2.06], cyan);
+  box('dominance rear gantry amber underside', [10.8, 0.04, 0.045], [0, 3.18, -7.18], amber);
+
+  box('dominance build bay amber identity rail', [4.8, 0.045, 0.045], [-8.35, 2.86, 3.78], gold);
+  box('dominance review bay coral identity rail', [4.8, 0.045, 0.045], [8.35, 2.86, 3.78], coral);
+  box('dominance observatory bay violet identity rail', [4.8, 0.045, 0.045], [-8.35, 2.96, -4.72], violet);
+  box('dominance deploy bay green identity rail', [4.8, 0.045, 0.045], [8.35, 2.96, -4.72], green);
 }
 
 function buildCommandHoloTableHero() {
@@ -619,27 +646,6 @@ function buildRailingsAndCatwalks() {
     box('catwalk edge broad stop', [1.5, 0.08, 0.08], [x, 0.32, z - 0.86], railMat);
   });
 }
-
-function buildDistantFacilityDepth() {
-  const shadowSteel = mat(0x0b101b, { roughness: 0.58, metalness: 0.48 });
-  const plantDark = mat(0x050914, { roughness: 0.74, metalness: 0.32 });
-  const dimAmber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.18, transparent: true, opacity: 0.15 });
-  const dimCyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.18, transparent: true, opacity: 0.14 });
-
-  // Rear depth is broad interior plant mass, not a field of markers.
-  box('interior rear left production service deck', [6.2, 0.18, 0.86], [-6.6, 1.35, -8.88], shadowSteel);
-  box('interior rear center production service deck', [6.6, 0.2, 0.94], [0, 1.58, -9.22], shadowSteel);
-  box('interior rear right production service deck', [6.2, 0.18, 0.86], [6.6, 1.35, -8.88], shadowSteel);
-  box('interior rear left dark bay opening', [5.2, 0.82, 0.12], [-6.6, 1.94, -9.2], plantDark);
-  box('interior rear center dark bay opening', [5.6, 0.96, 0.12], [0, 2.18, -9.55], plantDark);
-  box('interior rear right dark bay opening', [5.2, 0.82, 0.12], [6.6, 1.94, -9.2], plantDark);
-  box('interior rear continuous lower amber rail', [15.6, 0.04, 0.04], [0, 1.72, -8.36], dimAmber);
-  box('interior rear continuous upper cyan rail', [12.8, 0.04, 0.04], [0, 3.42, -9.24], dimCyan);
-  box('interior rear left compression pier', [0.22, 3.3, 0.22], [-9.8, 2.78, -9.45], shadowSteel);
-  box('interior rear right compression pier', [0.22, 3.3, 0.22], [9.8, 2.78, -9.45], shadowSteel);
-}
-
-
 
 
 function buildOperators() {

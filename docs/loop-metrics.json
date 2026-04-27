@@ -307,13 +307,21 @@
       "status": "shipped",
       "type": "direction correction prune/composition/performance pass",
       "notes": "Follow-up Michael correction: pruned active runtime calls/function bodies for wide overview translucent wash planes, the central fabrication-line micro machinery, per-room workcell props, and volumetric light cards. The current frame relies on fewer larger cutaway, bay, command-table, catwalk, and rear-depth forms; station positions remain pulled inward and the asteroid stays as side/crown/sill border. Browser screenshot capture remained blocked by policy and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "corrective interior massing and rear clutter prune",
+      "durationMs": 480000,
+      "status": "shipped",
+      "type": "direction correction prune/composition/performance pass",
+      "notes": "Michael correction pass: pruned duplicate target-reset asteroid shoulders, exterior ship silhouettes, redundant rear instrumentation wall, and old rear-depth service-deck function; tightened camera/fog so the interior owns more of the first frame; added one broad interior dominance massing layer with inner pressure jambs, top lintel, lower sill, four bay mezzanines/equipment walls, command floor blocks, side machinery slabs, and full-width gantries. Asteroid remains the calibrated side/crown/sill proscenium. Browser screenshot capture remained blocked by policy and is documented."
     }
   ],
   "stats": {
-    "count": 38,
+    "count": 39,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 275000,
+    "avgMs": 280256,
     "subagents": {
       "count": 3,
       "minMs": 47000,
