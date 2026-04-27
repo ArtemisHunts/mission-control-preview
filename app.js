@@ -26,8 +26,8 @@ const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
     body: 'A full spatial read of Mission Control: central holo-table, room clusters, visible operators, signal lanes, and deploy traffic.',
-    camera: [0, 13.2, 41.4],
-    target: [0, 1.48, -2.6],
+    camera: [0, 10.9, 34.8],
+    target: [0, 1.68, -3.2],
     accent: COLORS.cyan
   },
   command: {
@@ -100,7 +100,7 @@ const state = {
 
 const container = document.getElementById('office-canvas');
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.35));
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.12));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.shadowMap.enabled = true;
@@ -111,9 +111,9 @@ container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
-scene.fog = new THREE.Fog(COLORS.bg, 22, 118);
+scene.fog = new THREE.Fog(COLORS.bg, 17, 92);
 
-const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 180);
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 150);
 camera.position.set(...ROOMS.overview.camera);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -146,7 +146,7 @@ const clickTarget = new THREE.Vector3();
 const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
-const fixedCameraOffset = new THREE.Vector3(0, 12.2, 45.2);
+const fixedCameraOffset = new THREE.Vector3(0, 10.8, 36.2);
 const facilityBounds = { minX: -14.8, maxX: 14.8, minZ: -13.6, maxZ: 4.4 };
 
 function mat(color, options = {}) {
@@ -222,14 +222,8 @@ function buildOffice() {
   buildAsteroidRim();
   buildForegroundCutawayFrame();
   buildVerticalSliceContainer();
-  buildInteriorFacilityDominance();
-  buildEnclosedProductionShellStack();
-  buildInteriorCommandGalleryCompression();
-  buildSealedProductionMegashell();
-  buildInteriorProductionCanyonHierarchy();
-  buildInteriorApertureClampAndFabricatorSpine();
+  buildPrunedDominantProductionHall();
   buildRearCavernDepthGate();
-  buildMacroFacilityDepthMarkers();
   buildWideOverviewLightingScaffold();
   buildAsteroidField();
   buildExteriorVista();
@@ -435,515 +429,98 @@ function buildWideOverviewLightingScaffold() {
 }
 
 
-function buildInteriorFacilityDominance() {
-  const deck = mat(0x101827, { roughness: 0.52, metalness: 0.5 });
-  const deckDark = mat(0x070c16, { roughness: 0.68, metalness: 0.38 });
-  const hull = mat(0x172235, { roughness: 0.46, metalness: 0.68 });
-  const wall = mat(0x0d1524, { roughness: 0.62, metalness: 0.32 });
-  const shadow = mat(0x000106, { roughness: 1.0, metalness: 0.0 });
-  const glass = mat(0x061426, { roughness: 0.16, metalness: 0.22, transparent: true, opacity: 0.38, emissive: 0x08213a, emissiveIntensity: 0.1 });
-  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.28, transparent: true, opacity: 0.18 });
-  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.24, transparent: true, opacity: 0.16 });
-  const gold = mat(COLORS.gold, { emissive: COLORS.gold, emissiveIntensity: 0.22, transparent: true, opacity: 0.15 });
-  const coral = mat(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: 0.2, transparent: true, opacity: 0.14 });
-  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.2, transparent: true, opacity: 0.14 });
-  const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.2, transparent: true, opacity: 0.14 });
-
-  // Corrective composition pass: big facility forms own the screen; asteroid remains a border/proscenium.
-  box('corrective dominant production floor plate', [28.5, 0.16, 18.8], [0, 0.09, -2.5], deck);
-  box('corrective central command pit shadow mass', [8.8, 0.18, 6.4], [0, 0.2, 0.4], shadow);
-  box('corrective command floor raised ring slab', [11.2, 0.14, 7.6], [0, 0.34, 0.15], deckDark);
-  box('corrective rear production wall broad pressure hull', [27.4, 5.4, 0.32], [0, 2.86, -12.6], wall);
-  box('corrective rear observation glass band', [22.4, 2.1, 0.08], [0, 3.1, -12.35], glass);
-  box('corrective upper interior truss header', [26.8, 0.28, 0.42], [0, 5.35, -7.6], hull);
-  box('corrective lower mechanical horizon shelf', [25.8, 0.18, 0.74], [0, 1.1, -10.9], deckDark);
-
-  const bayFrames = [
-    ['build', -12.75, 1.78, -0.25, 6.4, 3.2, gold],
-    ['review', 12.75, 1.78, -0.45, 6.4, 3.2, coral],
-    ['observatory', -12.85, 1.92, -10.65, 6.2, 3.35, violet],
-    ['deploy', 12.85, 1.92, -10.65, 6.2, 3.35, green]
-  ];
-
-  bayFrames.forEach(([label, x, y, z, width, height, accent]) => {
-    const group = new THREE.Group();
-    group.name = `corrective ${label} broad interior production bay`;
-    group.position.set(x, 0, z);
-    root.add(group);
-
-    box('corrective bay back wall mass', [width, height, 0.28], [0, y, -1.05], wall, group);
-    box('corrective bay dark internal volume', [width * 0.78, height * 0.64, 0.16], [0, y + 0.02, -0.86], shadow, group);
-    box('corrective bay top pressure beam', [width * 0.96, 0.14, 0.22], [0, y + height * 0.52, -0.68], hull, group);
-    box('corrective bay lower deck apron', [width * 0.92, 0.12, 1.05], [0, 0.62, 0.08], deckDark, group);
-    box('corrective bay vertical left jamb', [0.18, height * 0.92, 0.18], [-width * 0.52, y, -0.72], hull, group);
-    box('corrective bay vertical right jamb', [0.18, height * 0.92, 0.18], [width * 0.52, y, -0.72], hull, group);
-    box('corrective bay clean accent header line', [width * 0.76, 0.04, 0.06], [0, y + height * 0.38, -0.45], accent, group);
-    box('corrective bay broad floor identity stripe', [width * 0.7, 0.035, 0.08], [0, 0.76, 0.65], accent, group);
-  });
-
-  const deckSpines = [
-    [0, 0.72, 3.6, 24.0, amber],
-    [0, 0.74, -5.3, 24.5, cyan],
-    [-7.2, 0.76, -3.0, 14.5, gold],
-    [7.2, 0.76, -3.0, 14.5, coral]
-  ];
-
-  deckSpines.forEach(([x, y, z, length, accent], index) => {
-    const spine = box('corrective large interior deck lane spine', [length, 0.045, 0.08], [x, y, z], index < 2 ? accent : deckDark);
-    spine.rotation.y = index > 1 ? Math.PI / 2 : 0;
-  });
-
-  const rearMachines = [
-    [-9.8, 2.0, -10.8, 4.2, amber],
-    [0, 2.2, -11.0, 5.4, cyan],
-    [9.8, 2.0, -10.8, 4.2, green]
-  ];
-
-  rearMachines.forEach(([x, y, z, width, accent]) => {
-    box('corrective rear production machine silhouette block', [width, 1.4, 0.42], [x, y, z], deckDark);
-    box('corrective rear production machine glass strip', [width * 0.72, 0.22, 0.06], [x, y + 0.32, z + 0.24], glass);
-    box('corrective rear production machine status line', [width * 0.56, 0.035, 0.045], [x, y + 0.72, z + 0.28], accent);
-  });
-
-  [-13.6, 13.6].forEach((x, index) => {
-    box('corrective asteroid border slim side shadow', [0.62, 6.2, 18.0], [x, 3.0, -2.1], shadow);
-    box('corrective slim cutaway side catchlight', [0.05, 4.6, 0.06], [x * 0.985, 3.1, 4.8], index ? cyan : amber);
-  });
-  box('corrective asteroid border slim crown shadow', [28.0, 0.62, 8.6], [0, 6.22, -1.2], shadow);
-  box('corrective asteroid border slim foreground sill', [28.0, 0.36, 1.25], [0, 0.22, 7.25], shadow);
-
-  const mezzanineMat = mat(0x131f31, { roughness: 0.5, metalness: 0.58 });
-  box('corrective left interior mezzanine balcony mass', [11.2, 0.18, 2.4], [-8.2, 1.36, -6.9], mezzanineMat);
-  box('corrective right interior mezzanine balcony mass', [11.2, 0.18, 2.4], [8.2, 1.36, -6.9], mezzanineMat);
-  box('corrective rear continuous production gantry', [23.6, 0.16, 1.1], [0, 2.42, -9.7], mezzanineMat);
-
-  const ceilingRibs = [
-    [-10.8, 4.92, 1.6, 5.8],
-    [-5.4, 5.02, -2.2, 7.2],
-    [0, 5.12, -5.6, 8.4],
-    [5.4, 5.02, -2.2, 7.2],
-    [10.8, 4.92, 1.6, 5.8]
-  ];
-
-  ceilingRibs.forEach(([x, y, z, depth], index) => {
-    const rib = box('corrective broad interior ceiling production rib', [0.18, 0.18, depth], [x, y, z], index % 2 ? hull : deckDark);
-    rib.rotation.z = (index - 2) * 0.018;
-    box('corrective ceiling rib restrained practical strip', [0.05, 0.035, depth * 0.72], [x, y - 0.14, z + 0.12], index % 2 ? cyan : amber);
-  });
-}
-
-
-function buildEnclosedProductionShellStack() {
-  const hull = mat(0x162236, { roughness: 0.46, metalness: 0.66 });
-  const deepHull = mat(0x09101d, { roughness: 0.64, metalness: 0.42 });
-  const shadow = mat(0x000207, { roughness: 1.0, metalness: 0.0 });
-  const glass = mat(0x061729, { roughness: 0.14, metalness: 0.26, transparent: true, opacity: 0.32, emissive: 0x09253e, emissiveIntensity: 0.12 });
-  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.26, transparent: true, opacity: 0.18 });
-  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.25, transparent: true, opacity: 0.18 });
-  const steel = mat(COLORS.brushedSteel, { roughness: 0.36, metalness: 0.72 });
-
-  // Interior-dominance shell pass: the viewer should read a wrapped production hall, not an asteroid exterior.
-  box('enclosed production shell left inner wall slab', [0.42, 5.6, 17.0], [-13.15, 2.78, -2.35], hull);
-  box('enclosed production shell right inner wall slab', [0.42, 5.6, 17.0], [13.15, 2.78, -2.35], hull);
-  box('enclosed production shell top inner bulkhead', [25.8, 0.46, 9.6], [0, 5.1, -2.8], hull);
-  box('enclosed production shell lower balcony datum', [25.6, 0.22, 1.05], [0, 1.34, -7.95], deepHull);
-  box('enclosed production shell rear machinery wall', [24.8, 3.35, 0.24], [0, 2.94, -11.72], shadow);
-  box('enclosed production shell rear glass control band', [19.6, 1.18, 0.08], [0, 3.26, -11.48], glass);
-
-  const ribs = [
-    [-11.6, -7.8, 4.1],
-    [-7.4, -7.1, 4.7],
-    [-3.2, -6.4, 5.15],
-    [3.2, -6.4, 5.15],
-    [7.4, -7.1, 4.7],
-    [11.6, -7.8, 4.1]
-  ];
-
-  ribs.forEach(([x, z, height], index) => {
-    const post = box('enclosed production shell tall pressure rib', [0.18, height, 0.22], [x, 2.8, z], index % 2 ? steel : hull);
-    post.rotation.z = (index - 2.5) * 0.018;
-    box('enclosed production shell rib foot block', [0.62, 0.16, 0.46], [x, 0.9, z + 0.12], deepHull);
-    box('enclosed production shell rib amber service slit', [0.035, height * 0.58, 0.045], [x + (index < 3 ? 0.12 : -0.12), 2.8, z + 0.18], index % 2 ? cyan : amber);
-  });
-
-  [
-    ['build lower assembly bay mass', -9.9, 0.84, -4.35, 6.4, COLORS.gold],
-    ['review lower containment bay mass', 9.9, 0.84, -4.35, 6.4, COLORS.coral],
-    ['observatory upper signal bay mass', -8.8, 2.38, -9.55, 5.8, COLORS.violet],
-    ['deploy upper logistics bay mass', 8.8, 2.38, -9.55, 5.8, COLORS.green]
-  ].forEach(([name, x, y, z, width, color]) => {
-    const accent = mat(color, { emissive: color, emissiveIntensity: 0.22, transparent: true, opacity: 0.16 });
-    box(`enclosed production shell ${name}`, [width, 0.42, 1.22], [x, y, z], deepHull);
-    box(`enclosed production shell ${name} face`, [width * 0.82, 0.08, 0.08], [x, y + 0.29, z + 0.64], accent);
-    box(`enclosed production shell ${name} rear shadow`, [width * 0.68, 0.68, 0.12], [x, y + 0.42, z - 0.62], shadow);
-  });
-
-  const bridgeRuns = [
-    [0, 1.9, -3.7, 22.4, cyan],
-    [0, 2.82, -8.9, 20.8, amber],
-    [-6.4, 1.66, -6.1, 7.2, amber],
-    [6.4, 1.66, -6.1, 7.2, cyan]
-  ];
-
-  bridgeRuns.forEach(([x, y, z, length, light], index) => {
-    const bridge = box('enclosed production shell broad catwalk run', [length, 0.12, 0.54], [x, y, z], index < 2 ? hull : deepHull);
-    bridge.rotation.y = index > 1 ? Math.PI / 2 : 0;
-    const strip = box('enclosed production shell catwalk readable edge light', [length * 0.86, 0.035, 0.045], [x, y + 0.12, z + 0.31], light);
-    strip.rotation.y = bridge.rotation.y;
-  });
-
-  box('enclosed production shell command nucleus rear plinth', [7.8, 0.32, 1.25], [0, 1.04, -2.25], deepHull);
-  box('enclosed production shell command nucleus glass fascia', [6.4, 0.58, 0.08], [0, 1.32, -1.6], glass);
-  box('enclosed production shell foreground interior threshold', [22.0, 0.18, 0.72], [0, 0.68, 5.92], hull);
-  box('enclosed production shell foreground safety line', [18.0, 0.035, 0.05], [0, 0.84, 5.54], amber);
-
-  const lowerDecks = [
-    [-10.6, 0.48, -1.5, 5.6, COLORS.gold],
-    [10.6, 0.48, -1.5, 5.6, COLORS.coral],
-    [-10.2, 0.52, -9.2, 5.0, COLORS.violet],
-    [10.2, 0.52, -9.2, 5.0, COLORS.green]
-  ];
-
-  lowerDecks.forEach(([x, y, z, width, color], index) => {
-    const deckLight = mat(color, { emissive: color, emissiveIntensity: 0.2, transparent: true, opacity: 0.14 });
-    box('enclosed production shell lower level broad deck', [width, 0.1, 1.0], [x, y, z], deepHull);
-    box('enclosed production shell lower level back wall', [width * 0.88, 0.92, 0.1], [x, y + 0.54, z - 0.5], shadow);
-    box('enclosed production shell lower level identity light', [width * 0.74, 0.035, 0.04], [x, y + 0.98, z - 0.42], deckLight);
-    box('enclosed production shell lower level front rail', [width * 0.82, 0.05, 0.045], [x, y + 0.26, z + 0.52], steel);
-    const serviceColumn = box('enclosed production shell lower level service column', [0.14, 1.2, 0.14], [x + (index % 2 ? -width * 0.35 : width * 0.35), y + 0.7, z - 0.12], hull);
-    serviceColumn.rotation.z = index % 2 ? -0.05 : 0.05;
-  });
-
-  box('enclosed production shell left wall continuous systems chase', [0.26, 3.2, 9.6], [-12.45, 2.46, -4.8], deepHull);
-  box('enclosed production shell right wall continuous systems chase', [0.26, 3.2, 9.6], [12.45, 2.46, -4.8], deepHull);
-  box('enclosed production shell left systems amber edge', [0.045, 2.4, 0.055], [-12.24, 2.58, 0.2], amber);
-  box('enclosed production shell right systems cyan edge', [0.045, 2.4, 0.055], [12.24, 2.58, 0.2], cyan);
-  box('enclosed production shell rear overhead crane beam', [18.4, 0.18, 0.22], [0, 4.18, -9.25], steel);
-  box('enclosed production shell rear overhead crane shadow', [11.2, 0.14, 0.16], [0, 3.9, -8.74], shadow);
-  box('enclosed production shell left bay compression wall', [4.8, 2.4, 0.18], [-9.4, 2.22, -11.05], deepHull);
-  box('enclosed production shell right bay compression wall', [4.8, 2.4, 0.18], [9.4, 2.22, -11.05], deepHull);
-  box('enclosed production shell centerline production axis glow', [0.08, 0.035, 10.8], [0, 0.92, -4.1], cyan);
-  box('enclosed production shell command threshold amber datum', [8.4, 0.035, 0.055], [0, 0.98, 1.96], amber);
-}
-
-
-function buildInteriorCommandGalleryCompression() {
-  const hull = mat(0x142033, { roughness: 0.48, metalness: 0.64 });
-  const darkHull = mat(0x070c16, { roughness: 0.66, metalness: 0.38 });
-  const shadow = mat(0x000207, { roughness: 1.0, metalness: 0.0 });
-  const glass = mat(0x071a2f, { roughness: 0.14, metalness: 0.22, transparent: true, opacity: 0.3, emissive: 0x09243c, emissiveIntensity: 0.1 });
-  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.22, transparent: true, opacity: 0.17 });
-  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.2, transparent: true, opacity: 0.16 });
-  const gold = mat(COLORS.gold, { emissive: COLORS.gold, emissiveIntensity: 0.18, transparent: true, opacity: 0.14 });
-  const coral = mat(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: 0.16, transparent: true, opacity: 0.13 });
-
-  // Foreground and side galleries deliberately steal visual weight from the asteroid border.
-  box('interior command gallery left foreground buttress', [3.2, 2.2, 1.4], [-10.4, 1.38, 5.2], hull);
-  box('interior command gallery right foreground buttress', [3.2, 2.2, 1.4], [10.4, 1.38, 5.2], hull);
-  box('interior command gallery front operations balcony', [18.8, 0.34, 1.25], [0, 1.02, 4.95], darkHull);
-  box('interior command gallery front glass control fascia', [13.6, 0.62, 0.08], [0, 1.42, 4.28], glass);
-  box('interior command gallery amber balcony safety datum', [16.4, 0.04, 0.055], [0, 1.28, 4.18], amber);
-
-  const sideWallMasses = [
-    ['left build-side interior containment wall', -11.65, 2.55, 0.7, 4.2, gold],
-    ['right review-side interior containment wall', 11.65, 2.55, 0.7, 4.2, coral],
-    ['left observatory-side interior containment wall', -11.65, 2.9, -7.0, 4.8, cyan],
-    ['right deploy-side interior containment wall', 11.65, 2.9, -7.0, 4.8, amber]
-  ];
-
-  sideWallMasses.forEach(([name, x, y, z, depth, accent], index) => {
-    const mass = box(`interior command gallery ${name}`, [0.72, 2.7, depth], [x, y, z], hull);
-    mass.rotation.z = x < 0 ? 0.025 : -0.025;
-    box(`interior command gallery ${name} recessed dark volume`, [0.16, 1.9, depth * 0.72], [x * 0.992, y, z], shadow);
-    box(`interior command gallery ${name} broad identity slit`, [0.05, 0.06, depth * 0.62], [x * 0.968, y + 1.1, z], accent);
-    box(`interior command gallery ${name} lower service ledge`, [1.05, 0.14, depth * 0.88], [x * 0.986, 1.02, z], darkHull);
-    box(`interior command gallery ${name} upper compression cap`, [1.0, 0.16, depth * 0.82], [x * 0.986, y + 1.42, z], index % 2 ? hull : darkHull);
-  });
-
-  [
-    [-6.8, 2.18, 2.2, 5.4, amber],
-    [6.8, 2.18, 2.2, 5.4, cyan],
-    [-6.8, 2.62, -5.4, 6.0, cyan],
-    [6.8, 2.62, -5.4, 6.0, amber]
-  ].forEach(([x, y, z, length, light], index) => {
-    const beam = box('interior command gallery overhead crossbeam', [length, 0.18, 0.22], [x, y + 2.05, z], index % 2 ? hull : darkHull);
-    beam.rotation.y = index < 2 ? 0.08 * Math.sign(x) : -0.06 * Math.sign(x);
-    const edge = box('interior command gallery crossbeam practical edge', [length * 0.7, 0.035, 0.045], [x, y + 1.88, z + 0.18], light);
-    edge.rotation.y = beam.rotation.y;
-  });
-
-  box('interior command gallery rear pressure-door silhouette', [6.8, 2.4, 0.2], [0, 2.68, -10.98], shadow);
-  box('interior command gallery rear pressure-door horizontal split', [5.8, 0.045, 0.05], [0, 2.68, -10.82], cyan);
-  box('interior command gallery command pit lower occlusion plate', [9.6, 0.2, 1.4], [0, 0.62, 1.7], darkHull);
-  box('interior command gallery command pit cyan read line', [7.2, 0.035, 0.05], [0, 0.78, 1.02], cyan);
-}
-
-
-function buildSealedProductionMegashell() {
-  const hull = mat(0x121d30, { roughness: 0.5, metalness: 0.66 });
-  const darkHull = mat(0x050a13, { roughness: 0.72, metalness: 0.36 });
+function buildPrunedDominantProductionHall() {
+  const floor = mat(0x101827, { roughness: 0.5, metalness: 0.52 });
+  const floorDark = mat(0x050a13, { roughness: 0.72, metalness: 0.36 });
+  const hull = mat(0x142033, { roughness: 0.48, metalness: 0.66 });
   const pressure = mat(0x1b2940, { roughness: 0.42, metalness: 0.72 });
   const shadow = mat(0x000207, { roughness: 1.0, metalness: 0.0 });
-  const glass = mat(0x06182a, { roughness: 0.14, metalness: 0.26, transparent: true, opacity: 0.26, emissive: 0x071f36, emissiveIntensity: 0.08 });
-  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.2, transparent: true, opacity: 0.15 });
-  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.2, transparent: true, opacity: 0.15 });
+  const glass = mat(0x06182a, { roughness: 0.12, metalness: 0.24, transparent: true, opacity: 0.28, emissive: 0x071f36, emissiveIntensity: 0.08 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.18, transparent: true, opacity: 0.14 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.18, transparent: true, opacity: 0.14 });
+  const gold = mat(COLORS.gold, { emissive: COLORS.gold, emissiveIntensity: 0.16, transparent: true, opacity: 0.12 });
+  const coral = mat(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: 0.15, transparent: true, opacity: 0.11 });
+  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.14, transparent: true, opacity: 0.11 });
+  const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.14, transparent: true, opacity: 0.11 });
 
-  // Final corrective composition lock: a sealed industrial megashell occupies the frame; asteroid is only the outside edge.
-  box('sealed production megashell left armored wall band', [1.25, 5.2, 15.4], [-11.9, 2.72, -2.4], hull);
-  box('sealed production megashell right armored wall band', [1.25, 5.2, 15.4], [11.9, 2.72, -2.4], hull);
-  box('sealed production megashell overhead service spine', [22.0, 0.72, 3.6], [0, 4.72, -0.8], pressure);
-  box('sealed production megashell rear blast bulkhead', [21.2, 3.8, 0.42], [0, 2.86, -10.62], darkHull);
-  box('sealed production megashell rear bounded asteroid slit', [10.8, 0.72, 0.08], [0, 3.38, -10.32], shadow);
-  box('sealed production megashell rear armored glass shield', [11.4, 0.82, 0.055], [0, 3.38, -10.24], glass);
-  box('sealed production megashell command island compression deck', [12.6, 0.34, 4.2], [0, 0.82, 1.85], darkHull);
-  box('sealed production megashell command island cyan front read', [8.2, 0.04, 0.055], [0, 1.04, 3.98], cyan);
+  // Michael correction: one dominant interior production facility. Old stacked corrective layers are no longer called.
+  box('pruned hall single dominant production floor', [28.6, 0.12, 18.6], [0, 0.07, -2.45], floor);
+  box('pruned hall dark subfloor canyon', [5.4, 0.18, 13.8], [0, 0.23, -2.25], shadow);
+  box('pruned hall command dais broad foundation', [9.8, 0.3, 4.2], [0, 0.48, 0.9], pressure);
+  box('pruned hall command dais black undercut', [7.1, 0.2, 1.0], [0, 0.72, 2.55], shadow);
+  box('pruned hall cyan central conveyor spine', [0.38, 0.045, 12.0], [0, 0.86, -2.6], cyan);
+  box('pruned hall amber command threshold', [8.4, 0.04, 0.05], [0, 0.94, 3.16], amber);
 
-  const wallModules = [
-    ['left forward production shutter', -10.72, 1.62, 2.65, 3.1, amber],
-    ['right forward production shutter', 10.72, 1.62, 2.65, 3.1, cyan],
-    ['left rear production shutter', -10.72, 2.15, -5.45, 4.2, cyan],
-    ['right rear production shutter', 10.72, 2.15, -5.45, 4.2, amber]
+  box('pruned hall left continuous interior wall', [1.18, 5.4, 16.8], [-11.85, 2.82, -2.7], hull);
+  box('pruned hall right continuous interior wall', [1.18, 5.4, 16.8], [11.85, 2.82, -2.7], hull);
+  box('pruned hall rear pressure bulkhead', [23.2, 4.15, 0.38], [0, 2.9, -10.92], floorDark);
+  box('pruned hall rear interior observation band', [14.2, 1.05, 0.06], [0, 3.35, -10.62], glass);
+  box('pruned hall overhead service raft', [22.8, 0.64, 5.2], [0, 4.72, -0.8], pressure);
+  box('pruned hall overhead black negative slot', [15.0, 0.18, 2.2], [0, 4.34, 0.6], shadow);
+
+  const bayBlocks = [
+    ['build broad production bay', -7.4, 1.16, 1.35, 6.4, gold],
+    ['review broad QA bay', 7.4, 1.16, 1.35, 6.4, coral],
+    ['observatory broad signal bay', -7.3, 1.62, -6.65, 5.8, violet],
+    ['deploy broad logistics bay', 7.3, 1.62, -6.65, 5.8, green]
   ];
 
-  wallModules.forEach(([name, x, y, z, depth, light], index) => {
-    const module = box(`sealed production megashell ${name} mass`, [0.88, 2.4, depth], [x, y, z], pressure);
-    module.rotation.z = x < 0 ? 0.018 : -0.018;
-    box(`sealed production megashell ${name} black recessed slot`, [0.12, 1.56, depth * 0.72], [x * 0.988, y + 0.08, z], shadow);
-    box(`sealed production megashell ${name} broad status line`, [0.045, 0.05, depth * 0.64], [x * 0.955, y + 0.98, z], light);
-    box(`sealed production megashell ${name} lower hinge block`, [0.52, 0.18, depth * 0.8], [x * 0.966, y - 1.14, z], darkHull);
-    box(`sealed production megashell ${name} upper lock rail`, [0.5, 0.14, depth * 0.72], [x * 0.966, y + 1.22, z], hull);
+  bayBlocks.forEach(([name, x, y, z, width, accent], index) => {
+    box(`pruned hall ${name} stepped deck`, [width, 0.28, 1.22], [x, y, z], hull);
+    box(`pruned hall ${name} recessed shadow volume`, [width * 0.82, 0.72, 0.12], [x, y + 0.38, z - 0.7], shadow);
+    box(`pruned hall ${name} readable identity rail`, [width * 0.72, 0.04, 0.045], [x, y + 0.56, z + 0.68], accent);
+    box(`pruned hall ${name} rear machine cap`, [width * 0.68, 0.22, 0.5], [x, y + 0.78, z - 0.55], floorDark);
+    box(`pruned hall ${name} load pier`, [0.2, 1.2, 0.22], [x + (index % 2 ? -width * 0.46 : width * 0.46), y + 0.66, z], pressure);
   });
 
-  const overheadRibs = [
-    [-8.8, 3.82, 3.2, 5.6],
-    [-4.4, 4.05, -0.8, 6.2],
-    [0, 4.16, -4.2, 6.8],
-    [4.4, 4.05, -0.8, 6.2],
-    [8.8, 3.82, 3.2, 5.6]
+  const sideBays = [
+    [-10.15, 2.35, 1.7, 3.6, amber],
+    [10.15, 2.35, 1.7, 3.6, cyan],
+    [-10.15, 2.72, -5.0, 4.4, cyan],
+    [10.15, 2.72, -5.0, 4.4, amber]
   ];
 
-  overheadRibs.forEach(([x, y, z, depth], index) => {
-    const rib = box('sealed production megashell overhead rib', [0.28, 0.24, depth], [x, y, z], index % 2 ? hull : pressure);
-    rib.rotation.z = (index - 2) * 0.028;
-    box('sealed production megashell rib underside practical', [0.05, 0.035, depth * 0.72], [x, y - 0.22, z + 0.12], index % 2 ? cyan : amber);
-  });
-
-  const floorCuts = [
-    [-5.8, -1.0, 5.4, cyan],
-    [5.8, -1.0, 5.4, amber],
-    [-5.8, -7.4, 4.8, amber],
-    [5.8, -7.4, 4.8, cyan]
-  ];
-
-  floorCuts.forEach(([x, z, width, light], index) => {
-    box('sealed production megashell subfloor dark process cut', [width, 0.12, 0.82], [x, 0.38, z], shadow);
-    box('sealed production megashell subfloor raised machine cap', [width * 0.78, 0.16, 0.44], [x, 0.62, z - 0.06], darkHull);
-    box('sealed production megashell subfloor controlled glow lane', [width * 0.58, 0.035, 0.045], [x, 0.76, z + 0.42], light);
-    box('sealed production megashell subfloor vertical datum post', [0.14, 0.9, 0.14], [x + (index % 2 ? -width * 0.42 : width * 0.42), 1.0, z - 0.22], pressure);
-  });
-
-  box('sealed production megashell foreground frame lock beam', [20.0, 0.22, 0.82], [0, 1.52, 5.46], pressure);
-  box('sealed production megashell foreground black negative space', [15.4, 0.72, 0.12], [0, 1.84, 5.02], shadow);
-  box('sealed production megashell foreground amber guide line', [13.2, 0.04, 0.05], [0, 2.22, 4.94], amber);
-  box('sealed production megashell asteroid border occlusion mask', [27.4, 0.18, 0.38], [0, 5.38, 2.78], darkHull);
-  box('sealed production megashell left lower compression cheek', [2.6, 1.2, 0.36], [-10.8, 1.08, 4.55], hull);
-  box('sealed production megashell right lower compression cheek', [2.6, 1.2, 0.36], [10.8, 1.08, 4.55], hull);
-}
-
-
-function buildInteriorProductionCanyonHierarchy() {
-  const hull = mat(0x121d30, { roughness: 0.5, metalness: 0.66 });
-  const darkHull = mat(0x050a13, { roughness: 0.72, metalness: 0.36 });
-  const pressure = mat(0x1b2940, { roughness: 0.42, metalness: 0.72 });
-  const shadow = mat(0x000207, { roughness: 1.0, metalness: 0.0 });
-  const glass = mat(0x06182a, { roughness: 0.12, metalness: 0.26, transparent: true, opacity: 0.24, emissive: 0x071f36, emissiveIntensity: 0.08 });
-  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.2, transparent: true, opacity: 0.15 });
-  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.2, transparent: true, opacity: 0.15 });
-  const gold = mat(COLORS.gold, { emissive: COLORS.gold, emissiveIntensity: 0.17, transparent: true, opacity: 0.13 });
-  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.15, transparent: true, opacity: 0.12 });
-  const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.15, transparent: true, opacity: 0.12 });
-
-  // Interior-first production canyon: one big hierarchy element that owns the hero shot without prop spam.
-  box('production canyon central command spine base', [3.2, 0.28, 12.4], [0, 0.92, -2.9], pressure);
-  box('production canyon central recessed service trench', [1.6, 0.16, 10.2], [0, 1.08, -3.1], shadow);
-  box('production canyon central cyan routing lane', [0.18, 0.04, 9.2], [0, 1.22, -3.2], cyan);
-  box('production canyon command island rear riser', [7.8, 0.42, 1.3], [0, 1.18, -1.45], darkHull);
-  box('production canyon command island front riser', [9.6, 0.34, 1.05], [0, 1.0, 2.74], darkHull);
-  box('production canyon command island glass front fascia', [6.8, 0.58, 0.065], [0, 1.42, 2.18], glass);
-  box('production canyon command island amber lip', [7.4, 0.04, 0.045], [0, 1.72, 2.08], amber);
-
-  const tiers = [
-    ['left build amphitheater tier', -7.3, 1.04, 1.6, 6.2, gold],
-    ['right review amphitheater tier', 7.3, 1.04, 1.6, 6.2, amber],
-    ['left observatory rear tier', -7.4, 1.52, -6.35, 5.6, violet],
-    ['right deploy rear tier', 7.4, 1.52, -6.35, 5.6, green]
-  ];
-
-  tiers.forEach(([name, x, y, z, width, light], index) => {
-    box(`production canyon ${name} broad stepped floor`, [width, 0.24, 1.25], [x, y, z], hull);
-    box(`production canyon ${name} undercroft shadow`, [width * 0.84, 0.6, 0.12], [x, y + 0.2, z - 0.7], shadow);
-    box(`production canyon ${name} identity rail`, [width * 0.74, 0.04, 0.045], [x, y + 0.3, z + 0.68], light);
-    box(`production canyon ${name} rear machinery cap`, [width * 0.72, 0.18, 0.44], [x, y + 0.58, z - 0.54], darkHull);
-    box(`production canyon ${name} side compression pier`, [0.22, 1.18, 0.24], [x + (index % 2 ? -width * 0.46 : width * 0.46), y + 0.64, z], pressure);
+  sideBays.forEach(([x, y, z, depth, accent]) => {
+    const wall = box('pruned hall side production wall mass', [0.72, 2.8, depth], [x, y, z], pressure);
+    wall.rotation.z = x < 0 ? 0.02 : -0.02;
+    box('pruned hall side wall black service void', [0.12, 1.9, depth * 0.7], [x * 0.985, y, z], shadow);
+    box('pruned hall side wall long status seam', [0.04, 0.05, depth * 0.62], [x * 0.948, y + 0.95, z], accent);
   });
 
   const gantries = [
-    [0, 2.55, 1.15, 17.8, amber],
-    [0, 2.88, -4.15, 18.6, cyan],
-    [0, 3.18, -8.15, 16.4, amber]
+    [0, 2.42, 2.3, 17.4, amber],
+    [0, 2.86, -3.35, 18.6, cyan],
+    [0, 3.24, -7.65, 15.2, amber]
   ];
 
-  gantries.forEach(([x, y, z, width, light], index) => {
-    box('production canyon transverse operations gantry', [width, 0.16, 0.46], [x, y, z], index % 2 ? hull : pressure);
-    box('production canyon gantry underside dark reveal', [width * 0.86, 0.1, 0.12], [x, y - 0.18, z + 0.14], shadow);
-    box('production canyon gantry controlled light edge', [width * 0.74, 0.035, 0.04], [x, y + 0.12, z + 0.28], light);
+  gantries.forEach(([x, y, z, width, accent], index) => {
+    box('pruned hall transverse operations gantry slab', [width, 0.18, 0.52], [x, y, z], index % 2 ? hull : pressure);
+    box('pruned hall gantry underside shadow reveal', [width * 0.82, 0.1, 0.1], [x, y - 0.19, z + 0.18], shadow);
+    box('pruned hall gantry restrained practical edge', [width * 0.68, 0.035, 0.04], [x, y + 0.14, z + 0.3], accent);
   });
 
-  [-9.9, 9.9].forEach((x, index) => {
-    box('production canyon sidewall stacked machinery mass lower', [1.2, 1.8, 5.4], [x, 1.7, -1.3], darkHull);
-    box('production canyon sidewall stacked machinery mass upper', [1.0, 2.1, 4.8], [x, 3.25, -5.9], pressure);
-    box('production canyon sidewall vertical black service void', [0.14, 2.8, 3.6], [x * 0.982, 2.55, -3.65], shadow);
-    box('production canyon sidewall restrained service glow', [0.04, 2.1, 0.05], [x * 0.94, 2.85, -2.35], index ? cyan : amber);
-  });
-
-  const lowerPlant = [
-    [-4.8, 0.48, -0.38, 3.6, cyan],
-    [4.8, 0.48, -0.38, 3.6, amber],
-    [-4.8, 0.52, -5.55, 3.2, amber],
-    [4.8, 0.52, -5.55, 3.2, cyan]
+  const roofBaffles = [
+    [-6.6, 4.46, 2.3, 4.8, cyan],
+    [0, 4.56, -1.8, 5.6, amber],
+    [6.6, 4.46, 2.3, 4.8, cyan]
   ];
 
-  lowerPlant.forEach(([x, y, z, width, light], index) => {
-    box('production canyon lower visible logistics floor slab', [width, 0.12, 0.72], [x, y, z], darkHull);
-    box('production canyon lower logistics black cut', [width * 0.74, 0.48, 0.1], [x, y + 0.28, z - 0.38], shadow);
-    box('production canyon lower logistics controlled light', [width * 0.58, 0.035, 0.04], [x, y + 0.56, z + 0.36], light);
-    box('production canyon lower logistics vertical load post', [0.12, 0.92, 0.12], [x + (index % 2 ? -width * 0.38 : width * 0.38), y + 0.62, z - 0.04], pressure);
+  roofBaffles.forEach(([x, y, z, depth, accent]) => {
+    box('pruned hall roof machinery baffle', [3.8, 0.34, depth], [x, y, z], floorDark);
+    box('pruned hall roof baffle black underside', [2.9, 0.1, depth * 0.58], [x, y - 0.24, z + 0.18], shadow);
+    box('pruned hall roof baffle guide line', [2.2, 0.035, 0.04], [x, y - 0.42, z + depth * 0.36], accent);
   });
 
-  box('production canyon rear sealed blast shutter cap', [13.8, 1.18, 0.24], [0, 4.08, -10.08], pressure);
-  box('production canyon rear slit reduced exterior aperture', [7.6, 0.36, 0.06], [0, 3.42, -9.86], shadow);
-  box('production canyon rear slit armored blue glint', [7.2, 0.035, 0.04], [0, 3.64, -9.78], cyan);
-  box('production canyon foreground interior floor occluder', [18.4, 0.28, 0.84], [0, 0.88, 5.54], darkHull);
-  box('production canyon foreground interior cyan datum', [12.8, 0.035, 0.045], [0, 1.08, 5.06], cyan);
-  box('production canyon left foreground side cheek', [2.8, 1.05, 0.38], [-9.4, 1.34, 4.62], pressure);
-  box('production canyon right foreground side cheek', [2.8, 1.05, 0.38], [9.4, 1.34, 4.62], pressure);
-  box('production canyon left overhead occluding baffle', [4.6, 0.32, 1.2], [-6.8, 4.55, 3.1], darkHull);
-  box('production canyon right overhead occluding baffle', [4.6, 0.32, 1.2], [6.8, 4.55, 3.1], darkHull);
-  box('production canyon center overhead mission spine glow', [0.12, 0.035, 7.8], [0, 4.22, -1.3], cyan);
-  box('production canyon rear upper amber production datum', [10.4, 0.035, 0.045], [0, 4.62, -7.4], amber);
-  box('production canyon left asteroid-border cover plate', [2.4, 0.2, 0.48], [-12.2, 4.82, 1.4], hull);
-  box('production canyon right asteroid-border cover plate', [2.4, 0.2, 0.48], [12.2, 4.82, 1.4], hull);
-}
+  box('pruned hall foreground interior balcony lip', [19.4, 0.3, 1.0], [0, 0.88, 5.34], floorDark);
+  box('pruned hall foreground black frame reveal', [12.4, 0.34, 0.12], [0, 1.12, 4.86], shadow);
+  box('pruned hall foreground cyan guide datum', [10.6, 0.035, 0.045], [0, 1.32, 4.72], cyan);
+  box('pruned hall left front compression cheek', [2.8, 1.2, 0.42], [-8.9, 1.28, 4.72], pressure);
+  box('pruned hall right front compression cheek', [2.8, 1.2, 0.42], [8.9, 1.28, 4.72], pressure);
 
-
-function buildInteriorApertureClampAndFabricatorSpine() {
-  const hull = mat(0x121d30, { roughness: 0.5, metalness: 0.66 });
-  const pressure = mat(0x1a2941, { roughness: 0.42, metalness: 0.72 });
-  const darkHull = mat(0x050a13, { roughness: 0.72, metalness: 0.36 });
-  const shadow = mat(0x000207, { roughness: 1.0, metalness: 0.0 });
-  const glass = mat(0x06182a, { roughness: 0.12, metalness: 0.26, transparent: true, opacity: 0.22, emissive: 0x071f36, emissiveIntensity: 0.08 });
-  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.18, transparent: true, opacity: 0.14 });
-  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.18, transparent: true, opacity: 0.14 });
-  const coral = mat(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: 0.14, transparent: true, opacity: 0.12 });
-  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.14, transparent: true, opacity: 0.12 });
-
-  // Aperture clamp: large interior ribs and baffles physically crop the exterior to a rear slit.
-  box('aperture clamp left massive inner rib foreground', [1.55, 4.8, 3.4], [-9.55, 2.9, 3.62], pressure);
-  box('aperture clamp right massive inner rib foreground', [1.55, 4.8, 3.4], [9.55, 2.9, 3.62], pressure);
-  box('aperture clamp left massive inner rib mid', [1.25, 5.2, 4.6], [-10.15, 3.08, -2.1], hull);
-  box('aperture clamp right massive inner rib mid', [1.25, 5.2, 4.6], [10.15, 3.08, -2.1], hull);
-  box('aperture clamp overhead interior proscenium baffle', [19.8, 0.82, 4.2], [0, 4.9, 2.08], darkHull);
-  box('aperture clamp rear upper shutter lip', [16.2, 0.72, 1.5], [0, 4.34, -8.7], pressure);
-  box('aperture clamp rear lower shutter lip', [16.6, 0.42, 1.2], [0, 2.35, -8.62], darkHull);
-  box('aperture clamp rear remaining asteroid slit void', [6.6, 0.32, 0.055], [0, 3.34, -9.04], shadow);
-  box('aperture clamp rear armored slit glass', [7.1, 0.42, 0.045], [0, 3.34, -8.96], glass);
-  box('aperture clamp rear slit cyan edge', [6.8, 0.035, 0.04], [0, 3.58, -8.9], cyan);
-
-  const innerRibs = [
-    [-7.8, 2.8, 1.3, 4.2, amber],
-    [-7.8, 3.16, -4.2, 5.1, cyan],
-    [7.8, 2.8, 1.3, 4.2, cyan],
-    [7.8, 3.16, -4.2, 5.1, amber]
-  ];
-
-  innerRibs.forEach(([x, y, z, depth, light], index) => {
-    const rib = box('aperture clamp side interior compression rib', [0.52, 3.8, depth], [x, y, z], index % 2 ? hull : pressure);
-    rib.rotation.z = x < 0 ? 0.045 : -0.045;
-    box('aperture clamp side rib black reveal', [0.12, 2.7, depth * 0.72], [x * 0.982, y, z], shadow);
-    box('aperture clamp side rib restrained light seam', [0.04, 2.0, 0.045], [x * 0.94, y + 0.1, z + depth * 0.18], light);
-  });
-
-  // One central fabricator spine replaces any temptation to add prop fields.
-  box('fabricator spine dominant central machine trench', [2.4, 0.26, 13.6], [0, 0.74, -2.0], shadow);
-  box('fabricator spine raised armored left shoulder', [2.8, 0.38, 10.8], [-2.6, 0.96, -2.2], darkHull);
-  box('fabricator spine raised armored right shoulder', [2.8, 0.38, 10.8], [2.6, 0.96, -2.2], darkHull);
-  box('fabricator spine cyan conveyor core', [0.32, 0.055, 11.2], [0, 1.16, -2.28], cyan);
-  box('fabricator spine amber cross datum front', [7.8, 0.04, 0.05], [0, 1.22, 2.72], amber);
-  box('fabricator spine amber cross datum rear', [7.0, 0.04, 0.05], [0, 1.22, -6.55], amber);
-  box('fabricator spine command table foundation lock', [5.6, 0.28, 2.2], [0, 1.08, 0.88], pressure);
-  box('fabricator spine command table dark undercut', [4.5, 0.24, 1.1], [0, 1.26, 0.26], shadow);
-
-  const sidePlatforms = [
-    ['build', -6.55, 1.18, 0.82, 4.4, amber],
-    ['review', 6.55, 1.18, 0.82, 4.4, coral],
-    ['observatory', -6.25, 1.68, -6.25, 4.1, cyan],
-    ['deploy', 6.25, 1.68, -6.25, 4.1, green]
-  ];
-
-  sidePlatforms.forEach(([name, x, y, z, width, light], index) => {
-    box(`aperture clamp ${name} station broad interior tier`, [width, 0.28, 1.0], [x, y, z], hull);
-    box(`aperture clamp ${name} station shadow pocket`, [width * 0.78, 0.56, 0.1], [x, y + 0.34, z - 0.58], shadow);
-    box(`aperture clamp ${name} station identity datum`, [width * 0.62, 0.04, 0.04], [x, y + 0.62, z + 0.52], light);
-    box(`aperture clamp ${name} station load pier`, [0.18, 1.05, 0.2], [x + (index % 2 ? -width * 0.42 : width * 0.42), y + 0.58, z], pressure);
-  });
-
-  const overheadBridge = [
-    [0, 3.42, 2.2, 13.8, amber],
-    [0, 3.72, -2.7, 15.6, cyan],
-    [0, 4.02, -6.75, 12.4, amber]
-  ];
-
-  overheadBridge.forEach(([x, y, z, width, light], index) => {
-    box('aperture clamp overhead gantry bridge slab', [width, 0.2, 0.54], [x, y, z], index % 2 ? hull : pressure);
-    box('aperture clamp overhead gantry underside shadow', [width * 0.8, 0.1, 0.12], [x, y - 0.2, z + 0.16], shadow);
-    box('aperture clamp overhead gantry clean light rail', [width * 0.66, 0.035, 0.04], [x, y + 0.14, z + 0.3], light);
-  });
-
-  const clampCheeks = [
-    [-8.4, 1.44, 4.72, 3.2, amber],
-    [8.4, 1.44, 4.72, 3.2, cyan],
-    [-8.7, 2.82, -8.12, 3.6, cyan],
-    [8.7, 2.82, -8.12, 3.6, amber]
-  ];
-
-  clampCheeks.forEach(([x, y, z, width, light], index) => {
-    box('aperture clamp broad interior cheek plate', [width, 0.42, 0.54], [x, y, z], index < 2 ? pressure : hull);
-    box('aperture clamp cheek black compression reveal', [width * 0.72, 0.16, 0.1], [x, y + 0.28, z - 0.3], shadow);
-    box('aperture clamp cheek structural light datum', [width * 0.6, 0.035, 0.04], [x, y + 0.52, z + 0.28], light);
-  });
-
-  const roofClamp = [
-    [-5.9, 4.5, 1.92, 4.8, cyan],
-    [0, 4.72, -1.6, 5.6, amber],
-    [5.9, 4.5, 1.92, 4.8, cyan]
-  ];
-
-  roofClamp.forEach(([x, y, z, depth, light], index) => {
-    box('aperture clamp roof machinery raft', [3.6, 0.34, depth], [x, y, z], darkHull);
-    box('aperture clamp roof underside black slot', [2.8, 0.1, depth * 0.58], [x, y - 0.24, z + 0.18], shadow);
-    box('aperture clamp roof restrained guide line', [2.3, 0.035, 0.04], [x, y - 0.42, z + depth * 0.38], light);
-  });
-
-  box('aperture clamp foreground floor lip left', [6.2, 0.34, 1.0], [-6.2, 0.82, 5.32], darkHull);
-  box('aperture clamp foreground floor lip right', [6.2, 0.34, 1.0], [6.2, 0.82, 5.32], darkHull);
-  box('aperture clamp foreground center channel reveal', [4.2, 0.18, 0.42], [0, 0.98, 5.06], shadow);
-  box('aperture clamp foreground center cyan guide', [3.6, 0.035, 0.04], [0, 1.12, 4.82], cyan);
-  box('aperture clamp rear final aperture mask left', [3.2, 1.1, 0.32], [-6.7, 3.28, -8.72], pressure);
-  box('aperture clamp rear final aperture mask right', [3.2, 1.1, 0.32], [6.7, 3.28, -8.72], pressure);
-  box('aperture clamp left lower frame lock', [1.4, 0.62, 1.1], [-10.6, 1.02, 2.1], darkHull);
-  box('aperture clamp right lower frame lock', [1.4, 0.62, 1.1], [10.6, 1.02, 2.1], darkHull);
-  box('aperture clamp left upper frame lock', [1.2, 0.5, 1.3], [-10.9, 4.42, -1.8], hull);
-  box('aperture clamp right upper frame lock', [1.2, 0.5, 1.3], [10.9, 4.42, -1.8], hull);
+  // These mask the remaining rock to a page-border/proscenium ratio instead of letting it become the subject.
+  box('pruned hall left asteroid-to-interior cover plate', [1.8, 5.2, 1.0], [-12.45, 3.0, 3.2], hull);
+  box('pruned hall right asteroid-to-interior cover plate', [1.8, 5.2, 1.0], [12.45, 3.0, 3.2], hull);
+  box('pruned hall top asteroid-to-interior cover plate', [22.0, 0.42, 1.2], [0, 5.06, 3.08], floorDark);
 }
 
 function buildRearCavernDepthGate() {
@@ -1105,15 +682,9 @@ function buildEmbeddedBayFrame(label, group, accent) {
   box(`${label} district depth marker`, [3.65, 0.035, 0.045], [0, 1.58, -1.05], accentMat, group);
   box(`${label} bay floor threshold glow`, [3.75, 0.025, 0.05], [0, 0.22, 1.1], accentMat, group);
 
-  [[-2.55, 0.48, -0.72], [2.55, 0.5, -0.68], [-2.35, 1.38, -0.95], [2.35, 1.42, -0.92]].forEach(([x, y, z], index) => {
-    const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.42 + (index % 2) * 0.12, 0), rockMat);
-    rock.position.set(x, y, z);
-    rock.rotation.set(index * 0.7, index * 0.31, index * 0.44);
-    rock.scale.set(1.45, 0.82, 1.05);
-    rock.castShadow = true;
-    rock.receiveShadow = true;
-    group.add(rock);
-  });
+  // Pruned four small rock chunks per bay; two broad cheek plates keep the carved read without pebble spam.
+  box(`${label} broad left carved cheek`, [0.42, 1.48, 0.42], [-2.38, 0.96, -0.82], rockMat, group);
+  box(`${label} broad right carved cheek`, [0.42, 1.48, 0.42], [2.38, 0.96, -0.82], rockMat, group);
 }
 
 function buildWorkspaceProps(id, group, accent) {
@@ -1295,15 +866,15 @@ function buildRailingsAndCatwalks() {
   catwalkSpan(12.85, -10.65, COLORS.green);
   catwalkSpan(-12.85, -10.65, COLORS.violet);
   const posts = [];
-  for (let i = 0; i < 36; i += 1) {
-    const a = (i / 36) * Math.PI * 2;
+  for (let i = 0; i < 12; i += 1) {
+    const a = (i / 12) * Math.PI * 2;
     const r = 2.35;
     const x = Math.cos(a) * r;
     const z = 0.45 + Math.sin(a) * r;
     posts.push([x, z]);
     box('central pit rail post', [0.045, 0.42, 0.045], [x, 0.36, z], railMat);
   }
-  for (let i = 0; i < posts.length; i += 2) {
+  for (let i = 0; i < posts.length; i += 1) {
     const [x, z] = posts[i];
     const a = Math.atan2(z - 0.45, x);
     const rail = box('central pit rail glow', [0.34, 0.035, 0.035], [x, 0.58, z], glowMat);

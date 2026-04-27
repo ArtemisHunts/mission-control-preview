@@ -195,13 +195,21 @@
       "status": "shipped",
       "type": "direction correction camera/proportion pass",
       "notes": "Added an interior aperture clamp and fabricator spine: lower/deeper camera framing, large interior ribs and roof baffles, rear aperture masks, central production trench, broad station tiers, gantry bridges, cheek plates, and frame locks to force the asteroid into a narrow contextual slit and make the production facility dominate without adding prop spam."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "corrective pruned dominant production hall pass",
+      "durationMs": 420000,
+      "status": "shipped",
+      "type": "direction correction prune/composition/performance pass",
+      "notes": "Michael correction pass: removed five stacked historical interior-correction runtime layers plus the macro tiny depth-marker call, replaced them with one broad dominant production hall, tightened the camera/FOV/fog toward the facility, lowered pixel ratio cap, reduced central rail posts, and replaced per-bay pebble clusters with broad carved cheek plates so asteroid remains a border while runtime geometry/FPS risk drops. Screenshot capture via browser/headless Chrome was blocked/hung and is documented in visual review."
     }
   ],
   "stats": {
     "count": 25,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 200417,
+    "avgMs": 209200,
     "subagents": {
       "count": 3,
       "minMs": 47000,
