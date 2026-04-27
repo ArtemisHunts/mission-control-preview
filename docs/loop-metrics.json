@@ -275,13 +275,21 @@
       "status": "shipped",
       "type": "lighting hotfix pass",
       "notes": "Emergency Game Studio lighting pass after Michael reported the landing page looked blank. Public browser check showed UI loaded but the WebGL environment was black-crushed. Raised exposure, ambient/hemisphere fill, key/rim/practical lights, fog distance, and added broad industrial work-light/witness forms so the 3D production environment reads on first frame."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "blank page parse hotfix",
+      "durationMs": 480000,
+      "status": "shipped",
+      "type": "playtest-fix pass",
+      "notes": "Fixed the actual blank landing-page cause: app.js had a missing comma in ROOMS.overview, so the ES module failed before creating the Three.js canvas. Hardened macro-gate and loop docs to use node --check --input-type=module < app.js because node --check app.js returned false confidence in this environment."
     }
   ],
   "stats": {
-    "count": 35,
+    "count": 36,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 265000,
+    "avgMs": 271143,
     "subagents": {
       "count": 3,
       "minMs": 47000,

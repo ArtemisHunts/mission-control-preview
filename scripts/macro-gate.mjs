@@ -33,6 +33,12 @@ const allFiles = rows.map(([, , file]) => file);
 const visualFiles = allFiles.filter((file) => visualPattern.test(file));
 
 const failures = [];
+try {
+  execSync('node --check --input-type=module < app.js', { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'], shell: '/bin/bash' });
+} catch (error) {
+  const syntaxError = String(error.stderr || error.stdout || error.message).split('\n').find(Boolean) || 'unknown syntax error';
+  failures.push(`app.js module syntax check failed: ${syntaxError}`);
+}
 if (sourceLines < minSourceLines) failures.push(`source line delta ${sourceLines} < required ${minSourceLines}`);
 if (sourceFiles.size < minSourceFiles) failures.push(`source files changed ${sourceFiles.size} < required ${minSourceFiles}`);
 if (!allFiles.includes('docs/loop-metrics.json')) failures.push('docs/loop-metrics.json was not updated');

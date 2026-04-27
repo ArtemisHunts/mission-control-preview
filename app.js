@@ -25,7 +25,7 @@ const COLORS = {
 const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
-    body: 'A full spatial read of Mission Control: assembly shaft, fabrication line, production bays, visible operators, and deploy traffic.'
+    body: 'A full spatial read of Mission Control: assembly shaft, fabrication line, production bays, visible operators, and deploy traffic.',
     camera: [0, 8.65, 26.2],
     target: [0, 1.96, -4.15],
     accent: COLORS.cyan

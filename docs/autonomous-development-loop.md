@@ -86,7 +86,7 @@ Required loop sequence:
    - Avoid random scattered tweaks.
 
 5. **Smoke test locally**
-   - `node --check app.js`
+   - `node --check --input-type=module < app.js`
    - `git diff --check`
    - static server + `curl` markers when HTML/JS changed
    - no broken imports
