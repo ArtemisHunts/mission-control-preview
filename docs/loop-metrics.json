@@ -139,21 +139,13 @@
       "status": "shipped",
       "type": "outside-in composition pass",
       "notes": "Added a wide-overview legibility pass for the exterior cutaway: datum ribs around the asteroid shell, deep side cavern voids, rear horizon production scale markers, foreground parallax ledge shadows, district silhouette light wells, and atmospheric gradients so the larger aperture still keeps all four districts readable."
-    },
-    {
-      "date": "2026-04-26",
-      "label": "north-star pressure gasket and command-read pass",
-      "durationMs": 420000,
-      "status": "shipped",
-      "type": "outside-in composition pass",
-      "notes": "Benchmarked against world-architecture and materials/avatar moodboards, then added engineered pressure-gasket shell framing, wide command hierarchy read lines, four district exterior read frames, cold exterior vista scale layers, tiny shell scale silhouettes, and cinematic shell contrast lighting. Local screenshot capture was blocked and recorded honestly in the visual review."
     }
   ],
   "stats": {
-    "count": 19,
+    "count": 18,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 177222,
+    "avgMs": 162941,
     "subagents": {
       "count": 3,
       "minMs": 47000,
