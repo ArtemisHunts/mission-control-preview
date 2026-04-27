@@ -203,13 +203,21 @@
       "status": "shipped",
       "type": "direction correction prune/composition/performance pass",
       "notes": "Michael correction pass: removed five stacked historical interior-correction runtime layers plus the macro tiny depth-marker call, replaced them with one broad dominant production hall, tightened the camera/FOV/fog toward the facility, lowered pixel ratio cap, reduced central rail posts, and replaced per-bay pebble clusters with broad carved cheek plates so asteroid remains a border while runtime geometry/FPS risk drops. Screenshot capture via browser/headless Chrome was blocked/hung and is documented in visual review."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "corrective interior compression lock pass",
+      "durationMs": 360000,
+      "status": "shipped",
+      "type": "direction correction prune/composition/performance pass",
+      "notes": "Continued Michael correction: tightened camera/FOV/fog/pixel ratio, removed active exterior vista/asteroid glint/tower beacon calls and unused macro marker bodies, replaced the rear exterior window with a sealed instrumentation wall, added an interior compression lock of broad pressure walls/crossbeams/side machinery to mask asteroid edges and make the production hall dominate. Browser screenshot capture was policy-blocked and is documented."
     }
   ],
   "stats": {
-    "count": 25,
+    "count": 26,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 209200,
+    "avgMs": 215000,
     "subagents": {
       "count": 3,
       "minMs": 47000,
