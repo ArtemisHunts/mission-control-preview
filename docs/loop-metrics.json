@@ -155,21 +155,13 @@
       "status": "shipped",
       "type": "outside-in composition pass",
       "notes": "Benchmarked against world-architecture and materials/avatar moodboards, then added exterior station infrastructure, lower mechanical cutaway levels, segmented viewport blast shutters, docked craft silhouettes, massive hull load ribs, exterior network signal arcs, and a command-primary lighting hierarchy. Screenshot capture remained blocked and is documented in the visual review."
-    },
-    {
-      "date": "2026-04-26",
-      "label": "habitation deck-ring shell strata pass",
-      "durationMs": 300000,
-      "status": "shipped",
-      "type": "outside-in composition pass",
-      "notes": "Benchmarked against the north-star moodboards, then added layered habitation deck rings, stepped observation gallery strata, quiet inset viewport slit bands, deck-ring lighting hierarchy, rock-to-hull compression layers, outer-aperture transit pods, and sparse wayfinding beacons to make the cutaway read as an inhabited pressure shell inside the asteroid. Screenshot capture remained blocked and is documented in the visual review."
     }
   ],
   "stats": {
-    "count": 21,
+    "count": 20,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 192500,
+    "avgMs": 186842,
     "subagents": {
       "count": 3,
       "minMs": 47000,
