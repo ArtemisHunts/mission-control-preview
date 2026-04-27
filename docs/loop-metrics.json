@@ -155,13 +155,21 @@
       "status": "shipped",
       "type": "direction correction performance pass",
       "notes": "Second Michael correction pass: removed legacy exterior/deck-ring function bodies, simplified active asteroid border/rim/cutaway loops into broad proscenium slabs, replaced the expensive floor panel grid with large production deck plates, added interior mezzanine/gantry massing, and cut app/performance budgets sharply while preserving the interior-dominant composition. Screenshot capture remains blocked and is documented."
+    },
+    {
+      "date": "2026-04-26",
+      "label": "corrective enclosed production shell stack pass",
+      "durationMs": 360000,
+      "status": "shipped",
+      "type": "direction correction composition/performance pass",
+      "notes": "Added a dominant enclosed interior production shell stack with broad wall slabs, top bulkhead, rear machinery wall, pressure ribs, catwalks, lower decks, systems chases, and command nucleus massing. Nudged camera/framing toward the interior, lowered pixel ratio/shadow cost, and simplified the exterior asteroid field into a few quiet window glints so the asteroid stays a border/proscenium."
     }
   ],
   "stats": {
-    "count": 20,
+    "count": 21,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 180526,
+    "avgMs": 189500,
     "subagents": {
       "count": 3,
       "minMs": 47000,
