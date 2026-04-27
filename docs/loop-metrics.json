@@ -227,13 +227,21 @@
       "status": "shipped",
       "type": "direction correction prune/composition/performance pass",
       "notes": "Continued Michael correction: replaced console/chair micro-kit station props with broad production workcells, removed tiny central pit post/rail loop in favor of eight large guard/datum forms, tightened overview camera framing again, and kept asteroid context as border while station bays read through larger machinery slabs. Mesh constructor count dropped to 19 and procedural loop markers to zero. Browser screenshot capture remained policy-blocked and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "corrective compact command core and operator prune pass",
+      "durationMs": 360000,
+      "status": "shipped",
+      "type": "direction correction prune/composition/performance pass",
+      "notes": "Continued Michael correction: replaced the animated holo-table/mission-node cluster with a compact command process core, simplified operator avatars into low-poly scale silhouettes, added broad overhead plant panels to the interior compression lock, nudged camera framing tighter, and kept the asteroid as border/proscenium. Mesh constructor count dropped to 13 and loop markers remained zero. Browser screenshot capture remained policy-blocked and is documented."
     }
   ],
   "stats": {
-    "count": 28,
+    "count": 29,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 225357,
+    "avgMs": 230000,
     "subagents": {
       "count": 3,
       "minMs": 47000,

@@ -31,8 +31,8 @@ const ROOMS = {
     accent: COLORS.cyan
   },
   command: {
-    title: 'Central Holo-table',
-    body: 'The mission graph lives here. Artemis and Navigator turn tasks into visible routing decisions before work fans out into the rooms.',
+    title: 'Command Process Core',
+    body: 'The compact command core lives here. Artemis and Navigator route missions without overpowering the production floor.',
     camera: [3.7, 3.2, 4.2],
     target: [0, 0.95, 0.35],
     accent: COLORS.cyan,
@@ -113,7 +113,7 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
 scene.fog = new THREE.Fog(COLORS.bg, 12, 70);
 
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 120);
+const camera = new THREE.PerspectiveCamera(44, window.innerWidth / window.innerHeight, 0.1, 115);
 camera.position.set(...ROOMS.overview.camera);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -144,7 +144,7 @@ const clickTarget = new THREE.Vector3();
 const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
-const fixedCameraOffset = new THREE.Vector3(0, 8.85, 28.4);
+const fixedCameraOffset = new THREE.Vector3(0, 8.7, 27.4);
 const facilityBounds = { minX: -14.8, maxX: 14.8, minZ: -13.6, maxZ: 4.4 };
 
 function mat(color, options = {}) {
@@ -225,7 +225,7 @@ function buildOffice() {
   buildWideOverviewLightingScaffold();
   buildDistantFacilityDepth();
   buildRooms();
-  buildHoloTable();
+  buildCommandProcessCore();
   buildCentralFabricationLine();
   buildRailingsAndCatwalks();
   buildIndustrialSetDressing();
@@ -565,6 +565,10 @@ function buildInteriorCompressionLock() {
   box('compression lock left asteroid mask cheek', [1.25, 4.8, 9.0], [-12.82, 3.05, -0.25], dark);
   box('compression lock right asteroid mask cheek', [1.25, 4.8, 9.0], [12.82, 3.05, -0.25], dark);
   box('compression lock crown asteroid mask', [23.8, 0.54, 4.6], [0, 5.44, 0.2], dark);
+  box('compression lock left overhead plant bay', [6.8, 0.34, 4.8], [-6.2, 4.72, -3.2], steel);
+  box('compression lock right overhead plant bay', [6.8, 0.34, 4.8], [6.2, 4.72, -3.2], steel);
+  box('compression lock central dark ceiling service void', [4.4, 0.28, 5.6], [0, 4.58, -2.9], dark);
+  box('compression lock overhead amber production datum', [11.6, 0.035, 0.045], [0, 4.36, -0.8], amber);
 }
 
 function buildCentralFabricationLine() {
@@ -720,68 +724,33 @@ function buildWorkspaceProps(id, group, accent) {
   }
 }
 
-function buildHoloTable() {
+function buildCommandProcessCore() {
   const group = new THREE.Group();
-  group.position.set(0, 0.44, 0.45);
+  group.position.set(0, 0.52, 0.55);
   root.add(group);
 
-  const base = new THREE.Mesh(new THREE.CylinderGeometry(1.72, 1.98, 0.48, 12), mat(0x141c31, { roughness: 0.32, metalness: 0.42 }));
+  const dark = mat(0x050914, { roughness: 0.58, metalness: 0.48 });
+  const hull = mat(0x141c31, { roughness: 0.34, metalness: 0.5 });
+  const steel = mat(COLORS.brushedSteel, { roughness: 0.34, metalness: 0.72 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.42, transparent: true, opacity: 0.24, roughness: 0.08 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.34, transparent: true, opacity: 0.24 });
+
+  // Compact process core: keeps Mission Control identity without animated hologram clutter dominating the factory.
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(1.76, 2.05, 0.48, 10), hull);
   base.castShadow = true;
   base.receiveShadow = true;
   group.add(base);
 
-  const lowerRing = new THREE.Mesh(new THREE.TorusGeometry(1.82, 0.04, 8, 64), mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.9, transparent: true, opacity: 0.75 }));
-  lowerRing.rotation.x = Math.PI / 2;
-  lowerRing.position.y = 0.08;
-  group.add(lowerRing);
+  const top = new THREE.Mesh(new THREE.CylinderGeometry(1.96, 1.96, 0.055, 24), cyan);
+  top.position.y = 0.34;
+  group.add(top);
 
-  const glass = new THREE.Mesh(new THREE.CylinderGeometry(1.95, 1.95, 0.045, 48), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.85, transparent: true, opacity: 0.28, roughness: 0.08 }));
-  glass.position.y = 0.34;
-  group.add(glass);
-
-  const map = new THREE.Group();
-  map.position.y = 0.92;
-  group.add(map);
-
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(1.38, 0.014, 6, 64), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 1.55, transparent: true, opacity: 0.82 }));
-  ring.rotation.x = Math.PI / 2;
-  map.add(ring);
-  const outer = new THREE.Mesh(new THREE.TorusGeometry(1.68, 0.01, 6, 64), mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.92, transparent: true, opacity: 0.58 }));
-  outer.rotation.x = Math.PI / 2;
-  map.add(outer);
-
-  const holoRock = new THREE.Mesh(new THREE.IcosahedronGeometry(0.34, 1), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 1.35, transparent: true, opacity: 0.48, roughness: 0.18 }));
-  holoRock.position.y = 0.36;
-  map.add(holoRock);
-
-  const scanColumn = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 1.2, 20, 1, true), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.5, transparent: true, opacity: 0.12, side: THREE.DoubleSide }));
-  scanColumn.position.y = 0.34;
-  map.add(scanColumn);
-
-  const nodePositions = [[0, 0], [-0.72, 0.48], [0.78, 0.34], [-0.58, -0.62], [0.56, -0.66]];
-  nodePositions.forEach(([x, z], index) => {
-    const color = [COLORS.cyan, COLORS.gold, COLORS.coral, COLORS.green, COLORS.violet][index];
-    const node = new THREE.Mesh(new THREE.IcosahedronGeometry(index === 0 ? 0.13 : 0.09, 1), mat(color, { emissive: color, emissiveIntensity: 1.7, transparent: true, opacity: 0.94 }));
-    node.position.set(x, 0, z);
-    map.add(node);
-    if (index > 0) {
-      const points = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(x, 0, z)];
-      const geo = new THREE.BufferGeometry().setFromPoints(points);
-      const line = new THREE.Line(geo, new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.62 }));
-      map.add(line);
-    }
-    animated.push((t) => { node.position.y = Math.sin(t * 1.9 + index) * 0.08; node.rotation.y += 0.01; });
-  });
-
-  animated.push((t) => {
-    map.rotation.y += 0.0045;
-    holoRock.rotation.x += 0.006;
-    holoRock.rotation.y += 0.009;
-    lowerRing.rotation.z -= 0.003;
-    outer.rotation.z += 0.002;
-    glass.material.opacity = 0.24 + Math.sin(t * 1.25) * 0.05;
-    scanColumn.material.opacity = 0.09 + Math.sin(t * 2.1) * 0.035;
-  });
+  box('command process core front black fascia', [2.7, 0.42, 0.1], [0, 0.05, 1.62], dark, group);
+  box('command process core rear machinery spine', [2.35, 0.52, 0.22], [0, 0.36, -1.22], steel, group);
+  box('command process core amber trim front', [2.25, 0.045, 0.045], [0, 0.48, 1.72], amber, group);
+  box('command process core cyan route slab', [0.38, 0.04, 2.6], [0, 0.56, 0.05], cyan, group);
+  box('command process core left operator wing', [1.3, 0.22, 0.62], [-1.9, 0.18, 0.15], dark, group);
+  box('command process core right operator wing', [1.3, 0.22, 0.62], [1.9, 0.18, 0.15], dark, group);
 }
 
 function buildRailingsAndCatwalks() {
@@ -890,42 +859,27 @@ function buildOperators() {
     group.lookAt(new THREE.Vector3(0, 0.58, 0.35));
     root.add(group);
 
-    const helmet = new THREE.Mesh(new THREE.SphereGeometry(0.19, 20, 20), mat(0xd9dde6, { roughness: 0.28, metalness: 0.18 }));
-    helmet.position.y = 0.21;
-    helmet.castShadow = true;
-    group.add(helmet);
+    const suit = mat(0x303744, { roughness: 0.5, metalness: 0.24 });
+    const visorMat = mat(0x07111f, { emissive: agent.color, emissiveIntensity: 0.22, transparent: true, opacity: 0.72, roughness: 0.08 });
+    const roleGlow = mat(agent.color, { emissive: agent.color, emissiveIntensity: 0.82, transparent: true, opacity: 0.72 });
 
-    const visor = new THREE.Mesh(new THREE.SphereGeometry(0.135, 16, 16), mat(0x07111f, { emissive: agent.color, emissiveIntensity: 0.28, transparent: true, opacity: 0.72, roughness: 0.06 }));
-    visor.scale.set(1.05, 0.45, 0.38);
-    visor.position.set(0, 0.22, 0.12);
-    group.add(visor);
-
-    const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.15, 0.38, 6, 12), mat(0x303744, { roughness: 0.48, metalness: 0.24 }));
-    body.position.y = -0.12;
+    // Simplified operators: enough human scale, no bobblehead micro-kit budget.
+    const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.16, 0.48, 4, 8), suit);
+    body.position.y = -0.13;
     body.castShadow = true;
     group.add(body);
 
-    const suitPanel = mat(0xd4d6da, { roughness: 0.42, metalness: 0.18 });
-    const suitJoint = mat(COLORS.blackMetal, { roughness: 0.48, metalness: 0.44 });
-    const roleGlow = mat(agent.color, { emissive: agent.color, emissiveIntensity: 1.15, transparent: true, opacity: 0.82 });
+    const helmet = new THREE.Mesh(new THREE.SphereGeometry(0.18, 12, 10), mat(0xd9dde6, { roughness: 0.32, metalness: 0.16 }));
+    helmet.position.y = 0.22;
+    helmet.castShadow = true;
+    group.add(helmet);
 
-    // Asset pipeline pass: hand-blocked operator avatar kit with stronger suit silhouette and role-read panels.
-    box('operator avatar kit shoulder yoke', [0.42, 0.075, 0.18], [0, 0.02, 0], suitPanel, group);
-    box('operator avatar kit chest plate', [0.26, 0.2, 0.055], [0, -0.1, 0.13], suitPanel, group);
-    box('operator avatar kit role chest stripe', [0.19, 0.035, 0.022], [0, -0.045, 0.165], roleGlow, group);
-    box('operator avatar kit backpack block', [0.22, 0.34, 0.09], [0, -0.08, -0.17], suitJoint, group);
-    box('operator avatar kit left gauntlet arm', [0.065, 0.32, 0.06], [-0.22, -0.12, 0.025], suitPanel, group);
-    box('operator avatar kit right gauntlet arm', [0.065, 0.32, 0.06], [0.22, -0.12, 0.025], suitPanel, group);
-    box('operator avatar kit left boot leg', [0.075, 0.24, 0.075], [-0.075, -0.42, 0.015], suitJoint, group);
-    box('operator avatar kit right boot leg', [0.075, 0.24, 0.075], [0.075, -0.42, 0.015], suitJoint, group);
-    box('operator avatar kit boot stance bar', [0.28, 0.045, 0.13], [0, -0.55, 0.02], suitJoint, group);
-    box('status light', [0.045, 0.045, 0.025], [0.11, 0.02, 0.14], roleGlow, group);
+    const visor = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.065, 0.035), visorMat);
+    visor.position.set(0, 0.23, 0.16);
+    group.add(visor);
+    box('operator simplified role chest bar', [0.2, 0.035, 0.025], [0, -0.03, 0.16], roleGlow, group);
+    box('operator simplified boot stance block', [0.3, 0.05, 0.14], [0, -0.52, 0.02], suit, group);
 
-    const tag = makeTextSprite(agent.name.toUpperCase(), '#dfe9ff', 40);
-    tag.position.set(0, 0.72, 0);
-    tag.scale.set(0.46, 0.12, 1);
-    tag.material.opacity = 0.26;
-    group.add(tag);
     operators.push({ group, baseY: 0.58, index, agent });
   });
 }
