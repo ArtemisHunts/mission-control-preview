@@ -251,13 +251,21 @@
       "status": "shipped",
       "type": "direction correction prune/composition/performance pass",
       "notes": "Continued Michael correction: consolidated three overlapping asteroid border passes into one calibrated proscenium, removed small glints/lamps/strata clutter from those border systems, added one dominant assembly shaft with broad clamp/core/hopper/conveyor forms, and preserved the asteroid as a 15\u201325% edge frame while the interior production facility owns the subject. Mesh constructor count stayed at 11 and loop markers at zero. Browser screenshot capture remained policy-blocked and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "corrective broad bands and rear plant consolidation pass",
+      "durationMs": 360000,
+      "status": "shipped",
+      "type": "direction correction prune/composition/performance pass",
+      "notes": "Continued Michael correction: consolidated small rear monitors, window mullions, ceiling strips, floor trenches, and rear plant marker loops into broad production bands/decks; disabled shadow maps to protect FPS; nudged camera framing tighter; preserved the calibrated asteroid proscenium while the interior facility reads through larger slabs, coves, workflow lanes, and rear plant masses. Mesh constructor count dropped to 10 and loop markers stayed at zero. Browser screenshot capture remained policy-blocked and is documented."
     }
   ],
   "stats": {
-    "count": 31,
+    "count": 32,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 238387,
+    "avgMs": 242188,
     "subagents": {
       "count": 3,
       "minMs": 47000,

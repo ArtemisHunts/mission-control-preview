@@ -26,8 +26,8 @@ const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
     body: 'A full spatial read of Mission Control: assembly shaft, fabrication line, production bays, visible operators, and deploy traffic.'
-    camera: [0, 8.85, 26.8],
-    target: [0, 1.92, -4.05],
+    camera: [0, 8.65, 26.2],
+    target: [0, 1.96, -4.15],
     accent: COLORS.cyan
   },
   command: {
@@ -103,7 +103,7 @@ const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'hi
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.0));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.shadowMap.enabled = true;
+renderer.shadowMap.enabled = false;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 0.82;
@@ -143,7 +143,7 @@ const clickTarget = new THREE.Vector3();
 const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
-const fixedCameraOffset = new THREE.Vector3(0, 8.55, 26.8);
+const fixedCameraOffset = new THREE.Vector3(0, 8.35, 26.2);
 const facilityBounds = { minX: -14.8, maxX: 14.8, minZ: -13.6, maxZ: 4.4 };
 
 function mat(color, options = {}) {
@@ -245,30 +245,26 @@ function buildOffice() {
 function buildShell() {
   const floorMat = mat(COLORS.floor, { roughness: 0.58, metalness: 0.36 });
   const deckMat = mat(0x121a2c, { roughness: 0.48, metalness: 0.5 });
-  const trenchMat = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.36, transparent: true, opacity: 0.16, roughness: 0.12, metalness: 0.1 });
+  const trenchMat = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.28, transparent: true, opacity: 0.12, roughness: 0.12, metalness: 0.1 });
+  const wallMat = mat(COLORS.wall, { roughness: 0.56, metalness: 0.22 });
+  const sideMat = mat(COLORS.wallDark, { roughness: 0.7, metalness: 0.18 });
+  const monitorMat = mat(0x182742, { emissive: 0x183f60, emissiveIntensity: 0.34, transparent: true, opacity: 0.46 });
 
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(30, 25), floorMat);
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
   root.add(floor);
 
-  // Corrective FPS pass: replace dozens of tiny panels/edge lines with broad readable deck plates.
-  [
-    ['left production deck plate', [-8.5, 0.03, -2.4], [10.8, 0.055, 18.0]],
-    ['right production deck plate', [8.5, 0.03, -2.4], [10.8, 0.055, 18.0]],
-    ['rear production apron', [0, 0.045, -10.2], [27.2, 0.065, 2.2]],
-    ['command approach deck', [0, 0.06, 3.2], [15.8, 0.065, 4.2]]
-  ].forEach(([name, position, size]) => box(name, size, position, deckMat));
+  // Broad slabs and continuous data bands: fewer objects, clearer production-floor read.
+  box('left production deck plate', [10.8, 0.055, 18.0], [-8.5, 0.03, -2.4], deckMat);
+  box('right production deck plate', [10.8, 0.055, 18.0], [8.5, 0.03, -2.4], deckMat);
+  box('rear production apron', [27.2, 0.065, 2.2], [0, 0.045, -10.2], deckMat);
+  box('command approach deck', [15.8, 0.065, 4.2], [0, 0.06, 3.2], deckMat);
+  box('central wide inspection trench', [1.05, 0.035, 18.8], [0, 0.08, -1.9], trenchMat);
+  box('left production inspection wash', [0.28, 0.03, 16.2], [-6.6, 0.085, -1.9], trenchMat);
+  box('right production inspection wash', [0.28, 0.03, 16.2], [6.6, 0.085, -1.9], trenchMat);
 
-  [-6.6, 0, 6.6].forEach((x) => {
-    const glass = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.035, 18.8), trenchMat);
-    glass.position.set(x, 0.08, -1.9);
-    glass.receiveShadow = true;
-    root.add(glass);
-  });
-
-  box('rear wall', [28.0, 6.1, 0.25], [0, 2.9, -12.05], mat(COLORS.wall, { roughness: 0.56, metalness: 0.22 }));
-  const sideMat = mat(COLORS.wallDark, { roughness: 0.7, metalness: 0.18 });
+  box('rear wall', [28.0, 6.1, 0.25], [0, 2.9, -12.05], wallMat);
   const leftWall = box('left wall', [22.0, 5.6, 0.2], [-14.8, 2.75, -1.55], sideMat);
   leftWall.rotation.y = Math.PI / 2;
   const rightWall = box('right wall', [22.0, 5.6, 0.2], [14.8, 2.75, -1.55], sideMat);
@@ -276,50 +272,58 @@ function buildShell() {
 
   buildWindowWall();
 
-  [-10.8, -5.4, 0, 5.4, 10.8].forEach((x) => {
-    box('wall monitor', [1.05, 0.46, 0.08], [x, 3.6, -11.86], mat(0x182742, { emissive: 0x183f60, emissiveIntensity: 0.52 }));
-  });
+  box('rear wall continuous operations monitor band', [18.6, 0.42, 0.08], [0, 3.6, -11.86], monitorMat);
+  box('rear wall lower production telemetry band', [22.4, 0.16, 0.06], [0, 2.18, -11.82], monitorMat);
+  box('left deck broad amber workflow lane', [8.8, 0.035, 0.055], [-7.2, 0.24, 3.85], mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.18, transparent: true, opacity: 0.14 }));
+  box('right deck broad cyan workflow lane', [8.8, 0.035, 0.055], [7.2, 0.24, 3.85], mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.18, transparent: true, opacity: 0.14 }));
+  box('rear deck broad factory transfer lane', [18.4, 0.035, 0.055], [0, 0.26, -8.65], mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.14, transparent: true, opacity: 0.12 }));
+  box('front deck broad command transfer lane', [13.2, 0.035, 0.055], [0, 0.28, 5.2], mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.14, transparent: true, opacity: 0.12 }));
 }
+
 
 function buildWindowWall() {
   const blindMat = mat(0x020611, { roughness: 0.82, metalness: 0.18 });
   const frameMat = mat(COLORS.blackMetal, { roughness: 0.34, metalness: 0.68 });
-  const glassMat = mat(0x061526, { roughness: 0.14, metalness: 0.25, transparent: true, opacity: 0.22, emissive: 0x071e34, emissiveIntensity: 0.08 });
-  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.32, transparent: true, opacity: 0.26 });
-  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.3, transparent: true, opacity: 0.24 });
+  const glassMat = mat(0x061526, { roughness: 0.14, metalness: 0.25, transparent: true, opacity: 0.2, emissive: 0x071e34, emissiveIntensity: 0.07 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.28, transparent: true, opacity: 0.22 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.26, transparent: true, opacity: 0.2 });
 
-  // Rear wall is now an interior instrumentation band, not an exterior panorama.
+  // Rear wall is sealed instrumentation, not exterior subject matter.
   box('sealed rear production blind', [19.4, 2.34, 0.08], [0, 2.82, -11.88], blindMat);
   box('sealed rear instrumentation glass band', [13.2, 0.82, 0.055], [0, 3.18, -11.78], glassMat);
   box('sealed rear top pressure frame', [19.7, 0.18, 0.18], [0, 4.08, -11.74], frameMat);
   box('sealed rear bottom pressure frame', [19.7, 0.16, 0.18], [0, 1.48, -11.74], frameMat);
   box('sealed rear left pressure jamb', [0.18, 2.28, 0.18], [-9.92, 2.8, -11.73], frameMat);
   box('sealed rear right pressure jamb', [0.18, 2.28, 0.18], [9.92, 2.8, -11.73], frameMat);
-  [-5.8, -2.9, 0, 2.9, 5.8].forEach((x, i) => {
-    box('sealed rear instrument mullion', [0.08, 1.82, 0.1], [x, 3.0, -11.69], frameMat);
-    box('sealed rear low telemetry tile', [1.08, 0.18, 0.055], [x, 2.25, -11.66], i % 2 ? amber : cyan);
-  });
+  box('sealed rear broad center mullion', [0.12, 1.82, 0.1], [0, 3.0, -11.69], frameMat);
+  box('sealed rear broad left telemetry tile', [4.2, 0.2, 0.055], [-4.2, 2.25, -11.66], cyan);
+  box('sealed rear broad right telemetry tile', [4.2, 0.2, 0.055], [4.2, 2.25, -11.66], amber);
   box('sealed rear cyan operations datum', [13.8, 0.035, 0.06], [0, 3.78, -11.64], cyan);
   box('sealed rear amber production datum', [16.6, 0.04, 0.06], [0, 1.78, -11.64], amber);
 }
 
+
 function buildCeilingAndBulkheads() {
   const ceilingMat = mat(COLORS.blackMetal, { roughness: 0.48, metalness: 0.55 });
+  const bulkMat = mat(COLORS.wallDark, { roughness: 0.62, metalness: 0.26 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.38, transparent: true, opacity: 0.36 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.24, transparent: true, opacity: 0.18 });
+
   box('heavy ceiling slab left', [8.0, 0.18, 14.0], [-6.2, 4.75, -0.7], ceilingMat);
   box('heavy ceiling slab right', [8.0, 0.18, 14.0], [6.2, 4.75, -0.7], ceilingMat);
   box('rear ceiling cap', [20.0, 0.2, 1.4], [0, 4.75, -6.45], ceilingMat);
   box('front ceiling bulkhead', [20.0, 0.28, 0.9], [0, 4.45, 6.35], ceilingMat);
-  box('front left bulkhead', [2.45, 3.05, 0.44], [-8.9, 2.75, 6.55], mat(COLORS.wallDark, { roughness: 0.62, metalness: 0.26 }));
-  box('front right bulkhead', [2.45, 3.05, 0.44], [8.9, 2.75, 6.55], mat(COLORS.wallDark, { roughness: 0.62, metalness: 0.26 }));
-  [-7.4, -4.2, -1.4, 1.4, 4.2, 7.4].forEach((x) => {
-    box('ceiling inset amber strip', [0.045, 0.035, 9.2], [x, 4.58, -0.75], mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.52, transparent: true, opacity: 0.46 }));
-  });
-  const ceilingDatum = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.28, transparent: true, opacity: 0.18 });
-  box('ceiling rectangular command datum front', [5.4, 0.035, 0.055], [0, 4.34, 2.68], ceilingDatum);
-  box('ceiling rectangular command datum rear', [5.4, 0.035, 0.055], [0, 4.34, -1.78], ceilingDatum);
-  box('ceiling rectangular command datum left', [0.055, 0.035, 4.1], [-2.72, 4.34, 0.45], ceilingDatum);
-  box('ceiling rectangular command datum right', [0.055, 0.035, 4.1], [2.72, 4.34, 0.45], ceilingDatum);
+  box('front left bulkhead', [2.45, 3.05, 0.44], [-8.9, 2.75, 6.55], bulkMat);
+  box('front right bulkhead', [2.45, 3.05, 0.44], [8.9, 2.75, 6.55], bulkMat);
+
+  box('ceiling left broad amber production cove', [4.8, 0.035, 8.8], [-5.4, 4.58, -0.75], amber);
+  box('ceiling right broad amber production cove', [4.8, 0.035, 8.8], [5.4, 4.58, -0.75], amber);
+  box('ceiling central cyan command datum front', [5.4, 0.035, 0.055], [0, 4.34, 2.68], cyan);
+  box('ceiling central cyan command datum rear', [5.4, 0.035, 0.055], [0, 4.34, -1.78], cyan);
+  box('ceiling central cyan command datum left', [0.055, 0.035, 4.1], [-2.72, 4.34, 0.45], cyan);
+  box('ceiling central cyan command datum right', [0.055, 0.035, 4.1], [2.72, 4.34, 0.45], cyan);
 }
+
 
 function buildCalibratedAsteroidProscenium() {
   const outerRock = mat(0x100d14, { roughness: 0.98, metalness: 0.01 });
@@ -856,24 +860,22 @@ function buildRailingsAndCatwalks() {
 function buildDistantFacilityDepth() {
   const shadowSteel = mat(0x0b101b, { roughness: 0.58, metalness: 0.48 });
   const plantDark = mat(0x050914, { roughness: 0.74, metalness: 0.32 });
-  const dimAmber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.22, transparent: true, opacity: 0.2 });
-  const dimCyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.2, transparent: true, opacity: 0.18 });
+  const dimAmber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.18, transparent: true, opacity: 0.15 });
+  const dimCyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.18, transparent: true, opacity: 0.14 });
 
-  // The rear depth is now interior plant depth, not exterior dock/ship language.
-  [-7.8, 0, 7.8].forEach((x, i) => {
-    box('interior rear production service deck', [4.4, 0.14, 0.74], [x, 1.24 + i * 0.2, -8.72 - i * 0.46], shadowSteel);
-    box('interior rear production dark bay opening', [3.5, 0.72, 0.12], [x, 1.78 + i * 0.2, -9.1 - i * 0.46], plantDark);
-    box('interior rear production lower rail', [3.9, 0.035, 0.035], [x, 1.52 + i * 0.2, -8.33 - i * 0.46], i % 2 ? dimCyan : dimAmber);
-    box('interior rear production pylon left', [0.18, 1.95, 0.18], [x - 1.95, 2.08 + i * 0.2, -8.55 - i * 0.46], shadowSteel);
-    box('interior rear production pylon right', [0.18, 1.95, 0.18], [x + 1.95, 2.08 + i * 0.2, -8.55 - i * 0.46], shadowSteel);
-  });
-
-  [-10.2, -5.1, 5.1, 10.2].forEach((x, i) => {
-    const rib = box('interior rear compression rib', [0.16, 3.5, 0.2], [x, 2.8, -9.45], shadowSteel);
-    rib.rotation.z = x < 0 ? -0.08 : 0.08;
-    box('interior rear rib muted marker light', [0.052, 0.052, 0.052], [x, 4.35, -9.22], i % 2 ? dimAmber : dimCyan);
-  });
+  // Rear depth is broad interior plant mass, not a field of markers.
+  box('interior rear left production service deck', [6.2, 0.18, 0.86], [-6.6, 1.35, -8.88], shadowSteel);
+  box('interior rear center production service deck', [6.6, 0.2, 0.94], [0, 1.58, -9.22], shadowSteel);
+  box('interior rear right production service deck', [6.2, 0.18, 0.86], [6.6, 1.35, -8.88], shadowSteel);
+  box('interior rear left dark bay opening', [5.2, 0.82, 0.12], [-6.6, 1.94, -9.2], plantDark);
+  box('interior rear center dark bay opening', [5.6, 0.96, 0.12], [0, 2.18, -9.55], plantDark);
+  box('interior rear right dark bay opening', [5.2, 0.82, 0.12], [6.6, 1.94, -9.2], plantDark);
+  box('interior rear continuous lower amber rail', [15.6, 0.04, 0.04], [0, 1.72, -8.36], dimAmber);
+  box('interior rear continuous upper cyan rail', [12.8, 0.04, 0.04], [0, 3.42, -9.24], dimCyan);
+  box('interior rear left compression pier', [0.22, 3.3, 0.22], [-9.8, 2.78, -9.45], shadowSteel);
+  box('interior rear right compression pier', [0.22, 3.3, 0.22], [9.8, 2.78, -9.45], shadowSteel);
 }
+
 
 function buildIndustrialSetDressing() {
   const darkPlant = mat(0x07101b, { roughness: 0.7, metalness: 0.4 });
