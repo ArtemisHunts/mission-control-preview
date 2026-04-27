@@ -26,8 +26,8 @@ const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
     body: 'A full spatial read of Mission Control: central holo-table, room clusters, visible operators, signal lanes, and deploy traffic.',
-    camera: [0, 9.8, 30.2],
-    target: [0, 1.76, -3.6],
+    camera: [0, 9.25, 28.8],
+    target: [0, 1.82, -3.85],
     accent: COLORS.cyan
   },
   command: {
@@ -111,9 +111,9 @@ container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
-scene.fog = new THREE.Fog(COLORS.bg, 14, 78);
+scene.fog = new THREE.Fog(COLORS.bg, 12, 70);
 
-const camera = new THREE.PerspectiveCamera(47, window.innerWidth / window.innerHeight, 0.1, 130);
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 120);
 camera.position.set(...ROOMS.overview.camera);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -135,9 +135,7 @@ scene.add(root);
 
 const clock = new THREE.Clock();
 const animated = [];
-const towers = [];
 const operators = [];
-const signalOrbs = [];
 const roomMeshes = [];
 const pointer = new THREE.Vector2();
 const raycaster = new THREE.Raycaster();
@@ -146,7 +144,7 @@ const clickTarget = new THREE.Vector3();
 const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
-const fixedCameraOffset = new THREE.Vector3(0, 9.7, 32.0);
+const fixedCameraOffset = new THREE.Vector3(0, 9.1, 29.8);
 const facilityBounds = { minX: -14.8, maxX: 14.8, minZ: -13.6, maxZ: 4.4 };
 
 function mat(color, options = {}) {
@@ -228,12 +226,10 @@ function buildOffice() {
   buildDistantFacilityDepth();
   buildRooms();
   buildHoloTable();
-  buildSignalLanes();
+  buildCentralFabricationLine();
   buildRailingsAndCatwalks();
-  buildCableConduits();
   buildIndustrialSetDressing();
   buildVolumetricLightPlanes();
-  buildArchitecturalRibs();
   buildOperators();
 
   const title = makeTextSprite('MISSION CONTROL', '#f8fbff', 86);
@@ -571,18 +567,48 @@ function buildInteriorCompressionLock() {
   box('compression lock crown asteroid mask', [23.8, 0.54, 4.6], [0, 5.44, 0.2], dark);
 }
 
-function buildArchitecturalRibs() {
-  [-8.2, -5.4, -2.7, 0, 2.7, 5.4, 8.2].forEach((x, index) => {
-    const rib = box('overhead rib', [0.18, 0.18, 12.6], [x, 4.45, -0.9], mat(COLORS.brushedSteel, { roughness: 0.34, metalness: 0.72 }));
-    rib.rotation.x = index % 2 ? 0.08 : -0.08;
-    const lamp = box('rib amber practical', [0.055, 0.055, 6.8], [x, 4.28, -0.9], mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.8, transparent: true, opacity: 0.76 }));
-    lamp.rotation.x = rib.rotation.x;
+function buildCentralFabricationLine() {
+  const deck = mat(0x111a2b, { roughness: 0.48, metalness: 0.58 });
+  const dark = mat(0x02050d, { roughness: 0.92, metalness: 0.12 });
+  const steel = mat(COLORS.brushedSteel, { roughness: 0.34, metalness: 0.76 });
+  const graphite = mat(0x1b2638, { roughness: 0.42, metalness: 0.68 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.22, transparent: true, opacity: 0.16 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.22, transparent: true, opacity: 0.16 });
+
+  // Performance-safe production read: a few big fabrication forms replace animated signal tracks/cables.
+  box('fabrication line central conveyor bed', [3.4, 0.24, 11.8], [0, 0.98, -2.7], deck);
+  box('fabrication line black service slot', [1.25, 0.28, 10.4], [0, 1.17, -2.85], dark);
+  box('fabrication line cyan inspection glass', [0.46, 0.045, 8.2], [0, 1.36, -3.3], cyan);
+  box('fabrication line front command bridge', [10.4, 0.28, 0.82], [0, 1.42, 2.85], graphite);
+  box('fabrication line rear assembly bridge', [13.8, 0.3, 0.92], [0, 2.08, -6.9], graphite);
+  box('fabrication line overhead crane rail left', [0.22, 0.2, 11.2], [-2.6, 3.56, -2.85], steel);
+  box('fabrication line overhead crane rail right', [0.22, 0.2, 11.2], [2.6, 3.56, -2.85], steel);
+  box('fabrication line overhead crane carriage', [5.8, 0.42, 0.82], [0, 3.34, -1.2], graphite);
+  box('fabrication line crane shadow block', [3.2, 0.78, 0.32], [0, 2.82, -1.2], dark);
+  box('fabrication line suspended component silhouette', [2.3, 0.42, 1.36], [0, 2.42, -2.05], steel);
+  box('fabrication line suspended component cyan scan edge', [1.7, 0.04, 0.055], [0, 2.68, -1.34], cyan);
+
+  const arms = [
+    ['left forward clamp arm', -4.2, 1.82, 0.4, 0.34, amber],
+    ['right forward clamp arm', 4.2, 1.82, 0.4, -0.34, cyan],
+    ['left rear clamp arm', -4.6, 2.28, -5.35, 0.42, cyan],
+    ['right rear clamp arm', 4.6, 2.28, -5.35, -0.42, amber]
+  ];
+
+  arms.forEach(([name, x, y, z, tilt, accent]) => {
+    const shoulder = box(`fabrication line ${name} shoulder block`, [0.82, 0.54, 0.82], [x, y, z], graphite);
+    shoulder.rotation.z = tilt * 0.25;
+    const boom = box(`fabrication line ${name} broad boom`, [2.05, 0.2, 0.28], [x * 0.84, y + 0.15, z - 0.12], steel);
+    boom.rotation.z = tilt;
+    boom.rotation.y = x < 0 ? -0.18 : 0.18;
+    box(`fabrication line ${name} clamp head`, [0.48, 0.36, 0.42], [x * 0.68, y + 0.04, z - 0.28], dark);
+    box(`fabrication line ${name} status edge`, [0.42, 0.035, 0.04], [x * 0.68, y + 0.28, z - 0.02], accent);
   });
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(2.15, 0.035, 10, 96), mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 1.1, transparent: true, opacity: 0.84 }));
-  ring.position.set(0, 3.95, 0.45);
-  ring.rotation.x = Math.PI / 2;
-  root.add(ring);
-  animated.push(() => { ring.rotation.z += 0.002; });
+
+  box('fabrication line left logistics deck mass', [4.4, 0.22, 5.6], [-6.9, 1.0, -2.6], graphite);
+  box('fabrication line right logistics deck mass', [4.4, 0.22, 5.6], [6.9, 1.0, -2.6], graphite);
+  box('fabrication line left logistics amber aisle', [3.2, 0.04, 0.05], [-6.9, 1.18, 0.0], amber);
+  box('fabrication line right logistics cyan aisle', [3.2, 0.04, 0.05], [6.9, 1.18, 0.0], cyan);
 }
 
 function buildRooms() {
@@ -736,12 +762,12 @@ function buildHoloTable() {
   base.receiveShadow = true;
   group.add(base);
 
-  const lowerRing = new THREE.Mesh(new THREE.TorusGeometry(1.82, 0.04, 12, 112), mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.9, transparent: true, opacity: 0.75 }));
+  const lowerRing = new THREE.Mesh(new THREE.TorusGeometry(1.82, 0.04, 8, 64), mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.9, transparent: true, opacity: 0.75 }));
   lowerRing.rotation.x = Math.PI / 2;
   lowerRing.position.y = 0.08;
   group.add(lowerRing);
 
-  const glass = new THREE.Mesh(new THREE.CylinderGeometry(1.95, 1.95, 0.045, 96), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.85, transparent: true, opacity: 0.28, roughness: 0.08 }));
+  const glass = new THREE.Mesh(new THREE.CylinderGeometry(1.95, 1.95, 0.045, 48), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.85, transparent: true, opacity: 0.28, roughness: 0.08 }));
   glass.position.y = 0.34;
   group.add(glass);
 
@@ -749,10 +775,10 @@ function buildHoloTable() {
   map.position.y = 0.92;
   group.add(map);
 
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(1.38, 0.014, 8, 128), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 1.55, transparent: true, opacity: 0.82 }));
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(1.38, 0.014, 6, 64), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 1.55, transparent: true, opacity: 0.82 }));
   ring.rotation.x = Math.PI / 2;
   map.add(ring);
-  const outer = new THREE.Mesh(new THREE.TorusGeometry(1.68, 0.01, 8, 128), mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.92, transparent: true, opacity: 0.58 }));
+  const outer = new THREE.Mesh(new THREE.TorusGeometry(1.68, 0.01, 6, 64), mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.92, transparent: true, opacity: 0.58 }));
   outer.rotation.x = Math.PI / 2;
   map.add(outer);
 
@@ -760,7 +786,7 @@ function buildHoloTable() {
   holoRock.position.y = 0.36;
   map.add(holoRock);
 
-  const scanColumn = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 1.2, 32, 1, true), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.5, transparent: true, opacity: 0.12, side: THREE.DoubleSide }));
+  const scanColumn = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 1.2, 20, 1, true), mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.5, transparent: true, opacity: 0.12, side: THREE.DoubleSide }));
   scanColumn.position.y = 0.34;
   map.add(scanColumn);
 
@@ -787,25 +813,6 @@ function buildHoloTable() {
     outer.rotation.z += 0.002;
     glass.material.opacity = 0.24 + Math.sin(t * 1.25) * 0.05;
     scanColumn.material.opacity = 0.09 + Math.sin(t * 2.1) * 0.035;
-  });
-}
-
-function buildSignalLanes() {
-  const lanes = [
-    [[0, 0.025, 0.45], [-12.75, 0.025, -0.25], COLORS.gold],
-    [[0, 0.025, 0.45], [12.75, 0.025, -0.45], COLORS.coral],
-    [[0, 0.025, 0.45], [12.85, 0.025, -10.65], COLORS.green],
-    [[0, 0.025, 0.45], [-12.85, 0.025, -10.65], COLORS.violet]
-  ];
-  lanes.forEach(([from, to, color], index) => {
-    const curve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(...from),
-      new THREE.Vector3((from[0] + to[0]) / 2, 0.03, (from[2] + to[2]) / 2),
-      new THREE.Vector3(...to)
-    ]);
-    const tube = new THREE.Mesh(new THREE.TubeGeometry(curve, 32, 0.018, 8, false), mat(color, { emissive: color, emissiveIntensity: 0.55, transparent: true, opacity: 0.42 }));
-    root.add(tube);
-    animated.push((t) => { tube.material.opacity = 0.30 + Math.sin(t * 1.6 + index) * 0.08; });
   });
 }
 
@@ -850,20 +857,6 @@ function buildRailingsAndCatwalks() {
   [[-14.1, -0.25], [14.1, -0.45], [-12.85, -10.65], [12.85, -10.65]].forEach(([x, z]) => {
     box('catwalk edge', [1.5, 0.08, 0.08], [x, 0.32, z + 0.86], railMat);
     box('catwalk edge', [1.5, 0.08, 0.08], [x, 0.32, z - 0.86], railMat);
-  });
-}
-
-function buildCableConduits() {
-  const paths = [
-    [[-9.6, 3.7, -6.6], [-6.4, 3.95, -4.8], [-1.8, 4.05, -5.4]],
-    [[9.6, 3.6, -6.4], [6.4, 3.9, -4.85], [1.8, 4.0, -5.4]],
-    [[-9.6, 2.9, 2.6], [-6.7, 3.05, 0.4], [-2.4, 3.2, 0.15]],
-    [[9.6, 2.9, 2.6], [6.7, 3.05, 0.4], [2.4, 3.2, 0.15]]
-  ];
-  paths.forEach((points, index) => {
-    const curve = new THREE.CatmullRomCurve3(points.map((p) => new THREE.Vector3(...p)));
-    const cable = new THREE.Mesh(new THREE.TubeGeometry(curve, 28, 0.025, 8, false), mat(index % 2 ? 0x1f2937 : 0x101827, { roughness: 0.6, metalness: 0.3 }));
-    root.add(cable);
   });
 }
 
@@ -1063,22 +1056,10 @@ function animate() {
   const t = clock.elapsedTime;
   updateFacilityNavigation(delta);
   animated.forEach((fn) => fn(t));
-  towers.forEach((tower, index) => {
-    const pulse = 1 + Math.sin(t * 2.1 + tower.value + index) * 0.045;
-    tower.mesh.scale.y = pulse;
-    tower.mesh.material.emissiveIntensity = 0.75 + Math.sin(t * 2.4 + index) * 0.25;
-  });
   operators.forEach((operator) => {
     operator.group.position.y = operator.baseY + Math.sin(t * 1.7 + operator.index) * 0.035;
     operator.group.rotation.y += Math.sin(t * 0.3 + operator.index) * 0.0008;
   });
-  signalOrbs.forEach((orb) => {
-    const pulse = orb.base + Math.sin(t * (0.9 + orb.index * 0.18)) * 0.1;
-    orb.mesh.scale.setScalar(pulse);
-    orb.mesh.rotation.x += 0.01;
-    orb.mesh.rotation.y += 0.008;
-  });
-
   const desiredCamera = new THREE.Vector3(facilityFocus.x + fixedCameraOffset.x, fixedCameraOffset.y, facilityFocus.z + fixedCameraOffset.z);
   camera.position.lerp(desiredCamera, 0.06);
   controls.target.lerp(facilityFocus, 0.08);

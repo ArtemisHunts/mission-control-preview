@@ -211,13 +211,21 @@
       "status": "shipped",
       "type": "direction correction prune/composition/performance pass",
       "notes": "Continued Michael correction: tightened camera/FOV/fog/pixel ratio, removed active exterior vista/asteroid glint/tower beacon calls and unused macro marker bodies, replaced the rear exterior window with a sealed instrumentation wall, added an interior compression lock of broad pressure walls/crossbeams/side machinery to mask asteroid edges and make the production hall dominate. Browser screenshot capture was policy-blocked and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "corrective fabrication line dominance pass",
+      "durationMs": 360000,
+      "status": "shipped",
+      "type": "direction correction prune/composition/performance pass",
+      "notes": "Continued Michael correction: removed animated signal-lane tubes, overhead cable conduits, decorative overhead ring/rib function, unused tower/signal-orb animation loops, tightened camera/fog/FOV again, reduced holo-table segment counts, and added one broad central fabrication line with conveyor bed, crane carriage, suspended component, and four large clamp arms so the frame reads as an interior production facility rather than exterior/deck-ring decoration. Browser screenshot capture remained policy-blocked and is documented."
     }
   ],
   "stats": {
-    "count": 26,
+    "count": 27,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 215000,
+    "avgMs": 220370,
     "subagents": {
       "count": 3,
       "minMs": 47000,
