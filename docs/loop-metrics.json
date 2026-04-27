@@ -131,13 +131,21 @@
       "status": "shipped",
       "type": "outside-in composition pass",
       "notes": "Raised the macro gate to 450 source lines and shipped a larger outside-in pass: pushed the default camera/fog farther out, added an irregular mine-mouth asteroid aperture with occlusion masks, expanded cut-plane datum layers, deepened rear/side production galleries, and added controlled rim/readability lighting for all four districts."
+    },
+    {
+      "date": "2026-04-26",
+      "label": "overview legibility and production-horizon pass",
+      "durationMs": 240000,
+      "status": "shipped",
+      "type": "outside-in composition pass",
+      "notes": "Added a wide-overview legibility pass for the exterior cutaway: datum ribs around the asteroid shell, deep side cavern voids, rear horizon production scale markers, foreground parallax ledge shadows, district silhouette light wells, and atmospheric gradients so the larger aperture still keeps all four districts readable."
     }
   ],
   "stats": {
-    "count": 17,
+    "count": 18,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 158125,
+    "avgMs": 162941,
     "subagents": {
       "count": 3,
       "minMs": 47000,

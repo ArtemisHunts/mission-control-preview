@@ -230,6 +230,12 @@ function buildOffice() {
   buildCutawayThicknessDatumStack();
   buildRearProductionVoidExpansion();
   buildProductionCavernParallaxScales();
+  buildCutawayScaleDatumRibs();
+  buildDeepSideCavernVoids();
+  buildRearHorizonScaleMarkers();
+  buildForegroundApertureScaleShadow();
+  buildDistrictSilhouetteLightWells();
+  buildOverviewAtmosphericGradient();
   buildRearCavernDepthGate();
   buildMacroFacilityDepthMarkers();
   buildWideOverviewLightingScaffold();
@@ -1229,6 +1235,450 @@ function buildWideReadabilityRimStack() {
     fog.rotation.x = -0.08;
     root.add(fog);
     animated.push((t) => { fog.material.opacity = opacity + Math.sin(t * 0.22 + i) * 0.004; });
+  });
+}
+
+
+function buildCutawayScaleDatumRibs() {
+  const darkRib = mat(0x07080f, { roughness: 0.72, metalness: 0.54 });
+  const graphite = mat(0x151d2a, { roughness: 0.58, metalness: 0.62 });
+  const black = mat(0x010207, { roughness: 1.0, metalness: 0.0 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.2, transparent: true, opacity: 0.2 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.18, transparent: true, opacity: 0.18 });
+  const cutDust = mat(0x433548, { roughness: 0.98, metalness: 0.01 });
+
+  // Pull the asteroid shell back into an architectural read: visible datum ribs show the thickness of the vertical cut.
+  const sideRibs = [
+    [22.7, 0.9, 8.0, 2.4],
+    [22.95, 1.55, 6.2, 2.9],
+    [23.15, 2.2, 4.0, 3.5],
+    [23.0, 2.86, 1.72, 4.0],
+    [22.74, 3.52, -0.72, 4.6],
+    [22.45, 4.16, -3.14, 4.25],
+    [22.14, 4.78, -5.7, 3.75],
+    [21.76, 5.32, -8.4, 3.1],
+    [21.2, 5.86, -11.0, 2.7],
+    [20.55, 6.28, -13.4, 2.25]
+  ];
+
+  sideRibs.forEach(([xAbs, y, z, height], i) => {
+    [-1, 1].forEach((side) => {
+      const rib = box('cutaway scale datum vertical pressure rib', [0.11, height, 0.12], [side * xAbs, y + height * 0.38, z], i % 3 === 0 ? graphite : darkRib);
+      rib.rotation.z = side * (0.05 + i * 0.008);
+      rib.rotation.y = side * 0.08;
+
+      const cap = box('cutaway scale datum rib amber cap mark', [0.13, 0.04, 0.54 + (i % 3) * 0.18], [side * (xAbs - 0.12), y + height * 0.76, z + 0.16], i % 2 ? cyan : amber);
+      cap.rotation.z = rib.rotation.z;
+      cap.rotation.y = rib.rotation.y;
+
+      const cutShadow = box('cutaway scale datum rib contact shadow', [0.07, height * 0.72, 0.08], [side * (xAbs - 0.46), y + height * 0.32, z - 0.24], black);
+      cutShadow.rotation.z = rib.rotation.z * 0.7;
+      cutShadow.rotation.y = rib.rotation.y * 0.65;
+    });
+  });
+
+  for (let i = 0; i < 16; i += 1) {
+    const x = -21.0 + i * 2.8;
+    const z = 7.25 - (i % 8) * 1.02;
+    const hanger = box('cutaway roof survey rib visible at wide overview', [0.09, 1.85 + (i % 3) * 0.32, 0.09], [x, 7.62 - (i % 2) * 0.12, z], i % 2 ? darkRib : graphite);
+    hanger.rotation.z = -0.08 + (i % 5) * 0.04;
+    hanger.rotation.y = -0.18 + (i % 4) * 0.1;
+
+    const lightTick = box('cutaway roof rib small practical tick', [0.36, 0.04, 0.04], [x + 0.32, 6.72 - (i % 2) * 0.16, z + 0.18], i % 3 === 0 ? amber : cyan);
+    lightTick.rotation.y = hanger.rotation.y;
+  }
+
+  for (let i = 0; i < 15; i += 1) {
+    const x = -20.0 + i * 2.86;
+    const foot = box('cutaway sill footplate scale datum', [1.45 + (i % 4) * 0.24, 0.07, 0.18], [x, 0.18 + (i % 2) * 0.04, 9.05 + Math.sin(i) * 0.12], i % 2 ? graphite : darkRib);
+    foot.rotation.y = 0.24 - (i % 5) * 0.09;
+
+    const dust = box('cutaway sill crushed aggregate datum shadow', [1.0 + (i % 3) * 0.22, 0.045, 0.1], [x + 0.42, 0.34, 8.78 + Math.cos(i) * 0.12], cutDust);
+    dust.rotation.y = foot.rotation.y * 0.75;
+  }
+
+  const crossBraces = [
+    [-18.6, 5.8, 4.8, -0.32],
+    [-12.4, 6.2, 2.2, 0.28],
+    [-6.2, 6.05, -0.8, -0.24],
+    [0, 6.35, -3.8, 0.2],
+    [6.2, 6.05, -0.8, 0.24],
+    [12.4, 6.2, 2.2, -0.28],
+    [18.6, 5.8, 4.8, 0.32]
+  ];
+
+  crossBraces.forEach(([x, y, z, rz], i) => {
+    const brace = box('cutaway crown diagonal survey brace silhouette', [0.075, 2.8 + (i % 2) * 0.45, 0.075], [x, y, z], i % 2 ? graphite : darkRib);
+    brace.rotation.z = rz;
+    brace.rotation.y = -0.06 + i * 0.02;
+  });
+}
+
+function buildDeepSideCavernVoids() {
+  const voidMat = mat(0x000106, { roughness: 1.0, metalness: 0.0 });
+  const wall = mat(0x07101d, { roughness: 0.78, metalness: 0.22 });
+  const steel = mat(0x202c3e, { roughness: 0.46, metalness: 0.64 });
+  const shadowSteel = mat(0x0b111d, { roughness: 0.64, metalness: 0.55 });
+  const cyanDim = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.18, transparent: true, opacity: 0.17 });
+  const amberDim = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.18, transparent: true, opacity: 0.16 });
+
+  // Large side voids keep the user from feeling boxed inside the room: the base visibly continues left/right and backward.
+  const voids = [
+    [-21.2, 1.95, 1.9, 4.8, 2.7, COLORS.gold, 'build-side transfer cavern'],
+    [21.2, 1.95, 1.9, 4.8, 2.7, COLORS.coral, 'review-side transfer cavern'],
+    [-21.45, 2.45, -7.8, 5.4, 3.1, COLORS.violet, 'observatory-side signal cavern'],
+    [21.45, 2.45, -7.8, 5.4, 3.1, COLORS.green, 'deploy-side logistics cavern'],
+    [-18.5, 3.35, -16.2, 4.1, 2.55, COLORS.cyan, 'rear-left machinery cavern'],
+    [18.5, 3.35, -16.2, 4.1, 2.55, COLORS.cyan, 'rear-right machinery cavern']
+  ];
+
+  voids.forEach(([x, y, z, depth, height, color, label], index) => {
+    const side = x < 0 ? -1 : 1;
+    const accent = mat(color, { emissive: color, emissiveIntensity: 0.18, transparent: true, opacity: 0.18 });
+    const group = new THREE.Group();
+    group.name = label;
+    group.position.set(x, 0, z);
+    root.add(group);
+
+    box('deep side cavern black negative-space mouth', [0.18, height, depth], [0, y, 0], voidMat, group);
+    box('deep side cavern inner wall plane', [0.12, height * 0.82, depth * 0.88], [side * -0.34, y, -0.08], wall, group);
+    box('deep side cavern foreground pressure jamb', [0.18, height * 1.12, 0.16], [side * 0.08, y + 0.05, depth * 0.48], steel, group);
+    box('deep side cavern rear pressure jamb', [0.16, height * 0.92, 0.14], [side * 0.02, y, -depth * 0.48], shadowSteel, group);
+    box('deep side cavern service deck slab', [0.68, 0.08, depth * 0.78], [side * 0.18, y - height * 0.36, 0.02], shadowSteel, group);
+    box('deep side cavern glowing rail perspective line', [0.05, 0.04, depth * 0.72], [side * 0.52, y - height * 0.18, 0.02], accent, group);
+    box('deep side cavern back rim light', [0.045, height * 0.68, 0.06], [side * 0.44, y + 0.06, -depth * 0.43], index % 2 ? cyanDim : amberDim, group);
+
+    for (let i = 0; i < 5; i += 1) {
+      const zz = -depth * 0.36 + i * (depth * 0.18);
+      box('deep side cavern receding bay divider', [0.055, height * 0.52, 0.045], [side * 0.34, y - height * 0.02, zz], i % 2 ? steel : shadowSteel, group);
+      box('deep side cavern tiny maintenance window', [0.045, 0.14, 0.32], [side * 0.5, y + (i % 3) * 0.22, zz + 0.1], i % 2 ? accent : wall, group);
+    }
+
+    const haze = new THREE.Mesh(new THREE.PlaneGeometry(1.1, depth * 0.9), mat(color, { emissive: color, emissiveIntensity: 0.1, transparent: true, opacity: 0.025, side: THREE.DoubleSide }));
+    haze.name = 'deep side cavern faint atmospheric slit';
+    haze.position.set(x + side * 0.28, y, z);
+    haze.rotation.y = side * Math.PI / 2;
+    haze.rotation.z = -0.05 + index * 0.02;
+    root.add(haze);
+    animated.push((t) => { haze.material.opacity = 0.018 + Math.sin(t * 0.35 + index) * 0.006; });
+  });
+
+  const rearDrifts = [
+    [-14.4, -22.8, COLORS.violet],
+    [-7.2, -25.4, COLORS.gold],
+    [0, -28.2, COLORS.cyan],
+    [7.2, -25.4, COLORS.coral],
+    [14.4, -22.8, COLORS.green]
+  ];
+
+  rearDrifts.forEach(([x, z, color], i) => {
+    const shaft = box('deep side cavern distant vertical lift silhouette', [0.22, 3.8 - i * 0.22, 0.16], [x, 2.9, z], shadowSteel);
+    shaft.rotation.z = x < 0 ? -0.04 : x > 0 ? 0.04 : 0;
+    const beacon = box('deep side cavern distant lift beacon', [0.12, 0.055, 0.04], [x, 4.78 - i * 0.18, z + 0.16], mat(color, { emissive: color, emissiveIntensity: 0.3, transparent: true, opacity: 0.2 }));
+    beacon.rotation.y = i * 0.08;
+  });
+}
+
+
+function buildRearHorizonScaleMarkers() {
+  const voidMat = mat(0x000105, { roughness: 1.0, metalness: 0.0 });
+  const deckMat = mat(0x080f1a, { roughness: 0.66, metalness: 0.42 });
+  const ribMat = mat(0x1c2738, { roughness: 0.48, metalness: 0.66 });
+  const darkRib = mat(0x060a12, { roughness: 0.7, metalness: 0.52 });
+  const cyanTiny = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.2, transparent: true, opacity: 0.16 });
+  const amberTiny = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.18, transparent: true, opacity: 0.15 });
+  const greenTiny = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.16, transparent: true, opacity: 0.14 });
+  const coralTiny = mat(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: 0.16, transparent: true, opacity: 0.14 });
+
+  // Far production horizons give the pulled-back view a real back-of-base read without adding interior detail.
+  const horizons = [
+    [-19.4, 31.5, 0.95, 4.9],
+    [-23.8, 27.2, 1.35, 4.1],
+    [-28.6, 21.8, 1.72, 3.4],
+    [-34.0, 16.2, 2.05, 2.8],
+    [-40.2, 10.8, 2.34, 2.2]
+  ];
+
+  horizons.forEach(([z, width, y, height], row) => {
+    box('rear horizon black production void beyond cutaway', [width, height, 0.1], [0, y + height * 0.5, z], voidMat);
+    box('rear horizon suspended deck silhouette', [width * 0.82, 0.07, 0.5], [0, y, z + 0.38], row % 2 ? darkRib : deckMat);
+    box('rear horizon upper service line', [width * 0.74, 0.055, 0.07], [0, y + height * 0.82, z + 0.18], ribMat);
+    box('rear horizon mid pipe run', [width * 0.58, 0.045, 0.06], [0, y + height * 0.48, z + 0.22], darkRib);
+
+    [-1, 1].forEach((side) => {
+      box('rear horizon side lift tower silhouette', [0.18, height * 0.78, 0.12], [side * width * 0.43, y + height * 0.42, z + 0.25], ribMat);
+      box('rear horizon inner service post silhouette', [0.1, height * 0.58, 0.08], [side * width * 0.28, y + height * 0.36, z + 0.28], darkRib);
+      const diagonalA = box('rear horizon long diagonal truss silhouette', [0.06, height * 0.58, 0.06], [side * width * 0.34, y + height * 0.42, z + 0.3], darkRib);
+      diagonalA.rotation.z = side * (0.22 + row * 0.03);
+      const diagonalB = box('rear horizon opposing diagonal truss silhouette', [0.055, height * 0.44, 0.055], [side * width * 0.18, y + height * 0.32, z + 0.31], ribMat);
+      diagonalB.rotation.z = side * (-0.2 + row * 0.02);
+    });
+  });
+
+  for (let row = 0; row < 6; row += 1) {
+    const z = -18.8 - row * 4.15;
+    const width = 30 - row * 3.9;
+    const count = 12 - row;
+    const yBase = 1.55 + row * 0.3;
+    for (let i = 0; i < count; i += 1) {
+      const x = -width * 0.44 + i * (width * 0.88 / Math.max(1, count - 1));
+      const y = yBase + (i % 5) * 0.22;
+      const material = (i + row) % 4 === 0 ? cyanTiny : (i + row) % 4 === 1 ? amberTiny : (i + row) % 4 === 2 ? greenTiny : coralTiny;
+      const light = box('rear horizon tiny plant window scale marker', [0.12, 0.04, 0.032], [x, y, z], material);
+      light.rotation.y = (i - count * 0.5) * 0.01;
+    }
+  }
+
+  const conveyorRuns = [
+    [-13.5, -17.4, -7.5, -29.2, COLORS.violet],
+    [-4.8, -18.8, -2.0, -34.0, COLORS.gold],
+    [4.8, -18.8, 2.0, -34.0, COLORS.coral],
+    [13.5, -17.4, 7.5, -29.2, COLORS.green]
+  ];
+
+  conveyorRuns.forEach(([x1, z1, x2, z2, color], index) => {
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(x1, 1.35, z1),
+      new THREE.Vector3((x1 + x2) * 0.5, 1.9 + index * 0.08, (z1 + z2) * 0.5),
+      new THREE.Vector3(x2, 2.25 + index * 0.08, z2)
+    ]);
+    const tube = new THREE.Mesh(
+      new THREE.TubeGeometry(curve, 32, 0.022, 8, false),
+      mat(color, { emissive: color, emissiveIntensity: 0.16, transparent: true, opacity: 0.14 })
+    );
+    tube.name = 'rear horizon distant conveyor path into production base';
+    root.add(tube);
+
+    for (let i = 0; i < 4; i += 1) {
+      const p = curve.getPoint((i + 1) / 5);
+      const support = box('rear horizon conveyor hanger scale post', [0.045, 0.78 + i * 0.08, 0.045], [p.x, p.y - 0.38, p.z], i % 2 ? ribMat : darkRib);
+      support.rotation.z = x1 < 0 ? -0.04 : 0.04;
+    }
+  });
+
+  const farShips = [
+    [-6.4, 3.3, -36.8, 1.0, cyanTiny],
+    [6.4, 3.15, -36.2, 0.88, amberTiny],
+    [0, 3.75, -42.0, 0.72, cyanTiny]
+  ];
+
+  farShips.forEach(([x, y, z, scale, material], i) => {
+    const ship = new THREE.Group();
+    ship.name = 'rear horizon tiny docked ship silhouette for scale';
+    ship.position.set(x, y, z);
+    ship.scale.setScalar(scale);
+    root.add(ship);
+    box('rear horizon ship spine', [1.1, 0.08, 0.16], [0, 0, 0], darkRib, ship);
+    box('rear horizon ship nose wedge', [0.26, 0.11, 0.18], [0.68, 0, 0], ribMat, ship);
+    box('rear horizon ship left wing', [0.38, 0.045, 0.42], [-0.18, -0.01, 0.28], deckMat, ship);
+    box('rear horizon ship right wing', [0.38, 0.045, 0.42], [-0.18, -0.01, -0.28], deckMat, ship);
+    box('rear horizon ship running light', [0.07, 0.035, 0.035], [0.78, 0.04, 0], material, ship);
+    ship.rotation.y = -0.18 + i * 0.16;
+  });
+
+  const vaporMat = (color, opacity) => mat(color, { emissive: color, emissiveIntensity: 0.08, transparent: true, opacity, side: THREE.DoubleSide });
+  [
+    [-10.5, 3.1, -25.8, COLORS.violet, 0.018],
+    [10.5, 3.1, -25.8, COLORS.green, 0.018],
+    [-4.0, 3.8, -33.4, COLORS.gold, 0.014],
+    [4.0, 3.8, -33.4, COLORS.coral, 0.014],
+    [0, 4.2, -40.0, COLORS.cyan, 0.012]
+  ].forEach(([x, y, z, color, opacity], i) => {
+    const plume = new THREE.Mesh(new THREE.PlaneGeometry(1.8 - i * 0.12, 6.0 - i * 0.5), vaporMat(color, opacity));
+    plume.name = 'rear horizon faint vertical production haze';
+    plume.position.set(x, y, z);
+    plume.rotation.x = -0.02;
+    plume.rotation.z = x < 0 ? 0.04 : x > 0 ? -0.04 : 0;
+    root.add(plume);
+    animated.push((t) => { plume.material.opacity = opacity + Math.sin(t * 0.27 + i) * 0.004; });
+  });
+}
+
+
+function buildForegroundApertureScaleShadow() {
+  const shadow = mat(0x000105, { roughness: 1.0, metalness: 0.0, transparent: true, opacity: 0.72 });
+  const graphite = mat(0x111827, { roughness: 0.58, metalness: 0.52 });
+  const cutFace = mat(0x342a36, { roughness: 0.96, metalness: 0.02 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.16, transparent: true, opacity: 0.16 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.15, transparent: true, opacity: 0.15 });
+
+  // Foreground parallax shadow gives the viewer a safe exterior ledge instead of the feeling of standing inside the room.
+  const slabs = [
+    [-20.6, 0.12, 10.58, 6.8, -0.04],
+    [-11.8, 0.04, 10.92, 8.4, 0.03],
+    [-2.8, 0.0, 10.72, 6.2, -0.02],
+    [5.2, 0.02, 10.96, 7.6, 0.025],
+    [15.2, 0.1, 10.62, 9.2, -0.035]
+  ];
+
+  slabs.forEach(([x, y, z, width, rz], i) => {
+    const slab = box('foreground aperture massive shadowed viewing ledge', [width, 0.16, 0.52], [x, y, z], i % 2 ? graphite : shadow);
+    slab.rotation.z = rz;
+    slab.rotation.y = -0.08 + i * 0.04;
+    const face = box('foreground aperture ledge exposed sliced face', [width * 0.86, 0.08, 0.1], [x + 0.2, y + 0.18, z - 0.3], cutFace);
+    face.rotation.z = rz * 0.8;
+    face.rotation.y = slab.rotation.y;
+  });
+
+  for (let i = 0; i < 18; i += 1) {
+    const x = -22.0 + i * 2.58;
+    const crack = box('foreground aperture ledge irregular black crack', [0.85 + (i % 4) * 0.35, 0.045, 0.06], [x, 0.36 + Math.sin(i) * 0.04, 10.18 + Math.cos(i * 0.7) * 0.16], shadow);
+    crack.rotation.y = 0.22 - (i % 6) * 0.08;
+    const tick = box('foreground aperture ledge tiny scale glint', [0.09, 0.035, 0.18], [x + 0.46, 0.48, 9.9], i % 3 === 0 ? cyan : amber);
+    tick.rotation.y = crack.rotation.y;
+  }
+
+  for (let i = 0; i < 10; i += 1) {
+    const x = -19.5 + i * 4.3;
+    const post = box('foreground aperture exterior survey post silhouette', [0.07, 0.82 + (i % 2) * 0.22, 0.07], [x, 0.86, 9.58], i % 2 ? graphite : shadow);
+    post.rotation.z = -0.06 + i * 0.014;
+    box('foreground aperture survey post dim marker', [0.18, 0.045, 0.045], [x, 1.32 + (i % 2) * 0.11, 9.56], i % 2 ? cyan : amber);
+  }
+
+  [-16.8, -8.4, 0, 8.4, 16.8].forEach((x, i) => {
+    const cutMark = box('foreground aperture ledge broad cross-section datum', [2.8, 0.04, 0.055], [x, 0.62 + (i % 2) * 0.04, 9.36], i % 2 ? cutFace : graphite);
+    cutMark.rotation.y = -0.18 + i * 0.09;
+    box('foreground aperture ledge datum shadow undercut', [1.8, 0.035, 0.045], [x + 0.36, 0.5, 9.48], shadow);
+  });
+
+  const centerSightline = box('foreground aperture centerline depth notch', [0.08, 0.05, 0.42], [0, 0.76, 9.18], cyan);
+  centerSightline.rotation.y = 0.12;
+}
+
+function buildDistrictSilhouetteLightWells() {
+  const blackGlass = mat(0x030711, { roughness: 0.18, metalness: 0.22, transparent: true, opacity: 0.58 });
+  const floorShadow = mat(0x010207, { roughness: 0.95, metalness: 0.0, transparent: true, opacity: 0.6 });
+  const graphite = mat(0x121a29, { roughness: 0.5, metalness: 0.54 });
+
+  // Wide camera fix: each district gets a subtle backlight well so all four remain readable inside the larger aperture.
+  const wells = [
+    ['build', COLORS.gold, -12.75, 2.08, -0.25, 0.05, 6.4, 3.2],
+    ['review', COLORS.coral, 12.75, 2.08, -0.45, -0.05, 6.4, 3.2],
+    ['observatory', COLORS.violet, -12.85, 2.18, -10.65, 0.035, 6.1, 3.35],
+    ['deploy', COLORS.green, 12.85, 2.18, -10.65, -0.035, 6.1, 3.35]
+  ];
+
+  wells.forEach(([id, color, x, y, z, rz, width, height], index) => {
+    const glow = mat(color, { emissive: color, emissiveIntensity: 0.18, transparent: true, opacity: 0.075, side: THREE.DoubleSide, roughness: 0.1 });
+    const edge = mat(color, { emissive: color, emissiveIntensity: 0.36, transparent: true, opacity: 0.26 });
+    const group = new THREE.Group();
+    group.name = `${id} wide overview silhouette light well`;
+    group.position.set(x, 0, z);
+    group.rotation.z = rz;
+    root.add(group);
+
+    const back = new THREE.Mesh(new THREE.PlaneGeometry(width, height), glow);
+    back.name = `${id} district wide backlight plane`;
+    back.position.set(0, y, -0.72);
+    back.rotation.x = -0.14;
+    group.add(back);
+    animated.push((t) => { back.material.opacity = 0.06 + Math.sin(t * 0.42 + index) * 0.01; });
+
+    box('district silhouette light well top rim', [width * 0.92, 0.05, 0.06], [0, y + height * 0.42, -0.62], edge, group);
+    box('district silhouette light well bottom rim', [width * 0.76, 0.035, 0.055], [0, y - height * 0.38, -0.58], graphite, group);
+    box('district silhouette light well left side rim', [0.06, height * 0.76, 0.055], [-width * 0.48, y, -0.6], edge, group);
+    box('district silhouette light well right side rim', [0.06, height * 0.76, 0.055], [width * 0.48, y, -0.6], edge, group);
+
+    const shadow = new THREE.Mesh(new THREE.PlaneGeometry(width * 1.08, 2.2), floorShadow);
+    shadow.name = `${id} district foreground shadow moat for silhouette contrast`;
+    shadow.position.set(0, 0.07, 0.64);
+    shadow.rotation.x = -Math.PI / 2;
+    group.add(shadow);
+
+    for (let i = 0; i < 4; i += 1) {
+      const px = -width * 0.32 + i * (width * 0.22);
+      const column = box('district light well receding aperture mullion', [0.045, height * 0.55, 0.04], [px, y + 0.02, -0.55 - i * 0.04], i % 2 ? edge : graphite, group);
+      column.rotation.z = -0.035 + i * 0.02;
+    }
+
+    for (let i = 0; i < 5; i += 1) {
+      const pip = box('district light well tiny scale pip visible in overview', [0.11, 0.032, 0.035], [-width * 0.36 + i * width * 0.18, y + height * 0.27, -0.5], edge, group);
+      pip.rotation.y = -0.1 + i * 0.05;
+    }
+
+    const glass = new THREE.Mesh(new THREE.PlaneGeometry(width * 0.72, height * 0.45), blackGlass);
+    glass.name = `${id} district dark glass silhouette patch`;
+    glass.position.set(0, y - 0.1, -0.5);
+    glass.rotation.x = -0.1;
+    group.add(glass);
+  });
+}
+
+function buildOverviewAtmosphericGradient() {
+  const rearCool = addLight('directional', 0x88bdff, 0.42, [0, 9.0, -34.0]);
+  rearCool.name = 'overview atmospheric rear blue rim gradient';
+  rearCool.target.position.set(0, 2.2, -5.8);
+  scene.add(rearCool.target);
+
+  const crownFill = addLight('directional', 0xffd28a, 0.22, [0, 12.0, 8.0]);
+  crownFill.name = 'overview warm crown grazing fill';
+  crownFill.target.position.set(0, 1.4, -3.0);
+  scene.add(crownFill.target);
+
+  addLight('point', 0x78b6ff, 1.55, [-24.0, 5.8, -8.0], 25.0);
+  addLight('point', 0x78b6ff, 1.55, [24.0, 5.8, -8.0], 25.0);
+  addLight('point', COLORS.amber, 1.1, [-18.0, 0.9, 8.8], 19.0);
+  addLight('point', COLORS.amber, 1.1, [18.0, 0.9, 8.8], 19.0);
+
+  const veilMat = (color, opacity) => mat(color, {
+    emissive: color,
+    emissiveIntensity: 0.1,
+    transparent: true,
+    opacity,
+    side: THREE.DoubleSide,
+    roughness: 0.1,
+    metalness: 0.0
+  });
+
+  const veils = [
+    [0, 4.2, -17.8, 34.0, 4.0, 0x5e9de8, 0.026, -0.05],
+    [0, 4.55, -25.5, 25.0, 3.5, 0x5e9de8, 0.018, -0.035],
+    [0, 4.9, -33.0, 16.0, 2.8, 0x5e9de8, 0.014, -0.02],
+    [-12.4, 2.4, 4.8, 12.0, 1.9, COLORS.amber, 0.012, -0.16],
+    [12.4, 2.4, 4.8, 12.0, 1.9, COLORS.amber, 0.012, 0.16],
+    [0, 1.35, 9.2, 36.0, 1.2, 0x090d16, 0.34, 0]
+  ];
+
+  veils.forEach(([x, y, z, w, h, color, opacity, rx], i) => {
+    const veil = new THREE.Mesh(new THREE.PlaneGeometry(w, h), veilMat(color, opacity));
+    veil.name = 'overview atmospheric layered readability gradient';
+    veil.position.set(x, y, z);
+    veil.rotation.x = rx;
+    veil.rotation.z = i % 2 ? 0.015 : -0.015;
+    root.add(veil);
+    animated.push((t) => { veil.material.opacity = opacity + Math.sin(t * 0.2 + i) * (opacity < 0.05 ? 0.004 : 0.018); });
+  });
+
+  const apertureHighlights = [
+    [-23.0, 2.4, 7.1, 0.045, 5.2, COLORS.cyan, -0.07],
+    [23.0, 2.4, 7.1, 0.045, 5.2, COLORS.cyan, 0.07],
+    [-22.6, 4.8, -5.1, 0.045, 4.8, COLORS.amber, -0.045],
+    [22.6, 4.8, -5.1, 0.045, 4.8, COLORS.amber, 0.045],
+    [-14.0, 8.05, 4.8, 8.8, 0.045, COLORS.cyan, -0.02],
+    [14.0, 8.05, 4.8, 8.8, 0.045, COLORS.cyan, 0.02],
+    [0, 7.72, -8.4, 18.0, 0.04, COLORS.amber, 0]
+  ];
+
+  apertureHighlights.forEach(([x, y, z, w, h, color, rz], i) => {
+    const size = w < 0.1 ? [0.055, h, 0.05] : [w, h, 0.05];
+    const edge = box('overview aperture readability edge gradient catchlight', size, [x, y, z], veilMat(color, i % 2 ? 0.16 : 0.13));
+    edge.rotation.z = rz;
+  });
+
+  const bottomOcclusion = [
+    [-18.0, 0.58, 8.6, 9.0],
+    [-6.0, 0.46, 9.1, 8.0],
+    [6.0, 0.46, 9.1, 8.0],
+    [18.0, 0.58, 8.6, 9.0]
+  ];
+
+  bottomOcclusion.forEach(([x, y, z, w], i) => {
+    const shade = new THREE.Mesh(new THREE.PlaneGeometry(w, 1.6), veilMat(0x000106, 0.26));
+    shade.name = 'overview foreground sill shadow gradient';
+    shade.position.set(x, y, z);
+    shade.rotation.x = -Math.PI / 2;
+    shade.rotation.z = -0.04 + i * 0.025;
+    root.add(shade);
   });
 }
 
