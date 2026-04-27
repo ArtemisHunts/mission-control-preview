@@ -25,7 +25,7 @@ const COLORS = {
 const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
-    body: 'A full spatial read of Mission Control: fabrication line, compact command core, production bays, visible operators, and deploy traffic.',
+    body: 'A full spatial read of Mission Control: assembly shaft, fabrication line, production bays, visible operators, and deploy traffic.'
     camera: [0, 8.85, 26.8],
     target: [0, 1.92, -4.05],
     accent: COLORS.cyan
@@ -215,9 +215,7 @@ function buildOffice() {
 
   buildShell();
   buildCeilingAndBulkheads();
-  buildAsteroidRim();
-  buildForegroundCutawayFrame();
-  buildVerticalSliceContainer();
+  buildCalibratedAsteroidProscenium();
   buildPrunedDominantProductionHall();
   buildInteriorCompressionLock();
   buildInteriorFrameLock();
@@ -227,6 +225,7 @@ function buildOffice() {
   buildRooms();
   buildCommandProcessCore();
   buildCentralFabricationLine();
+  buildDominantAssemblyShaft();
   buildRailingsAndCatwalks();
   buildIndustrialSetDressing();
   buildVolumetricLightPlanes();
@@ -322,63 +321,36 @@ function buildCeilingAndBulkheads() {
   box('ceiling rectangular command datum right', [0.055, 0.035, 4.1], [2.72, 4.34, 0.45], ceilingDatum);
 }
 
-function buildAsteroidRim() {
-  const rimMat = mat(COLORS.rock, { roughness: 0.96, metalness: 0.01 });
-  const cutMat = mat(0x2b2330, { roughness: 0.92, metalness: 0.02 });
-  // Broad proscenium slabs replace the old pebble-ring. This keeps the asteroid at roughly 15–25% of the frame.
-  const left = box('slim left asteroid proscenium slab', [0.86, 5.4, 18.2], [-14.6, 2.65, -2.0], rimMat);
-  const right = box('slim right asteroid proscenium slab', [0.86, 5.4, 18.2], [14.6, 2.65, -2.0], rimMat);
-  left.rotation.z = -0.015;
-  right.rotation.z = 0.015;
-  box('slim top asteroid proscenium crown', [28.2, 0.66, 8.4], [0, 5.45, -3.2], rimMat);
-  box('slim lower asteroid proscenium sill', [28.4, 0.42, 1.3], [0, 0.26, 7.0], rimMat);
-  [-13.9, 13.9].forEach((x) => box('clean exposed side cut face', [0.08, 4.5, 12.6], [x, 2.72, -2.5], cutMat));
-}
-
-function buildForegroundCutawayFrame() {
-  const shadowMat = mat(0x03050b, { roughness: 0.9, metalness: 0.02 });
-  const seamMat = mat(0x2c2531, { roughness: 0.98, metalness: 0.01 });
-  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.22, transparent: true, opacity: 0.22 });
-
-  // Keep the cutaway readable with a few large surfaces, not dozens of individual rocks.
-  box('foreground asteroid cutaway shadow sill', [28.0, 0.28, 0.78], [0, 0.28, 7.26], shadowMat);
-  box('upper asteroid cutaway shadow lip', [28.0, 0.34, 0.82], [0, 5.18, -2.6], shadowMat);
-  box('left asteroid cutaway side shadow', [0.52, 4.35, 17.4], [-14.7, 2.48, -2.2], shadowMat);
-  box('right asteroid cutaway side shadow', [0.52, 4.35, 17.4], [14.7, 2.48, -2.2], shadowMat);
-
-  [-10.8, -5.4, 0, 5.4, 10.8].forEach((x, i) => {
-    box('restrained cutaway maintenance glint', [0.055, 0.032, 0.38], [x, 0.78, 6.74], i % 2 ? amber : seamMat);
-  });
-  [-9.6, -3.2, 3.2, 9.6].forEach((x, i) => {
-    const seam = box('large foreground cutaway strata shelf', [3.6, 0.04, 0.07], [x, 0.95 + i * 0.025, 6.62], seamMat);
-    seam.rotation.y = (i - 1.5) * 0.08;
-  });
-}
-
-function buildVerticalSliceContainer() {
+function buildCalibratedAsteroidProscenium() {
   const outerRock = mat(0x100d14, { roughness: 0.98, metalness: 0.01 });
+  const cutFace = mat(0x302633, { roughness: 0.92, metalness: 0.02 });
   const deepShadow = mat(0x020309, { roughness: 1.0, metalness: 0.0 });
-  const cutPlane = mat(0x302633, { roughness: 0.92, metalness: 0.02 });
-  const coolRim = mat(0x5aa5ff, { emissive: 0x5aa5ff, emissiveIntensity: 0.18, transparent: true, opacity: 0.18 });
-  const warmWorkLight = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.34, transparent: true, opacity: 0.28 });
+  const coolRim = mat(0x5aa5ff, { emissive: 0x5aa5ff, emissiveIntensity: 0.12, transparent: true, opacity: 0.12 });
+  const amberRim = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.12, transparent: true, opacity: 0.12 });
 
-  // Corrective frame allocation: a simplified carved border surrounds the dominant interior facility.
-  box('vertical slice outer left asteroid mass', [1.05, 5.8, 19.2], [-15.35, 2.75, -2.25], outerRock);
-  box('vertical slice outer right asteroid mass', [1.05, 5.8, 19.2], [15.35, 2.75, -2.25], outerRock);
-  box('vertical slice overhead asteroid crown', [30.0, 0.92, 9.6], [0, 5.72, -3.8], outerRock);
-  box('vertical slice lower fractured sill', [30.0, 0.58, 1.55], [0, 0.02, 6.98], deepShadow);
-  box('vertical slice rear cavern darkness', [28.2, 5.2, 0.24], [0, 2.92, -13.05], deepShadow);
+  // One controlled border system replaces overlapping rim/foreground/vertical-slice rock passes.
+  // Target read: asteroid/comet is a 15–25% proscenium, never the subject.
+  box('calibrated asteroid outer left proscenium', [1.18, 5.7, 18.4], [-14.9, 2.78, -2.1], outerRock);
+  box('calibrated asteroid outer right proscenium', [1.18, 5.7, 18.4], [14.9, 2.78, -2.1], outerRock);
+  box('calibrated asteroid overhead crown proscenium', [29.2, 0.86, 8.2], [0, 5.58, -2.55], outerRock);
+  box('calibrated asteroid lower sill proscenium', [29.0, 0.56, 1.28], [0, 0.12, 7.05], deepShadow);
 
-  [-14.32, 14.32].forEach((x, i) => {
-    const face = box('vertical slice clean exposed cut plane', [0.14, 4.6, 12.0], [x, 2.72, -2.4], cutPlane);
-    face.rotation.z = i ? -0.06 : 0.06;
-    box('cool blue depth rim on cutaway wall', [0.045, 3.4, 0.06], [x * 0.98, 2.85, -10.1], coolRim);
-  });
+  box('calibrated left exposed vertical cut face', [0.16, 4.9, 12.2], [-14.08, 2.76, -2.35], cutFace);
+  box('calibrated right exposed vertical cut face', [0.16, 4.9, 12.2], [14.08, 2.76, -2.35], cutFace);
+  box('calibrated top exposed cut face', [24.8, 0.16, 5.4], [0, 5.02, -1.1], cutFace);
+  box('calibrated lower exposed cut shelf', [24.4, 0.14, 0.48], [0, 0.72, 6.18], cutFace);
 
-  [-10.4, -5.2, 0, 5.2, 10.4].forEach((x, i) => {
-    box('container amber inspection lamp', [0.075, 0.04, 0.48], [x, 5.06 + Math.sin(i) * 0.04, 2.65 - (i % 2) * 0.58], warmWorkLight);
-  });
+  box('calibrated left interior shadow reveal', [0.42, 4.2, 13.6], [-13.42, 2.72, -1.85], deepShadow);
+  box('calibrated right interior shadow reveal', [0.42, 4.2, 13.6], [13.42, 2.72, -1.85], deepShadow);
+  box('calibrated top interior shadow reveal', [25.2, 0.34, 4.8], [0, 4.92, 0.18], deepShadow);
+  box('calibrated foreground sill interior shadow reveal', [24.2, 0.26, 0.58], [0, 0.78, 6.66], deepShadow);
+
+  box('calibrated left cool edge datum', [0.045, 3.2, 0.055], [-13.18, 3.0, -7.4], coolRim);
+  box('calibrated right cool edge datum', [0.045, 3.2, 0.055], [13.18, 3.0, -7.4], coolRim);
+  box('calibrated crown amber edge datum', [12.8, 0.035, 0.045], [0, 4.68, 2.65], amberRim);
+  box('calibrated sill amber edge datum', [13.8, 0.035, 0.045], [0, 0.94, 6.0], amberRim);
 }
+
 
 function buildBroadProductionBayBackplates() {
   const hull = mat(0x162238, { roughness: 0.46, metalness: 0.66 });
@@ -807,6 +779,39 @@ function buildCommandProcessCore() {
   box('command process core left operator wing', [1.3, 0.22, 0.62], [-1.9, 0.18, 0.15], dark, group);
   box('command process core right operator wing', [1.3, 0.22, 0.62], [1.9, 0.18, 0.15], dark, group);
 }
+function buildDominantAssemblyShaft() {
+  const hull = mat(0x172238, { roughness: 0.44, metalness: 0.68 });
+  const dark = mat(0x02050c, { roughness: 0.92, metalness: 0.08 });
+  const steel = mat(COLORS.brushedSteel, { roughness: 0.34, metalness: 0.76 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.2, transparent: true, opacity: 0.15 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.18, transparent: true, opacity: 0.14 });
+
+  // A single large production object gives the overview a factory subject without adding prop spam.
+  box('dominant assembly shaft rear vertical core', [3.2, 3.35, 0.62], [0, 2.74, -5.82], hull);
+  box('dominant assembly shaft black central throat', [1.28, 2.55, 0.18], [0, 2.72, -5.42], dark);
+  box('dominant assembly shaft cyan inspection spine', [0.22, 2.22, 0.055], [0, 2.72, -5.22], cyan);
+  box('dominant assembly shaft overhead capture yoke', [6.8, 0.42, 0.72], [0, 4.08, -5.62], steel);
+  box('dominant assembly shaft lower receiving hopper', [5.6, 0.52, 1.15], [0, 1.22, -5.45], dark);
+  box('dominant assembly shaft front production lip', [4.8, 0.16, 0.18], [0, 1.62, -4.78], amber);
+
+  box('dominant assembly shaft left heavy clamp shoulder', [1.16, 0.92, 0.86], [-3.34, 2.85, -5.28], hull);
+  box('dominant assembly shaft right heavy clamp shoulder', [1.16, 0.92, 0.86], [3.34, 2.85, -5.28], hull);
+  const leftClamp = box('dominant assembly shaft left broad clamp jaw', [2.2, 0.24, 0.42], [-1.92, 2.8, -5.04], steel);
+  leftClamp.rotation.z = -0.16;
+  const rightClamp = box('dominant assembly shaft right broad clamp jaw', [2.2, 0.24, 0.42], [1.92, 2.8, -5.04], steel);
+  rightClamp.rotation.z = 0.16;
+
+  box('dominant assembly shaft left rear support tower', [0.42, 2.65, 0.42], [-4.82, 2.58, -6.02], dark);
+  box('dominant assembly shaft right rear support tower', [0.42, 2.65, 0.42], [4.82, 2.58, -6.02], dark);
+  box('dominant assembly shaft left amber status slab', [0.055, 1.72, 0.045], [-4.48, 2.68, -5.66], amber);
+  box('dominant assembly shaft right cyan status slab', [0.055, 1.72, 0.045], [4.48, 2.68, -5.66], cyan);
+
+  box('dominant assembly shaft foreground conveyor throat', [2.8, 0.18, 3.6], [0, 1.28, -2.78], hull);
+  box('dominant assembly shaft conveyor black slot', [1.2, 0.08, 3.0], [0, 1.42, -2.68], dark);
+  box('dominant assembly shaft conveyor cyan edge left', [0.06, 0.04, 2.6], [-0.78, 1.52, -2.68], cyan);
+  box('dominant assembly shaft conveyor cyan edge right', [0.06, 0.04, 2.6], [0.78, 1.52, -2.68], cyan);
+}
+
 
 function buildRailingsAndCatwalks() {
   const railMat = mat(COLORS.brushedSteel, { roughness: 0.32, metalness: 0.76 });

@@ -243,13 +243,21 @@
       "status": "shipped",
       "type": "direction correction prune/composition/performance pass",
       "notes": "Continued Michael correction: removed the active rock-cave accent pass, replaced remaining circular torus accents in the ceiling and room pads with rectangular production datums, removed the unused animation callback array, added broad engineered frame locks and bay backplates so station districts read as large production walls, and kept asteroid/comet as outer border only. Mesh constructor count dropped to 11 and loop markers remained zero. Browser screenshot capture remained policy-blocked and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "corrective calibrated proscenium and assembly shaft pass",
+      "durationMs": 360000,
+      "status": "shipped",
+      "type": "direction correction prune/composition/performance pass",
+      "notes": "Continued Michael correction: consolidated three overlapping asteroid border passes into one calibrated proscenium, removed small glints/lamps/strata clutter from those border systems, added one dominant assembly shaft with broad clamp/core/hopper/conveyor forms, and preserved the asteroid as a 15\u201325% edge frame while the interior production facility owns the subject. Mesh constructor count stayed at 11 and loop markers at zero. Browser screenshot capture remained policy-blocked and is documented."
     }
   ],
   "stats": {
-    "count": 30,
+    "count": 31,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 234333,
+    "avgMs": 238387,
     "subagents": {
       "count": 3,
       "minMs": 47000,
