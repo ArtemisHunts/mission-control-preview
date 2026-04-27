@@ -26,8 +26,8 @@ const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
     body: 'A full spatial read of Mission Control: central holo-table, room clusters, visible operators, signal lanes, and deploy traffic.',
-    camera: [0, 27.6, 74.8],
-    target: [0, 2.55, -4.35],
+    camera: [0, 22.6, 59.5],
+    target: [0, 2.05, -4.15],
     accent: COLORS.cyan
   },
   command: {
@@ -111,9 +111,9 @@ container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
-scene.fog = new THREE.Fog(COLORS.bg, 42, 218);
+scene.fog = new THREE.Fog(COLORS.bg, 28, 146);
 
-const camera = new THREE.PerspectiveCamera(69, window.innerWidth / window.innerHeight, 0.1, 320);
+const camera = new THREE.PerspectiveCamera(64, window.innerWidth / window.innerHeight, 0.1, 220);
 camera.position.set(...ROOMS.overview.camera);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -146,8 +146,8 @@ const clickTarget = new THREE.Vector3();
 const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
-const fixedCameraOffset = new THREE.Vector3(0, 25.05, 78.85);
-const facilityBounds = { minX: -16.4, maxX: 16.4, minZ: -15.6, maxZ: 4.8 };
+const fixedCameraOffset = new THREE.Vector3(0, 20.55, 63.65);
+const facilityBounds = { minX: -14.8, maxX: 14.8, minZ: -13.6, maxZ: 4.4 };
 
 function mat(color, options = {}) {
   return new THREE.MeshStandardMaterial({
@@ -222,25 +222,10 @@ function buildOffice() {
   buildAsteroidRim();
   buildForegroundCutawayFrame();
   buildVerticalSliceContainer();
-  buildMacroCutawayFrame();
-  buildExteriorObservationShell();
-  buildMineMouthOuterAperture();
-  buildApertureDepthOcclusionMasks();
-  buildVerticalSliceSurveyMarks();
-  buildCutawayThicknessDatumStack();
-  buildRearProductionVoidExpansion();
-  buildProductionCavernParallaxScales();
-  buildCutawayScaleDatumRibs();
-  buildDeepSideCavernVoids();
-  buildRearHorizonScaleMarkers();
-  buildForegroundApertureScaleShadow();
-  buildDistrictSilhouetteLightWells();
-  buildOverviewAtmosphericGradient();
+  buildInteriorFacilityDominance();
   buildRearCavernDepthGate();
   buildMacroFacilityDepthMarkers();
   buildWideOverviewLightingScaffold();
-  buildWideReadabilityRimStack();
-  buildMacroRevealLighting();
   buildAsteroidField();
   buildExteriorVista();
   buildDistantFacilityDepth();
@@ -1679,6 +1664,99 @@ function buildOverviewAtmosphericGradient() {
     shade.rotation.x = -Math.PI / 2;
     shade.rotation.z = -0.04 + i * 0.025;
     root.add(shade);
+  });
+}
+
+
+function buildInteriorFacilityDominance() {
+  const deck = mat(0x101827, { roughness: 0.52, metalness: 0.5 });
+  const deckDark = mat(0x070c16, { roughness: 0.68, metalness: 0.38 });
+  const hull = mat(0x172235, { roughness: 0.46, metalness: 0.68 });
+  const wall = mat(0x0d1524, { roughness: 0.62, metalness: 0.32 });
+  const shadow = mat(0x000106, { roughness: 1.0, metalness: 0.0 });
+  const glass = mat(0x061426, { roughness: 0.16, metalness: 0.22, transparent: true, opacity: 0.38, emissive: 0x08213a, emissiveIntensity: 0.1 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.28, transparent: true, opacity: 0.18 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.24, transparent: true, opacity: 0.16 });
+  const gold = mat(COLORS.gold, { emissive: COLORS.gold, emissiveIntensity: 0.22, transparent: true, opacity: 0.15 });
+  const coral = mat(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: 0.2, transparent: true, opacity: 0.14 });
+  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.2, transparent: true, opacity: 0.14 });
+  const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.2, transparent: true, opacity: 0.14 });
+
+  // Corrective composition pass: big facility forms own the screen; asteroid remains a border/proscenium.
+  box('corrective dominant production floor plate', [28.5, 0.16, 18.8], [0, 0.09, -2.5], deck);
+  box('corrective central command pit shadow mass', [8.8, 0.18, 6.4], [0, 0.2, 0.4], shadow);
+  box('corrective command floor raised ring slab', [11.2, 0.14, 7.6], [0, 0.34, 0.15], deckDark);
+  box('corrective rear production wall broad pressure hull', [27.4, 5.4, 0.32], [0, 2.86, -12.6], wall);
+  box('corrective rear observation glass band', [22.4, 2.1, 0.08], [0, 3.1, -12.35], glass);
+  box('corrective upper interior truss header', [26.8, 0.28, 0.42], [0, 5.35, -7.6], hull);
+  box('corrective lower mechanical horizon shelf', [25.8, 0.18, 0.74], [0, 1.1, -10.9], deckDark);
+
+  const bayFrames = [
+    ['build', -12.75, 1.78, -0.25, 6.4, 3.2, gold],
+    ['review', 12.75, 1.78, -0.45, 6.4, 3.2, coral],
+    ['observatory', -12.85, 1.92, -10.65, 6.2, 3.35, violet],
+    ['deploy', 12.85, 1.92, -10.65, 6.2, 3.35, green]
+  ];
+
+  bayFrames.forEach(([label, x, y, z, width, height, accent]) => {
+    const group = new THREE.Group();
+    group.name = `corrective ${label} broad interior production bay`;
+    group.position.set(x, 0, z);
+    root.add(group);
+
+    box('corrective bay back wall mass', [width, height, 0.28], [0, y, -1.05], wall, group);
+    box('corrective bay dark internal volume', [width * 0.78, height * 0.64, 0.16], [0, y + 0.02, -0.86], shadow, group);
+    box('corrective bay top pressure beam', [width * 0.96, 0.14, 0.22], [0, y + height * 0.52, -0.68], hull, group);
+    box('corrective bay lower deck apron', [width * 0.92, 0.12, 1.05], [0, 0.62, 0.08], deckDark, group);
+    box('corrective bay vertical left jamb', [0.18, height * 0.92, 0.18], [-width * 0.52, y, -0.72], hull, group);
+    box('corrective bay vertical right jamb', [0.18, height * 0.92, 0.18], [width * 0.52, y, -0.72], hull, group);
+    box('corrective bay clean accent header line', [width * 0.76, 0.04, 0.06], [0, y + height * 0.38, -0.45], accent, group);
+    box('corrective bay broad floor identity stripe', [width * 0.7, 0.035, 0.08], [0, 0.76, 0.65], accent, group);
+  });
+
+  const deckSpines = [
+    [0, 0.72, 3.6, 24.0, amber],
+    [0, 0.74, -5.3, 24.5, cyan],
+    [-7.2, 0.76, -3.0, 14.5, gold],
+    [7.2, 0.76, -3.0, 14.5, coral]
+  ];
+
+  deckSpines.forEach(([x, y, z, length, accent], index) => {
+    const spine = box('corrective large interior deck lane spine', [length, 0.045, 0.08], [x, y, z], index < 2 ? accent : deckDark);
+    spine.rotation.y = index > 1 ? Math.PI / 2 : 0;
+  });
+
+  const rearMachines = [
+    [-9.8, 2.0, -10.8, 4.2, amber],
+    [0, 2.2, -11.0, 5.4, cyan],
+    [9.8, 2.0, -10.8, 4.2, green]
+  ];
+
+  rearMachines.forEach(([x, y, z, width, accent]) => {
+    box('corrective rear production machine silhouette block', [width, 1.4, 0.42], [x, y, z], deckDark);
+    box('corrective rear production machine glass strip', [width * 0.72, 0.22, 0.06], [x, y + 0.32, z + 0.24], glass);
+    box('corrective rear production machine status line', [width * 0.56, 0.035, 0.045], [x, y + 0.72, z + 0.28], accent);
+  });
+
+  [-13.6, 13.6].forEach((x, index) => {
+    box('corrective asteroid border slim side shadow', [0.62, 6.2, 18.0], [x, 3.0, -2.1], shadow);
+    box('corrective slim cutaway side catchlight', [0.05, 4.6, 0.06], [x * 0.985, 3.1, 4.8], index ? cyan : amber);
+  });
+  box('corrective asteroid border slim crown shadow', [28.0, 0.62, 8.6], [0, 6.22, -1.2], shadow);
+  box('corrective asteroid border slim foreground sill', [28.0, 0.36, 1.25], [0, 0.22, 7.25], shadow);
+
+  const ceilingRibs = [
+    [-10.8, 4.92, 1.6, 5.8],
+    [-5.4, 5.02, -2.2, 7.2],
+    [0, 5.12, -5.6, 8.4],
+    [5.4, 5.02, -2.2, 7.2],
+    [10.8, 4.92, 1.6, 5.8]
+  ];
+
+  ceilingRibs.forEach(([x, y, z, depth], index) => {
+    const rib = box('corrective broad interior ceiling production rib', [0.18, 0.18, depth], [x, y, z], index % 2 ? hull : deckDark);
+    rib.rotation.z = (index - 2) * 0.018;
+    box('corrective ceiling rib restrained practical strip', [0.05, 0.035, depth * 0.72], [x, y - 0.14, z + 0.12], index % 2 ? cyan : amber);
   });
 }
 

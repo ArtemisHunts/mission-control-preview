@@ -139,13 +139,21 @@
       "status": "shipped",
       "type": "outside-in composition pass",
       "notes": "Added a wide-overview legibility pass for the exterior cutaway: datum ribs around the asteroid shell, deep side cavern voids, rear horizon production scale markers, foreground parallax ledge shadows, district silhouette light wells, and atmospheric gradients so the larger aperture still keeps all four districts readable."
+    },
+    {
+      "date": "2026-04-26",
+      "label": "corrective prune and interior facility dominance pass",
+      "durationMs": 420000,
+      "status": "shipped",
+      "type": "direction correction pass",
+      "notes": "Michael correction pass: pruned runtime calls to noisy exterior/deck-ring clutter, reframed camera/fog toward the interior production facility, added broad production floor/bay/wall/ceiling architecture, preserved the asteroid as a slimmer border, and passed the new app/performance budgets. Screenshot capture remained blocked and is documented in visual review."
     }
   ],
   "stats": {
-    "count": 18,
+    "count": 19,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 162941,
+    "avgMs": 177222,
     "subagents": {
       "count": 3,
       "minMs": 47000,
