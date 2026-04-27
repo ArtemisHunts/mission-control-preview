@@ -187,13 +187,21 @@
       "status": "shipped",
       "type": "direction correction camera/interior hierarchy pass",
       "notes": "Added a production canyon hierarchy with central command spine, stepped station tiers, transverse gantries, sidewall stacked machinery, lower logistics floors, rear slit reduction, and foreground/overhead occlusion plates. Tightened camera/FOV/fog/fixed offset and replaced animated volumetric haze with static broad readability washes so the interior facility dominates while asteroid remains border/context."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "corrective aperture clamp push-in pass",
+      "durationMs": 300000,
+      "status": "shipped",
+      "type": "direction correction camera/proportion pass",
+      "notes": "Added an interior aperture clamp and fabricator spine: lower/deeper camera framing, large interior ribs and roof baffles, rear aperture masks, central production trench, broad station tiers, gantry bridges, cheek plates, and frame locks to force the asteroid into a narrow contextual slit and make the production facility dominate without adding prop spam."
     }
   ],
   "stats": {
-    "count": 24,
+    "count": 25,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 196087,
+    "avgMs": 200417,
     "subagents": {
       "count": 3,
       "minMs": 47000,

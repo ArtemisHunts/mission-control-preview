@@ -26,8 +26,8 @@ const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
     body: 'A full spatial read of Mission Control: central holo-table, room clusters, visible operators, signal lanes, and deploy traffic.',
-    camera: [0, 14.9, 44.6],
-    target: [0, 1.62, -3.1],
+    camera: [0, 13.2, 41.4],
+    target: [0, 1.48, -2.6],
     accent: COLORS.cyan
   },
   command: {
@@ -113,7 +113,7 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
 scene.fog = new THREE.Fog(COLORS.bg, 22, 118);
 
-const camera = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 190);
+const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 180);
 camera.position.set(...ROOMS.overview.camera);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -146,7 +146,7 @@ const clickTarget = new THREE.Vector3();
 const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
-const fixedCameraOffset = new THREE.Vector3(0, 13.4, 48.2);
+const fixedCameraOffset = new THREE.Vector3(0, 12.2, 45.2);
 const facilityBounds = { minX: -14.8, maxX: 14.8, minZ: -13.6, maxZ: 4.4 };
 
 function mat(color, options = {}) {
@@ -227,6 +227,7 @@ function buildOffice() {
   buildInteriorCommandGalleryCompression();
   buildSealedProductionMegashell();
   buildInteriorProductionCanyonHierarchy();
+  buildInteriorApertureClampAndFabricatorSpine();
   buildRearCavernDepthGate();
   buildMacroFacilityDepthMarkers();
   buildWideOverviewLightingScaffold();
@@ -832,6 +833,117 @@ function buildInteriorProductionCanyonHierarchy() {
   box('production canyon rear upper amber production datum', [10.4, 0.035, 0.045], [0, 4.62, -7.4], amber);
   box('production canyon left asteroid-border cover plate', [2.4, 0.2, 0.48], [-12.2, 4.82, 1.4], hull);
   box('production canyon right asteroid-border cover plate', [2.4, 0.2, 0.48], [12.2, 4.82, 1.4], hull);
+}
+
+
+function buildInteriorApertureClampAndFabricatorSpine() {
+  const hull = mat(0x121d30, { roughness: 0.5, metalness: 0.66 });
+  const pressure = mat(0x1a2941, { roughness: 0.42, metalness: 0.72 });
+  const darkHull = mat(0x050a13, { roughness: 0.72, metalness: 0.36 });
+  const shadow = mat(0x000207, { roughness: 1.0, metalness: 0.0 });
+  const glass = mat(0x06182a, { roughness: 0.12, metalness: 0.26, transparent: true, opacity: 0.22, emissive: 0x071f36, emissiveIntensity: 0.08 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.18, transparent: true, opacity: 0.14 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.18, transparent: true, opacity: 0.14 });
+  const coral = mat(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: 0.14, transparent: true, opacity: 0.12 });
+  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.14, transparent: true, opacity: 0.12 });
+
+  // Aperture clamp: large interior ribs and baffles physically crop the exterior to a rear slit.
+  box('aperture clamp left massive inner rib foreground', [1.55, 4.8, 3.4], [-9.55, 2.9, 3.62], pressure);
+  box('aperture clamp right massive inner rib foreground', [1.55, 4.8, 3.4], [9.55, 2.9, 3.62], pressure);
+  box('aperture clamp left massive inner rib mid', [1.25, 5.2, 4.6], [-10.15, 3.08, -2.1], hull);
+  box('aperture clamp right massive inner rib mid', [1.25, 5.2, 4.6], [10.15, 3.08, -2.1], hull);
+  box('aperture clamp overhead interior proscenium baffle', [19.8, 0.82, 4.2], [0, 4.9, 2.08], darkHull);
+  box('aperture clamp rear upper shutter lip', [16.2, 0.72, 1.5], [0, 4.34, -8.7], pressure);
+  box('aperture clamp rear lower shutter lip', [16.6, 0.42, 1.2], [0, 2.35, -8.62], darkHull);
+  box('aperture clamp rear remaining asteroid slit void', [6.6, 0.32, 0.055], [0, 3.34, -9.04], shadow);
+  box('aperture clamp rear armored slit glass', [7.1, 0.42, 0.045], [0, 3.34, -8.96], glass);
+  box('aperture clamp rear slit cyan edge', [6.8, 0.035, 0.04], [0, 3.58, -8.9], cyan);
+
+  const innerRibs = [
+    [-7.8, 2.8, 1.3, 4.2, amber],
+    [-7.8, 3.16, -4.2, 5.1, cyan],
+    [7.8, 2.8, 1.3, 4.2, cyan],
+    [7.8, 3.16, -4.2, 5.1, amber]
+  ];
+
+  innerRibs.forEach(([x, y, z, depth, light], index) => {
+    const rib = box('aperture clamp side interior compression rib', [0.52, 3.8, depth], [x, y, z], index % 2 ? hull : pressure);
+    rib.rotation.z = x < 0 ? 0.045 : -0.045;
+    box('aperture clamp side rib black reveal', [0.12, 2.7, depth * 0.72], [x * 0.982, y, z], shadow);
+    box('aperture clamp side rib restrained light seam', [0.04, 2.0, 0.045], [x * 0.94, y + 0.1, z + depth * 0.18], light);
+  });
+
+  // One central fabricator spine replaces any temptation to add prop fields.
+  box('fabricator spine dominant central machine trench', [2.4, 0.26, 13.6], [0, 0.74, -2.0], shadow);
+  box('fabricator spine raised armored left shoulder', [2.8, 0.38, 10.8], [-2.6, 0.96, -2.2], darkHull);
+  box('fabricator spine raised armored right shoulder', [2.8, 0.38, 10.8], [2.6, 0.96, -2.2], darkHull);
+  box('fabricator spine cyan conveyor core', [0.32, 0.055, 11.2], [0, 1.16, -2.28], cyan);
+  box('fabricator spine amber cross datum front', [7.8, 0.04, 0.05], [0, 1.22, 2.72], amber);
+  box('fabricator spine amber cross datum rear', [7.0, 0.04, 0.05], [0, 1.22, -6.55], amber);
+  box('fabricator spine command table foundation lock', [5.6, 0.28, 2.2], [0, 1.08, 0.88], pressure);
+  box('fabricator spine command table dark undercut', [4.5, 0.24, 1.1], [0, 1.26, 0.26], shadow);
+
+  const sidePlatforms = [
+    ['build', -6.55, 1.18, 0.82, 4.4, amber],
+    ['review', 6.55, 1.18, 0.82, 4.4, coral],
+    ['observatory', -6.25, 1.68, -6.25, 4.1, cyan],
+    ['deploy', 6.25, 1.68, -6.25, 4.1, green]
+  ];
+
+  sidePlatforms.forEach(([name, x, y, z, width, light], index) => {
+    box(`aperture clamp ${name} station broad interior tier`, [width, 0.28, 1.0], [x, y, z], hull);
+    box(`aperture clamp ${name} station shadow pocket`, [width * 0.78, 0.56, 0.1], [x, y + 0.34, z - 0.58], shadow);
+    box(`aperture clamp ${name} station identity datum`, [width * 0.62, 0.04, 0.04], [x, y + 0.62, z + 0.52], light);
+    box(`aperture clamp ${name} station load pier`, [0.18, 1.05, 0.2], [x + (index % 2 ? -width * 0.42 : width * 0.42), y + 0.58, z], pressure);
+  });
+
+  const overheadBridge = [
+    [0, 3.42, 2.2, 13.8, amber],
+    [0, 3.72, -2.7, 15.6, cyan],
+    [0, 4.02, -6.75, 12.4, amber]
+  ];
+
+  overheadBridge.forEach(([x, y, z, width, light], index) => {
+    box('aperture clamp overhead gantry bridge slab', [width, 0.2, 0.54], [x, y, z], index % 2 ? hull : pressure);
+    box('aperture clamp overhead gantry underside shadow', [width * 0.8, 0.1, 0.12], [x, y - 0.2, z + 0.16], shadow);
+    box('aperture clamp overhead gantry clean light rail', [width * 0.66, 0.035, 0.04], [x, y + 0.14, z + 0.3], light);
+  });
+
+  const clampCheeks = [
+    [-8.4, 1.44, 4.72, 3.2, amber],
+    [8.4, 1.44, 4.72, 3.2, cyan],
+    [-8.7, 2.82, -8.12, 3.6, cyan],
+    [8.7, 2.82, -8.12, 3.6, amber]
+  ];
+
+  clampCheeks.forEach(([x, y, z, width, light], index) => {
+    box('aperture clamp broad interior cheek plate', [width, 0.42, 0.54], [x, y, z], index < 2 ? pressure : hull);
+    box('aperture clamp cheek black compression reveal', [width * 0.72, 0.16, 0.1], [x, y + 0.28, z - 0.3], shadow);
+    box('aperture clamp cheek structural light datum', [width * 0.6, 0.035, 0.04], [x, y + 0.52, z + 0.28], light);
+  });
+
+  const roofClamp = [
+    [-5.9, 4.5, 1.92, 4.8, cyan],
+    [0, 4.72, -1.6, 5.6, amber],
+    [5.9, 4.5, 1.92, 4.8, cyan]
+  ];
+
+  roofClamp.forEach(([x, y, z, depth, light], index) => {
+    box('aperture clamp roof machinery raft', [3.6, 0.34, depth], [x, y, z], darkHull);
+    box('aperture clamp roof underside black slot', [2.8, 0.1, depth * 0.58], [x, y - 0.24, z + 0.18], shadow);
+    box('aperture clamp roof restrained guide line', [2.3, 0.035, 0.04], [x, y - 0.42, z + depth * 0.38], light);
+  });
+
+  box('aperture clamp foreground floor lip left', [6.2, 0.34, 1.0], [-6.2, 0.82, 5.32], darkHull);
+  box('aperture clamp foreground floor lip right', [6.2, 0.34, 1.0], [6.2, 0.82, 5.32], darkHull);
+  box('aperture clamp foreground center channel reveal', [4.2, 0.18, 0.42], [0, 0.98, 5.06], shadow);
+  box('aperture clamp foreground center cyan guide', [3.6, 0.035, 0.04], [0, 1.12, 4.82], cyan);
+  box('aperture clamp rear final aperture mask left', [3.2, 1.1, 0.32], [-6.7, 3.28, -8.72], pressure);
+  box('aperture clamp rear final aperture mask right', [3.2, 1.1, 0.32], [6.7, 3.28, -8.72], pressure);
+  box('aperture clamp left lower frame lock', [1.4, 0.62, 1.1], [-10.6, 1.02, 2.1], darkHull);
+  box('aperture clamp right lower frame lock', [1.4, 0.62, 1.1], [10.6, 1.02, 2.1], darkHull);
+  box('aperture clamp left upper frame lock', [1.2, 0.5, 1.3], [-10.9, 4.42, -1.8], hull);
+  box('aperture clamp right upper frame lock', [1.2, 0.5, 1.3], [10.9, 4.42, -1.8], hull);
 }
 
 function buildRearCavernDepthGate() {
