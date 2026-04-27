@@ -163,13 +163,21 @@
       "status": "shipped",
       "type": "direction correction composition/performance pass",
       "notes": "Added a dominant enclosed interior production shell stack with broad wall slabs, top bulkhead, rear machinery wall, pressure ribs, catwalks, lower decks, systems chases, and command nucleus massing. Nudged camera/framing toward the interior, lowered pixel ratio/shadow cost, and simplified the exterior asteroid field into a few quiet window glints so the asteroid stays a border/proscenium."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "corrective command gallery compression pass",
+      "durationMs": 180000,
+      "status": "shipped",
+      "type": "direction correction composition/performance pass",
+      "notes": "Added large foreground command gallery, side containment walls, rear pressure-door mass, overhead crossbeams, and bounded rear window forms so the interior production hall owns more of the frame. Replaced exterior planet/ship/shuttle language with interior plant depth, removed service/maintenance drone and signal-orb function bodies/calls, and lowered pixel ratio cap to protect FPS."
     }
   ],
   "stats": {
-    "count": 21,
+    "count": 22,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 189500,
+    "avgMs": 189048,
     "subagents": {
       "count": 3,
       "minMs": 47000,
