@@ -147,13 +147,21 @@
       "status": "shipped",
       "type": "outside-in composition pass",
       "notes": "Benchmarked against world-architecture and materials/avatar moodboards, then added engineered pressure-gasket shell framing, wide command hierarchy read lines, four district exterior read frames, cold exterior vista scale layers, tiny shell scale silhouettes, and cinematic shell contrast lighting. Local screenshot capture was blocked and recorded honestly in the visual review."
+    },
+    {
+      "date": "2026-04-26",
+      "label": "exterior station network and lower cutaway pass",
+      "durationMs": 360000,
+      "status": "shipped",
+      "type": "outside-in composition pass",
+      "notes": "Benchmarked against world-architecture and materials/avatar moodboards, then added exterior station infrastructure, lower mechanical cutaway levels, segmented viewport blast shutters, docked craft silhouettes, massive hull load ribs, exterior network signal arcs, and a command-primary lighting hierarchy. Screenshot capture remained blocked and is documented in the visual review."
     }
   ],
   "stats": {
-    "count": 19,
+    "count": 20,
     "minMs": 90000,
     "maxMs": 420000,
-    "avgMs": 177222,
+    "avgMs": 186842,
     "subagents": {
       "count": 3,
       "minMs": 47000,
