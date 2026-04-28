@@ -457,6 +457,44 @@ function buildRockSwallowedFacilityDetails() {
   });
 }
 
+function buildBrutalMassDepthPass() {
+  const brutal = new THREE.Group();
+  brutal.name = 'concept-c brutal mass and carved depth pass';
+  root.add(brutal);
+
+  const verticalIntrusions = [
+    ['left-center collapsed roof spine interrupts horizontal shell', -2.7, 3.62, 3.38, 0.82, 2.34, 1.05, -9, MATS.rockOuter],
+    ['left-center lighter cut face on roof spine', -2.25, 3.28, 3.78, 0.42, 1.85, 0.5, 7, MATS.rockCut],
+    ['right-center diagonal roof tongue destroys clam shell rhythm', 2.25, 3.05, 3.24, 0.92, 2.65, 1.1, 18, MATS.rockOuter],
+    ['black undercut behind right-center roof tongue', 2.72, 2.36, 3.42, 0.62, 1.72, 0.24, 18, MATS.shadow],
+    ['lower-left jagged rock thrust upward through deck line', -4.8, 0.62, 3.36, 1.55, 1.18, 1.08, 12, MATS.rockOuter],
+    ['lower-center broken black void separating sill islands', -0.35, 0.42, 3.42, 2.05, 1.05, 0.92, -4, MATS.shadow],
+    ['right-side recessed thin cap pushed back into darkness', 7.85, 3.42, 1.12, 1.2, 1.3, 0.48, 4, MATS.shadow]
+  ];
+  verticalIntrusions.forEach(([name, x, y, z, sx, sy, sz, rot, material]) => {
+    const chunk = box(`concept-c ${name}`, [sx, sy, sz], [x, y, z], material, brutal);
+    chunk.rotation.z = THREE.MathUtils.degToRad(rot);
+  });
+
+  const swallowedArchitecture = [
+    ['rock bite covering left fabrication roof edge', -6.3, 2.72, 0.32, 2.3, 0.34, 0.52, -6, MATS.rockCut],
+    ['black occlusion behind swallowed left fabrication roof', -6.45, 2.5, 0.08, 2.7, 0.12, 0.1, 0, MATS.shadow],
+    ['rock clamp interrupting central rear bridge', -1.9, 1.28, -4.84, 0.58, 1.25, 0.34, 6, MATS.rockOuter],
+    ['buried right bay side column behind rock', 7.54, 1.62, 0.52, 0.48, 1.64, 0.52, -5, MATS.rockCut]
+  ];
+  swallowedArchitecture.forEach(([name, x, y, z, sx, sy, sz, rot, material]) => {
+    const chunk = box(`concept-c ${name}`, [sx, sy, sz], [x, y, z], material, brutal);
+    chunk.rotation.z = THREE.MathUtils.degToRad(rot);
+  });
+
+  box('concept-c deep rear cavern void behind central command shaft', [6.0, 2.6, 0.12], [0.25, 1.58, -3.92], MATS.shadow, brutal);
+  box('concept-c black vertical shaft face visible behind command core', [2.9, 1.55, 0.08], [0.15, 0.86, -1.96], MATS.shadow, brutal);
+  box('concept-c narrow cyan depth lights descending rear shaft A', [0.08, 0.45, 0.035], [-1.9, 1.1, -3.78], MATS.cyanDim, brutal);
+  box('concept-c narrow amber depth lights descending rear shaft B', [0.08, 0.62, 0.035], [1.65, 0.82, -3.76], MATS.amber, brutal);
+  box('concept-c heavy foreground black chasm under broken lower sill', [7.8, 0.62, 0.3], [-2.4, -0.18, 3.82], MATS.shadow, brutal);
+  box('concept-c diagonal black chasm slice cutting flat lower deck line', [4.2, 0.42, 0.22], [1.0, 0.42, 3.12], MATS.shadow, brutal).rotation.z = THREE.MathUtils.degToRad(-8);
+}
+
 function buildCommandPit() {
   cylinder('concept-c raised upper deck lip around sunken command well', 3.7, 3.85, 0.16, 56, [0, 0.98, 0.02], MATS.steel);
   cylinder('concept-c vertical dark wall of sunken command well', 3.02, 3.18, 0.62, 56, [0, 0.72, 0.02], MATS.blackMetal);
@@ -549,6 +587,7 @@ function buildScene() {
   buildHeroProductionBay();
   buildAsymmetricRockBites();
   buildRockSwallowedFacilityDetails();
+  buildBrutalMassDepthPass();
   buildCommandPit();
   buildScaleAndAtmosphere();
   updateReadout();
