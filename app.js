@@ -298,6 +298,7 @@ function buildOffice() {
   buildNorthStarOperationsHub();
   buildReadabilityHotfixLighting();
   buildVerifiedUpperBandSidePlatformReadability();
+  buildVerifiedRearHangarDepthSeparation();
   buildRooms();
   buildStationWorkspaceIdentityKits();
   buildCommandHoloTableHero();
@@ -971,6 +972,51 @@ function buildVerifiedUpperBandSidePlatformReadability() {
       box(`verified ${side} platform console pinlight ${index + 1}`, [0.34, 0.035, 0.04], [x - sign * 1.08, 1.18, z], index % 2 ? secondary : primary);
     });
   });
+}
+
+function buildVerifiedRearHangarDepthSeparation() {
+  const farGlass = mat(0x071a2d, { emissive: 0x0b3552, emissiveIntensity: 0.2, transparent: true, opacity: 0.3, roughness: 0.18, metalness: 0.12 });
+  const deepHaze = mat(0x5fb9ff, { emissive: 0x2b86c7, emissiveIntensity: 0.22, transparent: true, opacity: 0.16, roughness: 0.04 });
+  const frame = mat(0x506078, { roughness: 0.34, metalness: 0.84 });
+  const darkBay = mat(0x030711, { roughness: 0.9, metalness: 0.12 });
+  const ship = mat(0x101827, { roughness: 0.52, metalness: 0.62 });
+  const cargo = mat(0x1e2a3f, { roughness: 0.56, metalness: 0.46 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.42, transparent: true, opacity: 0.24, roughness: 0.12 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.4, transparent: true, opacity: 0.22, roughness: 0.08 });
+  const dimBlue = mat(0x77bfff, { emissive: 0x3a8dff, emissiveIntensity: 0.18, transparent: true, opacity: 0.12, roughness: 0.12 });
+
+  // Verification pass: separate foreground command pit, mid catwalk, and deep rear hangar volume.
+  box('verified rear hangar far recessed blue glass volume', [13.4, 1.72, 0.055], [0, 3.06, -11.34], farGlass);
+  box('verified rear hangar deep atmospheric haze layer', [12.2, 0.86, 0.045], [0, 2.94, -11.18], deepHaze);
+  box('verified rear hangar far back wall shadow', [11.6, 0.42, 0.05], [0, 2.52, -11.1], darkBay);
+  box('verified rear hangar upper aperture cold rim', [14.4, 0.11, 0.08], [0, 3.86, -10.92], frame);
+  box('verified rear hangar lower aperture cold rim', [14.4, 0.1, 0.08], [0, 2.08, -10.92], frame);
+  box('verified rear hangar left depth jamb', [0.12, 1.76, 0.08], [-7.24, 2.96, -10.9], frame);
+  box('verified rear hangar right depth jamb', [0.12, 1.76, 0.08], [7.24, 2.96, -10.9], frame);
+  box('verified rear hangar mid occlusion catwalk shadow', [12.6, 0.16, 0.06], [0, 2.34, -9.78], darkBay);
+
+  const runwayStrips = [
+    [-5.6, 2.35, -10.72, -8],
+    [-2.75, 2.3, -10.64, -3],
+    [2.75, 2.3, -10.64, 3],
+    [5.6, 2.35, -10.72, 8]
+  ];
+  runwayStrips.forEach(([x, y, z, yaw], index) => {
+    const strip = box(`verified rear hangar receding runway strip ${index + 1}`, [2.2, 0.035, 0.04], [x, y, z], index % 2 ? amber : cyan);
+    strip.rotation.z = THREE.MathUtils.degToRad(yaw);
+  });
+
+  const craftBody = box('verified rear hangar parked utility craft body', [2.45, 0.34, 0.07], [-2.35, 3.1, -10.62], ship);
+  craftBody.rotation.z = THREE.MathUtils.degToRad(-2);
+  box('verified rear hangar utility craft cyan rim', [1.45, 0.035, 0.04], [-3.05, 3.34, -10.57], cyan);
+  box('verified rear hangar utility craft nose block', [0.46, 0.2, 0.055], [-0.98, 3.08, -10.56], ship);
+  box('verified rear hangar left cargo pod silhouette', [0.92, 0.44, 0.06], [2.22, 2.74, -10.58], cargo);
+  box('verified rear hangar right cargo pod silhouette', [0.76, 0.36, 0.06], [3.4, 2.84, -10.56], cargo);
+  box('verified rear hangar overhead docking rail left', [4.2, 0.065, 0.045], [-4.2, 3.58, -10.5], dimBlue);
+  box('verified rear hangar overhead docking rail right', [4.2, 0.065, 0.045], [4.2, 3.58, -10.5], dimBlue);
+  box('verified rear hangar tiny amber maintenance crew left', [0.14, 0.08, 0.04], [-5.9, 2.58, -10.46], amber);
+  box('verified rear hangar tiny cyan maintenance crew right', [0.14, 0.08, 0.04], [5.85, 2.62, -10.46], cyan);
+  box('verified rear hangar center docking beacon scale cue', [0.22, 0.045, 0.04], [0, 2.58, -10.44], amber);
 }
 
 

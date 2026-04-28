@@ -419,13 +419,21 @@
       "status": "shipped",
       "type": "verification-first playtest-fix/composition-lighting pass",
       "notes": "Verified deployed Pages loaded latest app.js?v=verified-clear-sightline-20260427 and recent runtime markers, captured deployed screenshot, then added bounded upper-band service dividers/inset practicals plus secondary side platform lips, catwalk edges, supports, and console pinlights. Captured local post-change screenshot before commit; visual assessment said the pass is honestly closer with no critical regression."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "verified rear hangar depth separation pass",
+      "durationMs": 690000,
+      "status": "shipped",
+      "type": "verification-first playtest-fix/composition-lighting pass",
+      "notes": "Verified deployed Pages loaded latest app.js?v=verified-upper-band-platforms-20260427 and recent runtime markers, captured deployed screenshot, then added a bounded rear hangar depth kit: recessed blue glass volume, haze, aperture rims, mid occlusion catwalk, receding runway strips, parked utility craft/cargo silhouettes, docking rails, and tiny maintenance lights. Captured local post-change screenshot before commit; visual assessment said the pass is honestly closer with no critical regression."
     }
   ],
   "stats": {
-    "count": 52,
+    "count": 53,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 350962,
+    "avgMs": 357358,
     "subagents": {
       "count": 3,
       "minMs": 47000,
