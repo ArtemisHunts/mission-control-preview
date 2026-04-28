@@ -292,6 +292,7 @@ function buildOffice() {
   buildShell();
   buildCeilingAndBulkheads();
   buildOverheadRibPracticalArchitecture();
+  buildVerifiedCeilingOculusHubFrame();
   buildCalibratedAsteroidProscenium();
   buildTargetCutawayMissionControl();
   buildRearHangarWindowScaleContext();
@@ -439,6 +440,48 @@ function buildOverheadRibPracticalArchitecture() {
   box('overhead oculus aft cyan slit', [5.2, 0.035, 0.045], [0, 4.02, -1.98], cyan);
 }
 
+
+
+function buildVerifiedCeilingOculusHubFrame() {
+  const graphite = mat(0x0b111d, { roughness: 0.58, metalness: 0.62 });
+  const steel = mat(0x344056, { roughness: 0.38, metalness: 0.78 });
+  const shadow = mat(0x02050c, { roughness: 0.95, metalness: 0.08 });
+  const warm = mat(0xffbd73, { emissive: COLORS.amber, emissiveIntensity: 0.48, transparent: true, opacity: 0.3, roughness: 0.1 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.36, transparent: true, opacity: 0.22, roughness: 0.08 });
+
+  // Keep the center open: this is a ceiling frame around the holo-table, not a hanging prop over it.
+  const ringOuter = torus('verified ceiling oculus hub frame high perimeter armored ring', 5.6, 0.052, 8, 96, [0, 4.68, -0.16], graphite);
+  ringOuter.rotation.x = Math.PI / 2;
+  const ringInner = torus('verified ceiling oculus hub frame thin cyan command datum ring', 4.72, 0.018, 8, 96, [0, 4.46, -0.16], cyan);
+  ringInner.rotation.x = Math.PI / 2;
+  const amberOuter = torus('verified ceiling oculus hub frame thin warm perimeter practical ring', 6.06, 0.018, 8, 96, [0, 4.42, -0.16], warm);
+  amberOuter.rotation.x = Math.PI / 2;
+
+  const ribs = [
+    ['left forward rake', -4.85, 2.18, -28, 5.5, warm],
+    ['right forward rake', 4.85, 2.18, 28, 5.5, warm],
+    ['left mid command rake', -5.55, -0.15, -12, 5.9, cyan],
+    ['right mid command rake', 5.55, -0.15, 12, 5.9, cyan],
+    ['left rear rake', -4.95, -2.75, 24, 5.2, warm],
+    ['right rear rake', 4.95, -2.75, -24, 5.2, warm]
+  ];
+  ribs.forEach(([name, x, z, yaw, length, lightMat], index) => {
+    const rib = box(`verified ceiling oculus hub frame ${name} open-center heavy rib`, [0.2, 0.22, length], [x, 4.42, z], index % 2 ? steel : graphite);
+    rib.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const slot = box(`verified ceiling oculus hub frame ${name} underside practical`, [0.046, 0.032, length - 0.9], [x, 4.16, z + 0.04], lightMat);
+    slot.rotation.y = rib.rotation.y;
+    const cut = box(`verified ceiling oculus hub frame ${name} dark service trough`, [0.082, 0.088, length - 0.5], [x + (x < 0 ? -0.16 : 0.16), 4.24, z - 0.06], shadow);
+    cut.rotation.y = rib.rotation.y;
+  });
+
+  box('verified ceiling oculus hub frame left dark canopy plate', [4.95, 0.13, 2.05], [-6.05, 4.56, 0.08], graphite);
+  box('verified ceiling oculus hub frame right dark canopy plate', [4.95, 0.13, 2.05], [6.05, 4.56, 0.08], graphite);
+  box('verified ceiling oculus hub frame rear warm hangar header emphasis', [9.2, 0.065, 0.052], [0, 4.06, -4.08], warm);
+  box('verified ceiling oculus hub frame forward cool open sightline strip', [6.4, 0.052, 0.046], [0, 4.04, 3.46], cyan);
+  addLight('point', COLORS.amber, 0.95, [-5.1, 4.2, 0.1], 6.2);
+  addLight('point', COLORS.amber, 0.95, [5.1, 4.2, 0.1], 6.2);
+  addLight('point', COLORS.cyan, 0.72, [0, 4.1, 2.4], 5.4);
+}
 
 function buildCalibratedAsteroidProscenium() {
   const outerRock = mat(0x100d14, { roughness: 0.98, metalness: 0.01 });

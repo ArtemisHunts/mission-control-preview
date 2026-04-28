@@ -571,13 +571,21 @@
       "status": "shipped",
       "type": "verification-first playtest-fix/composition-asset-pipeline-lighting pass",
       "notes": "Verified deployed Pages loaded app.js?v=verified-side-operator-bay-readability-20260428 with side-operator, bay-wall-rim, and modular-bay-wall runtime markers and live app.js SHA matching the repo, captured deployed proof via direct CDP screenshot, then added role-specific side bay blockouts: left fabrication gantry/robot arm, clamp/nozzle, half-built module/workpiece, right deploy cradle, cargo pod, guide rails, launch/ready strips, and restrained amber/green task lights. First visual pass was slight, so added bolder visible fabrication mast/clamp/workpiece and deploy backplate/rails/pod nose. Final assessment: only marginally closer but honest, with preserved holo-table hierarchy and no major clutter regression."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "verified ceiling oculus hub frame pass",
+      "durationMs": 900000,
+      "status": "shipped",
+      "type": "verification-first composition/lighting/asset-pipeline/playtest-fix pass",
+      "notes": "Credibility-gated loop: repo was clean, lock acquired, deployed Pages was proven before edits with app.js?v=verified-side-bay-role-props-20260428, live app.js SHA matched repo, and recent runtime markers were present. Browser screenshot tool timed out, so direct CDP Page.captureScreenshot captured deployed proof before edits. Added an open-center overhead oculus/rib frame with thin cyan/warm practical rings, side/raked ceiling ribs, dark canopy plates, and restrained overhead task lights to make the command hub feel more enclosed and north-star-like without stacking more side props. First variant competed with the holo-table, so revised to a higher/wider open-center frame and recaptured proof. Final visual assessment: honestly but marginally closer; container/shell improved, no major clutter regression, rear asteroid/window context remains the biggest gap."
     }
   ],
   "stats": {
-    "count": 71,
+    "count": 72,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 430423,
+    "avgMs": 436944,
     "subagents": {
       "count": 3,
       "minMs": 47000,
