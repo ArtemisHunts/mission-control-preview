@@ -427,13 +427,21 @@
       "status": "shipped",
       "type": "verification-first playtest-fix/composition-lighting pass",
       "notes": "Verified deployed Pages loaded latest app.js?v=verified-upper-band-platforms-20260427 and recent runtime markers, captured deployed screenshot, then added a bounded rear hangar depth kit: recessed blue glass volume, haze, aperture rims, mid occlusion catwalk, receding runway strips, parked utility craft/cargo silhouettes, docking rails, and tiny maintenance lights. Captured local post-change screenshot before commit; visual assessment said the pass is honestly closer with no critical regression."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "verified operator workstation activity pass",
+      "durationMs": 720000,
+      "status": "shipped",
+      "type": "verification-first playtest-fix/composition-asset-pipeline pass",
+      "notes": "Verified deployed Pages loaded latest app.js?v=verified-rear-hangar-depth-20260428 and recent runtime markers, captured deployed screenshot, then added bounded operator/workstation activity: extra crew silhouettes, active monitor slabs, status scanlines, task chips, cable runs, and small task carts. Captured local post-change screenshot before commit; visual assessment said it is modestly closer with no critical regression, though operators still need more legible staffing/readability later."
     }
   ],
   "stats": {
-    "count": 53,
+    "count": 54,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 357358,
+    "avgMs": 364074,
     "subagents": {
       "count": 3,
       "minMs": 47000,

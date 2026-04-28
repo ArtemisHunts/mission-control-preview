@@ -306,6 +306,7 @@ function buildOffice() {
   buildCommandPitMaterialContrast();
   buildRailingsAndCatwalks();
   buildCommandCrewInteractionSilhouettes();
+  buildVerifiedOperatorWorkstationActivity();
   buildOperators();
   applyVerifiedOverviewOcclusionRelief();
   configureOverviewClearSightlinePrune();
@@ -1219,6 +1220,72 @@ function buildCommandCrewInteractionSilhouettes() {
 
     operators.push({ group, baseY: y, index: index + 20, agent: { name } });
   });
+}
+
+function buildVerifiedOperatorWorkstationActivity() {
+  const suit = mat(0x252d3a, { roughness: 0.52, metalness: 0.28 });
+  const shadow = mat(0x050913, { roughness: 0.86, metalness: 0.16 });
+  const chairMat = mat(0x111827, { roughness: 0.58, metalness: 0.34 });
+  const cableMat = mat(0x05070d, { roughness: 0.9, metalness: 0.08 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.5, transparent: true, opacity: 0.3, roughness: 0.1 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.48, transparent: true, opacity: 0.28, roughness: 0.12 });
+  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.36, transparent: true, opacity: 0.22, roughness: 0.12 });
+  const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.34, transparent: true, opacity: 0.2, roughness: 0.12 });
+  const coral = mat(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: 0.34, transparent: true, opacity: 0.2, roughness: 0.12 });
+  const glass = mat(0x071526, { emissive: 0x0c314f, emissiveIntensity: 0.2, transparent: true, opacity: 0.34, roughness: 0.16, metalness: 0.2 });
+
+  const makeCrew = (name, x, z, yaw, scale, accent, pose = 'standing') => {
+    const group = new THREE.Group();
+    group.name = name;
+    group.position.set(x, 0.68, z);
+    group.rotation.y = THREE.MathUtils.degToRad(yaw);
+    root.add(group);
+    const bodyHeight = pose === 'seated' ? 0.48 : 0.68;
+    cylinder(`${name} torso`, 0.13 * scale, 0.17 * scale, bodyHeight * scale, 8, [0, bodyHeight * scale * 0.35, 0], suit, group);
+    sphere(`${name} helmet`, 0.14 * scale, 10, [0, bodyHeight * scale * 0.82, 0.02 * scale], suit, group);
+    box(`${name} visor glow`, [0.18 * scale, 0.04 * scale, 0.035 * scale], [0, bodyHeight * scale * 0.82, 0.14 * scale], accent, group);
+    box(`${name} work gesture arm left`, [0.34 * scale, 0.04 * scale, 0.04 * scale], [-0.18 * scale, bodyHeight * scale * 0.42, 0.16 * scale], accent, group);
+    box(`${name} work gesture arm right`, [0.34 * scale, 0.04 * scale, 0.04 * scale], [0.18 * scale, bodyHeight * scale * 0.39, 0.16 * scale], accent, group);
+    if (pose === 'seated') box(`${name} compact chair back`, [0.42 * scale, 0.48 * scale, 0.08 * scale], [0, 0.12 * scale, -0.2 * scale], chairMat, group);
+    operators.push({ group, baseY: 0.68, index: operators.length + 40, agent: { name } });
+  };
+
+  const activityStations = [
+    ['front table telemetry pair left', -0.95, 2.92, -12, 0.58, cyan, 'seated'],
+    ['front table telemetry pair right', 0.95, 2.92, 12, 0.58, amber, 'seated'],
+    ['build floor standing supervisor', -7.0, 0.92, -58, 0.5, amber, 'standing'],
+    ['review chamber seated analyst', 7.0, 0.82, 58, 0.48, coral, 'seated'],
+    ['observatory signal operator', -7.15, -5.55, -124, 0.46, violet, 'standing'],
+    ['deploy dock headset runner', 7.18, -5.48, 124, 0.46, green, 'standing']
+  ];
+  activityStations.forEach(([name, x, z, yaw, scale, accent, pose]) => makeCrew(name, x, z, yaw, scale, accent, pose));
+
+  [
+    ['front table active mission screen', 0, 3.18, cyan],
+    ['left ring active diagnostics screen', -3.12, 1.16, amber],
+    ['right ring active diagnostics screen', 3.12, 1.16, cyan],
+    ['build floor local monitor row', -7.2, 1.72, amber],
+    ['review floor local monitor row', 7.2, 1.72, coral],
+    ['observatory local monitor row', -7.25, -4.82, violet],
+    ['deploy dock local monitor row', 7.25, -4.82, green]
+  ].forEach(([name, x, z, accent], index) => {
+    box(`${name} glass slab`, [0.78, 0.36, 0.045], [x, 1.52, z], glass);
+    box(`${name} status scanline`, [0.58, 0.035, 0.04], [x, 1.68, z + 0.035], accent);
+    box(`${name} lower task chip`, [0.42, 0.03, 0.04], [x + (index % 2 ? 0.22 : -0.22), 1.38, z + 0.04], accent);
+  });
+
+  const cableRuns = [
+    ['left table cable run', -1.72, 1.9, 22],
+    ['right table cable run', 1.72, 1.9, -22],
+    ['build floor cart cable run', -7.6, 0.0, -8],
+    ['deploy dock cart cable run', 7.6, -4.2, 8]
+  ];
+  cableRuns.forEach(([name, x, z, yaw]) => {
+    const cable = box(name, [1.4, 0.025, 0.04], [x, 0.64, z], cableMat);
+    cable.rotation.y = THREE.MathUtils.degToRad(yaw);
+  });
+  box('build floor small rolling task cart', [0.48, 0.28, 0.34], [-8.18, 0.76, 0.12], shadow);
+  box('deploy dock small rolling task cart', [0.48, 0.28, 0.34], [8.18, 0.76, -4.52], shadow);
 }
 
 
