@@ -563,13 +563,21 @@
       "status": "shipped",
       "type": "verification-first playtest-fix/composition-asset-pipeline-lighting pass",
       "notes": "Verified deployed Pages loaded app.js?v=verified-bay-wall-rim-readability-20260428 with bay-wall-rim, modular-bay-wall, and rear-atrium runtime markers and live app.js SHA matching the repo, captured deployed proof via direct CDP screenshot, then added fewer/larger side operator bay modules with broad console islands, inward monitor faces, chair blocks, readable operator torso/helmet/visor silhouettes, shoulder rims, and restrained warm/cool workpool lights. Initial screenshot pass was not meaningfully closer, so modules were moved inward/enlarged and screen/rim intensity increased. Final visual assessment said honestly closer with improved staffed side-bay readability while preserving central holo-table and rear bay hierarchy."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "verified side bay role props pass",
+      "durationMs": 720000,
+      "status": "shipped",
+      "type": "verification-first playtest-fix/composition-asset-pipeline-lighting pass",
+      "notes": "Verified deployed Pages loaded app.js?v=verified-side-operator-bay-readability-20260428 with side-operator, bay-wall-rim, and modular-bay-wall runtime markers and live app.js SHA matching the repo, captured deployed proof via direct CDP screenshot, then added role-specific side bay blockouts: left fabrication gantry/robot arm, clamp/nozzle, half-built module/workpiece, right deploy cradle, cargo pod, guide rails, launch/ready strips, and restrained amber/green task lights. First visual pass was slight, so added bolder visible fabrication mast/clamp/workpiece and deploy backplate/rails/pod nose. Final assessment: only marginally closer but honest, with preserved holo-table hierarchy and no major clutter regression."
     }
   ],
   "stats": {
-    "count": 70,
+    "count": 71,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 426286,
+    "avgMs": 430423,
     "subagents": {
       "count": 3,
       "minMs": 47000,

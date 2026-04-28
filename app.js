@@ -313,6 +313,7 @@ function buildOffice() {
   buildRooms();
   buildStationWorkspaceIdentityKits();
   buildVerifiedSideOperatorBayReadability();
+  buildVerifiedSideBayRoleProps();
   buildVerifiedOuterBayActivityReadability();
   buildCommandHoloTableHero();
   buildVerifiedHoloGlobeCommandScale();
@@ -801,6 +802,53 @@ function buildVerifiedSideOperatorBayReadability() {
   box('verified side operator bay readability right cool workpool floor edge', [3.5, 0.035, 0.045], [6.55, 0.34, 3.72], cyanScreen);
   addLight('point', COLORS.amber, 1.55, [-6.55, 2.1, 3.25], 5.4);
   addLight('point', COLORS.cyan, 1.55, [6.55, 2.1, 3.25], 5.4);
+}
+
+
+function buildVerifiedSideBayRoleProps() {
+  const armMat = mat(0x273044, { roughness: 0.38, metalness: 0.82 });
+  const darkJoint = mat(0x070b13, { roughness: 0.68, metalness: 0.42 });
+  const amberWork = mat(0xffbd66, { emissive: COLORS.amber, emissiveIntensity: 0.52, transparent: true, opacity: 0.38, roughness: 0.1 });
+  const cyanWork = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.42, transparent: true, opacity: 0.3, roughness: 0.08 });
+  const greenWork = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.42, transparent: true, opacity: 0.3, roughness: 0.1 });
+  const cargoMat = mat(0x151e2d, { roughness: 0.5, metalness: 0.58 });
+
+  // Left bay: fabrication/assembly identity, one large readable robot-arm silhouette.
+  box('verified side bay role props left fabrication overhead gantry beam', [3.6, 0.16, 0.18], [-6.7, 2.28, 3.78], armMat);
+  const upperArm = box('verified side bay role props left fabrication angled robot upper arm', [0.22, 0.18, 1.55], [-7.05, 1.82, 3.12], armMat);
+  upperArm.rotation.x = THREE.MathUtils.degToRad(-26);
+  upperArm.rotation.y = THREE.MathUtils.degToRad(-10);
+  const lowerArm = box('verified side bay role props left fabrication angled robot lower arm', [0.18, 0.16, 1.18], [-6.48, 1.38, 2.62], armMat);
+  lowerArm.rotation.x = THREE.MathUtils.degToRad(34);
+  lowerArm.rotation.y = THREE.MathUtils.degToRad(16);
+  cylinder('verified side bay role props left fabrication shoulder joint', 0.18, 0.18, 0.16, 16, [-7.42, 1.96, 3.42], darkJoint).rotation.z = Math.PI / 2;
+  cylinder('verified side bay role props left fabrication elbow joint', 0.14, 0.14, 0.14, 14, [-6.72, 1.52, 2.86], darkJoint).rotation.z = Math.PI / 2;
+  box('verified side bay role props left fabrication clamp nozzle', [0.42, 0.16, 0.16], [-6.05, 1.2, 2.22], amberWork);
+  box('verified side bay role props left half-built module under arm', [1.22, 0.38, 0.68], [-6.35, 0.82, 2.12], cargoMat);
+  box('verified side bay role props left fabrication cyan scan line', [1.42, 0.045, 0.04], [-6.35, 1.14, 2.06], cyanWork);
+  box('verified side bay role props left fabrication amber spark pool', [0.46, 0.045, 0.04], [-5.78, 1.08, 2.08], amberWork);
+
+  // Right bay: deploy/logistics identity, one large outbound cradle/pod silhouette.
+  box('verified side bay role props right deploy cradle base', [2.9, 0.22, 1.14], [6.85, 0.74, 2.45], cargoMat);
+  box('verified side bay role props right deploy left guide rail', [0.12, 0.18, 2.42], [5.76, 0.96, 2.05], armMat);
+  box('verified side bay role props right deploy right guide rail', [0.12, 0.18, 2.42], [7.94, 0.96, 2.05], armMat);
+  const pod = box('verified side bay role props right deploy cargo pod in cradle', [1.42, 0.58, 0.74], [6.85, 1.16, 2.26], cargoMat);
+  pod.rotation.z = THREE.MathUtils.degToRad(-2);
+  box('verified side bay role props right deploy pod cyan status window', [0.72, 0.08, 0.045], [6.85, 1.28, 1.86], cyanWork);
+  box('verified side bay role props right deploy green ready strip', [2.22, 0.05, 0.045], [6.85, 1.02, 1.22], greenWork);
+  box('verified side bay role props right deploy rear launch rail glow', [2.8, 0.04, 0.04], [6.85, 0.78, 0.72], greenWork);
+  box('verified side bay role props right deploy amber hazard beacon', [0.32, 0.08, 0.04], [5.56, 1.34, 2.68], amberWork);
+  // Bolder readable overlays: one unmistakable fabrication arm, one unmistakable outbound cradle.
+  const visibleArm = box('verified side bay role props readable left fabrication vertical robot mast', [0.26, 1.42, 0.2], [-5.42, 1.66, 2.62], armMat);
+  visibleArm.rotation.z = THREE.MathUtils.degToRad(-12);
+  const visibleClaw = box('verified side bay role props readable left fabrication open clamp silhouette', [0.82, 0.2, 0.18], [-5.08, 1.05, 2.1], amberWork);
+  visibleClaw.rotation.z = THREE.MathUtils.degToRad(-8);
+  box('verified side bay role props readable left fabrication workpiece bright top', [1.44, 0.08, 0.56], [-5.74, 0.92, 1.92], cyanWork);
+  box('verified side bay role props readable right deploy outbound cradle tall backplate', [1.72, 0.92, 0.18], [5.36, 1.28, 2.02], cargoMat);
+  box('verified side bay role props readable right deploy twin green launch rails', [2.72, 0.08, 0.08], [5.68, 1.05, 1.35], greenWork);
+  box('verified side bay role props readable right deploy pod bright nose', [0.76, 0.22, 0.08], [5.28, 1.42, 1.78], cyanWork);
+  addLight('point', COLORS.amber, 1.2, [-5.4, 1.65, 2.2], 3.8);
+  addLight('point', COLORS.green, 1.15, [5.55, 1.65, 1.9], 3.8);
 }
 
 function buildVerifiedOuterBayActivityReadability() {
