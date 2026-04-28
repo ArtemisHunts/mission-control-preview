@@ -152,6 +152,22 @@ const cameraOffsets = {
   observatory: new THREE.Vector3(0, 9.4, 27.6)
 };
 const facilityBounds = { minX: -10.6, maxX: 10.6, minZ: -8.2, maxZ: 3.6 };
+const overviewClearSightlineHidden = [
+  'dominance front full-width gantry',
+  'dominance center full-width gantry',
+  'dominance rear full-width gantry',
+  'dominance front gantry amber underside',
+  'dominance center gantry cyan underside',
+  'dominance rear gantry amber underside',
+  'dominance front command apron block',
+  'rear production apron'
+];
+const overviewClearSightlineFaded = [
+  'calibrated asteroid lower sill proscenium',
+  'calibrated foreground sill interior shadow reveal',
+  'dominance lower command sill',
+  'inserted architecture rear command shadow undercut'
+];
 
 function getCameraOffsetForMode() {
   const base = cameraOffsets[state.mode] ?? cameraOffsets.overview;
@@ -290,6 +306,7 @@ function buildOffice() {
   buildCommandCrewInteractionSilhouettes();
   buildOperators();
   applyVerifiedOverviewOcclusionRelief();
+  configureOverviewClearSightlinePrune();
 
   const title = makeTextSprite('MISSION CONTROL', '#f8fbff', 86);
   title.position.set(0, 3.92, -6.52);
@@ -637,6 +654,34 @@ function applyVerifiedOverviewOcclusionRelief() {
     if (!mesh) return;
     mesh.scale.y *= 0.72;
     mesh.position.y -= 0.12;
+  });
+}
+
+function configureOverviewClearSightlinePrune() {
+  [...overviewClearSightlineHidden, ...overviewClearSightlineFaded].forEach((name) => {
+    const mesh = root.getObjectByName(name);
+    if (!mesh) return;
+    mesh.userData.overviewBaseVisible = mesh.visible;
+    if (mesh.material) {
+      mesh.material = mesh.material.clone();
+      mesh.material.transparent = true;
+      mesh.userData.overviewBaseOpacity = mesh.material.opacity ?? 1;
+    }
+  });
+}
+
+function updateOverviewClearSightline() {
+  const clearOverview = state.mode === 'overview';
+  overviewClearSightlineHidden.forEach((name) => {
+    const mesh = root.getObjectByName(name);
+    if (!mesh) return;
+    mesh.visible = clearOverview ? false : mesh.userData.overviewBaseVisible !== false;
+  });
+  overviewClearSightlineFaded.forEach((name) => {
+    const mesh = root.getObjectByName(name);
+    if (!mesh?.material) return;
+    mesh.visible = mesh.userData.overviewBaseVisible !== false;
+    mesh.material.opacity = clearOverview ? 0.12 : mesh.userData.overviewBaseOpacity;
   });
 }
 
@@ -1213,6 +1258,7 @@ function animate() {
     operator.group.position.y = operator.baseY + Math.sin(t * 1.7 + operator.index) * 0.035;
     operator.group.rotation.y += Math.sin(t * 0.3 + operator.index) * 0.0008;
   });
+  updateOverviewClearSightline();
   const offset = getCameraOffsetForMode();
   const desiredTarget = getCameraTargetForMode();
   const desiredCamera = new THREE.Vector3(desiredTarget.x + offset.x, offset.y, desiredTarget.z + offset.z);

@@ -403,13 +403,21 @@
       "status": "shipped",
       "type": "verification-first playtest-fix/composition pass",
       "notes": "Verified deployed Pages loaded latest app.js?v=verified-overview-framing-20260427 and recent runtime markers, captured deployed screenshot, then reduced named ceiling/foreground/sill occluders and tightened overview framing. Captured local post-change screenshot before commit; visual assessment said it is a legitimate closer pass though upper/mid bands still need further pruning."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "verified clear sightline prune pass",
+      "durationMs": 780000,
+      "status": "shipped",
+      "type": "verification-first playtest-fix/composition pass",
+      "notes": "Verified deployed Pages loaded latest app.js?v=verified-occlusion-relief-20260427 and recent runtime markers, captured deployed screenshot, then added overview clear-sightline handling to hide named gantry/apron occluders and fade sill/shadow occluders only in overview. Captured local post-change screenshot before commit; visual assessment said central holo-table sightline improved enough to count as closer, with upper band/exposure still needing follow-up."
     }
   ],
   "stats": {
-    "count": 50,
+    "count": 51,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 335000,
+    "avgMs": 343725,
     "subagents": {
       "count": 3,
       "minMs": 47000,
