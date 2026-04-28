@@ -319,6 +319,7 @@ function buildOffice() {
   buildVerifiedOuterBayActivityReadability();
   buildCommandHoloTableHero();
   buildVerifiedHoloGlobeCommandScale();
+  buildVerifiedSunkenCommandArena();
   buildVerifiedReadableWorkstationSilhouettes();
   buildVerifiedCenterValueSeparation();
   buildCommandPitLightingHierarchy();
@@ -1098,6 +1099,59 @@ function buildVerifiedHoloGlobeCommandScale() {
   addLight('point', COLORS.cyan, 5.6, [0, 2.75, 0.38], 8.8);
 }
 
+
+
+function buildVerifiedSunkenCommandArena() {
+  const pitShadow = mat(0x01040b, { roughness: 0.92, metalness: 0.08, transparent: true, opacity: 0.86 });
+  const graphite = mat(0x101827, { roughness: 0.5, metalness: 0.68 });
+  const steel = mat(0x364256, { roughness: 0.36, metalness: 0.78 });
+  const blackGlass = mat(0x030813, { roughness: 0.18, metalness: 0.34, transparent: true, opacity: 0.78, emissive: 0x041522, emissiveIntensity: 0.08 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.52, transparent: true, opacity: 0.3, roughness: 0.08 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.42, transparent: true, opacity: 0.26, roughness: 0.12 });
+  const suit = mat(0x9aa6b8, { roughness: 0.46, metalness: 0.38, emissive: 0x132033, emissiveIntensity: 0.08 });
+
+  // North-star correction: the holo-table sits inside a readable sunken arena, not on a flat stage.
+  cylinder('verified sunken command arena broad dark recessed pit floor', 4.95, 4.95, 0.055, 72, [0, 0.11, 0.38], pitShadow);
+  const outerWall = torus('verified sunken command arena thick outer vertical pit lip', 4.95, 0.08, 8, 96, [0, 0.34, 0.38], graphite);
+  outerWall.rotation.x = Math.PI / 2;
+  const walkway = torus('verified sunken command arena wide outer operations walkway ring', 4.35, 0.07, 8, 96, [0, 0.48, 0.38], steel);
+  walkway.rotation.x = Math.PI / 2;
+  const cyanRing = torus('verified sunken command arena cyan inner tactical rim', 3.55, 0.032, 8, 96, [0, 0.62, 0.38], cyan);
+  cyanRing.rotation.x = Math.PI / 2;
+  const amberRing = torus('verified sunken command arena warm outer safety rim', 5.28, 0.024, 8, 96, [0, 0.56, 0.38], amber);
+  amberRing.rotation.x = Math.PI / 2;
+
+  const cuts = [
+    ['front access bridge', 0, 4.92, 0, 1.05, 2.1, cyan],
+    ['rear access bridge', 0, -4.2, 0, 0.9, 1.75, amber],
+    ['left service bridge', -4.7, 0.38, 90, 0.84, 1.92, amber],
+    ['right service bridge', 4.7, 0.38, 90, 0.84, 1.92, cyan]
+  ];
+  cuts.forEach(([name, x, z, yaw, width, depth, light]) => {
+    const deck = box(`verified sunken command arena ${name} dark radial access break`, [width, 0.08, depth], [x, 0.64, z], blackGlass);
+    deck.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const edge = box(`verified sunken command arena ${name} lit threshold edge`, [width * 0.86, 0.035, 0.045], [x, 0.72, z + (z > 0 ? -depth * 0.42 : depth * 0.42)], light);
+    edge.rotation.y = deck.rotation.y;
+  });
+
+  const seats = [
+    ['front left', -2.85, 3.45, -30, cyan], ['front right', 2.85, 3.45, 30, amber],
+    ['mid left', -4.28, 0.65, -72, amber], ['mid right', 4.28, 0.65, 72, cyan],
+    ['rear left', -2.75, -2.82, -145, cyan], ['rear right', 2.75, -2.82, 145, amber]
+  ];
+  seats.forEach(([name, x, z, yaw, accent]) => {
+    const console = box(`verified sunken command arena ${name} ring console block`, [0.78, 0.22, 0.42], [x, 0.9, z], blackGlass);
+    console.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const screen = box(`verified sunken command arena ${name} bright inward reader panel`, [0.58, 0.25, 0.035], [x, 1.1, z], accent);
+    screen.rotation.y = console.rotation.y;
+    const torso = box(`verified sunken command arena ${name} larger seated operator torso`, [0.18, 0.38, 0.14], [x * 0.96, 1.2, z * 0.96], suit);
+    torso.rotation.y = console.rotation.y;
+    sphere(`verified sunken command arena ${name} operator helmet`, 0.105, 10, [x * 0.96, 1.48, z * 0.96], suit);
+  });
+
+  addLight('point', COLORS.cyan, 1.4, [0, 0.9, 2.9], 5.2);
+  addLight('point', COLORS.amber, 1.15, [0, 0.82, -2.8], 5.0);
+}
 
 function buildVerifiedReadableWorkstationSilhouettes() {
   const blackGlass = mat(0x030814, { roughness: 0.14, metalness: 0.38, transparent: true, opacity: 0.84, emissive: 0x061523, emissiveIntensity: 0.08 });

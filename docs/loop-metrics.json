@@ -587,13 +587,21 @@
       "status": "shipped",
       "type": "verification-first composition/lighting/asset-pipeline/playtest-fix pass",
       "notes": "Credibility-gated loop: repo clean and locked; deployed Pages was proven before edits with app.js?v=verified-ceiling-oculus-hub-frame-20260428, live app.js SHA matched repo, and recent ceiling/side runtime markers were present. Direct CDP screenshot captured deployed proof before edits. Added a front-layer rear hangar/window context behind the command pit: wider blue glass aperture, blast frames/mullions, cropped asteroid shoulders, docked hauler silhouette, rear balcony/rails, runway lines, tiny silhouettes, stars, distant blue moon, and soft blue backlight. First placement was invisible/occluded, then moved after bay-wall passes and made brighter/closer with exterior anchors. Final visual assessment: honestly but only marginally closer; central holo-table and ceiling preserved, no clutter regression, rear vista still not materially north-star-level."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "verified sunken command arena pass",
+      "durationMs": 720000,
+      "status": "shipped",
+      "type": "verification-first composition/lighting/asset-pipeline/playtest-fix pass",
+      "notes": "Credibility-gated loop: repo clean and locked; deployed Pages was proven before edits with app.js?v=verified-rear-hangar-window-context-20260428, live app.js SHA matched repo, and recent rear-hangar/ceiling/side markers were present. New deployed CDP screenshot and headless screenshot attempts failed, so an existing active CDP current-build target with canvas and app.js?v=verified-rear-hangar-window-context-20260428 captured the pre-edit proof. Added a sunken circular command arena blockout: broad dark recessed pit floor, thick outer pit lip, wide operations walkway ring, cyan/amber tactical rim rings, radial access bridge cuts, and six larger seated operator/console silhouettes around the hub. Final visual assessment: honestly closer, mainly by improving station visibility and depth/scale while preserving table hierarchy, ceiling, and rear context."
     }
   ],
   "stats": {
-    "count": 73,
+    "count": 74,
     "minMs": 90000,
     "maxMs": 1080000,
-    "avgMs": 445753,
+    "avgMs": 449459,
     "subagents": {
       "count": 3,
       "minMs": 47000,
