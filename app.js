@@ -246,6 +246,7 @@ function buildOffice() {
 
   buildShell();
   buildCeilingAndBulkheads();
+  buildOverheadRibPracticalArchitecture();
   buildCalibratedAsteroidProscenium();
   buildTargetCutawayMissionControl();
   buildInteriorDominanceMassing();
@@ -327,6 +328,44 @@ function buildCeilingAndBulkheads() {
   box('ceiling central cyan command datum rear', [5.4, 0.035, 0.055], [0, 4.34, -1.78], cyan);
   box('ceiling central cyan command datum left', [0.055, 0.035, 4.1], [-2.72, 4.34, 0.45], cyan);
   box('ceiling central cyan command datum right', [0.055, 0.035, 4.1], [2.72, 4.34, 0.45], cyan);
+}
+
+function buildOverheadRibPracticalArchitecture() {
+  const graphite = mat(0x111827, { roughness: 0.42, metalness: 0.72 });
+  const steel = mat(0x4b566d, { roughness: 0.34, metalness: 0.82 });
+  const shadow = mat(0x030711, { roughness: 0.92, metalness: 0.12 });
+  const warm = mat(0xffbc6a, { emissive: COLORS.amber, emissiveIntensity: 0.42, transparent: true, opacity: 0.28, roughness: 0.14 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.34, transparent: true, opacity: 0.22, roughness: 0.08 });
+  const dimAmber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.2, transparent: true, opacity: 0.14, roughness: 0.18 });
+
+  const ribs = [
+    ['front left command ceiling rib', -5.6, 2.95, -34, 7.2],
+    ['front right command ceiling rib', 5.6, 2.95, 34, 7.2],
+    ['mid left command ceiling rib', -4.1, 0.25, -18, 7.8],
+    ['mid right command ceiling rib', 4.1, 0.25, 18, 7.8],
+    ['rear left command ceiling rib', -5.2, -3.18, 22, 6.8],
+    ['rear right command ceiling rib', 5.2, -3.18, -22, 6.8]
+  ];
+
+  ribs.forEach(([name, x, z, yaw, length], index) => {
+    const rib = box(name, [0.34, 0.34, length], [x, 4.36, z], index % 2 ? steel : graphite);
+    rib.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const strip = box(`${name} inset warm practical`, [0.055, 0.04, length - 1.24], [x, 4.14, z + 0.12], warm);
+    strip.rotation.y = rib.rotation.y;
+    const cheek = box(`${name} dark service shadow cheek`, [0.08, 0.18, length - 0.72], [x + (x < 0 ? -0.24 : 0.24), 4.18, z - 0.08], shadow);
+    cheek.rotation.y = rib.rotation.y;
+  });
+
+  box('overhead left longitudinal service spine', [0.42, 0.32, 12.4], [-7.92, 4.18, -1.2], graphite);
+  box('overhead right longitudinal service spine', [0.42, 0.32, 12.4], [7.92, 4.18, -1.2], graphite);
+  box('overhead left amber wall wash slot', [0.055, 0.04, 10.8], [-7.55, 4.0, -1.05], dimAmber);
+  box('overhead right amber wall wash slot', [0.055, 0.04, 10.8], [7.55, 4.0, -1.05], dimAmber);
+  box('overhead rear hangar header truss', [15.8, 0.36, 0.34], [0, 4.18, -7.88], steel);
+  box('overhead rear hangar warm underside strip', [12.8, 0.045, 0.055], [0, 3.94, -7.58], warm);
+  box('overhead command oculus forward support', [6.8, 0.24, 0.22], [0, 4.22, 2.92], graphite);
+  box('overhead command oculus aft support', [6.8, 0.24, 0.22], [0, 4.22, -2.24], graphite);
+  box('overhead oculus forward cyan slit', [5.2, 0.035, 0.045], [0, 4.02, 2.66], cyan);
+  box('overhead oculus aft cyan slit', [5.2, 0.035, 0.045], [0, 4.02, -1.98], cyan);
 }
 
 

@@ -347,13 +347,21 @@
       "status": "shipped",
       "type": "focused 30-minute composition/asset-blockout pass",
       "notes": "Added four role-specific station workspace kits around the central operations hub: navigation/traffic, security/tactical, asteroid telemetry, and logistics/hangar operations. Each kit uses broad console workbenches, local task boards, role data strips, task lamps, equipment towers, cable/circulation seams, and status indicators to make the surrounding stations read as usable workspaces rather than generic colored bays. Browser screenshot capture remained blocked by policy and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "ceiling rib practical architecture pass",
+      "durationMs": 480000,
+      "status": "shipped",
+      "type": "focused 30-minute composition/lighting/asset-blockout pass",
+      "notes": "Added broad overhead rib architecture and restrained warm/cool practical strips around the command oculus: six large command ceiling ribs with service-shadow cheeks, side longitudinal service spines, amber wall wash slots, rear hangar header truss, and cyan oculus support slits. The pass strengthens the north-star ceiling rhythm without changing camera/fog/exposure or adding exterior clutter. Browser screenshot capture remained blocked by policy and is documented."
     }
   ],
   "stats": {
-    "count": 43,
+    "count": 44,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 303023,
+    "avgMs": 307045,
     "subagents": {
       "count": 3,
       "minMs": 47000,
