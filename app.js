@@ -254,6 +254,7 @@ function buildOffice() {
   buildRooms();
   buildCommandHoloTableHero();
   buildRailingsAndCatwalks();
+  buildCommandCrewInteractionSilhouettes();
   buildOperators();
 
   const title = makeTextSprite('MISSION CONTROL', '#f8fbff', 86);
@@ -733,6 +734,59 @@ function buildRailingsAndCatwalks() {
   [[-8.4, 2.35], [8.4, 2.35], [-8.4, -6.05], [8.4, -6.05]].forEach(([x, z]) => {
     box('catwalk edge broad stop', [1.5, 0.08, 0.08], [x, 0.32, z + 0.86], railMat);
     box('catwalk edge broad stop', [1.5, 0.08, 0.08], [x, 0.32, z - 0.86], railMat);
+  });
+}
+
+function buildCommandCrewInteractionSilhouettes() {
+  const suit = mat(0x141923, { roughness: 0.58, metalness: 0.22 });
+  const visor = mat(0x06111f, { emissive: COLORS.cyan, emissiveIntensity: 0.42, transparent: true, opacity: 0.72, roughness: 0.08 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.82, transparent: true, opacity: 0.62, roughness: 0.08 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.58, transparent: true, opacity: 0.5, roughness: 0.12 });
+  const tablet = mat(0x07182a, { emissive: 0x0d5f86, emissiveIntensity: 0.42, transparent: true, opacity: 0.7, roughness: 0.12, metalness: 0.18 });
+
+  const crew = [
+    ['foreground commander silhouette', 0.0, 3.32, 1.06, 0.84, 0, 'point', cyan],
+    ['left leaning console operator', -2.35, 2.36, 1.2, 0.7, -22, 'lean', amber],
+    ['right leaning console operator', 2.35, 2.36, 1.2, 0.7, 22, 'lean', cyan],
+    ['left discussion operator', -3.18, 0.12, 1.28, 0.78, -64, 'tablet', cyan],
+    ['right discussion operator', 3.18, 0.12, 1.28, 0.78, 64, 'tablet', amber],
+    ['rear seated console operator left', -1.55, -2.42, 1.05, 0.58, -150, 'seated', cyan],
+    ['rear seated console operator right', 1.55, -2.42, 1.05, 0.58, 150, 'seated', amber]
+  ];
+
+  crew.forEach(([name, x, z, y, scale, yaw, pose, accent], index) => {
+    const group = new THREE.Group();
+    group.name = name;
+    group.position.set(x, y, z + 0.38);
+    group.rotation.y = THREE.MathUtils.degToRad(yaw);
+    root.add(group);
+
+    const body = cylinder(`${name} dark suited torso`, 0.13 * scale, 0.17 * scale, 0.62 * scale, 8, [0, 0.08, 0], suit, group);
+    body.rotation.z = pose === 'lean' ? (x < 0 ? -0.18 : 0.18) : 0;
+    const head = sphere(`${name} helmet silhouette`, 0.17 * scale, 10, [0, 0.48 * scale, 0], suit, group);
+    head.scale.y = 1.08;
+    box(`${name} cyan visor slit`, [0.2 * scale, 0.052 * scale, 0.035 * scale], [0, 0.5 * scale, 0.14 * scale], visor, group);
+    box(`${name} role chest glow`, [0.18 * scale, 0.035 * scale, 0.025 * scale], [0, 0.16 * scale, 0.14 * scale], accent, group);
+    box(`${name} boot stance shadow`, [0.34 * scale, 0.05 * scale, 0.16 * scale], [0, -0.28 * scale, 0.02], suit, group);
+
+    if (pose === 'point') {
+      const arm = box(`${name} pointing arm toward hologram`, [0.46 * scale, 0.045 * scale, 0.045 * scale], [-0.26 * scale, 0.28 * scale, 0.12], accent, group);
+      arm.rotation.z = -0.34;
+      const other = box(`${name} braced command arm`, [0.34 * scale, 0.045 * scale, 0.045 * scale], [0.28 * scale, 0.18 * scale, 0.11], suit, group);
+      other.rotation.z = 0.32;
+    } else if (pose === 'lean') {
+      box(`${name} left hand planted on console`, [0.38 * scale, 0.04 * scale, 0.04 * scale], [-0.18 * scale, 0.08 * scale, 0.22 * scale], accent, group);
+      box(`${name} right hand planted on console`, [0.38 * scale, 0.04 * scale, 0.04 * scale], [0.18 * scale, 0.08 * scale, 0.22 * scale], accent, group);
+      box(`${name} console interaction glow pool`, [0.52 * scale, 0.025 * scale, 0.16 * scale], [0, -0.02 * scale, 0.38 * scale], tablet, group);
+    } else if (pose === 'tablet') {
+      box(`${name} handheld tactical tablet`, [0.28 * scale, 0.2 * scale, 0.035 * scale], [0.23 * scale, 0.2 * scale, 0.2 * scale], tablet, group);
+      box(`${name} tablet support arm`, [0.32 * scale, 0.04 * scale, 0.04 * scale], [0.1 * scale, 0.18 * scale, 0.12 * scale], suit, group);
+    } else {
+      box(`${name} seated console forearms`, [0.48 * scale, 0.04 * scale, 0.04 * scale], [0, 0.02 * scale, 0.26 * scale], accent, group);
+      box(`${name} compact seat block`, [0.42 * scale, 0.18 * scale, 0.34 * scale], [0, -0.32 * scale, -0.08 * scale], suit, group);
+    }
+
+    operators.push({ group, baseY: y, index: index + 20, agent: { name } });
   });
 }
 

@@ -331,13 +331,21 @@
       "status": "shipped",
       "type": "focused 30-minute composition/lighting pass",
       "notes": "Strengthened the primary north-star hero read by upgrading the central table into a larger blue holographic command system: dominant floating mission globe, soft scan column, three orbit paths, tabletop projection rings, central emitter, blue spill pool, mission nodes, route segments, console spill edges, and a restrained cyan point light. Preserved asteroid border and existing operations-ring composition; browser screenshot capture remained blocked by policy and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "command crew interaction silhouettes pass",
+      "durationMs": 540000,
+      "status": "shipped",
+      "type": "focused 30-minute composition/asset-blockout pass",
+      "notes": "Added seven human-scale interaction silhouettes around the central command table: foreground commander pointing at the hologram, two leaning console operators with glow pools, two tablet/discussion operators, and two seated rear console operators. They use dark suits with cyan/amber visor/chest/rim accents and push animation through the existing operator update list. Preserved asteroid border and hero hologram while making the hub feel actively operated. Browser screenshot capture remained blocked by policy and is documented."
     }
   ],
   "stats": {
-    "count": 41,
+    "count": 42,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 292927,
+    "avgMs": 298810,
     "subagents": {
       "count": 3,
       "minMs": 47000,
