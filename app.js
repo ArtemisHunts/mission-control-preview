@@ -300,6 +300,7 @@ function buildOffice() {
   buildVerifiedUpperBandSidePlatformReadability();
   buildVerifiedRearHangarDepthSeparation();
   buildVerifiedFabricationDeploySeparation();
+  buildVerifiedRearServiceDeckReveal();
   buildRooms();
   buildStationWorkspaceIdentityKits();
   buildCommandHoloTableHero();
@@ -1068,6 +1069,43 @@ function buildVerifiedFabricationDeploySeparation() {
     module.rotation.y = sled.rotation.y;
     box(`verified fabrication deploy ${name} status slit`, [0.5, 0.035, 0.035], [x, y + 0.38, z + 0.22], accent);
   });
+}
+
+function buildVerifiedRearServiceDeckReveal() {
+  const coolFill = mat(0x22344d, { emissive: 0x102f52, emissiveIntensity: 0.18, transparent: true, opacity: 0.16, roughness: 0.38, metalness: 0.22 });
+  const coolRim = mat(0x8fc7ff, { emissive: 0x4aa8ff, emissiveIntensity: 0.34, transparent: true, opacity: 0.2, roughness: 0.1 });
+  const cyanSoft = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.28, transparent: true, opacity: 0.16, roughness: 0.08 });
+  const amberSoft = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.24, transparent: true, opacity: 0.14, roughness: 0.12 });
+  const ribMat = mat(0x26344a, { roughness: 0.5, metalness: 0.62 });
+  const darkModule = mat(0x0b1220, { roughness: 0.72, metalness: 0.28 });
+
+  // Reveal structure behind the command ring without competing with the central hologram.
+  box('verified rear service deck cool fill left', [5.8, 0.46, 0.045], [-5.9, 2.78, -9.44], coolFill);
+  box('verified rear service deck cool fill right', [5.8, 0.46, 0.045], [5.9, 2.78, -9.44], coolFill);
+  box('verified rear service deck bridge front seam', [12.4, 0.035, 0.04], [0, 2.42, -8.24], coolRim);
+  box('verified rear service deck mid catwalk seam', [10.6, 0.03, 0.04], [0, 2.82, -6.52], cyanSoft);
+  box('verified rear service deck far base seam', [13.2, 0.03, 0.04], [0, 2.08, -10.04], amberSoft);
+  box('verified rear service left bay floor cool lift', [3.8, 0.026, 0.035], [-7.08, 1.72, -6.8], cyanSoft);
+  box('verified rear service right bay floor cool lift', [3.8, 0.026, 0.035], [7.08, 1.72, -6.8], coolRim);
+
+  [-6.2, -3.1, 0, 3.1, 6.2].forEach((x, index) => {
+    box(`verified rear service vertical shaft rib ${index + 1}`, [0.12, 1.34, 0.055], [x, 3.02, -9.62], ribMat);
+    box(`verified rear service shaft rib cool edge ${index + 1}`, [0.035, 1.04, 0.035], [x + 0.12, 3.0, -9.56], index % 2 ? cyanSoft : coolRim);
+  });
+
+  const modules = [
+    ['left fabrication stacked module silhouette', -5.05, 2.36, -8.92, 0.96, 0.5, amberSoft],
+    ['center rear gantry module silhouette', 0, 2.5, -9.18, 1.36, 0.42, cyanSoft],
+    ['right deploy stacked module silhouette', 5.05, 2.36, -8.92, 0.96, 0.5, coolRim],
+    ['upper left crane carriage silhouette', -3.65, 3.46, -9.08, 1.28, 0.22, amberSoft],
+    ['upper right crane carriage silhouette', 3.65, 3.46, -9.08, 1.28, 0.22, cyanSoft]
+  ];
+  modules.forEach(([name, x, y, z, width, height, rim]) => {
+    box(`verified rear service ${name}`, [width, height, 0.06], [x, y, z], darkModule);
+    box(`verified rear service ${name} top rim`, [width * 0.82, 0.03, 0.035], [x, y + height * 0.52, z + 0.04], rim);
+  });
+  box('verified rear service left gantry vertical reveal', [0.1, 0.92, 0.045], [-7.6, 2.74, -8.72], coolRim);
+  box('verified rear service right gantry vertical reveal', [0.1, 0.92, 0.045], [7.6, 2.74, -8.72], amberSoft);
 }
 
 
