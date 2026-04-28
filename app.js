@@ -307,6 +307,7 @@ function buildOffice() {
   buildVerifiedUpperRearVoidBreaks();
   buildVerifiedRearPanoramaCeilingStrips();
   buildVerifiedRearWindowShipSilhouette();
+  buildVerifiedRearOperationsAtriumDepth();
   buildRooms();
   buildStationWorkspaceIdentityKits();
   buildVerifiedOuterBayActivityReadability();
@@ -1527,6 +1528,97 @@ function buildVerifiedRearWindowShipSilhouette() {
   addLight('point', 0x75cfff, 4.0, [0, 3.32, -6.9], 9.2);
 }
 
+
+
+function buildVerifiedRearOperationsAtriumDepth() {
+  const pressureShell = mat(0x060913, { roughness: 0.88, metalness: 0.22 });
+  const armor = mat(0x101827, { roughness: 0.52, metalness: 0.62 });
+  const darkSteel = mat(0x0b101c, { roughness: 0.66, metalness: 0.48 });
+  const graphite = mat(0x1b2434, { roughness: 0.46, metalness: 0.74 });
+  const glass = mat(0x092033, { emissive: 0x0a4460, emissiveIntensity: 0.1, transparent: true, opacity: 0.34, roughness: 0.22, metalness: 0.18 });
+  const warm = mat(0xffb86b, { emissive: COLORS.amber, emissiveIntensity: 0.3, transparent: true, opacity: 0.22, roughness: 0.16 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.26, transparent: true, opacity: 0.18, roughness: 0.1 });
+  const tinySuit = mat(0xbfc7d6, { emissive: 0x315577, emissiveIntensity: 0.06, roughness: 0.48, metalness: 0.2 });
+  const droneMat = mat(0x78efff, { emissive: COLORS.cyan, emissiveIntensity: 0.38, transparent: true, opacity: 0.58, roughness: 0.12 });
+
+  // Large, low-contrast rear atrium layer: depth/scale context, not a competing focal point.
+  box('verified rear operations atrium pressure shell backplate', [18.4, 5.8, 0.18], [0, 2.98, -12.36], pressureShell);
+  box('verified rear operations atrium upper dark cavern slot', [14.8, 1.2, 0.12], [0, 4.72, -12.16], mat(0x02040a, { roughness: 1.0, metalness: 0.0 }));
+  box('verified rear operations atrium observation glass span', [11.8, 1.56, 0.08], [0, 3.28, -12.02], glass);
+  box('verified rear operations atrium lower factory shadow mouth', [12.6, 0.82, 0.12], [0, 1.54, -12.05], mat(0x03050b, { roughness: 1.0, metalness: 0.02 }));
+
+  const archFrames = [
+    ['outer left armored atrium rib', -6.72, 3.05, 3.64, -10],
+    ['outer right armored atrium rib', 6.72, 3.05, 3.64, 10],
+    ['inner left armored atrium rib', -4.72, 3.06, 3.22, -6],
+    ['inner right armored atrium rib', 4.72, 3.06, 3.22, 6]
+  ];
+  archFrames.forEach(([name, x, y, height, yaw]) => {
+    const rib = box(`verified rear operations atrium ${name}`, [0.28, height, 0.26], [x, y, -11.78], armor);
+    rib.rotation.z = THREE.MathUtils.degToRad(yaw);
+    const inset = box(`verified rear operations atrium ${name} warm inset seam`, [0.045, height - 0.72, 0.055], [x * 0.995, y, -11.55], warm);
+    inset.rotation.z = rib.rotation.z;
+  });
+
+  box('verified rear operations atrium top bridge truss', [14.2, 0.24, 0.26], [0, 4.32, -11.72], graphite);
+  box('verified rear operations atrium lower gantry tier', [13.4, 0.16, 0.42], [0, 2.38, -11.18], darkSteel);
+  box('verified rear operations atrium upper gantry tier', [10.4, 0.13, 0.36], [0, 3.72, -11.28], darkSteel);
+  box('verified rear operations atrium lower gantry amber rail', [12.0, 0.045, 0.045], [0, 2.58, -10.92], warm);
+  box('verified rear operations atrium upper gantry cyan rail', [8.8, 0.04, 0.04], [0, 3.9, -10.96], cyan);
+
+  const liftColumns = [
+    ['left lift column', -3.1], ['right lift column', 3.1], ['far left utility column', -5.55], ['far right utility column', 5.55]
+  ];
+  liftColumns.forEach(([name, x]) => {
+    box(`verified rear operations atrium ${name}`, [0.18, 3.58, 0.2], [x, 2.88, -11.02], graphite);
+    box(`verified rear operations atrium ${name} cool status slit`, [0.035, 2.62, 0.035], [x, 2.88, -10.82], cyan);
+  });
+
+  box('verified rear operations atrium suspended cargo rail left', [4.8, 0.12, 0.16], [-4.2, 4.02, -10.62], darkSteel).rotation.y = THREE.MathUtils.degToRad(-10);
+  box('verified rear operations atrium suspended cargo rail right', [4.8, 0.12, 0.16], [4.2, 4.02, -10.62], darkSteel).rotation.y = THREE.MathUtils.degToRad(10);
+  box('verified rear operations atrium tiny cargo block left', [0.54, 0.34, 0.34], [-5.55, 3.58, -10.38], armor);
+  box('verified rear operations atrium tiny cargo block right', [0.54, 0.34, 0.34], [5.55, 3.58, -10.38], armor);
+
+  const tinyOps = [
+    ['lower left distant operator', -4.7, 2.74, -10.64],
+    ['lower right distant operator', 4.7, 2.74, -10.64],
+    ['upper left distant operator', -2.25, 4.08, -10.72],
+    ['upper right distant operator', 2.25, 4.08, -10.72]
+  ];
+  tinyOps.forEach(([name, x, y, z]) => {
+    cylinder(`verified rear operations atrium ${name} helmet`, 0.055, 0.055, 0.06, 10, [x, y + 0.19, z], tinySuit);
+    box(`verified rear operations atrium ${name} body`, [0.08, 0.22, 0.045], [x, y + 0.04, z], tinySuit);
+  });
+
+  sphere('verified rear operations atrium left service drone', 0.075, 12, [-1.55, 3.36, -10.24], droneMat);
+  sphere('verified rear operations atrium right service drone', 0.065, 12, [1.72, 2.92, -10.18], droneMat);
+
+  // Visible overlay in front of the existing rear glass: big forms first, small details only for scale.
+  box('verified rear operations atrium visible outer header beam', [17.2, 0.28, 0.18], [0, 4.42, -6.72], graphite);
+  box('verified rear operations atrium visible inner header shadow bite', [12.6, 0.18, 0.16], [0, 4.12, -6.68], pressureShell);
+  box('verified rear operations atrium visible left massive lift tower', [0.34, 3.34, 0.18], [-8.16, 3.0, -6.68], armor);
+  box('verified rear operations atrium visible right massive lift tower', [0.34, 3.34, 0.18], [8.16, 3.0, -6.68], armor);
+  box('verified rear operations atrium visible left inner lift status', [0.048, 2.36, 0.042], [-7.86, 3.0, -6.56], cyan);
+  box('verified rear operations atrium visible right inner lift status', [0.048, 2.36, 0.042], [7.86, 3.0, -6.56], cyan);
+  const visibleLeftRail = box('verified rear operations atrium visible left cargo rail perspective', [5.8, 0.13, 0.12], [-4.72, 3.9, -6.52], darkSteel);
+  visibleLeftRail.rotation.z = THREE.MathUtils.degToRad(-3);
+  visibleLeftRail.rotation.y = THREE.MathUtils.degToRad(-12);
+  const visibleRightRail = box('verified rear operations atrium visible right cargo rail perspective', [5.8, 0.13, 0.12], [4.72, 3.9, -6.52], darkSteel);
+  visibleRightRail.rotation.z = THREE.MathUtils.degToRad(3);
+  visibleRightRail.rotation.y = THREE.MathUtils.degToRad(12);
+  box('verified rear operations atrium visible lower maintenance bridge', [11.6, 0.16, 0.22], [0, 2.48, -6.5], darkSteel);
+  box('verified rear operations atrium visible lower bridge amber underside', [9.8, 0.042, 0.04], [0, 2.31, -6.35], warm);
+  box('verified rear operations atrium visible upper bridge cyan datum', [8.2, 0.042, 0.04], [0, 3.64, -6.36], cyan);
+  box('verified rear operations atrium visible left service platform', [2.1, 0.12, 0.26], [-6.0, 2.86, -6.34], armor);
+  box('verified rear operations atrium visible right service platform', [2.1, 0.12, 0.26], [6.0, 2.86, -6.34], armor);
+  box('verified rear operations atrium visible center cavern reserve', [3.9, 1.12, 0.08], [0, 3.25, -6.46], mat(0x02050b, { roughness: 1.0, metalness: 0.0, transparent: true, opacity: 0.72 }));
+  box('verified rear operations atrium visible tiny operator left body', [0.08, 0.22, 0.045], [-5.82, 3.04, -6.18], tinySuit);
+  cylinder('verified rear operations atrium visible tiny operator left helmet', 0.055, 0.055, 0.06, 10, [-5.82, 3.2, -6.18], tinySuit);
+  box('verified rear operations atrium visible tiny operator right body', [0.08, 0.22, 0.045], [5.82, 3.04, -6.18], tinySuit);
+  cylinder('verified rear operations atrium visible tiny operator right helmet', 0.055, 0.055, 0.06, 10, [5.82, 3.2, -6.18], tinySuit);
+  sphere('verified rear operations atrium visible center service drone', 0.07, 12, [0.9, 3.82, -6.12], droneMat);
+  addLight('point', 0x86cfff, 1.65, [0, 3.65, -6.45], 7.4);
+}
 
 function buildRooms() {
   Object.entries(ROOMS).forEach(([id, room]) => {
