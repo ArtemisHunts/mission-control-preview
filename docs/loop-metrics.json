@@ -443,13 +443,21 @@
       "status": "shipped",
       "type": "verification-first playtest-fix/composition-asset-pipeline pass",
       "notes": "Verified deployed Pages loaded latest app.js?v=verified-operator-workstations-20260428 and recent runtime markers, captured deployed screenshot, then promoted six operators into readable central-ring human-scale anchors with larger silhouettes, visor/chest/rim highlights, contact shadows, and paired workstation panels. Captured local post-change screenshot before commit; visual assessment said the pass is closer with no critical regression, though some operators still blend into dark console geometry."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "verified operator rim separation pass",
+      "durationMs": 660000,
+      "status": "shipped",
+      "type": "verification-first playtest-fix/composition-lighting pass",
+      "notes": "Verified deployed Pages loaded latest app.js?v=verified-operator-anchors-20260428 and recent runtime markers, captured deployed screenshot, then added subtle rim/halo/contact-shadow separation cues to existing weak rear/side operators without adding new characters. Captured local post-change screenshot before commit; visual assessment said it is closer with no critical regression, while far-side operators remain somewhat subtle."
     }
   ],
   "stats": {
-    "count": 55,
+    "count": 56,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 369455,
+    "avgMs": 374643,
     "subagents": {
       "count": 3,
       "minMs": 47000,

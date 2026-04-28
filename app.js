@@ -308,6 +308,7 @@ function buildOffice() {
   buildCommandCrewInteractionSilhouettes();
   buildVerifiedOperatorWorkstationActivity();
   buildVerifiedOperatorReadabilityAnchors();
+  buildVerifiedOperatorRimSeparation();
   buildOperators();
   applyVerifiedOverviewOcclusionRelief();
   configureOverviewClearSightlinePrune();
@@ -1334,6 +1335,44 @@ function buildVerifiedOperatorReadabilityAnchors() {
     scan.rotation.y = group.rotation.y;
     operators.push({ group, baseY, index: index + 80, agent: { name } });
   });
+}
+
+function buildVerifiedOperatorRimSeparation() {
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.72, transparent: true, opacity: 0.38, roughness: 0.08 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.58, transparent: true, opacity: 0.34, roughness: 0.1 });
+  const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.42, transparent: true, opacity: 0.24, roughness: 0.12 });
+  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.42, transparent: true, opacity: 0.24, roughness: 0.12 });
+  const backing = mat(0x050812, { roughness: 0.92, metalness: 0.08, transparent: true, opacity: 0.72 });
+  const softSeat = mat(0x101724, { roughness: 0.64, metalness: 0.26 });
+
+  const rimTargets = [
+    ['rear left anchor separation', -2.28, -2.48, 1.06, -154, cyan, 0.92],
+    ['rear right anchor separation', 2.28, -2.48, 1.06, 154, amber, 0.92],
+    ['rear seated left separation', -1.55, -2.04, 1.05, -150, cyan, 0.62],
+    ['rear seated right separation', 1.55, -2.04, 1.05, 150, amber, 0.62],
+    ['observatory side operator separation', -7.15, -5.55, 0.68, -124, violet, 0.58],
+    ['deploy side operator separation', 7.18, -5.48, 0.68, 124, green, 0.58],
+    ['build side supervisor separation', -7.0, 0.92, 0.68, -58, amber, 0.62],
+    ['review side analyst separation', 7.0, 0.82, 0.68, 58, cyan, 0.58]
+  ];
+
+  rimTargets.forEach(([name, x, z, y, yaw, accent, scale], index) => {
+    const group = new THREE.Group();
+    group.name = name;
+    group.position.set(x, y, z);
+    group.rotation.y = THREE.MathUtils.degToRad(yaw);
+    root.add(group);
+    box(`${name} dark chair backing silhouette`, [0.54 * scale, 0.58 * scale, 0.055], [0, 0.08 * scale, -0.2 * scale], index < 4 ? softSeat : backing, group);
+    box(`${name} floor contact oval`, [0.64 * scale, 0.026, 0.32 * scale], [0, -0.34 * scale, 0.02], backing, group);
+    box(`${name} helmet glint`, [0.24 * scale, 0.045 * scale, 0.035], [0.02 * scale, 0.68 * scale, 0.17 * scale], accent, group);
+    box(`${name} holo-facing shoulder rim`, [0.055 * scale, 0.46 * scale, 0.035], [-0.2 * scale, 0.34 * scale, 0.14 * scale], accent, group);
+    box(`${name} console-side forearm glint`, [0.38 * scale, 0.038 * scale, 0.035], [0.2 * scale, 0.22 * scale, 0.2 * scale], accent, group);
+    if (index < 4) {
+      box(`${name} seated torso lift`, [0.3 * scale, 0.08 * scale, 0.04], [0, 0.24 * scale, 0.16 * scale], accent, group);
+    }
+  });
+  box('verified rear operator shared cyan readability datum', [2.6, 0.028, 0.035], [0, 1.34, -2.36], cyan);
+  box('verified side operator shared amber readability datum', [0.035, 0.028, 2.2], [-6.82, 1.12, -2.22], amber);
 }
 
 
