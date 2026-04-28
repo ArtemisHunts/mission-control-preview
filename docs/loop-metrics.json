@@ -547,13 +547,21 @@
       "status": "shipped",
       "type": "verification-first playtest-fix/composition-asset-pipeline-lighting pass",
       "notes": "Verified deployed Pages loaded app.js?v=verified-rear-operations-atrium-depth-20260428 with rear-atrium, center-value, and workstation runtime markers and live app.js SHA matching the repo, captured deployed proof via direct CDP screenshot, then added bolder modular rear bay-wall forms: production cell masses, central blast-door aperture, gantry bridge, lift towers, crane/transfer rails, side portal cheeks, upper truss, scale operators, and controlled cyan/amber edge lights. Local post-change screenshot captured; visual assessment said honestly closer/modestly, improving container/shell and depth/scale while preserving holo-table hierarchy."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "verified bay wall rim readability pass",
+      "durationMs": 720000,
+      "status": "shipped",
+      "type": "verification-first playtest-fix/lighting-asset-pipeline-composition pass",
+      "notes": "Verified deployed Pages loaded app.js?v=verified-modular-rear-bay-wall-20260428 with modular-bay-wall, rear-atrium, and center-value runtime markers and live app.js SHA matching the repo, captured deployed proof via direct CDP screenshot, then added selective material/rim readability to the existing rear bay-wall/gantry: cyan/amber gantry lips, portal catches, lift-tower edges, brushed metal gloss cards, central aperture glass, and a contained rear light. Local post-change screenshot captured; visual assessment said honestly closer with improved rear bay-wall readability, lighting/readability, and depth while preserving holo-table hierarchy."
     }
   ],
   "stats": {
-    "count": 68,
+    "count": 69,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 417647,
+    "avgMs": 422029,
     "subagents": {
       "count": 3,
       "minMs": 47000,

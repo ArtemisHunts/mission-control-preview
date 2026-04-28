@@ -309,6 +309,7 @@ function buildOffice() {
   buildVerifiedRearWindowShipSilhouette();
   buildVerifiedRearOperationsAtriumDepth();
   buildVerifiedModularRearBayWall();
+  buildVerifiedBayWallRimReadability();
   buildRooms();
   buildStationWorkspaceIdentityKits();
   buildVerifiedOuterBayActivityReadability();
@@ -1703,6 +1704,53 @@ function buildVerifiedModularRearBayWall() {
   box('verified modular rear bay wall wide upper truss warm underside', [12.4, 0.044, 0.04], [0, 4.42, -4.48], amber);
 
   addLight('point', 0x7ecbff, 1.55, [0, 3.55, -5.25], 6.4);
+}
+
+
+function buildVerifiedBayWallRimReadability() {
+  const cyanEdge = mat(0xa9f7ff, { emissive: COLORS.cyan, emissiveIntensity: 0.56, transparent: true, opacity: 0.38, roughness: 0.06, metalness: 0.08 });
+  const amberSlot = mat(0xffc06a, { emissive: COLORS.amber, emissiveIntensity: 0.48, transparent: true, opacity: 0.34, roughness: 0.1, metalness: 0.04 });
+  const glossCatch = mat(0x5f708b, { emissive: 0x263e58, emissiveIntensity: 0.16, transparent: true, opacity: 0.34, roughness: 0.16, metalness: 0.86 });
+  const coolGlass = mat(0x16567f, { emissive: 0x1688bd, emissiveIntensity: 0.26, transparent: true, opacity: 0.34, roughness: 0.08, metalness: 0.16 });
+  const darkMatte = mat(0x03060d, { roughness: 0.98, metalness: 0.02, transparent: true, opacity: 0.5 });
+
+  // Selective material/rim pass: reveal big rear bay-wall forms without making a neon backdrop.
+  const rimLines = [
+    ['central upper gantry cyan lip', 0, 4.48, -4.34, 8.8, cyanEdge],
+    ['central lower bridge amber lip', 0, 2.58, -4.92, 10.8, amberSlot],
+    ['left portal outer cyan catch', -6.05, 3.16, -3.86, 2.9, cyanEdge],
+    ['right portal outer amber catch', 6.05, 3.16, -3.86, 2.9, amberSlot],
+    ['left production cell cool top datum', -6.6, 4.05, -5.18, 2.82, cyanEdge],
+    ['right production cell warm top datum', 6.6, 4.05, -5.18, 2.82, amberSlot]
+  ];
+  rimLines.forEach(([name, x, y, z, width, material]) => {
+    box(`verified bay wall rim readability ${name}`, [width, 0.04, 0.038], [x, y, z], material);
+  });
+
+  const verticalCatches = [
+    ['left lift tower near cyan edge', -8.03, 3.18, -4.0, cyanEdge],
+    ['right lift tower near amber edge', 8.03, 3.18, -4.0, amberSlot],
+    ['inner left tower cool glancing edge', -3.0, 3.26, -5.12, cyanEdge],
+    ['inner right tower warm glancing edge', 3.0, 3.26, -5.12, amberSlot]
+  ];
+  verticalCatches.forEach(([name, x, y, z, material]) => {
+    box(`verified bay wall rim readability ${name}`, [0.045, 2.28, 0.038], [x, y, z], material);
+  });
+
+  const glossCards = [
+    ['left gantry brushed metal catch', -4.7, 3.9, -4.86, -8],
+    ['right gantry brushed metal catch', 4.7, 3.9, -4.86, 8],
+    ['left lower deck gloss plane', -6.9, 2.22, -3.9, 0],
+    ['right lower deck gloss plane', 6.9, 2.22, -3.9, 0]
+  ];
+  glossCards.forEach(([name, x, y, z, yaw]) => {
+    const plate = box(`verified bay wall rim readability ${name}`, [2.3, 0.06, 0.06], [x, y, z], glossCatch);
+    plate.rotation.y = THREE.MathUtils.degToRad(yaw);
+  });
+
+  box('verified bay wall rim readability central aperture glass lift', [3.1, 0.46, 0.035], [0, 3.48, -4.78], coolGlass);
+  box('verified bay wall rim readability central aperture matte reserve', [2.7, 0.7, 0.04], [0, 3.12, -4.82], darkMatte);
+  addLight('point', 0x8bdcff, 1.28, [0, 3.52, -4.7], 5.8);
 }
 
 function buildRooms() {
