@@ -40,9 +40,9 @@ Each autonomous loop should now be a **macro pass**, not a tiny tweak. Progress 
 
 Default budget:
 
-- **60–90 minutes per macro pass** instead of short micro-passes.
-- **2–4 coordinated changes** are allowed when they support one visual outcome.
-- One commit is still preferred, but the commit may span camera, lighting, shell, and depth if they are all part of the same composition goal.
+- **30 minutes per focused macro pass** by default.
+- **1–3 coordinated changes** are allowed when they support one visual outcome.
+- One commit is still preferred, but the commit may span camera, lighting, shell, and depth only when they are tightly part of the same composition goal.
 
 Macro-pass examples:
 

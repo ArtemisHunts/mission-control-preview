@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "cadenceMs": 900000,
+  "cadenceMs": 1800000,
   "policy": {
-    "targetCadenceMinutes": "15",
+    "targetCadenceMinutes": "30",
     "writeModel": "parallel read-only subagents, serialized main-integrator writes",
-    "adjustmentRule": "At 15-minute cadence, loops must ship one coherent visible improvement or report a real blocker. No placeholder progress posts."
+    "adjustmentRule": "At 30-minute cadence, each loop must start with active Game Studio pre-code application and ship one coherent visible improvement or report a real blocker. No placeholder progress posts."
   },
   "runs": [
     {

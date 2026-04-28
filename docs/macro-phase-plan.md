@@ -1,6 +1,6 @@
 # Mission Control — Autonomous Macro Phase Plan
 
-_Last updated: 2026-04-26_
+_Last updated: 2026-04-27_
 
 This file exists because the previous autonomous loop shipped too many tiny marker-level commits. Future autonomous work must complete phase-sized changes with mechanical gates.
 
@@ -49,12 +49,12 @@ If the verdict is not `closer`, the pass should not commit. Keep iterating or re
 
 Spacing is based on observed completion time, not vibes:
 
-- If macro passes finish under 15 minutes, run the next pass within ~60 minutes and raise the gate.
-- If macro passes take 30–75 minutes, keep a 90-minute cadence.
-- If macro passes approach the timeout or hit lock contention, widen cadence to 2–4 hours.
+- If focused passes finish under 10 minutes or produce barely visible deltas, keep the 30-minute cadence but raise the quality bar/gate.
+- If focused passes consistently take 20–30 minutes and ship visible progress, keep the 30-minute cadence.
+- If passes approach timeout or hit lock contention, widen cadence to 60–90 minutes until stable.
 - Do not leave multi-hour idle gaps when the last pass completed cleanly in minutes.
 
-Current setting after observing ~7 minute v3 completion: **60-minute cadence with a 450 source-line gate**.
+Current setting after Michael feedback on 2026-04-27: **30-minute cadence with active Game Studio pre-code application required**.
 
 ## Direction correction — 2026-04-26
 
