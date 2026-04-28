@@ -332,6 +332,65 @@ function buildProductionCavity() {
   });
 }
 
+function buildHeroProductionBay() {
+  const bay = new THREE.Group();
+  bay.name = 'concept-c left hero fabrication bay unmistakable production read';
+  bay.position.set(-6.55, 0, -0.15);
+  root.add(bay);
+
+  box('hero bay carved alcove shadow behind machinery', [4.9, 2.35, 0.22], [0, 2.05, -1.9], MATS.shadow, bay);
+  box('hero bay rough rock upper bite around crane', [5.3, 0.34, 0.72], [0, 3.32, -1.72], MATS.rockCut, bay).rotation.z = THREE.MathUtils.degToRad(-3);
+  box('hero bay left drilled wall anchor', [0.18, 2.4, 0.18], [-2.3, 1.82, -1.32], MATS.steel, bay);
+  box('hero bay right drilled wall anchor', [0.18, 2.0, 0.18], [2.15, 1.64, -1.32], MATS.steel, bay);
+
+  const craneRail = box('hero bay overhead crane rail across fabrication mouth', [4.5, 0.14, 0.16], [0, 2.92, -0.6], MATS.steel, bay);
+  craneRail.rotation.z = THREE.MathUtils.degToRad(-2);
+  box('hero bay orange crane trolley', [0.48, 0.34, 0.28], [-0.95, 2.72, -0.48], MATS.orange, bay);
+  box('hero bay hanging crane cable', [0.055, 0.78, 0.055], [-0.95, 2.24, -0.48], MATS.blackMetal, bay);
+  box('hero bay suspended engine module being assembled', [0.82, 0.46, 0.62], [-0.95, 1.72, -0.36], MATS.darkSteel, bay);
+  box('hero bay engine cyan core glow', [0.46, 0.07, 0.08], [-0.95, 1.78, -0.01], MATS.cyan, bay);
+
+  const belt = box('hero bay wide conveyor belt exiting rock cut', [4.35, 0.18, 0.62], [0, 0.96, 1.1], MATS.blackMetal, bay);
+  belt.rotation.y = THREE.MathUtils.degToRad(-2);
+  box('hero bay amber conveyor centerline', [3.7, 0.035, 0.05], [0, 1.08, 1.42], MATS.amber, bay);
+  [-1.6, -0.55, 0.55, 1.55].forEach((x, index) => {
+    box(`hero bay cargo block on conveyor ${index}`, [0.5, 0.34, 0.42], [x, 1.26, 1.1], index % 2 ? MATS.steel : MATS.orange, bay);
+  });
+
+  const armShoulder = box('hero bay large robotic arm shoulder', [0.34, 0.82, 0.34], [1.82, 1.7, -0.1], MATS.steel, bay);
+  armShoulder.rotation.z = THREE.MathUtils.degToRad(8);
+  const upperArm = box('hero bay large robotic arm upper link', [1.15, 0.14, 0.14], [1.28, 2.03, 0.15], MATS.amber, bay);
+  upperArm.rotation.z = THREE.MathUtils.degToRad(22);
+  const lowerArm = box('hero bay large robotic arm welding link', [0.95, 0.12, 0.12], [0.62, 1.84, 0.38], MATS.steel, bay);
+  lowerArm.rotation.z = THREE.MathUtils.degToRad(-18);
+  box('hero bay welding spark at workpiece', [0.18, 0.18, 0.18], [0.12, 1.68, 0.52], MATS.cyan, bay);
+
+  box('hero bay warm foundry glow pit under conveyor', [3.9, 0.05, 0.72], [0, 0.74, 1.1], MATS.orange, bay);
+  box('hero bay pipe disappearing into rock left', [0.08, 0.08, 2.4], [-2.42, 2.32, -2.05], MATS.amber, bay).rotation.y = THREE.MathUtils.degToRad(18);
+  box('hero bay pipe disappearing into rock right', [0.08, 0.08, 2.0], [2.28, 2.18, -2.02], MATS.cyanDim, bay).rotation.y = THREE.MathUtils.degToRad(-18);
+}
+
+function buildAsymmetricRockBites() {
+  const asym = new THREE.Group();
+  asym.name = 'concept-c asymmetric asteroid bites and embedded seams';
+  root.add(asym);
+  const chunks = [
+    ['left heavy upper bite breaks symmetry', -8.8, 4.98, 2.85, 3.1, 0.62, 2.2, -12],
+    ['left lower protruding cut mass', -9.3, 1.0, 2.95, 1.4, 0.5, 1.3, 8],
+    ['right rear recessed cave cheek', 9.15, 3.7, -1.95, 1.2, 2.2, 3.1, -6],
+    ['right lower broken sill notch', 6.2, 0.42, 3.15, 2.4, 0.28, 1.2, -4]
+  ];
+  chunks.forEach(([name, x, y, z, sx, sy, sz, rot], index) => {
+    const chunk = box(`concept-c ${name}`, [sx, sy, sz], [x, y, z], index % 2 ? MATS.rockCut : MATS.rockOuter, asym);
+    chunk.rotation.z = THREE.MathUtils.degToRad(rot);
+  });
+  ['left', 'right'].forEach((side, index) => {
+    const x = side === 'left' ? -9.95 : 9.95;
+    const seam = box(`concept-c ${side} bright rock-to-metal contact seam`, [0.055, 2.4, 0.055], [x, 2.4, 2.85], index ? MATS.cyanDim : MATS.amber, asym);
+    seam.rotation.z = THREE.MathUtils.degToRad(side === 'left' ? -5 : 5);
+  });
+}
+
 function buildCommandPit() {
   cylinder('concept-c raised upper deck lip around sunken command well', 3.7, 3.85, 0.16, 56, [0, 0.98, 0.02], MATS.steel);
   cylinder('concept-c vertical dark wall of sunken command well', 3.02, 3.18, 0.62, 56, [0, 0.72, 0.02], MATS.blackMetal);
@@ -349,6 +408,12 @@ function buildCommandPit() {
   rampB.rotation.y = THREE.MathUtils.degToRad(22);
   box('concept-c front command pit safety rail', [3.8, 0.08, 0.08], [0, 1.28, 2.65], MATS.amber);
   box('concept-c rear command pit safety rail', [3.8, 0.08, 0.08], [0, 1.28, -2.6], MATS.cyanDim);
+  [-2.2, -1.1, 1.1, 2.2].forEach((x, index) => {
+    box(`concept-c visible pit rail post front ${index}`, [0.07, 0.46, 0.07], [x, 1.05, 2.65], MATS.steel);
+    box(`concept-c visible pit rail post rear ${index}`, [0.07, 0.4, 0.07], [x, 1.02, -2.6], MATS.steel);
+  });
+  box('concept-c black occlusion slot inside pit front wall', [4.2, 0.1, 0.08], [0, 0.62, 2.18], MATS.shadow);
+  box('concept-c black occlusion slot inside pit rear wall', [4.0, 0.1, 0.08], [0, 0.62, -2.1], MATS.shadow);
   const holo = cylinder('concept-c blue holographic asteroid ops globe', 0.9, 0.9, 0.02, 48, [0, 1.72, 0.02], MATS.cyan);
   holo.rotation.x = Math.PI / 2;
   const halo = torus('concept-c projected orbital halo around holo globe', 1.18, 0.022, 8, 64, [0, 1.72, 0.02], MATS.cyan);
@@ -392,6 +457,8 @@ function buildScene() {
   buildStarfield();
   buildAsteroidCutawayShell();
   buildProductionCavity();
+  buildHeroProductionBay();
+  buildAsymmetricRockBites();
   buildCommandPit();
   buildScaleAndAtmosphere();
   updateReadout();
