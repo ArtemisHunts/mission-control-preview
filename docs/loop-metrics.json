@@ -315,13 +315,21 @@
       "status": "shipped",
       "type": "direction correction prune/composition/performance pass",
       "notes": "Michael correction pass: pruned duplicate target-reset asteroid shoulders, exterior ship silhouettes, redundant rear instrumentation wall, and old rear-depth service-deck function; tightened camera/fog so the interior owns more of the first frame; added one broad interior dominance massing layer with inner pressure jambs, top lintel, lower sill, four bay mezzanines/equipment walls, command floor blocks, side machinery slabs, and full-width gantries. Asteroid remains the calibrated side/crown/sill proscenium. Browser screenshot capture remained blocked by policy and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "operations hub ring north-star pass",
+      "durationMs": 600000,
+      "status": "shipped",
+      "type": "focused 30-minute composition/lighting pass",
+      "notes": "Added a primary north-star operations hub layer: circular sunken command pit, cyan/amber trim rings, inward-facing console arc with screens, operator pedestal silhouettes, overhead circular service oculus, cyan halo, and radial ceiling ribs with warm practical strips. Preserved asteroid as calibrated proscenium and avoided exterior/decorative clutter; browser screenshot capture remained blocked by policy and is documented."
     }
   ],
   "stats": {
-    "count": 39,
+    "count": 40,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 280256,
+    "avgMs": 288250,
     "subagents": {
       "count": 3,
       "minMs": 47000,

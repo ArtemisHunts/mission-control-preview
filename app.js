@@ -249,6 +249,7 @@ function buildOffice() {
   buildCalibratedAsteroidProscenium();
   buildTargetCutawayMissionControl();
   buildInteriorDominanceMassing();
+  buildNorthStarOperationsHub();
   buildReadabilityHotfixLighting();
   buildRooms();
   buildCommandHoloTableHero();
@@ -455,6 +456,57 @@ function buildInteriorDominanceMassing() {
   box('dominance review bay coral identity rail', [4.8, 0.045, 0.045], [8.35, 2.86, 3.78], coral);
   box('dominance observatory bay violet identity rail', [4.8, 0.045, 0.045], [-8.35, 2.96, -4.72], violet);
   box('dominance deploy bay green identity rail', [4.8, 0.045, 0.045], [8.35, 2.96, -4.72], green);
+}
+
+function buildNorthStarOperationsHub() {
+  const graphite = mat(0x111827, { roughness: 0.36, metalness: 0.74 });
+  const dark = mat(0x020611, { roughness: 0.86, metalness: 0.16 });
+  const steel = mat(0x46536a, { roughness: 0.34, metalness: 0.78 });
+  const blackGlass = mat(0x04101c, { roughness: 0.12, metalness: 0.3, transparent: true, opacity: 0.72, emissive: 0x082642, emissiveIntensity: 0.16 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.72, transparent: true, opacity: 0.42, roughness: 0.08 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.52, transparent: true, opacity: 0.34, roughness: 0.1 });
+  const warm = mat(0xffc071, { emissive: COLORS.amber, emissiveIntensity: 0.42, transparent: true, opacity: 0.26, roughness: 0.18 });
+
+  // North-star read: a circular sunken operations hub with an inward-facing console ring.
+  cylinder('north star sunken operations outer ring', 4.6, 4.9, 0.2, 40, [0, 0.92, 0.38], graphite);
+  cylinder('north star dark recessed command pit', 3.22, 3.42, 0.16, 40, [0, 1.04, 0.38], dark);
+  cylinder('north star cyan glass floor halo', 2.76, 2.76, 0.035, 40, [0, 1.16, 0.38], cyan);
+  const outerAmber = torus('north star amber floor trim ring', 4.72, 0.035, 8, 72, [0, 1.18, 0.38], amber);
+  outerAmber.rotation.x = Math.PI / 2;
+  const innerCyan = torus('north star cyan pit trim ring', 3.2, 0.026, 8, 72, [0, 1.22, 0.38], cyan);
+  innerCyan.rotation.x = Math.PI / 2;
+  const tableGlow = torus('north star table projected tactical ring', 1.44, 0.022, 8, 56, [0, 2.02, 0.38], cyan);
+  tableGlow.rotation.x = Math.PI / 2;
+
+  const consoleArc = [
+    [-3.45, 1.95, -18], [-1.72, 3.92, -8], [1.72, 3.92, 8], [3.45, 1.95, 18],
+    [-3.72, -1.32, 18], [-1.55, -2.86, 8], [1.55, -2.86, -8], [3.72, -1.32, -18]
+  ];
+  consoleArc.forEach(([x, z, yaw], index) => {
+    const console = box('north star inward console island', [1.22, 0.34, 0.72], [x, 1.36, z + 0.38], blackGlass);
+    console.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const screen = box('north star tilted cyan console screen', [0.86, 0.38, 0.045], [x, 1.7, z + 0.08], cyan);
+    screen.rotation.x = -0.28;
+    screen.rotation.y = console.rotation.y;
+    const pedestal = box('north star operator pedestal shadow', [0.42, 0.18, 0.42], [x * 0.96, 1.16, z + 0.76], index % 2 ? steel : dark);
+    pedestal.rotation.y = console.rotation.y;
+  });
+
+  // Ceiling ring mirrors the table below, just like the primary board.
+  const ceilingRing = torus('north star overhead circular service oculus', 3.96, 0.055, 8, 72, [0, 4.72, 0.28], steel);
+  ceilingRing.rotation.x = Math.PI / 2;
+  const ceilingLight = torus('north star overhead cyan practical halo', 3.34, 0.025, 8, 72, [0, 4.62, 0.28], cyan);
+  ceilingLight.rotation.x = Math.PI / 2;
+  const ribAngles = [-58, -38, -18, 18, 38, 58];
+  ribAngles.forEach((angle, index) => {
+    const rad = THREE.MathUtils.degToRad(angle);
+    const x = Math.sin(rad) * 3.4;
+    const z = Math.cos(rad) * -2.25 + 0.18;
+    const rib = box('north star radial ceiling rib', [0.18, 0.22, 6.1], [x, 4.52, z], index % 2 ? graphite : steel);
+    rib.rotation.y = -rad;
+    const strip = box('north star warm rib practical strip', [0.055, 0.04, 4.7], [x * 0.98, 4.34, z + 0.22], warm);
+    strip.rotation.y = -rad;
+  });
 }
 
 function buildCommandHoloTableHero() {
