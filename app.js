@@ -308,6 +308,7 @@ function buildOffice() {
   buildVerifiedRearPanoramaCeilingStrips();
   buildRooms();
   buildStationWorkspaceIdentityKits();
+  buildVerifiedOuterBayActivityReadability();
   buildCommandHoloTableHero();
   buildVerifiedHoloGlobeCommandScale();
   buildCommandPitLightingHierarchy();
@@ -509,7 +510,7 @@ function buildRearHangarWindowScaleContext() {
   const haze = mat(0x59f1ff, { emissive: COLORS.cyan, emissiveIntensity: 0.16, transparent: true, opacity: 0.12, roughness: 0.06 });
   const steel = mat(0x46536a, { roughness: 0.36, metalness: 0.8 });
   const shadow = mat(0x02040a, { roughness: 0.95, metalness: 0.1 });
-  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.42, transparent: true, opacity: 0.26, roughness: 0.08 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.48, transparent: true, opacity: 0.3, roughness: 0.08 });
   const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.34, transparent: true, opacity: 0.22, roughness: 0.12 });
   const red = mat(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: 0.2, transparent: true, opacity: 0.18, roughness: 0.12 });
 
@@ -747,6 +748,84 @@ function buildNorthStarOperationsHub() {
     const strip = box('north star warm rib practical strip', [0.055, 0.04, 4.7], [x * 0.98, 4.34, z + 0.22], warm);
     strip.rotation.y = -rad;
   });
+}
+
+
+function buildVerifiedOuterBayActivityReadability() {
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.48, transparent: true, opacity: 0.3, roughness: 0.08 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.44, transparent: true, opacity: 0.28, roughness: 0.12 });
+  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.4, transparent: true, opacity: 0.27, roughness: 0.12 });
+  const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.38, transparent: true, opacity: 0.26, roughness: 0.12 });
+  const coral = mat(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: 0.4, transparent: true, opacity: 0.27, roughness: 0.12 });
+  const graphite = mat(0x141c2c, { roughness: 0.42, metalness: 0.68 });
+  const blackGlass = mat(0x030915, { roughness: 0.12, metalness: 0.34, transparent: true, opacity: 0.78, emissive: 0x061828, emissiveIntensity: 0.08 });
+  const suit = mat(0x9aa6b8, { roughness: 0.44, metalness: 0.38, emissive: 0x1b2738, emissiveIntensity: 0.06 });
+  const shadow = mat(0x02040a, { roughness: 0.96, metalness: 0.06 });
+
+  const bayData = [
+    ['build fabrication', -8.35, 2.08, amber, -10, 1],
+    ['review containment', 8.35, 2.08, coral, 10, -1],
+    ['observatory signal', -8.35, -5.76, violet, -10, 1],
+    ['deploy dock', 8.35, -5.76, green, 10, -1]
+  ];
+
+  bayData.forEach(([name, x, z, accent, yaw, side], index) => {
+    const deck = box(`verified outer bay activity ${name} readable workpool`, [4.9, 0.032, 1.55], [x, 1.18, z], accent);
+    deck.rotation.y = THREE.MathUtils.degToRad(yaw * 0.32);
+    const rearRail = box(`verified outer bay activity ${name} rear console rail`, [4.2, 0.08, 0.08], [x, 1.72, z - 0.84], accent);
+    rearRail.rotation.y = deck.rotation.y;
+    const frontRail = box(`verified outer bay activity ${name} front hazard lane`, [3.8, 0.04, 0.055], [x, 1.24, z + 0.9], index % 2 ? cyan : amber);
+    frontRail.rotation.y = deck.rotation.y;
+
+    const consoleA = box(`verified outer bay activity ${name} left live console island`, [0.94, 0.38, 0.58], [x - 1.05 * side, 1.42, z - 0.1], blackGlass);
+    consoleA.rotation.y = THREE.MathUtils.degToRad(yaw + 7 * side);
+    const consoleB = box(`verified outer bay activity ${name} right live console island`, [0.9, 0.34, 0.54], [x + 1.18 * side, 1.4, z + 0.28], blackGlass);
+    consoleB.rotation.y = THREE.MathUtils.degToRad(yaw - 9 * side);
+    const screenA = box(`verified outer bay activity ${name} console readable screen A`, [0.7, 0.36, 0.045], [x - 1.05 * side, 1.76, z - 0.42], accent);
+    screenA.rotation.y = consoleA.rotation.y;
+    const screenB = box(`verified outer bay activity ${name} console readable screen B`, [0.62, 0.32, 0.045], [x + 1.18 * side, 1.7, z + 0.0], index % 2 ? cyan : amber);
+    screenB.rotation.y = consoleB.rotation.y;
+
+    const operators = [
+      [x - 1.62 * side, z + 0.14, 0.24],
+      [x - 0.25 * side, z - 0.54, 0.2],
+      [x + 1.72 * side, z + 0.56, 0.22]
+    ];
+    operators.forEach(([opX, opZ, width], opIndex) => {
+      const torso = box(`verified outer bay activity ${name} operator torso ${opIndex + 1}`, [width, 0.45, 0.16], [opX, 1.66, opZ], suit);
+      torso.rotation.y = THREE.MathUtils.degToRad(yaw + (opIndex - 1) * 12);
+      const helmet = sphere(`verified outer bay activity ${name} operator helmet ${opIndex + 1}`, 0.115, 10, [opX, 1.96, opZ], suit);
+      helmet.scale.y = 0.92;
+      const visor = box(`verified outer bay activity ${name} operator visor/rim ${opIndex + 1}`, [0.22, 0.032, 0.032], [opX, 2.05, opZ + 0.1], accent);
+      visor.rotation.y = torso.rotation.y;
+    });
+
+    const cartX = x + 2.05 * side;
+    const cart = box(`verified outer bay activity ${name} cargo cart silhouette`, [0.8, 0.26, 0.48], [cartX, 1.34, z - 0.62], graphite);
+    cart.rotation.y = THREE.MathUtils.degToRad(yaw - 14 * side);
+    const cargo = box(`verified outer bay activity ${name} glowing cargo/status load`, [0.48, 0.26, 0.32], [cartX, 1.58, z - 0.62], index % 2 ? cyan : amber);
+    cargo.rotation.y = cart.rotation.y;
+    const arm = box(`verified outer bay activity ${name} robotic service arm`, [0.12, 0.96, 0.1], [x - 2.08 * side, 1.92, z - 0.72], graphite);
+    arm.rotation.z = THREE.MathUtils.degToRad(12 * side);
+    const claw = box(`verified outer bay activity ${name} robotic arm lit toolhead`, [0.42, 0.08, 0.08], [x - 2.24 * side, 1.42, z - 0.42], accent);
+    claw.rotation.y = THREE.MathUtils.degToRad(yaw);
+
+    const plaque = box(`verified outer bay activity ${name} bay identity plaque`, [1.15, 0.08, 0.045], [x, 2.82, z - 1.22], accent);
+    plaque.rotation.y = deck.rotation.y;
+    const shadowCut = box(`verified outer bay activity ${name} dark backdrop separation`, [4.6, 0.5, 0.045], [x, 2.2, z - 1.18], shadow);
+    shadowCut.rotation.y = deck.rotation.y;
+    const bayGlow = box(`verified outer bay activity ${name} large readable status wall glow`, [3.65, 0.5, 0.036], [x, 2.28, z - 0.98], accent);
+    bayGlow.rotation.y = deck.rotation.y;
+    const topStatus = box(`verified outer bay activity ${name} upper task queue light bar`, [2.9, 0.065, 0.034], [x, 2.58, z - 0.9], index % 2 ? cyan : amber);
+    topStatus.rotation.y = deck.rotation.y;
+    const lowerStatus = box(`verified outer bay activity ${name} lower workcell telemetry strip`, [3.25, 0.045, 0.034], [x, 2.03, z - 0.82], accent);
+    lowerStatus.rotation.y = deck.rotation.y;
+  });
+
+  addLight('point', COLORS.amber, 2.4, [-8.4, 2.3, 2.1], 5.6);
+  addLight('point', COLORS.coral, 2.0, [8.4, 2.3, 2.1], 5.2);
+  addLight('point', COLORS.violet, 1.8, [-8.4, 2.3, -5.8], 5.2);
+  addLight('point', COLORS.green, 1.8, [8.4, 2.3, -5.8], 5.2);
 }
 
 function buildCommandHoloTableHero() {
