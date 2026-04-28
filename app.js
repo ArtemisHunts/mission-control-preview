@@ -235,8 +235,8 @@ function buildAsteroidCutawayShell() {
     [12.2, 0.66], [13.82, 1.52], [14.1, 2.92]
   ], MATS.rockOuter, 4.05, shell);
   polyMesh('concept-c broken lower asteroid sill leaves star corners', [
-    [-8.8, 0.45], [-6.7, 0.7], [-4.1, 0.32], [-1.4, 0.64], [1.7, 0.28], [4.7, 0.66], [7.8, 0.38], [9.4, 0.52],
-    [8.2, -0.12], [4.0, -0.48], [-0.3, -0.2], [-4.6, -0.54], [-8.3, -0.05]
+    [-9.8, 0.58], [-7.8, 0.92], [-5.45, 0.38], [-3.1, 0.86], [-1.4, 0.42], [0.8, 0.72], [2.9, 0.28], [5.7, 0.74], [8.6, 0.32], [10.0, 0.55],
+    [8.4, -0.32], [5.6, -0.7], [2.1, -0.38], [-0.6, -0.78], [-3.9, -0.46], [-6.1, -0.84], [-8.8, -0.24]
   ], MATS.rockOuter, 4.22, shell);
 
   // Inner carved cut faces and thick side walls make the shell feel physical, not a matte.
@@ -403,10 +403,53 @@ function buildAsymmetricRockBites() {
   });
 }
 
+function buildRockSwallowedFacilityDetails() {
+  const detail = new THREE.Group();
+  detail.name = 'concept-c rock swallowed facility detail pass';
+  root.add(detail);
+
+  const cutChunks = [
+    ['upper-left overhang fractured tooth A', -7.6, 4.62, 3.5, 1.1, 0.28, 0.82, -18],
+    ['upper-left overhang fractured tooth B', -5.1, 4.42, 3.45, 1.35, 0.22, 0.74, 12],
+    ['upper-right thinner broken tooth', 5.95, 4.48, 3.45, 1.55, 0.24, 0.7, -10],
+    ['left lower rock swallowing fabrication floor', -8.82, 0.72, 2.62, 2.0, 0.42, 1.1, 7],
+    ['right rear rock alcove wrapping deploy tank', 8.72, 1.88, -0.88, 1.55, 1.86, 1.2, -8]
+  ];
+  cutChunks.forEach(([name, x, y, z, sx, sy, sz, rot], index) => {
+    const chunk = box(`concept-c ${name}`, [sx, sy, sz], [x, y, z], index % 2 ? MATS.rockWarm : MATS.rockCut, detail);
+    chunk.rotation.z = THREE.MathUtils.degToRad(rot);
+  });
+
+  const tunnel = cylinder('concept-c dark service tunnel bored into left asteroid wall', 0.72, 0.72, 0.18, 24, [-10.08, 2.72, 1.84], MATS.shadow, detail);
+  tunnel.rotation.x = Math.PI / 2;
+  const tunnelRim = torus('concept-c amber service tunnel rim bolted to rock', 0.78, 0.035, 8, 36, [-10.08, 2.72, 1.94], MATS.amber, detail);
+  tunnelRim.rotation.x = Math.PI / 2;
+  const rightTunnel = cylinder('concept-c dark utility tunnel bored into right asteroid wall', 0.54, 0.54, 0.18, 20, [10.12, 2.15, 1.76], MATS.shadow, detail);
+  rightTunnel.rotation.x = Math.PI / 2;
+  const rightRim = torus('concept-c cyan utility tunnel rim bolted to rock', 0.6, 0.028, 8, 32, [10.12, 2.15, 1.86], MATS.cyanDim, detail);
+  rightRim.rotation.x = Math.PI / 2;
+
+  const contactShadows = [
+    ['fabrication bay upper contact shadow under rock bite', -6.75, 3.02, -1.64, 5.8],
+    ['deploy bay upper contact shadow under rock bite', 6.45, 2.98, -1.64, 5.0],
+    ['rear hangar rock contact shadow', 0, 4.0, -9.78, 11.2]
+  ];
+  contactShadows.forEach(([name, x, y, z, length]) => box(`concept-c ${name}`, [length, 0.08, 0.06], [x, y, z], MATS.shadow, detail));
+
+  const bayScaleCrew = [
+    [-8.25, 1.1, 1.95], [-7.55, 1.12, 1.82], [-5.02, 1.08, 1.72], [5.15, 1.06, 1.82], [7.92, 1.08, 1.72]
+  ];
+  bayScaleCrew.forEach(([x, y, z], index) => {
+    cylinder(`concept-c tiny worker scale marker around production ${index}`, 0.035, 0.05, 0.24, 7, [x, y, z], MATS.blackMetal, detail);
+    box(`concept-c tiny worker visor around production ${index}`, [0.07, 0.018, 0.018], [x, y + 0.14, z + 0.035], index % 2 ? MATS.amber : MATS.cyan, detail);
+  });
+}
+
 function buildCommandPit() {
   cylinder('concept-c raised upper deck lip around sunken command well', 3.7, 3.85, 0.16, 56, [0, 0.98, 0.02], MATS.steel);
   cylinder('concept-c vertical dark wall of sunken command well', 3.02, 3.18, 0.62, 56, [0, 0.72, 0.02], MATS.blackMetal);
   cylinder('concept-c lower recessed command pit floor clearly below deck', 2.08, 2.22, 0.12, 56, [0, 0.43, 0.02], MATS.shadow);
+  cylinder('concept-c deepest black command shaft visible below holo table', 1.48, 1.78, 0.44, 48, [0, 0.23, 0.02], MATS.shadow);
   const stepRing = torus('concept-c inner step shadow ring proving pit depth', 2.62, 0.045, 8, 72, [0, 0.78, 0.02], MATS.shadow);
   stepRing.rotation.x = Math.PI / 2;
   const amberRing = torus('concept-c amber operations walkway trim', 3.34, 0.035, 10, 80, [0, 1.1, 0.02], MATS.amber);
@@ -447,6 +490,14 @@ function buildCommandPit() {
     box(`concept-c tiny crew visor cue near pit ${index}`, [0.09, 0.025, 0.02], [x, 1.42, z + 0.04], index % 2 ? MATS.amber : MATS.cyan);
   });
 
+  [1.42, 1.78, 2.14, 2.54].forEach((radius, index) => {
+    const lower = torus(`concept-c descending lower wall ring visible inside pit ${index}`, radius, 0.02, 8, 64, [0, 0.42 + index * 0.14, 0.02], index < 2 ? MATS.cyanDim : MATS.shadow);
+    lower.rotation.x = Math.PI / 2;
+  });
+  [-1.45, -0.72, 0, 0.72, 1.45].forEach((x, index) => {
+    box(`concept-c tiny lower level pit light ${index}`, [0.18, 0.025, 0.025], [x, 0.48 + (index % 2) * 0.12, -1.72], index % 2 ? MATS.amber : MATS.cyanDim);
+  });
+
   const stations = [
     [-2.45, 1.24, -34, MATS.cyan], [-1.12, 2.16, -14, MATS.amber], [1.12, 2.16, 14, MATS.cyan], [2.45, 1.24, 34, MATS.amber],
     [-2.55, -1.04, 32, MATS.amber], [-1.0, -1.9, 12, MATS.cyan], [1.0, -1.9, -12, MATS.amber], [2.55, -1.04, -32, MATS.cyan]
@@ -485,6 +536,7 @@ function buildScene() {
   buildProductionCavity();
   buildHeroProductionBay();
   buildAsymmetricRockBites();
+  buildRockSwallowedFacilityDetails();
   buildCommandPit();
   buildScaleAndAtmosphere();
   updateReadout();
