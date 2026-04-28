@@ -78,7 +78,14 @@ const MATS = {
   amber: mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.48, transparent: true, opacity: 0.42, roughness: 0.14 }),
   orange: mat(COLORS.orange, { emissive: COLORS.orange, emissiveIntensity: 0.38, transparent: true, opacity: 0.3, roughness: 0.18 }),
   green: mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.34, transparent: true, opacity: 0.26 }),
-  violet: mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.34, transparent: true, opacity: 0.25 })
+  violet: mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.34, transparent: true, opacity: 0.25 }),
+  rockHifi: new THREE.MeshStandardMaterial({
+    vertexColors: true,
+    roughness: 0.96,
+    metalness: 0.02,
+    flatShading: true,
+    side: THREE.DoubleSide
+  })
 };
 
 function box(name, size, position, material, parent = root) {
@@ -101,6 +108,70 @@ function torus(name, radius, tube, radialSegments, tubularSegments, position, ma
   const mesh = new THREE.Mesh(new THREE.TorusGeometry(radius, tube, radialSegments, tubularSegments), material);
   mesh.name = name;
   mesh.position.set(...position);
+  parent.add(mesh);
+  return mesh;
+}
+
+function hifiNoise(seed) {
+  const s = Math.sin(seed * 127.1) * 43758.5453123;
+  return s - Math.floor(s);
+}
+
+function hifiColor(x, y, z, warmBias = 0) {
+  const shade = 0.62 + hifiNoise(x * 13.7 + y * 7.3 + z * 3.1) * 0.34 + warmBias;
+  const color = new THREE.Color(COLORS.rockCut);
+  const cool = new THREE.Color(COLORS.rockOuter);
+  const warm = new THREE.Color(COLORS.rockWarm);
+  color.lerp(cool, Math.max(0, 1.0 - shade));
+  color.lerp(warm, Math.max(0, shade - 0.78) * 0.65);
+  return color;
+}
+
+function hifiPrism(name, points, { z = 4.15, depth = 3.8, parent = root, warmBias = 0, roughness = 0.18 } = {}) {
+  const vertices = [];
+  const colors = [];
+  const push = (x, y, zz, colorSeed = 0) => {
+    vertices.push(x, y, zz);
+    const c = hifiColor(x + colorSeed, y, zz, warmBias);
+    colors.push(c.r, c.g, c.b);
+  };
+
+  const cx = points.reduce((sum, p) => sum + p[0], 0) / points.length;
+  const cy = points.reduce((sum, p) => sum + p[1], 0) / points.length;
+  const front = points.map(([x, y], index) => [x, y, z + (hifiNoise(index + x * 0.31) - 0.5) * roughness]);
+  const back = points.map(([x, y], index) => [x * 0.965 + cx * 0.035, y * 0.965 + cy * 0.035, z - depth + (hifiNoise(index + y * 0.27) - 0.5) * roughness * 1.8]);
+  const centerZ = z + 0.08;
+  const backCenterZ = z - depth - 0.08;
+
+  for (let i = 0; i < points.length; i += 1) {
+    const a = front[i];
+    const b = front[(i + 1) % points.length];
+    push(cx, cy, centerZ, i);
+    push(...a, i + 1);
+    push(...b, i + 2);
+  }
+  for (let i = 0; i < points.length; i += 1) {
+    const a = back[i];
+    const b = back[(i + 1) % points.length];
+    push(cx, cy, backCenterZ, i + 3);
+    push(...b, i + 4);
+    push(...a, i + 5);
+  }
+  for (let i = 0; i < points.length; i += 1) {
+    const f1 = front[i];
+    const f2 = front[(i + 1) % points.length];
+    const b1 = back[i];
+    const b2 = back[(i + 1) % points.length];
+    push(...f1, i + 6); push(...b1, i + 7); push(...f2, i + 8);
+    push(...f2, i + 9); push(...b1, i + 10); push(...b2, i + 11);
+  }
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  geometry.computeVertexNormals();
+  const mesh = new THREE.Mesh(geometry, MATS.rockHifi);
+  mesh.name = name;
   parent.add(mesh);
   return mesh;
 }
@@ -213,6 +284,72 @@ function addRockSurfaceDetail(parent) {
     const seam = box(`concept-c ${name}`, [length, 0.035, 0.035], [x, y, 4.2], mineralMat, parent);
     seam.rotation.z = THREE.MathUtils.degToRad(angle);
   });
+}
+
+function buildHifiAsteroidShell() {
+  const shell = new THREE.Group();
+  shell.name = 'concept-c hifi procedural asteroid shell mesh v1';
+  root.add(shell);
+
+  hifiPrism('hifi single-body left oppressive asteroid mantle', [
+    [-14.8, 3.2], [-13.9, 5.25], [-10.9, 6.95], [-8.7, 6.22], [-7.0, 7.32], [-4.65, 6.24], [-2.7, 6.72],
+    [-0.78, 5.2], [-1.86, 4.12], [-4.2, 4.58], [-6.8, 4.04], [-9.9, 4.42], [-10.6, 3.3], [-9.86, 2.18],
+    [-10.8, 0.72], [-12.7, 0.22], [-14.28, 1.28]
+  ], { z: 4.55, depth: 5.8, parent: shell, warmBias: 0.03, roughness: 0.34 });
+
+  hifiPrism('hifi right recessed broken asteroid mantle', [
+    [1.55, 5.55], [3.25, 5.08], [5.22, 5.92], [8.75, 5.12], [10.9, 5.72], [11.62, 4.65], [12.96, 3.78],
+    [13.55, 2.7], [12.85, 1.64], [10.55, 0.62], [9.28, 1.22], [10.14, 2.48], [9.4, 3.04], [6.42, 4.74], [3.62, 4.04], [1.52, 4.44]
+  ], { z: 4.28, depth: 4.4, parent: shell, warmBias: -0.03, roughness: 0.3 });
+
+  hifiPrism('hifi sagging lower left asteroid shelf with real thickness', [
+    [-10.9, 0.82], [-8.7, 1.14], [-6.52, 0.48], [-4.72, 1.02], [-2.72, 0.2], [-1.35, 0.46],
+    [-2.12, -0.58], [-4.7, -1.28], [-7.34, -0.68], [-10.05, -1.08]
+  ], { z: 4.5, depth: 5.2, parent: shell, warmBias: 0.02, roughness: 0.28 });
+
+  hifiPrism('hifi broken lower right asteroid shelf pulled backward', [
+    [1.7, 0.16], [4.18, 0.78], [7.34, 0.2], [9.62, 0.5], [8.12, -0.3], [5.75, -0.92], [3.18, -0.46], [1.0, -0.82]
+  ], { z: 4.1, depth: 3.6, parent: shell, warmBias: -0.02, roughness: 0.22 });
+
+  const fracturePlates = [
+    ['hifi warm cut plane above production bay', [[-8.2, 4.3], [-6.4, 4.95], [-4.9, 4.55], [-6.72, 3.92]], 4.92, 0.5],
+    ['hifi exposed central roof bite cut plane', [[-1.48, 4.92], [-0.58, 5.38], [0.72, 4.36], [-0.72, 4.05]], 5.02, 0.6],
+    ['hifi lower left broken cut strata face', [[-8.8, 0.68], [-6.2, 0.36], [-5.0, -0.72], [-8.0, -0.52]], 4.96, 0.55],
+    ['hifi right recessed side cut face', [[9.42, 3.88], [11.24, 3.58], [10.02, 1.2], [9.2, 2.14]], 4.72, 0.45]
+  ];
+  fracturePlates.forEach(([name, pts, z, depth], index) => hifiPrism(name, pts, { z, depth, parent: shell, warmBias: 0.18, roughness: 0.12 + index * 0.02 }));
+
+  const tunnel = hifiPrism('hifi dark bored service tunnel bevel in left mantle', [
+    [-10.95, 3.1], [-10.55, 3.42], [-10.04, 3.18], [-9.92, 2.7], [-10.22, 2.32], [-10.78, 2.42], [-11.08, 2.72]
+  ], { z: 5.08, depth: 0.32, parent: shell, warmBias: -0.4, roughness: 0.05 });
+  tunnel.material = MATS.shadow;
+
+  const mineralEdges = [
+    [-9.4, 5.8, 2.8, -22], [-5.7, 5.42, 3.6, 12], [-7.8, 0.25, 3.2, -8], [5.6, 4.92, 3.4, 8], [5.4, -0.28, 3.8, -12]
+  ];
+  mineralEdges.forEach(([x, y, length, angle], index) => {
+    const seam = box(`hifi selective chipped mineral rim ${index}`, [length, 0.035, 0.045], [x, y, 5.15], MATS.rockWarm, shell);
+    seam.rotation.z = THREE.MathUtils.degToRad(angle);
+  });
+}
+
+function buildHifiCommandShaft() {
+  const shaft = new THREE.Group();
+  shaft.name = 'concept-c hifi command shaft carved geometry v1';
+  root.add(shaft);
+
+  const rings = [
+    { r: 3.15, y: 0.94, z: 0.04, mat: MATS.blackMetal },
+    { r: 2.62, y: 0.64, z: -0.08, mat: MATS.shadow },
+    { r: 2.05, y: 0.34, z: -0.22, mat: MATS.shadow },
+    { r: 1.42, y: 0.02, z: -0.38, mat: MATS.shadow }
+  ];
+  rings.forEach(({ r, y, z, mat }, index) => {
+    const wall = cylinder(`hifi faceted descending command shaft wall ${index}`, r, r * 0.86, 0.36, 14, [0, y, z], mat, shaft);
+    wall.rotation.y = index * 0.08;
+  });
+  const lowerGlow = cylinder('hifi deep cyan glow fading at bottom of command bore', 1.0, 1.35, 0.03, 28, [0, -0.18, -0.42], MATS.cyanDim, shaft);
+  lowerGlow.rotation.x = Math.PI / 2;
 }
 
 function buildAsteroidCutawayShell() {
@@ -591,12 +728,10 @@ function updateReadout() {
 function buildScene() {
   addLights();
   buildStarfield();
-  buildAsteroidCutawayShell();
+  buildHifiAsteroidShell();
   buildProductionCavity();
   buildHeroProductionBay();
-  buildAsymmetricRockBites();
-  buildRockSwallowedFacilityDetails();
-  buildBrutalMassDepthPass();
+  buildHifiCommandShaft();
   buildCommandPit();
   buildScaleAndAtmosphere();
   updateReadout();
