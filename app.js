@@ -285,6 +285,8 @@ function buildOffice() {
   addLight('point', COLORS.amber, 7.6, [-10.4, 4.2, 5.4], 15.0);
   addLight('point', COLORS.amber, 7.6, [10.4, 4.2, 5.4], 15.0);
   addLight('point', 0x8fc7ff, 9.2, [0, 5.8, -10.6], 24.0);
+  addLight('point', 0x7fc7ff, 4.8, [0, 3.35, -7.35], 12.5);
+  addLight('point', COLORS.amber, 3.4, [0, 4.15, -2.3], 11.0);
   addLight('point', COLORS.coral, 3.2, [4.2, 2.2, 1.2], 9.2);
 
   buildShell();
@@ -303,6 +305,7 @@ function buildOffice() {
   buildVerifiedRearServiceDeckReveal();
   buildVerifiedRearRibMachineryBand();
   buildVerifiedUpperRearVoidBreaks();
+  buildVerifiedRearPanoramaCeilingStrips();
   buildRooms();
   buildStationWorkspaceIdentityKits();
   buildCommandHoloTableHero();
@@ -1190,6 +1193,65 @@ function buildVerifiedUpperRearVoidBreaks() {
   box('verified upper rear void right lintel fade', [3.4, 0.04, 0.035], [5.5, 3.88, -9.12], rim);
 }
 
+
+function buildVerifiedRearPanoramaCeilingStrips() {
+  const glass = mat(0x0b3458, { emissive: 0x0d6ca6, emissiveIntensity: 0.42, transparent: true, opacity: 0.38, roughness: 0.08, metalness: 0.18 });
+  const haze = mat(0x8ed4ff, { emissive: 0x36a6e2, emissiveIntensity: 0.34, transparent: true, opacity: 0.2, roughness: 0.04 });
+  const frame = mat(0x526078, { roughness: 0.34, metalness: 0.78 });
+  const deepSpace = mat(0x02040a, { roughness: 1.0, metalness: 0.0 });
+  const rock = mat(0x15101a, { roughness: 0.96, metalness: 0.02 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.32, transparent: true, opacity: 0.22, roughness: 0.08 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.26, transparent: true, opacity: 0.18, roughness: 0.12 });
+  const dimBlue = mat(0x82c8ff, { emissive: 0x4ca8ee, emissiveIntensity: 0.36, transparent: true, opacity: 0.24, roughness: 0.08 });
+
+  // Verification-first target: make the rear read as a panoramic asteroid hangar, not a dark compressed band.
+  box('verified rear panorama wide blue hangar glass field', [19.2, 1.36, 0.038], [0, 3.04, -9.18], glass);
+  box('verified rear panorama exterior cyan atmosphere shelf', [17.6, 0.62, 0.032], [0, 3.08, -9.13], haze);
+  box('verified rear panorama deep exterior void behind glass', [18.0, 1.08, 0.034], [0, 3.18, -9.21], deepSpace);
+  box('verified rear panorama top armored header frame', [19.6, 0.14, 0.08], [0, 3.82, -9.04], frame);
+  box('verified rear panorama lower armored sill frame', [19.6, 0.12, 0.08], [0, 2.26, -9.04], frame);
+  box('verified rear panorama left armored jamb frame', [0.12, 1.34, 0.08], [-9.42, 3.07, -9.03], frame);
+  box('verified rear panorama right armored jamb frame', [0.12, 1.34, 0.08], [9.42, 3.07, -9.03], frame);
+
+  const mullions = [-6.85, -3.35, 3.35, 6.85];
+  mullions.forEach((x, index) => {
+    box(`verified rear panorama window mullion ${index + 1}`, [0.08, 1.2, 0.06], [x, 3.07, -8.98], frame);
+    box(`verified rear panorama mullion caught cyan edge ${index + 1}`, [0.026, 0.96, 0.034], [x + 0.08, 3.04, -8.94], dimBlue);
+  });
+
+  const exteriorSilhouettes = [
+    ['left asteroid wall mass', -7.55, 3.0, 2.1, 0.52, rock],
+    ['right asteroid wall mass', 7.55, 3.08, 2.0, 0.54, rock],
+    ['distant docked hauler body', -1.0, 3.1, 3.05, 0.32, deepSpace],
+    ['distant hauler wing bar', -2.52, 2.88, 1.2, 0.11, deepSpace],
+    ['distant service deck silhouette', 4.0, 2.74, 3.4, 0.18, deepSpace]
+  ];
+  exteriorSilhouettes.forEach(([name, x, y, width, height, material]) => {
+    box(`verified rear panorama ${name}`, [width, height, 0.04], [x, y, -8.9], material);
+  });
+
+  box('verified rear panorama hauler cyan engine trace', [1.18, 0.045, 0.032], [-3.04, 3.1, -8.86], cyan);
+  box('verified rear panorama central horizon command glow', [9.8, 0.04, 0.032], [0, 3.4, -8.84], cyan);
+  box('verified rear panorama lower window readable cyan shelf', [13.6, 0.04, 0.032], [0, 2.66, -8.84], dimBlue);
+  box('verified rear panorama distant amber dock beacon left', [0.42, 0.035, 0.032], [-5.38, 3.48, -8.86], amber);
+  box('verified rear panorama distant amber dock beacon right', [0.42, 0.035, 0.032], [5.5, 3.44, -8.86], amber);
+  box('verified rear panorama low runway perspective left', [4.8, 0.032, 0.032], [-4.2, 2.55, -8.84], dimBlue);
+  box('verified rear panorama low runway perspective right', [4.8, 0.032, 0.032], [4.2, 2.55, -8.84], dimBlue);
+
+  const ceilingBars = [
+    ['left forward practical strip', -4.8, 4.08, -0.7, 6.4, -8, amber],
+    ['right forward practical strip', 4.8, 4.08, -0.7, 6.4, 8, amber],
+    ['left rear cool ceiling datum', -5.7, 4.04, -5.05, 4.2, 10, dimBlue],
+    ['right rear cool ceiling datum', 5.7, 4.04, -5.05, 4.2, -10, dimBlue],
+    ['center aft command blue spine', 0, 4.02, -3.8, 5.4, 0, cyan]
+  ];
+  ceilingBars.forEach(([name, x, y, z, length, yaw, material]) => {
+    const strip = box(`verified rear panorama ceiling ${name}`, [0.074, 0.042, length], [x, y, z], material);
+    strip.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const backing = box(`verified rear panorama ceiling ${name} dark rib backing`, [0.22, 0.12, length + 0.4], [x, y + 0.06, z], deepSpace);
+    backing.rotation.y = strip.rotation.y;
+  });
+}
 
 
 function buildRooms() {

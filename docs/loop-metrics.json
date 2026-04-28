@@ -483,13 +483,21 @@
       "status": "shipped",
       "type": "verification-first playtest-fix/composition-lighting pass",
       "notes": "Verified deployed Pages loaded app.js?v=verified-rear-rib-machinery-20260428 with rear-rib and rear-service markers, captured deployed screenshot, then added controlled upper rear void breaks: narrow hangar/window slits, cool exterior haze, asteroid/star silhouettes, lower-edge relief, and lintel fades. Captured local post-change screenshot; visual assessment said honestly closer but modest, with no critical regression and table still hero."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "verified rear panorama ceiling strips pass",
+      "durationMs": 540000,
+      "status": "shipped",
+      "type": "verification-first playtest-fix/composition-lighting pass",
+      "notes": "Verified deployed Pages loaded app.js?v=verified-upper-rear-void-breaks-20260428 with rear-service/rear-rib/upper-void runtime markers and live app.js SHA matching the repo, captured deployed proof via direct CDP screenshot after browser screenshot/evaluate timed out, then added a more readable rear panoramic hangar/window field plus stronger ceiling practical strip cues and modest rear/overhead fill. Captured local post-change screenshot; visual assessment said honestly closer but marginal, with rear panorama still too abstract/dark."
     }
   ],
   "stats": {
-    "count": 60,
+    "count": 61,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 390333,
+    "avgMs": 392787,
     "subagents": {
       "count": 3,
       "minMs": 47000,
