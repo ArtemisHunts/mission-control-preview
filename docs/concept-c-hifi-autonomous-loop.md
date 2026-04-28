@@ -9,14 +9,36 @@ Run autonomous high-fidelity Concept C passes until the scene reaches gold-stand
 
 This loop replaces the old blockout mindset. It is not allowed to claim progress by adding more primitive boxes. Each pass must move toward final-form geometry, material richness, carved integration, lighting/depth, or asset-pipeline readiness.
 
-## Runner
-Start command:
+## Active runner
+OpenClaw cron job installed:
+
+- job id: `9bebbbea-c9cf-4120-8278-cfa223080468`
+- name: `concept-c-hifi-gold-loop`
+- cadence: every 30 minutes
+- session: isolated
+- model: `openai-codex/gpt-5.4`
+- thinking: high
+- timeout: 1800s
+- Discord announce target: `channel:1477048876669075578`
+
+Manual controls:
 
 ```bash
-./scripts/start-concept-c-hifi-loop.sh
+openclaw cron show 9bebbbea-c9cf-4120-8278-cfa223080468 --json
+openclaw cron run 9bebbbea-c9cf-4120-8278-cfa223080468
+openclaw cron disable 9bebbbea-c9cf-4120-8278-cfa223080468
 ```
 
-The script launches the Ralph loop runner with:
+Reinstall command lives at:
+
+```bash
+./scripts/install-concept-c-hifi-cron.sh
+```
+
+## Local Ralph runner fallback
+`./scripts/start-concept-c-hifi-loop.sh` exists as a local Ralph/Claude-CLI runner, but it is not the active loop right now. Claude CLI returned: `Your organization does not have access to Claude.` Use the OpenClaw cron job above as the active autonomous loop.
+
+The local fallback is configured with:
 
 - prompt: `docs/loops/concept-c-hifi-loop-prompt.md`
 - done signal: `HIFI_GOLD_STANDARD`
@@ -34,7 +56,7 @@ Runtime files:
 `logs/` is ignored by git.
 
 ## Safety rules
-The loop stops before an iteration if:
+For the active OpenClaw cron loop, the prompt itself enforces branch/deploy rules. For the local Ralph fallback, the loop stops before an iteration if:
 
 - `.hifi-loop-stop` exists
 - current branch is not `concept-c-hifi`
