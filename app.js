@@ -299,6 +299,7 @@ function buildOffice() {
   buildReadabilityHotfixLighting();
   buildVerifiedUpperBandSidePlatformReadability();
   buildVerifiedRearHangarDepthSeparation();
+  buildVerifiedFabricationDeploySeparation();
   buildRooms();
   buildStationWorkspaceIdentityKits();
   buildCommandHoloTableHero();
@@ -1020,6 +1021,53 @@ function buildVerifiedRearHangarDepthSeparation() {
   box('verified rear hangar tiny amber maintenance crew left', [0.14, 0.08, 0.04], [-5.9, 2.58, -10.46], amber);
   box('verified rear hangar tiny cyan maintenance crew right', [0.14, 0.08, 0.04], [5.85, 2.62, -10.46], cyan);
   box('verified rear hangar center docking beacon scale cue', [0.22, 0.045, 0.04], [0, 2.58, -10.44], amber);
+}
+
+function buildVerifiedFabricationDeploySeparation() {
+  const laneCyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.42, transparent: true, opacity: 0.24, roughness: 0.08 });
+  const laneAmber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.42, transparent: true, opacity: 0.24, roughness: 0.1 });
+  const laneGreen = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.34, transparent: true, opacity: 0.2, roughness: 0.12 });
+  const bayRim = mat(0x8fc7ff, { emissive: 0x4aa8ff, emissiveIntensity: 0.26, transparent: true, opacity: 0.18, roughness: 0.12 });
+  const warmRim = mat(0xffbd70, { emissive: COLORS.amber, emissiveIntensity: 0.3, transparent: true, opacity: 0.2, roughness: 0.12 });
+  const sledMat = mat(0x18243a, { roughness: 0.5, metalness: 0.58 });
+  const moduleMat = mat(0x0d1422, { roughness: 0.72, metalness: 0.24 });
+
+  // Screenshot-driven fix: make rear fabrication/deploy read as active infrastructure, not a dark wall.
+  const guideLanes = [
+    ['left fabrication guide lane', -4.4, -1.18, -8, 4.8, laneAmber],
+    ['right deploy guide lane', 4.4, -1.18, 8, 4.8, laneGreen],
+    ['rear assembly centerline guide', 0, -4.72, 0, 5.6, laneCyan],
+    ['left rear bay return guide', -6.6, -5.92, -4, 3.4, laneCyan],
+    ['right rear bay return guide', 6.6, -5.92, 4, 3.4, laneGreen]
+  ];
+  guideLanes.forEach(([name, x, z, yaw, length, material]) => {
+    const strip = box(`verified fabrication deploy ${name}`, [length, 0.026, 0.04], [x, 0.66, z], material);
+    strip.rotation.y = THREE.MathUtils.degToRad(yaw);
+  });
+
+  const bayEdges = [
+    ['build bay upper fabrication rim', -8.35, 3.28, 2.52, warmRim],
+    ['deploy bay upper logistics rim', 8.35, 3.28, -5.52, laneGreen],
+    ['observatory bay cool service rim', -8.35, 3.28, -5.52, bayRim],
+    ['rear assembly gantry edge rim', 0, 3.08, -7.22, laneAmber],
+    ['rear lower deck cyan separation rim', 0, 1.32, -7.82, laneCyan]
+  ];
+  bayEdges.forEach(([name, x, y, z, material]) => {
+    box(`verified fabrication deploy ${name}`, [4.9, 0.04, 0.045], [x, y, z], material);
+  });
+
+  const sleds = [
+    ['left cargo sled silhouette', -4.72, 0.82, -3.34, -10, laneAmber],
+    ['center module carrier silhouette', 0.18, 0.84, -5.72, 0, laneCyan],
+    ['right deploy sled silhouette', 4.72, 0.82, -3.34, 10, laneGreen]
+  ];
+  sleds.forEach(([name, x, y, z, yaw, accent]) => {
+    const sled = box(`verified fabrication deploy ${name}`, [0.72, 0.22, 0.42], [x, y, z], sledMat);
+    sled.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const module = box(`verified fabrication deploy ${name} module load`, [0.46, 0.28, 0.3], [x, y + 0.22, z], moduleMat);
+    module.rotation.y = sled.rotation.y;
+    box(`verified fabrication deploy ${name} status slit`, [0.5, 0.035, 0.035], [x, y + 0.38, z + 0.22], accent);
+  });
 }
 
 

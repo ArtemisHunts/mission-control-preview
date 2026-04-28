@@ -451,13 +451,21 @@
       "status": "shipped",
       "type": "verification-first playtest-fix/composition-lighting pass",
       "notes": "Verified deployed Pages loaded latest app.js?v=verified-operator-anchors-20260428 and recent runtime markers, captured deployed screenshot, then added subtle rim/halo/contact-shadow separation cues to existing weak rear/side operators without adding new characters. Captured local post-change screenshot before commit; visual assessment said it is closer with no critical regression, while far-side operators remain somewhat subtle."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "verified fabrication deploy separation pass",
+      "durationMs": 690000,
+      "status": "shipped",
+      "type": "verification-first playtest-fix/composition-lighting pass",
+      "notes": "Verified deployed Pages loaded latest app.js?v=verified-operator-rim-separation-20260428 and recent runtime markers, captured deployed screenshot, then added restrained fabrication/deploy infrastructure separation: guide-light lanes, rear/side bay rim strips, cargo sled/module silhouettes, and gantry/catwalk edge highlights. Captured local post-change screenshot before commit; visual assessment said it is honestly closer with no critical regression, while rear infrastructure remains dark/compressed."
     }
   ],
   "stats": {
-    "count": 56,
+    "count": 57,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 374643,
+    "avgMs": 380175,
     "subagents": {
       "count": 3,
       "minMs": 47000,
