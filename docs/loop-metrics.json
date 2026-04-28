@@ -387,13 +387,21 @@
       "status": "shipped",
       "type": "focused 30-minute composition/asset-pipeline/lighting pass",
       "notes": "Added broad matte rock cut faces and bronze retaining frames to make the operations room read as human architecture inserted into a carved asteroid: rear aperture shoulders/lintel/sill, bronze rear collars, side workstation rock pockets, command pit rock retaining masses, and rim/status catches. Browser screenshot capture remained blocked by policy and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "verified overview framing relief pass",
+      "durationMs": 600000,
+      "status": "shipped",
+      "type": "verification-first playtest-fix/composition pass",
+      "notes": "First proved deployed Pages was loading app.js?v=asteroid-inserted-architecture-20260427 and recent runtime markers. Captured deployed proof screenshot via CDP. Then changed overview camera/framing from one fixed offset to mode-aware offsets with portrait viewport relief, pulling overview higher/farther back and lowering target slightly. Captured post-change local proof screenshot before commit."
     }
   ],
   "stats": {
-    "count": 48,
+    "count": 49,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 321458,
+    "avgMs": 327143,
     "subagents": {
       "count": 3,
       "minMs": 47000,

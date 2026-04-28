@@ -26,8 +26,8 @@ const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
     body: 'A full spatial read of Mission Control: assembly shaft, fabrication line, production bays, visible operators, and deploy traffic.',
-    camera: [0, 9.6, 29.8],
-    target: [0, 1.85, -2.05],
+    camera: [0, 12.6, 38.6],
+    target: [0, 1.35, -2.35],
     accent: COLORS.cyan
   },
   command: {
@@ -143,8 +143,35 @@ const clickTarget = new THREE.Vector3();
 const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
-const fixedCameraOffset = new THREE.Vector3(0, 9.35, 29.4);
+const cameraOffsets = {
+  overview: new THREE.Vector3(0, 12.4, 38.2),
+  command: new THREE.Vector3(0, 6.8, 17.6),
+  build: new THREE.Vector3(0, 8.8, 25.8),
+  review: new THREE.Vector3(0, 8.8, 25.8),
+  deploy: new THREE.Vector3(0, 9.4, 27.6),
+  observatory: new THREE.Vector3(0, 9.4, 27.6)
+};
 const facilityBounds = { minX: -10.6, maxX: 10.6, minZ: -8.2, maxZ: 3.6 };
+
+function getCameraOffsetForMode() {
+  const base = cameraOffsets[state.mode] ?? cameraOffsets.overview;
+  const offset = base.clone();
+  const aspect = window.innerWidth / Math.max(window.innerHeight, 1);
+  if (state.mode === 'overview' && aspect < 1.15) {
+    offset.y *= 1.12;
+    offset.z *= 1.18;
+  }
+  return offset;
+}
+
+function getCameraTargetForMode() {
+  const target = facilityFocus.clone();
+  if (state.mode === 'overview') {
+    target.y = 1.28;
+    target.z -= 0.35;
+  }
+  return target;
+}
 
 function mat(color, options = {}) {
   return new THREE.MeshStandardMaterial({
@@ -1083,6 +1110,7 @@ function setMode(modeName) {
   document.querySelectorAll('.dock-button[data-mode]').forEach((button) => button.classList.toggle('active', button.dataset.mode === modeName));
   const room = ROOMS[modeName];
   if (room?.target) facilityTarget.set(room.target[0], room.target[1], room.target[2]);
+  if (room?.camera) camera.position.set(room.camera[0], room.camera[1], room.camera[2]);
   updateHud();
 }
 
@@ -1149,9 +1177,11 @@ function animate() {
     operator.group.position.y = operator.baseY + Math.sin(t * 1.7 + operator.index) * 0.035;
     operator.group.rotation.y += Math.sin(t * 0.3 + operator.index) * 0.0008;
   });
-  const desiredCamera = new THREE.Vector3(facilityFocus.x + fixedCameraOffset.x, fixedCameraOffset.y, facilityFocus.z + fixedCameraOffset.z);
+  const offset = getCameraOffsetForMode();
+  const desiredTarget = getCameraTargetForMode();
+  const desiredCamera = new THREE.Vector3(desiredTarget.x + offset.x, offset.y, desiredTarget.z + offset.z);
   camera.position.lerp(desiredCamera, 0.06);
-  controls.target.lerp(facilityFocus, 0.08);
+  controls.target.lerp(desiredTarget, 0.08);
   controls.update();
   renderer.render(scene, camera);
 }
