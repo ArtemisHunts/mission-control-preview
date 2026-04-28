@@ -312,6 +312,7 @@ function buildOffice() {
   buildVerifiedBayWallRimReadability();
   buildRooms();
   buildStationWorkspaceIdentityKits();
+  buildVerifiedSideOperatorBayReadability();
   buildVerifiedOuterBayActivityReadability();
   buildCommandHoloTableHero();
   buildVerifiedHoloGlobeCommandScale();
@@ -756,6 +757,51 @@ function buildNorthStarOperationsHub() {
   });
 }
 
+
+
+function buildVerifiedSideOperatorBayReadability() {
+  const deskMat = mat(0x111928, { roughness: 0.48, metalness: 0.62 });
+  const chairMat = mat(0x070b13, { roughness: 0.72, metalness: 0.28 });
+  const suitMat = mat(0xbfc8d7, { emissive: 0x21364e, emissiveIntensity: 0.07, roughness: 0.44, metalness: 0.22 });
+  const visorMat = mat(0xd8fbff, { emissive: COLORS.cyan, emissiveIntensity: 0.42, transparent: true, opacity: 0.52, roughness: 0.05 });
+  const cyanScreen = mat(0x59f1ff, { emissive: COLORS.cyan, emissiveIntensity: 0.62, transparent: true, opacity: 0.42, roughness: 0.08 });
+  const amberScreen = mat(0xffb65c, { emissive: COLORS.amber, emissiveIntensity: 0.58, transparent: true, opacity: 0.4, roughness: 0.1 });
+  const greenScreen = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.48, transparent: true, opacity: 0.36, roughness: 0.1 });
+  const violetScreen = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.48, transparent: true, opacity: 0.36, roughness: 0.1 });
+  const rimMat = mat(0xaef8ff, { emissive: COLORS.cyan, emissiveIntensity: 0.32, transparent: true, opacity: 0.22, roughness: 0.08 });
+
+  const bays = [
+    ['build floor large side operator bay', -6.55, 3.02, amberScreen, -10],
+    ['review large side operator bay', 6.55, 3.02, cyanScreen, 10],
+    ['observatory large side operator bay', -7.25, -3.35, violetScreen, -8],
+    ['deploy large side operator bay', 7.25, -3.35, greenScreen, 8]
+  ];
+
+  bays.forEach(([name, x, z, screenMat, yaw]) => {
+    const side = x < 0 ? -1 : 1;
+    const rot = THREE.MathUtils.degToRad(yaw);
+    const desk = box(`verified side operator bay readability ${name} broad console island`, [2.82, 0.4, 1.26], [x, 0.78, z], deskMat);
+    desk.rotation.y = rot;
+    const screen = box(`verified side operator bay readability ${name} inward monitor face`, [1.98, 0.92, 0.075], [x - side * 0.24, 1.44, z - 0.48], screenMat);
+    screen.rotation.y = rot;
+    const status = box(`verified side operator bay readability ${name} thick status strip`, [2.12, 0.07, 0.052], [x, 1.16, z - 0.68], screenMat);
+    status.rotation.y = rot;
+    const chair = box(`verified side operator bay readability ${name} visible chair block`, [0.66, 0.5, 0.58], [x + side * 0.22, 0.78, z + 0.56], chairMat);
+    chair.rotation.y = rot;
+    const torso = box(`verified side operator bay readability ${name} operator torso`, [0.28, 0.54, 0.14], [x + side * 0.18, 1.22, z + 0.34], suitMat);
+    torso.rotation.y = rot;
+    cylinder(`verified side operator bay readability ${name} operator helmet`, 0.19, 0.18, 0.21, 14, [x + side * 0.18, 1.55, z + 0.29], suitMat);
+    const visor = box(`verified side operator bay readability ${name} operator cyan visor read`, [0.28, 0.07, 0.045], [x + side * 0.18, 1.57, z + 0.16], visorMat);
+    visor.rotation.y = rot;
+    const shoulder = box(`verified side operator bay readability ${name} helmet shoulder rim`, [0.64, 0.045, 0.045], [x + side * 0.16, 1.38, z + 0.12], rimMat);
+    shoulder.rotation.y = rot;
+  });
+
+  box('verified side operator bay readability left warm workpool floor edge', [3.5, 0.035, 0.045], [-6.55, 0.34, 3.72], amberScreen);
+  box('verified side operator bay readability right cool workpool floor edge', [3.5, 0.035, 0.045], [6.55, 0.34, 3.72], cyanScreen);
+  addLight('point', COLORS.amber, 1.55, [-6.55, 2.1, 3.25], 5.4);
+  addLight('point', COLORS.cyan, 1.55, [6.55, 2.1, 3.25], 5.4);
+}
 
 function buildVerifiedOuterBayActivityReadability() {
   const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.48, transparent: true, opacity: 0.3, roughness: 0.08 });

@@ -555,13 +555,21 @@
       "status": "shipped",
       "type": "verification-first playtest-fix/lighting-asset-pipeline-composition pass",
       "notes": "Verified deployed Pages loaded app.js?v=verified-modular-rear-bay-wall-20260428 with modular-bay-wall, rear-atrium, and center-value runtime markers and live app.js SHA matching the repo, captured deployed proof via direct CDP screenshot, then added selective material/rim readability to the existing rear bay-wall/gantry: cyan/amber gantry lips, portal catches, lift-tower edges, brushed metal gloss cards, central aperture glass, and a contained rear light. Local post-change screenshot captured; visual assessment said honestly closer with improved rear bay-wall readability, lighting/readability, and depth while preserving holo-table hierarchy."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "verified side operator bay readability pass",
+      "durationMs": 720000,
+      "status": "shipped",
+      "type": "verification-first playtest-fix/composition-asset-pipeline-lighting pass",
+      "notes": "Verified deployed Pages loaded app.js?v=verified-bay-wall-rim-readability-20260428 with bay-wall-rim, modular-bay-wall, and rear-atrium runtime markers and live app.js SHA matching the repo, captured deployed proof via direct CDP screenshot, then added fewer/larger side operator bay modules with broad console islands, inward monitor faces, chair blocks, readable operator torso/helmet/visor silhouettes, shoulder rims, and restrained warm/cool workpool lights. Initial screenshot pass was not meaningfully closer, so modules were moved inward/enlarged and screen/rim intensity increased. Final visual assessment said honestly closer with improved staffed side-bay readability while preserving central holo-table and rear bay hierarchy."
     }
   ],
   "stats": {
-    "count": 69,
+    "count": 70,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 422029,
+    "avgMs": 426286,
     "subagents": {
       "count": 3,
       "minMs": 47000,
