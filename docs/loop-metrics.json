@@ -467,13 +467,21 @@
       "status": "shipped",
       "type": "verification-first playtest-fix/composition-lighting pass",
       "notes": "Verified deployed Pages loaded latest app.js?v=verified-fabrication-deploy-20260428 and recent runtime markers, captured deployed screenshot, then added a soft rear service-deck reveal: cool fill planes, horizontal rear deck seams, vertical shaft ribs, gantry/module silhouettes, and side bay floor lift cues. Captured local post-change screenshot before commit; visual assessment said it is honestly closer with no critical regression, though vertical rib/deck activity remains subdued."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "verified rear rib machinery band pass",
+      "durationMs": 540000,
+      "status": "shipped",
+      "type": "verification-first playtest-fix/composition-asset pass",
+      "notes": "Verified deployed Pages loaded app.js?v=verified-rear-service-deck-20260428 with rear-service and fabrication/deploy markers, captured deployed screenshot, then added a controlled rear rib/machinery band: stronger vertical supports, inset shadow slots, dim practicals, cable trays, maintenance rails, and service transformer hatches concentrated left/right to keep the holo-table hero. Captured local post-change screenshot; visual assessment said honestly closer with no major regression, though rear band remains heavy/dark."
     }
   ],
   "stats": {
-    "count": 58,
+    "count": 59,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 385517,
+    "avgMs": 388136,
     "subagents": {
       "count": 3,
       "minMs": 47000,

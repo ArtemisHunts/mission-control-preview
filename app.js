@@ -301,6 +301,7 @@ function buildOffice() {
   buildVerifiedRearHangarDepthSeparation();
   buildVerifiedFabricationDeploySeparation();
   buildVerifiedRearServiceDeckReveal();
+  buildVerifiedRearRibMachineryBand();
   buildRooms();
   buildStationWorkspaceIdentityKits();
   buildCommandHoloTableHero();
@@ -1106,6 +1107,49 @@ function buildVerifiedRearServiceDeckReveal() {
   });
   box('verified rear service left gantry vertical reveal', [0.1, 0.92, 0.045], [-7.6, 2.74, -8.72], coolRim);
   box('verified rear service right gantry vertical reveal', [0.1, 0.92, 0.045], [7.6, 2.74, -8.72], amberSoft);
+}
+
+function buildVerifiedRearRibMachineryBand() {
+  const ribMat = mat(0x2e394b, { roughness: 0.48, metalness: 0.68 });
+  const ribShadow = mat(0x090f1a, { roughness: 0.82, metalness: 0.2 });
+  const coolPractical = mat(0x9fd2ff, { emissive: 0x4f9bd9, emissiveIntensity: 0.26, transparent: true, opacity: 0.18, roughness: 0.1 });
+  const amberPractical = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.22, transparent: true, opacity: 0.14, roughness: 0.14 });
+  const cableMat = mat(0x111a28, { roughness: 0.62, metalness: 0.46 });
+  const hatchMat = mat(0x182235, { roughness: 0.68, metalness: 0.36 });
+
+  // Screenshot-driven fix: a readable rear machinery band, split left/right so the holo-table keeps the center clean.
+  const ribXs = [-7.25, -6.25, -5.25, -4.25, 4.25, 5.25, 6.25, 7.25];
+  ribXs.forEach((x, index) => {
+    const side = x < 0 ? 'left' : 'right';
+    const rib = box(`verified rear rib machinery ${side} vertical support ${index + 1}`, [0.16, 1.66, 0.07], [x, 3.02, -9.18], ribMat);
+    rib.rotation.z = THREE.MathUtils.degToRad(x < 0 ? -2 : 2);
+    const shadow = box(`verified rear rib machinery ${side} inset shadow slot ${index + 1}`, [0.07, 1.24, 0.04], [x + (x < 0 ? 0.13 : -0.13), 2.98, -9.12], ribShadow);
+    shadow.rotation.z = rib.rotation.z;
+    const trim = box(`verified rear rib machinery ${side} dim vertical practical ${index + 1}`, [0.035, 0.96, 0.035], [x + (x < 0 ? 0.22 : -0.22), 3.02, -9.07], index % 2 ? coolPractical : amberPractical);
+    trim.rotation.z = rib.rotation.z;
+  });
+
+  const trays = [
+    ['left upper cable tray', -5.75, 3.78, -8.92, 3.8, coolPractical],
+    ['right upper cable tray', 5.75, 3.78, -8.92, 3.8, coolPractical],
+    ['left lower maintenance rail', -5.75, 2.26, -8.76, 3.4, amberPractical],
+    ['right lower maintenance rail', 5.75, 2.26, -8.76, 3.4, amberPractical]
+  ];
+  trays.forEach(([name, x, y, z, width, light]) => {
+    box(`verified rear rib machinery ${name}`, [width, 0.12, 0.08], [x, y, z], cableMat);
+    box(`verified rear rib machinery ${name} inset practical`, [width * 0.82, 0.032, 0.035], [x, y - 0.1, z + 0.05], light);
+  });
+
+  const hatches = [
+    ['left service transformer A', -6.85, 2.56, 0.72, 0.42, coolPractical],
+    ['left service transformer B', -4.72, 2.54, 0.58, 0.48, amberPractical],
+    ['right service transformer A', 4.72, 2.54, 0.58, 0.48, coolPractical],
+    ['right service transformer B', 6.85, 2.56, 0.72, 0.42, amberPractical]
+  ];
+  hatches.forEach(([name, x, y, width, height, light]) => {
+    box(`verified rear rib machinery ${name}`, [width, height, 0.07], [x, y, -8.58], hatchMat);
+    box(`verified rear rib machinery ${name} service slit`, [width * 0.66, 0.032, 0.035], [x, y + height * 0.18, -8.5], light);
+  });
 }
 
 
