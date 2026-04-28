@@ -256,6 +256,7 @@ function buildOffice() {
   buildRooms();
   buildStationWorkspaceIdentityKits();
   buildCommandHoloTableHero();
+  buildCommandPitLightingHierarchy();
   buildRailingsAndCatwalks();
   buildCommandCrewInteractionSilhouettes();
   buildOperators();
@@ -653,6 +654,43 @@ function buildCommandHoloTableHero() {
   box('hero hologram left console cyan spill edge', [0.96, 0.04, 0.05], [-2.9, 0.56, 0.96], cyan, group);
   box('hero hologram right console cyan spill edge', [0.96, 0.04, 0.05], [2.9, 0.56, 0.96], cyan, group);
   addLight('point', COLORS.cyan, 4.4, [0, 2.0, 0.38], 8.2);
+}
+
+function buildCommandPitLightingHierarchy() {
+  const warmPit = mat(0xffb56a, { emissive: COLORS.amber, emissiveIntensity: 0.44, transparent: true, opacity: 0.22, roughness: 0.16 });
+  const cyanHaze = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.2, transparent: true, opacity: 0.1, roughness: 0.05 });
+  const heroCyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.46, transparent: true, opacity: 0.2, roughness: 0.06 });
+  const dimmer = mat(0x02040a, { roughness: 0.98, metalness: 0.0, transparent: true, opacity: 0.34 });
+  const softDarker = mat(0x050812, { roughness: 0.9, metalness: 0.05, transparent: true, opacity: 0.24 });
+  const mutedAmber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.18, transparent: true, opacity: 0.14, roughness: 0.18 });
+
+  cylinder('lighting hierarchy warm under table bounce pool', 2.05, 2.28, 0.035, 40, [0, 0.82, 0.38], warmPit);
+  cylinder('lighting hierarchy cyan hologram atmosphere veil', 1.55, 1.9, 1.32, 36, [0, 1.7, 0.38], cyanHaze);
+  const heroBackGlow = box('lighting hierarchy soft cyan backplate behind globe', [2.4, 1.32, 0.045], [0, 2.02, -0.7], heroCyan);
+  heroBackGlow.rotation.x = THREE.MathUtils.degToRad(-4);
+  box('lighting hierarchy foreground commander warm rim', [0.82, 0.045, 0.04], [0, 1.78, 3.22], warmPit);
+  box('lighting hierarchy left crew cyan rim edge', [0.72, 0.04, 0.04], [-2.42, 1.62, 2.46], heroCyan);
+  box('lighting hierarchy right crew amber rim edge', [0.72, 0.04, 0.04], [2.42, 1.62, 2.46], mutedAmber);
+  box('lighting hierarchy front console amber underglow', [1.7, 0.04, 0.06], [0, 1.06, 3.08], warmPit);
+  box('lighting hierarchy left console dimmer hood', [1.12, 0.24, 0.05], [-2.88, 1.44, 0.18], softDarker);
+  box('lighting hierarchy right console dimmer hood', [1.12, 0.24, 0.05], [2.88, 1.44, 0.18], softDarker);
+
+  box('lighting hierarchy rear hangar contrast damper upper', [14.8, 0.58, 0.04], [0, 3.72, -9.92], dimmer);
+  box('lighting hierarchy rear hangar contrast damper lower', [14.8, 0.42, 0.04], [0, 2.22, -9.92], softDarker);
+  box('lighting hierarchy left station peripheral dim veil', [3.8, 1.08, 0.04], [-8.4, 2.14, 2.68], softDarker);
+  box('lighting hierarchy right station peripheral dim veil', [3.8, 1.08, 0.04], [8.4, 2.14, 2.68], softDarker);
+  box('lighting hierarchy rear station peripheral dim veil left', [3.7, 1.0, 0.04], [-8.4, 2.24, -6.36], softDarker);
+  box('lighting hierarchy rear station peripheral dim veil right', [3.7, 1.0, 0.04], [8.4, 2.24, -6.36], softDarker);
+  box('lighting hierarchy ceiling left corner vignette baffle', [5.8, 0.22, 5.2], [-8.2, 4.22, -3.2], dimmer);
+  box('lighting hierarchy ceiling right corner vignette baffle', [5.8, 0.22, 5.2], [8.2, 4.22, -3.2], dimmer);
+  box('lighting hierarchy left ceiling practical soft mask', [4.4, 0.06, 0.04], [-5.6, 4.05, 2.92], softDarker);
+  box('lighting hierarchy right ceiling practical soft mask', [4.4, 0.06, 0.04], [5.6, 4.05, 2.92], softDarker);
+  box('lighting hierarchy left floor bounce crescent', [2.4, 0.03, 0.05], [-1.82, 1.0, 1.82], warmPit);
+  box('lighting hierarchy right floor bounce crescent', [2.4, 0.03, 0.05], [1.82, 1.0, 1.82], warmPit);
+  box('lighting hierarchy rear seated crew cyan rim', [1.8, 0.035, 0.04], [0, 1.48, -2.18], heroCyan);
+  box('lighting hierarchy center supervisor sightline glow', [1.1, 0.035, 0.04], [0, 1.56, 1.88], mutedAmber);
+  box('lighting hierarchy pit amber threshold emphasis', [5.2, 0.035, 0.05], [0, 1.03, 2.92], mutedAmber);
+  box('lighting hierarchy rear cyan depth kept secondary', [8.8, 0.035, 0.04], [0, 2.68, -9.86], heroCyan);
 }
 
 

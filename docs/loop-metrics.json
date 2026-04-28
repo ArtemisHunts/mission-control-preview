@@ -363,13 +363,21 @@
       "status": "shipped",
       "type": "focused 30-minute composition/lighting/asset-blockout pass",
       "notes": "Added a stronger rear hangar/window context layer behind the command floor: cool panoramic glass/haze, pressure frame and mullions, docked shuttle silhouette, maintenance crane arms, runway recession lines, side asteroid dock shoulders, service beacons, and a cyan reflected rim. The pass anchors the operations floor inside a larger asteroid-base hangar without changing camera/fog/exposure or adding exterior clutter. Browser screenshot capture remained blocked by policy and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "command pit lighting hierarchy pass",
+      "durationMs": 480000,
+      "status": "shipped",
+      "type": "focused 30-minute lighting/composition pass",
+      "notes": "Added command-pit lighting hierarchy: warm under-table bounce, cyan hologram haze/backplate, crew and console rim strips, peripheral dim veils, rear hangar contrast dampers, ceiling vignette baffles, and floor bounce accents. The pass is intended to make the table/crew first-read while keeping stations and rear hangar secondary. Browser screenshot capture remained blocked by policy and is documented."
     }
   ],
   "stats": {
-    "count": 45,
+    "count": 46,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 310889,
+    "avgMs": 314565,
     "subagents": {
       "count": 3,
       "minMs": 47000,
