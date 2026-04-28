@@ -302,6 +302,7 @@ function buildOffice() {
   buildVerifiedFabricationDeploySeparation();
   buildVerifiedRearServiceDeckReveal();
   buildVerifiedRearRibMachineryBand();
+  buildVerifiedUpperRearVoidBreaks();
   buildRooms();
   buildStationWorkspaceIdentityKits();
   buildCommandHoloTableHero();
@@ -1150,6 +1151,43 @@ function buildVerifiedRearRibMachineryBand() {
     box(`verified rear rib machinery ${name}`, [width, height, 0.07], [x, y, -8.58], hatchMat);
     box(`verified rear rib machinery ${name} service slit`, [width * 0.66, 0.032, 0.035], [x, y + height * 0.18, -8.5], light);
   });
+}
+
+function buildVerifiedUpperRearVoidBreaks() {
+  const glass = mat(0x081a2a, { emissive: 0x0d3a62, emissiveIntensity: 0.24, transparent: true, opacity: 0.3, roughness: 0.12, metalness: 0.18 });
+  const haze = mat(0x75baff, { emissive: 0x2c7fbd, emissiveIntensity: 0.2, transparent: true, opacity: 0.14, roughness: 0.04 });
+  const rim = mat(0x9fd2ff, { emissive: 0x4f9bd9, emissiveIntensity: 0.24, transparent: true, opacity: 0.18, roughness: 0.08 });
+  const warmRim = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.18, transparent: true, opacity: 0.12, roughness: 0.12 });
+  const asteroid = mat(0x0b111d, { roughness: 0.92, metalness: 0.04 });
+  const star = mat(0xbfe4ff, { emissive: 0x87d4ff, emissiveIntensity: 0.32, transparent: true, opacity: 0.34, roughness: 0.1 });
+
+  // Recess the heavy rear band with narrow exterior apertures; leave the command-table center mostly clean.
+  const apertures = [
+    ['far left hangar slit', -6.55, 3.52, 1.45, 0.44, rim],
+    ['mid left hangar slit', -4.45, 3.62, 1.18, 0.34, warmRim],
+    ['mid right hangar slit', 4.45, 3.62, 1.18, 0.34, rim],
+    ['far right hangar slit', 6.55, 3.52, 1.45, 0.44, warmRim]
+  ];
+  apertures.forEach(([name, x, y, width, height, trim], index) => {
+    box(`verified upper rear void ${name} cool glass`, [width, height, 0.04], [x, y, -9.36], glass);
+    box(`verified upper rear void ${name} exterior haze`, [width * 0.84, height * 0.46, 0.035], [x, y, -9.32], haze);
+    box(`verified upper rear void ${name} lower recessed rim`, [width * 0.94, 0.028, 0.032], [x, y - height * 0.58, -9.28], trim);
+    box(`verified upper rear void ${name} upper shadow lip`, [width, 0.055, 0.04], [x, y + height * 0.58, -9.26], asteroid);
+    box(`verified upper rear void ${name} asteroid exterior notch`, [width * 0.28, height * 0.5, 0.035], [x + (index % 2 ? -0.34 : 0.34), y - 0.02, -9.24], asteroid);
+  });
+
+  const starPins = [
+    [-6.95, 3.58], [-6.18, 3.45], [-4.65, 3.66], [-4.1, 3.54],
+    [4.08, 3.55], [4.72, 3.68], [6.15, 3.46], [6.92, 3.6]
+  ];
+  starPins.forEach(([x, y], index) => {
+    box(`verified upper rear void exterior star pin ${index + 1}`, [0.055, 0.018, 0.022], [x, y, -9.2], star);
+  });
+
+  box('verified upper rear void continuous lower edge relief', [12.6, 0.026, 0.032], [0, 3.18, -8.92], rim);
+  box('verified upper rear void central clean shadow reserve', [2.1, 0.5, 0.04], [0, 3.56, -9.18], asteroid);
+  box('verified upper rear void left lintel fade', [3.4, 0.04, 0.035], [-5.5, 3.88, -9.12], rim);
+  box('verified upper rear void right lintel fade', [3.4, 0.04, 0.035], [5.5, 3.88, -9.12], rim);
 }
 
 

@@ -475,13 +475,21 @@
       "status": "shipped",
       "type": "verification-first playtest-fix/composition-asset pass",
       "notes": "Verified deployed Pages loaded app.js?v=verified-rear-service-deck-20260428 with rear-service and fabrication/deploy markers, captured deployed screenshot, then added a controlled rear rib/machinery band: stronger vertical supports, inset shadow slots, dim practicals, cable trays, maintenance rails, and service transformer hatches concentrated left/right to keep the holo-table hero. Captured local post-change screenshot; visual assessment said honestly closer with no major regression, though rear band remains heavy/dark."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "verified upper rear void breaks pass",
+      "durationMs": 520000,
+      "status": "shipped",
+      "type": "verification-first playtest-fix/composition-lighting pass",
+      "notes": "Verified deployed Pages loaded app.js?v=verified-rear-rib-machinery-20260428 with rear-rib and rear-service markers, captured deployed screenshot, then added controlled upper rear void breaks: narrow hangar/window slits, cool exterior haze, asteroid/star silhouettes, lower-edge relief, and lintel fades. Captured local post-change screenshot; visual assessment said honestly closer but modest, with no critical regression and table still hero."
     }
   ],
   "stats": {
-    "count": 59,
+    "count": 60,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 388136,
+    "avgMs": 390333,
     "subagents": {
       "count": 3,
       "minMs": 47000,
