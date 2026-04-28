@@ -307,6 +307,7 @@ function buildOffice() {
   buildRailingsAndCatwalks();
   buildCommandCrewInteractionSilhouettes();
   buildVerifiedOperatorWorkstationActivity();
+  buildVerifiedOperatorReadabilityAnchors();
   buildOperators();
   applyVerifiedOverviewOcclusionRelief();
   configureOverviewClearSightlinePrune();
@@ -1286,6 +1287,53 @@ function buildVerifiedOperatorWorkstationActivity() {
   });
   box('build floor small rolling task cart', [0.48, 0.28, 0.34], [-8.18, 0.76, 0.12], shadow);
   box('deploy dock small rolling task cart', [0.48, 0.28, 0.34], [8.18, 0.76, -4.52], shadow);
+}
+
+function buildVerifiedOperatorReadabilityAnchors() {
+  const bodyMat = mat(0x182131, { roughness: 0.5, metalness: 0.34 });
+  const shadowMat = mat(0x03060c, { roughness: 0.94, metalness: 0.04 });
+  const consoleMat = mat(0x071526, { emissive: 0x0a2f4d, emissiveIntensity: 0.24, transparent: true, opacity: 0.42, roughness: 0.16, metalness: 0.22 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.78, transparent: true, opacity: 0.52, roughness: 0.08 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.64, transparent: true, opacity: 0.48, roughness: 0.1 });
+
+  const anchors = [
+    ['readable front left operator anchor', -1.34, 2.88, -12, 1.04, cyan, 'seated'],
+    ['readable front right operator anchor', 1.34, 2.88, 12, 1.04, amber, 'seated'],
+    ['readable mid left console anchor', -3.58, 0.72, -64, 0.98, amber, 'lean'],
+    ['readable mid right console anchor', 3.58, 0.72, 64, 0.98, cyan, 'lean'],
+    ['readable rear left bay operator anchor', -2.28, -2.48, -154, 0.92, cyan, 'standing'],
+    ['readable rear right bay operator anchor', 2.28, -2.48, 154, 0.92, amber, 'standing']
+  ];
+
+  anchors.forEach(([name, x, z, yaw, scale, accent, pose], index) => {
+    const group = new THREE.Group();
+    group.name = name;
+    const baseY = pose === 'seated' ? 0.98 : 1.06;
+    group.position.set(x, baseY, z);
+    group.rotation.y = THREE.MathUtils.degToRad(yaw);
+    root.add(group);
+
+    const seated = pose === 'seated';
+    const torsoHeight = (seated ? 0.58 : 0.82) * scale;
+    const torso = cylinder(`${name} clear torso silhouette`, 0.16 * scale, 0.22 * scale, torsoHeight, 10, [0, 0.22 * scale, 0], bodyMat, group);
+    torso.rotation.z = pose === 'lean' ? (x < 0 ? -0.15 : 0.15) : 0;
+    const head = sphere(`${name} readable helmet silhouette`, 0.18 * scale, 12, [0, 0.72 * scale, 0.02 * scale], bodyMat, group);
+    head.scale.y = 1.1;
+    box(`${name} bright visor head cue`, [0.25 * scale, 0.055 * scale, 0.04 * scale], [0, 0.74 * scale, 0.17 * scale], accent, group);
+    box(`${name} chest role light`, [0.2 * scale, 0.04 * scale, 0.03 * scale], [0, 0.34 * scale, 0.18 * scale], accent, group);
+    box(`${name} strong contact shadow`, [0.54 * scale, 0.035 * scale, 0.34 * scale], [0, -0.34 * scale, 0], shadowMat, group);
+    box(`${name} left rim shoulder`, [0.05 * scale, 0.42 * scale, 0.04 * scale], [-0.2 * scale, 0.34 * scale, 0.14 * scale], accent, group);
+    box(`${name} right working arm`, [0.42 * scale, 0.045 * scale, 0.045 * scale], [0.2 * scale, 0.28 * scale, 0.2 * scale], pose === 'lean' ? accent : bodyMat, group);
+    if (seated) box(`${name} readable chair back silhouette`, [0.5 * scale, 0.42 * scale, 0.08 * scale], [0, -0.05 * scale, -0.22 * scale], bodyMat, group);
+
+    const panelX = x + (x < 0 ? 0.34 : -0.34);
+    const panelZ = z + (z > 1 ? 0.36 : -0.32);
+    const panel = box(`${name} paired lit workstation panel`, [0.72 * scale, 0.34 * scale, 0.05 * scale], [panelX, baseY + 0.24 * scale, panelZ], consoleMat);
+    panel.rotation.y = group.rotation.y;
+    const scan = box(`${name} paired workstation scanline`, [0.54 * scale, 0.035 * scale, 0.035 * scale], [panelX, baseY + 0.38 * scale, panelZ + 0.03], accent);
+    scan.rotation.y = group.rotation.y;
+    operators.push({ group, baseY, index: index + 80, agent: { name } });
+  });
 }
 
 

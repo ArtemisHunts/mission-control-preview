@@ -435,13 +435,21 @@
       "status": "shipped",
       "type": "verification-first playtest-fix/composition-asset-pipeline pass",
       "notes": "Verified deployed Pages loaded latest app.js?v=verified-rear-hangar-depth-20260428 and recent runtime markers, captured deployed screenshot, then added bounded operator/workstation activity: extra crew silhouettes, active monitor slabs, status scanlines, task chips, cable runs, and small task carts. Captured local post-change screenshot before commit; visual assessment said it is modestly closer with no critical regression, though operators still need more legible staffing/readability later."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "verified operator readability anchor pass",
+      "durationMs": 660000,
+      "status": "shipped",
+      "type": "verification-first playtest-fix/composition-asset-pipeline pass",
+      "notes": "Verified deployed Pages loaded latest app.js?v=verified-operator-workstations-20260428 and recent runtime markers, captured deployed screenshot, then promoted six operators into readable central-ring human-scale anchors with larger silhouettes, visor/chest/rim highlights, contact shadows, and paired workstation panels. Captured local post-change screenshot before commit; visual assessment said the pass is closer with no critical regression, though some operators still blend into dark console geometry."
     }
   ],
   "stats": {
-    "count": 54,
+    "count": 55,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 364074,
+    "avgMs": 369455,
     "subagents": {
       "count": 3,
       "minMs": 47000,
