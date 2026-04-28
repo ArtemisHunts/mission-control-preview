@@ -491,13 +491,21 @@
       "status": "shipped",
       "type": "verification-first playtest-fix/composition-lighting pass",
       "notes": "Verified deployed Pages loaded app.js?v=verified-upper-rear-void-breaks-20260428 with rear-service/rear-rib/upper-void runtime markers and live app.js SHA matching the repo, captured deployed proof via direct CDP screenshot after browser screenshot/evaluate timed out, then added a more readable rear panoramic hangar/window field plus stronger ceiling practical strip cues and modest rear/overhead fill. Captured local post-change screenshot; visual assessment said honestly closer but marginal, with rear panorama still too abstract/dark."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "verified holo globe command scale pass",
+      "durationMs": 600000,
+      "status": "shipped",
+      "type": "verification-first playtest-fix/composition-lighting pass",
+      "notes": "Verified deployed Pages loaded app.js?v=verified-rear-panorama-ceiling-strips-20260428 with rear-panorama/upper-void/rear-rib runtime markers and live app.js SHA matching the repo, captured deployed proof via direct CDP screenshot, then enlarged the central blue holographic mission globe/table read and added clearer operator console-ring silhouettes. Captured local post-change screenshot; visual assessment said the pass is honestly closer with stronger central focal hierarchy and no major regression, though outer stations and rear context remain under-defined."
     }
   ],
   "stats": {
-    "count": 61,
+    "count": 62,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 392787,
+    "avgMs": 396129,
     "subagents": {
       "count": 3,
       "minMs": 47000,

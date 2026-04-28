@@ -309,6 +309,7 @@ function buildOffice() {
   buildRooms();
   buildStationWorkspaceIdentityKits();
   buildCommandHoloTableHero();
+  buildVerifiedHoloGlobeCommandScale();
   buildCommandPitLightingHierarchy();
   buildCommandPitMaterialContrast();
   buildRailingsAndCatwalks();
@@ -813,6 +814,65 @@ function buildCommandHoloTableHero() {
   box('hero hologram left console cyan spill edge', [0.96, 0.04, 0.05], [-2.9, 0.56, 0.96], cyan, group);
   box('hero hologram right console cyan spill edge', [0.96, 0.04, 0.05], [2.9, 0.56, 0.96], cyan, group);
   addLight('point', COLORS.cyan, 4.4, [0, 2.0, 0.38], 8.2);
+}
+
+
+function buildVerifiedHoloGlobeCommandScale() {
+  const command = new THREE.Group();
+  command.position.set(0, 0.0, 0.38);
+  root.add(command);
+
+  const holoGlass = mat(0x8ff7ff, { emissive: COLORS.cyan, emissiveIntensity: 1.56, transparent: true, opacity: 0.34, roughness: 0.03 });
+  const holoCore = mat(0xd7fdff, { emissive: COLORS.cyan, emissiveIntensity: 1.72, transparent: true, opacity: 0.48, roughness: 0.03 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.82, transparent: true, opacity: 0.44, roughness: 0.06 });
+  const cyanSoft = mat(0x7fc7ff, { emissive: 0x45b7ff, emissiveIntensity: 0.46, transparent: true, opacity: 0.24, roughness: 0.08 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.5, transparent: true, opacity: 0.3, roughness: 0.12 });
+  const blackGlass = mat(0x030914, { roughness: 0.12, metalness: 0.34, transparent: true, opacity: 0.78, emissive: 0x04192a, emissiveIntensity: 0.1 });
+  const suit = mat(0x8f9bb0, { roughness: 0.42, metalness: 0.42, emissive: 0x17243a, emissiveIntensity: 0.08 });
+  // Screenshot-driven hero correction: the north-star board needs a commanding blue globe, not a tiny table prop.
+  const outerGlobe = sphere('verified holo globe command scale translucent outer mission sphere', 1.46, 32, [0, 2.76, 0], holoGlass, command);
+  outerGlobe.scale.set(1.1, 0.84, 1.16);
+  const coreGlobe = sphere('verified holo globe command scale bright inner tactical core', 0.78, 24, [0, 2.76, 0], holoCore, command);
+  coreGlobe.scale.set(1.0, 0.78, 1.05);
+  const beam = cylinder('verified holo globe command scale readable vertical scan beam', 0.84, 1.38, 3.22, 36, [0, 2.02, 0], cyanSoft, command);
+  beam.rotation.y = 0.16;
+  const equator = torus('verified holo globe command scale bright equator orbit', 1.66, 0.026, 8, 72, [0, 2.76, 0], cyan, command);
+  equator.rotation.x = Math.PI / 2;
+  const polar = torus('verified holo globe command scale vertical polar orbit', 1.34, 0.022, 8, 64, [0, 2.76, 0], cyanSoft, command);
+  polar.rotation.y = Math.PI / 2;
+  polar.rotation.z = 0.28;
+  const amberOrbit = torus('verified holo globe command scale amber transfer orbit', 1.9, 0.018, 8, 72, [0, 2.76, 0], amber, command);
+  amberOrbit.rotation.x = Math.PI / 2.18;
+  amberOrbit.rotation.z = -0.42;
+
+  const tableOuter = torus('verified holo globe command scale thick cyan table hero rim', 2.76, 0.038, 8, 80, [0, 1.22, 0], cyan, command);
+  tableOuter.rotation.x = Math.PI / 2;
+  const tableInner = torus('verified holo globe command scale amber pit command ring', 2.2, 0.026, 8, 72, [0, 1.25, 0], amber, command);
+  tableInner.rotation.x = Math.PI / 2;
+  cylinder('verified holo globe command scale blue floor bounce disk', 3.05, 3.05, 0.035, 48, [0, 0.88, 0], cyanSoft, command);
+
+  const consoleStations = [
+    ['front center', 0, 3.28, 0, 1.66, amber],
+    ['front left', -1.94, 2.72, -24, 1.28, cyan],
+    ['front right', 1.94, 2.72, 24, 1.28, cyan],
+    ['left command arc', -3.18, 0.72, -78, 1.12, amber],
+    ['right command arc', 3.18, 0.72, 78, 1.12, amber],
+    ['rear watch', 0, -2.72, 180, 1.36, cyanSoft]
+  ];
+  consoleStations.forEach(([name, x, z, yaw, width, accent], index) => {
+    const base = box(`verified holo globe command scale ${name} operator console wedge`, [width, 0.34, 0.54], [x, 1.08, z], blackGlass, command);
+    base.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const screen = box(`verified holo globe command scale ${name} readable blue reader panel`, [width * 0.78, 0.42, 0.045], [x, 1.42, z - 0.2], accent, command);
+    screen.rotation.y = base.rotation.y;
+    const body = box(`verified holo globe command scale ${name} seated operator torso`, [0.22, 0.48, 0.18], [x * 0.95, 1.48, z + (z > 0 ? 0.46 : -0.42)], suit, command);
+    body.rotation.y = base.rotation.y;
+    const head = sphere(`verified holo globe command scale ${name} operator helmet highlight`, 0.13, 12, [x * 0.95, 1.82, z + (z > 0 ? 0.46 : -0.42)], suit, command);
+    head.scale.y = 0.92;
+    const rim = box(`verified holo globe command scale ${name} operator cyan rim cue`, [0.28, 0.035, 0.035], [x * 0.95, 1.97, z + (z > 0 ? 0.58 : -0.54)], index % 2 ? amber : cyan, command);
+    rim.rotation.y = base.rotation.y;
+  });
+
+  addLight('point', COLORS.cyan, 5.6, [0, 2.75, 0.38], 8.8);
 }
 
 function buildCommandPitLightingHierarchy() {
