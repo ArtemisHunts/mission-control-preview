@@ -339,13 +339,21 @@
       "status": "shipped",
       "type": "focused 30-minute composition/asset-blockout pass",
       "notes": "Added seven human-scale interaction silhouettes around the central command table: foreground commander pointing at the hologram, two leaning console operators with glow pools, two tablet/discussion operators, and two seated rear console operators. They use dark suits with cyan/amber visor/chest/rim accents and push animation through the existing operator update list. Preserved asteroid border and hero hologram while making the hub feel actively operated. Browser screenshot capture remained blocked by policy and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "station workspace identity kits pass",
+      "durationMs": 480000,
+      "status": "shipped",
+      "type": "focused 30-minute composition/asset-blockout pass",
+      "notes": "Added four role-specific station workspace kits around the central operations hub: navigation/traffic, security/tactical, asteroid telemetry, and logistics/hangar operations. Each kit uses broad console workbenches, local task boards, role data strips, task lamps, equipment towers, cable/circulation seams, and status indicators to make the surrounding stations read as usable workspaces rather than generic colored bays. Browser screenshot capture remained blocked by policy and is documented."
     }
   ],
   "stats": {
-    "count": 42,
+    "count": 43,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 298810,
+    "avgMs": 303023,
     "subagents": {
       "count": 3,
       "minMs": 47000,

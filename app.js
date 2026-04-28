@@ -252,6 +252,7 @@ function buildOffice() {
   buildNorthStarOperationsHub();
   buildReadabilityHotfixLighting();
   buildRooms();
+  buildStationWorkspaceIdentityKits();
   buildCommandHoloTableHero();
   buildRailingsAndCatwalks();
   buildCommandCrewInteractionSilhouettes();
@@ -694,6 +695,45 @@ function buildEmbeddedBayFrame(label, group, accent) {
   // Pruned four small rock chunks per bay; two broad cheek plates keep the carved read without pebble spam.
   box(`${label} broad left carved cheek`, [0.42, 1.48, 0.42], [-2.38, 0.96, -0.82], rockMat, group);
   box(`${label} broad right carved cheek`, [0.42, 1.48, 0.42], [2.38, 0.96, -0.82], rockMat, group);
+}
+
+function buildStationWorkspaceIdentityKits() {
+  const dark = mat(0x050914, { roughness: 0.74, metalness: 0.32 });
+  const steel = mat(0x3b465d, { roughness: 0.36, metalness: 0.76 });
+  const blackGlass = mat(0x061323, { roughness: 0.12, metalness: 0.24, transparent: true, opacity: 0.66, emissive: 0x08233b, emissiveIntensity: 0.16 });
+  const warm = mat(0xffc071, { emissive: COLORS.amber, emissiveIntensity: 0.34, transparent: true, opacity: 0.24, roughness: 0.12 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.34, transparent: true, opacity: 0.24, roughness: 0.08 });
+  const gold = mat(COLORS.gold, { emissive: COLORS.gold, emissiveIntensity: 0.32, transparent: true, opacity: 0.24, roughness: 0.1 });
+  const coral = mat(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: 0.28, transparent: true, opacity: 0.22, roughness: 0.1 });
+  const green = mat(COLORS.green, { emissive: COLORS.green, emissiveIntensity: 0.28, transparent: true, opacity: 0.22, roughness: 0.1 });
+  const violet = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.28, transparent: true, opacity: 0.22, roughness: 0.1 });
+
+  const workspaces = [
+    ['build navigation traffic control', -8.4, 2.35, gold, warm, -0.08],
+    ['review security tactical coordination', 8.4, 2.35, coral, warm, 0.08],
+    ['observatory asteroid telemetry', -8.4, -6.05, violet, cyan, -0.04],
+    ['deploy logistics hangar operations', 8.4, -6.05, green, cyan, 0.04]
+  ];
+
+  workspaces.forEach(([name, x, z, accent, lamp, skew], index) => {
+    box(`${name} dedicated console workbench`, [3.1, 0.34, 0.86], [x, 1.12, z + 0.68], dark);
+    box(`${name} black glass task surface`, [2.56, 0.06, 0.58], [x, 1.34, z + 0.42], blackGlass);
+    box(`${name} local task board wall`, [2.34, 0.86, 0.08], [x, 2.18, z - 0.42], blackGlass);
+    box(`${name} primary data strip`, [1.86, 0.045, 0.045], [x, 2.54, z - 0.34], accent);
+    box(`${name} secondary task graph`, [0.08, 0.46, 0.04], [x - 0.74, 2.2, z - 0.31], accent);
+    box(`${name} secondary task graph twin`, [0.08, 0.36, 0.04], [x + 0.72, 2.15, z - 0.31], index % 2 ? cyan : warm);
+    box(`${name} warm local overhead task lamp`, [2.7, 0.045, 0.16], [x, 2.82, z + 0.28], lamp);
+    box(`${name} role keyboard lane`, [2.18, 0.04, 0.05], [x, 1.52, z + 0.82], accent);
+    box(`${name} supervisor status header`, [2.0, 0.055, 0.05], [x, 2.72, z - 0.76], accent);
+    box(`${name} tiny team-ready indicator`, [0.32, 0.055, 0.05], [x + 1.18, 2.72, z - 0.76], lamp);
+    box(`${name} inbound task queue marker`, [0.32, 0.055, 0.05], [x - 1.18, 2.72, z - 0.76], index % 2 ? cyan : warm);
+    box(`${name} side equipment tower left`, [0.22, 1.02, 0.34], [x - 1.78, 1.72, z + 0.18], steel);
+    box(`${name} side equipment tower right`, [0.22, 1.02, 0.34], [x + 1.78, 1.72, z + 0.18], steel);
+    box(`${name} floor cable run to command ring`, [0.08, 0.025, 2.1], [x * 0.82, 0.74, z * 0.68], index % 2 ? accent : cyan);
+    box(`${name} return circulation seam`, [0.08, 0.025, 1.28], [x * 0.92, 0.75, z * 0.48], lamp);
+    box(`${name} threshold task light chip`, [0.42, 0.03, 0.05], [x, 0.8, z + 1.08], accent);
+    box(`${name} circulation arrow datum`, [1.26, 0.028, 0.06], [x + skew * 7, 0.78, z + 1.38], lamp);
+  });
 }
 
 
