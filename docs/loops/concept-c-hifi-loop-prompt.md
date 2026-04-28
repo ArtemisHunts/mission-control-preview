@@ -11,7 +11,7 @@ You are Artemis continuing Mission Control Concept C high-fidelity work.
 ## Prime directive
 No more blockout. Every iteration must move the scene toward final-form high-fidelity concept art.
 
-Do not make “progress” by adding random primitive boxes. The only acceptable primitive-like additions are purposeful procedural geometry, material systems, post/lighting systems, or temporary scaffolding explicitly replacing an older blockout module.
+Do not make “progress” by adding random primitive boxes or low-poly slab clusters. The only acceptable primitive-like additions are purposeful carriers for higher-density procedural geometry, material systems, post/lighting systems, or temporary scaffolding explicitly replacing an older blockout module.
 
 ## Current status
 - Stable live baseline is `main` at `4182445 Ship gate Concept C final silhouette pass`.
@@ -23,6 +23,20 @@ Do not make “progress” by adding random primitive boxes. The only acceptable
   - `buildHifiAsteroidShell()`
   - `buildHifiCommandShaft()`
 - HIFI-01 gate verdict: direction approved / fidelity not approved. Overall ~2.9/5.
+
+
+## New poly-density mandate — added after Michael critique
+Michael called out that the current hi-fi work is still very low poly count. He is right. From now on, the loop must stop accepting broad faceted procedural chunks as “hi-fi.”
+
+Every new visual pass must materially increase actual geometric richness or material-depth richness. Prefer:
+- subdivided/displaced custom `BufferGeometry` surfaces with many vertices, not 8–16 point prisms
+- layered fracture networks with small/medium/large crack hierarchy
+- bevel/rim geometry around cut faces and apertures
+- dense shaft rings, cables, bridge spans, braces, collars, and gantries with real segment counts
+- surface detail systems: vertex-color noise, dust/debris clusters, mineral veins, normal-like plane variation
+- if a primitive is used, it must be a temporary carrier for a higher-fidelity system, not the final visible form
+
+A pass that only rearranges low-poly slabs, boxes, or cylinders should be treated as a failure, even if composition improves.
 
 ## Gold-standard target
 High-fidelity Concept C asteroid cutaway:
@@ -66,30 +80,30 @@ Gold-standard gate:
 ## Hi-fi priority ladder
 Work down this ladder. Do not skip to polish if foundations fail.
 
-1. HIFI-02 secondary asteroid breakup
-   - fracture networks, chipped edge clusters, smaller cut planes, craters, rubble pockets
-   - stronger vertex color/material variation on rock planes
-   - darker underside occlusion and rim-lit cut faces
+1. HIFI-04A poly-density foundation pass
+   - replace the low-poly asteroid mantle approach with subdivided/displaced custom BufferGeometry
+   - increase vertex count and face density enough to remove the broad folded-paper read
+   - add real multi-scale fracture geometry, not just accent strips
+   - create a reusable high-density rock surface/detail generator
 
-2. HIFI-03 carved integration kit
+2. HIFI-04B command shaft high-poly depth pass
+   - stacked descending ring levels with real segment counts
+   - cables, bridge spans, lower silhouettes, lift rails, and small lights fading downward
+   - darker rear shaft wall and atmospheric falloff
+
+3. HIFI-05 carved integration kit
    - bolted collars around room apertures
    - retaining ribs and braces disappearing into rock
    - contact AO strips under decks and against walls
    - conduits/cables drilled through asteroid
    - dust/debris piles on deck edges
 
-3. HIFI-04 command shaft depth
-   - stacked descending ring levels
-   - bridge spans crossing the shaft
-   - silhouettes/lights fading downward
-   - dark rear shaft wall and atmospheric falloff
-
-4. HIFI-05 production bay replacement
+4. HIFI-06 production bay replacement
    - replace boxy arm/conveyor language with procedural machinery modules
    - large ship-frame silhouette with ribs and gantry rails
    - warm task lighting and scale workers/drones
 
-5. HIFI-06 material/post pass
+5. HIFI-07 material/post pass
    - stronger material hierarchy for rock/metal/glass/emissive
    - bloom/fog/depth if stable and performant
    - avoid readability regressions

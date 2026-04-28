@@ -85,3 +85,17 @@ The loop should only write the done signal when a visual gate reaches:
 5. HIFI-06 material/post pass
 
 Main/live remains stable until Michael explicitly asks to ship the hi-fi branch.
+
+
+## Poly-density correction
+Michael called out after HIFI-03 that the work still looks very low-poly. This is now a loop-level correction, not a minor note.
+
+The next autonomous pass should prioritize actual geometry density before more composition/detail labels:
+
+1. create subdivided/displaced asteroid surface generation
+2. increase vertex/face count enough to kill the folded-paper low-poly read
+3. add multi-scale cracks/chips/rubble as real geometry or dense procedural detail
+4. upgrade command-shaft rings/cables/bridges with real segment counts
+5. stop accepting broad 8–16 point prisms as hi-fi assets
+
+Do not re-enable the loop after maintenance unless this correction remains in the active prompt.
