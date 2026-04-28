@@ -251,6 +251,7 @@ function buildOffice() {
   buildTargetCutawayMissionControl();
   buildRearHangarWindowScaleContext();
   buildInteriorDominanceMassing();
+  buildAsteroidInsertedArchitectureContrast();
   buildNorthStarOperationsHub();
   buildReadabilityHotfixLighting();
   buildRooms();
@@ -537,6 +538,43 @@ function buildInteriorDominanceMassing() {
   box('dominance review bay coral identity rail', [4.8, 0.045, 0.045], [8.35, 2.86, 3.78], coral);
   box('dominance observatory bay violet identity rail', [4.8, 0.045, 0.045], [-8.35, 2.96, -4.72], violet);
   box('dominance deploy bay green identity rail', [4.8, 0.045, 0.045], [8.35, 2.96, -4.72], green);
+}
+
+function buildAsteroidInsertedArchitectureContrast() {
+  const basalt = mat(0x17121a, { roughness: 0.98, metalness: 0.02 });
+  const cutFace = mat(0x2b2430, { roughness: 0.9, metalness: 0.04 });
+  const bronze = mat(0x8e6738, { roughness: 0.32, metalness: 0.78, emissive: 0x2f1806, emissiveIntensity: 0.06 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.18, transparent: true, opacity: 0.14, roughness: 0.08 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.16, transparent: true, opacity: 0.12, roughness: 0.12 });
+  const shadow = mat(0x020309, { roughness: 1.0, metalness: 0.0 });
+
+  box('inserted architecture rear left asteroid aperture shoulder', [2.2, 2.35, 0.14], [-9.6, 3.02, -10.0], basalt);
+  box('inserted architecture rear right asteroid aperture shoulder', [2.2, 2.35, 0.14], [9.6, 3.02, -10.0], basalt);
+  box('inserted architecture rear top rough cut lintel', [16.8, 0.42, 0.14], [0, 4.28, -10.02], cutFace);
+  box('inserted architecture rear lower rough cut sill', [16.4, 0.28, 0.14], [0, 1.82, -10.02], cutFace);
+  box('inserted architecture rear bronze retaining header', [14.8, 0.12, 0.06], [0, 4.02, -9.88], bronze);
+  box('inserted architecture rear bronze retaining sill', [14.8, 0.1, 0.06], [0, 2.06, -9.88], bronze);
+  box('inserted architecture rear left bronze jamb insert', [0.08, 1.74, 0.06], [-7.42, 3.05, -9.86], bronze);
+  box('inserted architecture rear right bronze jamb insert', [0.08, 1.74, 0.06], [7.42, 3.05, -9.86], bronze);
+  box('inserted architecture rear cool rim on rock cut', [12.2, 0.04, 0.045], [0, 3.78, -9.82], cyan);
+
+  const pockets = [
+    ['build bay', -10.85, 2.82, 2.2, amber],
+    ['review bay', 10.85, 2.82, 2.2, amber],
+    ['observatory bay', -10.85, 2.92, -5.88, cyan],
+    ['deploy bay', 10.85, 2.92, -5.88, cyan]
+  ];
+  pockets.forEach(([name, x, y, z, rim]) => {
+    box(`inserted architecture ${name} matte rock pocket`, [0.62, 2.0, 2.65], [x, y, z], basalt);
+    box(`inserted architecture ${name} bronze vertical retaining rail`, [0.08, 1.72, 0.08], [x * 0.985, y, z + 1.24], bronze);
+    box(`inserted architecture ${name} status rim caught on rock`, [0.045, 1.2, 0.05], [x * 0.975, y + 0.12, z - 0.68], rim);
+  });
+
+  box('inserted architecture left command pit rock retaining mass', [0.54, 0.52, 4.8], [-4.96, 1.12, 0.38], cutFace);
+  box('inserted architecture right command pit rock retaining mass', [0.54, 0.52, 4.8], [4.96, 1.12, 0.38], cutFace);
+  box('inserted architecture front command bronze retaining lip', [8.8, 0.08, 0.08], [0, 1.42, 3.88], bronze);
+  box('inserted architecture rear command bronze retaining lip', [7.8, 0.06, 0.06], [0, 1.4, -2.88], bronze);
+  box('inserted architecture rear command shadow undercut', [8.2, 0.12, 0.08], [0, 1.36, -3.06], shadow);
 }
 
 function buildNorthStarOperationsHub() {
