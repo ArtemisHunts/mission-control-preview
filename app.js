@@ -313,6 +313,7 @@ function buildOffice() {
   buildCommandHoloTableHero();
   buildVerifiedHoloGlobeCommandScale();
   buildVerifiedReadableWorkstationSilhouettes();
+  buildVerifiedCenterValueSeparation();
   buildCommandPitLightingHierarchy();
   buildCommandPitMaterialContrast();
   buildRailingsAndCatwalks();
@@ -962,8 +963,8 @@ function buildVerifiedReadableWorkstationSilhouettes() {
   const graphite = mat(0x151d2d, { roughness: 0.38, metalness: 0.72 });
   const suit = mat(0xa5b0c2, { roughness: 0.44, metalness: 0.42, emissive: 0x172338, emissiveIntensity: 0.08 });
   const shadow = mat(0x02040a, { roughness: 0.96, metalness: 0.04, transparent: true, opacity: 0.72 });
-  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.72, transparent: true, opacity: 0.38, roughness: 0.08 });
-  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.5, transparent: true, opacity: 0.3, roughness: 0.12 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.46, transparent: true, opacity: 0.24, roughness: 0.08 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.3, transparent: true, opacity: 0.18, roughness: 0.12 });
 
   // Fewer, larger operators: readable at default camera, not another layer of tiny specks.
   const pods = [
@@ -999,9 +1000,51 @@ function buildVerifiedReadableWorkstationSilhouettes() {
     rim.rotation.y = rot;
   });
 
-  addLight('point', COLORS.cyan, 2.8, [0, 2.2, 3.6], 5.8);
-  addLight('point', COLORS.amber, 1.9, [-3.4, 2.0, 2.2], 4.8);
-  addLight('point', COLORS.amber, 1.9, [3.4, 2.0, 2.2], 4.8);
+  addLight('point', COLORS.cyan, 1.6, [0, 2.2, 3.6], 4.8);
+  addLight('point', COLORS.amber, 0.95, [-3.4, 2.0, 2.2], 3.8);
+  addLight('point', COLORS.amber, 0.95, [3.4, 2.0, 2.2], 3.8);
+}
+
+
+function buildVerifiedCenterValueSeparation() {
+  const centerCyan = mat(0xaaf8ff, { emissive: COLORS.cyan, emissiveIntensity: 1.05, transparent: true, opacity: 0.42, roughness: 0.04 });
+  const centerWhite = mat(0xf1feff, { emissive: 0xbdfcff, emissiveIntensity: 0.86, transparent: true, opacity: 0.34, roughness: 0.05 });
+  const amberLow = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.22, transparent: true, opacity: 0.14, roughness: 0.12 });
+  const dimMask = mat(0x01030a, { roughness: 1.0, metalness: 0.0, transparent: true, opacity: 0.58 });
+  const coolRim = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.28, transparent: true, opacity: 0.16, roughness: 0.08 });
+  const darkGlass = mat(0x020711, { roughness: 0.72, metalness: 0.18, transparent: true, opacity: 0.68 });
+
+  // Screenshot-driven value tier: foreground crew supports the table; the table owns the brightest clean shape.
+  const heroLift = cylinder('verified center value separation clean cyan table lift disk', 3.28, 3.28, 0.035, 48, [0, 1.08, 0.38], centerCyan);
+  heroLift.rotation.y = 0.08;
+  const heroCore = cylinder('verified center value separation white-blue emitter accent', 0.46, 0.58, 0.055, 32, [0, 1.42, 0.38], centerWhite);
+  heroCore.rotation.y = 0.16;
+  const outerGuide = torus('verified center value separation crisp outer command ring', 3.18, 0.034, 8, 80, [0, 1.33, 0.38], centerCyan);
+  outerGuide.rotation.x = Math.PI / 2;
+  const innerGuide = torus('verified center value separation warm inner crew boundary ring', 2.42, 0.018, 8, 72, [0, 1.34, 0.38], amberLow);
+  innerGuide.rotation.x = Math.PI / 2;
+
+  const dimmers = [
+    ['foreground commander pod value mask', 0, 4.22, 2.58, 0],
+    ['front left pod value mask', -2.95, 3.42, 1.96, -24],
+    ['front right pod value mask', 2.95, 3.42, 1.96, 24]
+  ];
+  dimmers.forEach(([name, x, z, width, yaw]) => {
+    const mask = box(`verified center value separation ${name}`, [width, 0.34, 0.72], [x, 1.54, z], dimMask);
+    mask.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const topBaffle = box(`verified center value separation ${name} dark top baffle`, [width * 0.9, 0.08, 0.62], [x, 1.9, z - 0.16], darkGlass);
+    topBaffle.rotation.y = mask.rotation.y;
+    const inwardRim = box(`verified center value separation ${name} thin inward cyan rim`, [width * 0.78, 0.035, 0.035], [x, 1.7, z - 0.48], coolRim);
+    inwardRim.rotation.y = mask.rotation.y;
+  });
+
+  box('verified center value separation bright table front vertical read', [3.2, 0.08, 0.045], [0, 1.46, 2.08], centerWhite);
+  box('verified center value separation central floor cyan spill front', [5.4, 0.035, 0.04], [0, 1.02, 2.3], centerCyan);
+  box('verified center value separation central floor cyan spill rear', [4.2, 0.03, 0.04], [0, 1.02, -1.72], centerCyan);
+  box('verified center value separation left crew silhouette edge only', [0.66, 0.04, 0.035], [-2.96, 2.02, 2.98], coolRim);
+  box('verified center value separation right crew silhouette edge only', [0.66, 0.04, 0.035], [2.96, 2.02, 2.98], coolRim);
+
+  addLight('point', COLORS.cyan, 4.4, [0, 1.82, 0.38], 5.8);
 }
 
 function buildCommandPitLightingHierarchy() {
