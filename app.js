@@ -221,22 +221,28 @@ function buildAsteroidCutawayShell() {
   root.add(shell);
 
   // Foreground silhouette: four separate jagged masses, leaving all corners visibly open to stars.
-  polyMesh('concept-c jagged upper asteroid shell crown', [
-    [-10.9, 5.08], [-9.6, 6.54], [-7.4, 5.72], [-5.75, 6.92], [-3.05, 5.98], [-1.0, 6.36],
-    [0.8, 5.02], [2.72, 6.18], [5.7, 5.68], [8.35, 6.36], [11.15, 5.0], [9.32, 4.5],
-    [6.42, 4.94], [3.75, 4.22], [1.42, 4.72], [-1.18, 4.12], [-4.2, 4.92], [-6.86, 4.36], [-9.42, 4.82]
+  polyMesh('concept-c massive left-biased broken upper asteroid crown', [
+    [-12.15, 5.0], [-10.6, 6.86], [-8.85, 6.22], [-7.18, 7.28], [-4.92, 6.14], [-2.88, 6.72],
+    [-0.75, 5.42], [-1.82, 4.24], [-4.3, 4.72], [-7.4, 4.18], [-10.45, 4.64]
+  ], MATS.rockOuter, 4.05, shell);
+  polyMesh('concept-c smaller right broken upper asteroid crown island', [
+    [1.42, 5.64], [3.25, 5.16], [5.35, 5.98], [8.9, 5.22], [10.95, 5.76], [11.55, 4.78], [9.05, 4.34],
+    [6.3, 4.82], [3.65, 4.12], [1.62, 4.5]
   ], MATS.rockOuter, 4.05, shell);
   polyMesh('concept-c left asteroid wall with broken bite silhouette', [
-    [-13.5, 4.65], [-10.75, 4.3], [-10.05, 3.18], [-10.65, 2.38], [-9.82, 1.22], [-10.82, 0.34],
-    [-12.2, 0.66], [-13.82, 1.52], [-14.1, 2.92]
+    [-14.2, 4.95], [-11.05, 4.62], [-10.25, 3.42], [-11.25, 2.78], [-10.08, 1.46], [-11.22, 0.18],
+    [-12.92, 0.38], [-14.35, 1.24], [-14.82, 2.86]
   ], MATS.rockOuter, 4.05, shell);
   polyMesh('concept-c right asteroid wall with broken bite silhouette', [
-    [13.5, 4.65], [10.75, 4.3], [10.05, 3.18], [10.65, 2.38], [9.82, 1.22], [10.82, 0.34],
-    [12.2, 0.66], [13.82, 1.52], [14.1, 2.92]
+    [13.05, 4.22], [10.55, 4.0], [9.52, 3.05], [10.22, 2.52], [9.42, 1.18], [10.35, 0.58],
+    [11.36, 0.86], [13.18, 1.7], [13.58, 2.78]
   ], MATS.rockOuter, 4.05, shell);
-  polyMesh('concept-c broken lower asteroid sill leaves star corners', [
-    [-9.8, 0.58], [-7.8, 0.92], [-5.45, 0.38], [-3.1, 0.86], [-1.4, 0.42], [0.8, 0.72], [2.9, 0.28], [5.7, 0.74], [8.6, 0.32], [10.0, 0.55],
-    [8.4, -0.32], [5.6, -0.7], [2.1, -0.38], [-0.6, -0.78], [-3.9, -0.46], [-6.1, -0.84], [-8.8, -0.24]
+  polyMesh('concept-c heavy sagging left lower asteroid sill island', [
+    [-10.75, 0.78], [-8.62, 1.08], [-6.55, 0.48], [-4.7, 0.94], [-2.8, 0.22], [-1.35, 0.44],
+    [-2.1, -0.42], [-4.7, -1.16], [-7.22, -0.62], [-9.86, -0.98]
+  ], MATS.rockOuter, 4.22, shell);
+  polyMesh('concept-c lighter fractured right lower asteroid sill island', [
+    [1.78, 0.18], [4.35, 0.74], [7.42, 0.24], [9.55, 0.48], [8.22, -0.22], [5.94, -0.84], [3.24, -0.42], [1.08, -0.72]
   ], MATS.rockOuter, 4.22, shell);
 
   // Inner carved cut faces and thick side walls make the shell feel physical, not a matte.
@@ -258,10 +264,11 @@ function buildAsteroidCutawayShell() {
   retaining.forEach(([name, x, y, z, sx, sy, sz, color]) => box(`concept-c ${name}`, [sx, sy, sz], [x, y, z], color === COLORS.cyan ? MATS.cyanDim : MATS.amber, shell));
 
   const thicknessBlocks = [
-    ['left rear asteroid thickness volume', -11.15, 2.75, -2.8, 0.85, 4.4, 6.8],
-    ['right rear asteroid thickness volume', 11.15, 2.75, -2.8, 0.85, 4.4, 6.8],
-    ['upper left rear asteroid thickness volume', -5.4, 5.26, -3.0, 8.8, 0.84, 6.2],
-    ['upper right rear asteroid thickness volume', 5.9, 5.08, -3.25, 6.6, 0.62, 5.8]
+    ['left rear asteroid thickness volume', -11.55, 2.72, -2.8, 1.2, 4.9, 7.2],
+    ['right rear asteroid thickness volume', 11.05, 2.55, -2.8, 0.66, 3.8, 6.0],
+    ['upper left rear asteroid thickness volume', -6.1, 5.34, -3.0, 10.4, 1.02, 6.7],
+    ['upper right rear asteroid thickness volume', 6.35, 4.98, -3.25, 5.4, 0.52, 5.2],
+    ['left sagging underside asteroid belly mass', -6.9, -0.08, -2.15, 5.6, 0.74, 5.5]
   ];
   thicknessBlocks.forEach(([name, x, y, z, sx, sy, sz]) => box(`concept-c ${name}`, [sx, sy, sz], [x, y, z], MATS.rockOuter, shell));
   addRockSurfaceDetail(shell);
@@ -387,10 +394,12 @@ function buildAsymmetricRockBites() {
   asym.name = 'concept-c asymmetric asteroid bites and embedded seams';
   root.add(asym);
   const chunks = [
-    ['left heavy upper bite breaks symmetry', -8.8, 4.98, 2.85, 3.1, 0.62, 2.2, -12],
-    ['left lower protruding cut mass', -9.3, 1.0, 2.95, 1.4, 0.5, 1.3, 8],
-    ['right rear recessed cave cheek', 9.15, 3.7, -1.95, 1.2, 2.2, 3.1, -6],
-    ['right lower broken sill notch', 6.2, 0.42, 3.15, 2.4, 0.28, 1.2, -4]
+    ['left heavy upper bite breaks symmetry', -9.15, 5.18, 2.85, 4.2, 0.78, 2.5, -15],
+    ['left lower protruding cut mass', -9.95, 0.76, 2.95, 2.3, 0.74, 1.55, 10],
+    ['left hanging belly shard below production bay', -7.1, -0.02, 3.08, 3.4, 0.54, 1.36, -7],
+    ['right rear recessed cave cheek', 9.15, 3.7, -1.95, 0.95, 2.0, 2.7, -6],
+    ['right lower broken sill notch', 6.2, 0.42, 3.15, 1.5, 0.22, 1.0, -4],
+    ['small right chipped roof remnant keeps asymmetry honest', 7.7, 4.86, 2.92, 1.2, 0.24, 1.0, 8]
   ];
   chunks.forEach(([name, x, y, z, sx, sy, sz, rot], index) => {
     const chunk = box(`concept-c ${name}`, [sx, sy, sz], [x, y, z], index % 2 ? MATS.rockCut : MATS.rockOuter, asym);
@@ -409,11 +418,13 @@ function buildRockSwallowedFacilityDetails() {
   root.add(detail);
 
   const cutChunks = [
-    ['upper-left overhang fractured tooth A', -7.6, 4.62, 3.5, 1.1, 0.28, 0.82, -18],
-    ['upper-left overhang fractured tooth B', -5.1, 4.42, 3.45, 1.35, 0.22, 0.74, 12],
-    ['upper-right thinner broken tooth', 5.95, 4.48, 3.45, 1.55, 0.24, 0.7, -10],
-    ['left lower rock swallowing fabrication floor', -8.82, 0.72, 2.62, 2.0, 0.42, 1.1, 7],
-    ['right rear rock alcove wrapping deploy tank', 8.72, 1.88, -0.88, 1.55, 1.86, 1.2, -8]
+    ['upper-left overhang fractured tooth A', -8.0, 4.74, 3.5, 1.7, 0.34, 0.94, -20],
+    ['upper-left overhang fractured tooth B', -5.35, 4.52, 3.45, 1.9, 0.28, 0.82, 14],
+    ['upper-left deep hanging rock fang over production', -6.35, 3.96, 3.58, 0.72, 0.92, 0.7, -8],
+    ['upper-right thinner broken tooth', 5.95, 4.48, 3.45, 0.96, 0.18, 0.62, -10],
+    ['left lower rock swallowing fabrication floor', -9.2, 0.62, 2.62, 2.8, 0.58, 1.35, 7],
+    ['left lower broken ballast hanging below floor', -6.1, -0.26, 2.88, 2.4, 0.48, 1.2, -12],
+    ['right rear rock alcove wrapping deploy tank', 8.72, 1.88, -0.88, 1.08, 1.62, 1.0, -8]
   ];
   cutChunks.forEach(([name, x, y, z, sx, sy, sz, rot], index) => {
     const chunk = box(`concept-c ${name}`, [sx, sy, sz], [x, y, z], index % 2 ? MATS.rockWarm : MATS.rockCut, detail);
@@ -430,9 +441,10 @@ function buildRockSwallowedFacilityDetails() {
   rightRim.rotation.x = Math.PI / 2;
 
   const contactShadows = [
-    ['fabrication bay upper contact shadow under rock bite', -6.75, 3.02, -1.64, 5.8],
-    ['deploy bay upper contact shadow under rock bite', 6.45, 2.98, -1.64, 5.0],
-    ['rear hangar rock contact shadow', 0, 4.0, -9.78, 11.2]
+    ['fabrication bay upper contact shadow under rock bite', -7.05, 3.02, -1.64, 6.7],
+    ['heavy left underside occlusion where asteroid swallows deck', -7.65, 0.78, 2.18, 4.8],
+    ['deploy bay upper contact shadow under rock bite', 6.45, 2.98, -1.64, 3.8],
+    ['rear hangar rock contact shadow', -0.8, 4.0, -9.78, 10.2]
   ];
   contactShadows.forEach(([name, x, y, z, length]) => box(`concept-c ${name}`, [length, 0.08, 0.06], [x, y, z], MATS.shadow, detail));
 
