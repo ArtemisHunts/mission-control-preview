@@ -518,25 +518,62 @@ function buildCommandHoloTableHero() {
   const blackGlass = mat(0x050b14, { roughness: 0.12, metalness: 0.28, transparent: true, opacity: 0.82 });
   const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.92, transparent: true, opacity: 0.48, roughness: 0.06 });
   const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.68, transparent: true, opacity: 0.42, roughness: 0.1 });
-  const holo = mat(0x8ff7ff, { emissive: COLORS.cyan, emissiveIntensity: 1.15, transparent: true, opacity: 0.34, roughness: 0.04 });
+  const holo = mat(0x8ff7ff, { emissive: COLORS.cyan, emissiveIntensity: 1.34, transparent: true, opacity: 0.42, roughness: 0.04 });
+  const scan = mat(0x9ff8ff, { emissive: COLORS.cyan, emissiveIntensity: 0.88, transparent: true, opacity: 0.22, roughness: 0.05 });
+  const nodeMat = mat(0xd8fbff, { emissive: COLORS.cyan, emissiveIntensity: 1.1, transparent: true, opacity: 0.62, roughness: 0.08 });
 
   cylinder('target reset command table graphite base', 2.35, 2.75, 0.46, 32, [0, 0.0, 0], graphite, group);
   cylinder('target reset command table black glass inset', 2.1, 2.1, 0.08, 32, [0, 0.3, 0], blackGlass, group);
   cylinder('target reset command table cyan tactical surface', 1.78, 1.78, 0.05, 32, [0, 0.38, 0], cyan, group);
   const ring = torus('target reset amber holo-table trim ring', 2.22, 0.035, 8, 64, [0, 0.45, 0], amber, group);
   ring.rotation.x = Math.PI / 2;
-  const globe = sphere('target reset floating mission asteroid hologram', 0.62, 24, [0, 1.38, 0], holo, group);
-  globe.scale.set(1.0, 0.72, 1.18);
-  const orbitA = torus('target reset floating orbit ring A', 0.95, 0.018, 8, 56, [0, 1.38, 0], cyan, group);
-  orbitA.rotation.x = Math.PI / 2.35;
+  const globe = sphere('hero hologram dominant blue mission globe', 0.92, 28, [0, 1.76, 0], holo, group);
+  globe.scale.set(1.05, 0.78, 1.16);
+  const scanColumn = cylinder('hero hologram soft vertical scan column', 0.82, 1.22, 2.42, 32, [0, 1.34, 0], scan, group);
+  scanColumn.rotation.y = 0.18;
+  const orbitA = torus('hero hologram bright orbital route A', 1.24, 0.018, 8, 64, [0, 1.76, 0], cyan, group);
+  orbitA.rotation.x = Math.PI / 2.32;
   orbitA.rotation.z = 0.48;
-  const orbitB = torus('target reset floating orbit ring B', 1.18, 0.016, 8, 56, [0, 1.38, 0], amber, group);
-  orbitB.rotation.x = Math.PI / 2.05;
+  const orbitB = torus('hero hologram amber transfer orbit B', 1.52, 0.016, 8, 64, [0, 1.76, 0], amber, group);
+  orbitB.rotation.x = Math.PI / 2.02;
   orbitB.rotation.z = -0.36;
+  const orbitC = torus('hero hologram vertical polar orbit C', 1.05, 0.014, 8, 56, [0, 1.76, 0], cyan, group);
+  orbitC.rotation.y = Math.PI / 2;
+  orbitC.rotation.z = 0.2;
+
+  const surfaceOuter = torus('hero hologram table outer cyan tactical projection', 1.72, 0.02, 8, 64, [0, 0.55, 0], cyan, group);
+  surfaceOuter.rotation.x = Math.PI / 2;
+  const surfaceInner = torus('hero hologram table inner amber route projection', 0.96, 0.016, 8, 56, [0, 0.59, 0], amber, group);
+  surfaceInner.rotation.x = Math.PI / 2;
+  cylinder('hero hologram bright central emitter core', 0.2, 0.34, 0.16, 24, [0, 0.7, 0], nodeMat, group);
+  cylinder('hero hologram blue spill light pool', 2.55, 2.55, 0.035, 40, [0, -0.08, 0], scan, group);
+
+  const nodes = [
+    [-0.86, 1.98, 0.42], [0.74, 2.12, -0.36], [0.32, 1.28, 0.82], [-0.38, 1.5, -0.9],
+    [-1.18, 0.7, 0.46], [1.12, 0.74, -0.32], [0.0, 0.78, 1.28]
+  ];
+  nodes.forEach(([x, y, z], index) => {
+    const node = sphere('hero hologram mission node marker', index < 4 ? 0.075 : 0.055, 10, [x, y, z], nodeMat, group);
+    node.scale.y = 0.72;
+  });
+
+  const routes = [
+    [-0.52, 1.42, 0.16, 0.9, 0.028, 0.028, 24],
+    [0.48, 1.56, -0.12, 0.78, 0.026, 0.026, -18],
+    [0.0, 0.82, 0.88, 1.12, 0.022, 0.022, 0]
+  ];
+  routes.forEach(([x, y, z, width, h, d, yaw]) => {
+    const route = box('hero hologram floating route segment', [width, h, d], [x, y, z], scan, group);
+    route.rotation.y = THREE.MathUtils.degToRad(yaw);
+  });
 
   box('target reset holo table front operator console', [1.6, 0.34, 0.62], [0, 0.36, 2.75], blackGlass, group);
   box('target reset holo table left operator console', [1.2, 0.3, 0.54], [-2.9, 0.34, 0.6], blackGlass, group);
   box('target reset holo table right operator console', [1.2, 0.3, 0.54], [2.9, 0.34, 0.6], blackGlass, group);
+  box('hero hologram front console cyan spill edge', [1.34, 0.04, 0.05], [0, 0.62, 3.08], cyan, group);
+  box('hero hologram left console cyan spill edge', [0.96, 0.04, 0.05], [-2.9, 0.56, 0.96], cyan, group);
+  box('hero hologram right console cyan spill edge', [0.96, 0.04, 0.05], [2.9, 0.56, 0.96], cyan, group);
+  addLight('point', COLORS.cyan, 4.4, [0, 2.0, 0.38], 8.2);
 }
 
 

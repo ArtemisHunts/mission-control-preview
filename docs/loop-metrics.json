@@ -323,13 +323,21 @@
       "status": "shipped",
       "type": "focused 30-minute composition/lighting pass",
       "notes": "Added a primary north-star operations hub layer: circular sunken command pit, cyan/amber trim rings, inward-facing console arc with screens, operator pedestal silhouettes, overhead circular service oculus, cyan halo, and radial ceiling ribs with warm practical strips. Preserved asteroid as calibrated proscenium and avoided exterior/decorative clutter; browser screenshot capture remained blocked by policy and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "hero hologram command table pass",
+      "durationMs": 480000,
+      "status": "shipped",
+      "type": "focused 30-minute composition/lighting pass",
+      "notes": "Strengthened the primary north-star hero read by upgrading the central table into a larger blue holographic command system: dominant floating mission globe, soft scan column, three orbit paths, tabletop projection rings, central emitter, blue spill pool, mission nodes, route segments, console spill edges, and a restrained cyan point light. Preserved asteroid border and existing operations-ring composition; browser screenshot capture remained blocked by policy and is documented."
     }
   ],
   "stats": {
-    "count": 40,
+    "count": 41,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 288250,
+    "avgMs": 292927,
     "subagents": {
       "count": 3,
       "minMs": 47000,
