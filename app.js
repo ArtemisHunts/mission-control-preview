@@ -25,9 +25,9 @@ const COLORS = {
 const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
-    body: 'A full spatial read of Mission Control inside a hollowed asteroid shell: open starfield corners, carved production cavity, command pit, bays, and deploy traffic.',
-    camera: [0, 12.8, 39.2],
-    target: [0, 1.45, -2.85],
+    body: 'A full spatial read of Mission Control: assembly shaft, fabrication line, production bays, visible operators, and deploy traffic.',
+    camera: [0, 11.4, 34.6],
+    target: [0, 1.35, -2.35],
     accent: COLORS.cyan
   },
   command: {
@@ -111,7 +111,7 @@ container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
-scene.fog = new THREE.Fog(COLORS.bg, 20, 112);
+scene.fog = new THREE.Fog(COLORS.bg, 18, 96);
 
 const camera = new THREE.PerspectiveCamera(44, window.innerWidth / window.innerHeight, 0.1, 125);
 camera.position.set(...ROOMS.overview.camera);
@@ -144,7 +144,7 @@ const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
 const cameraOffsets = {
-  overview: new THREE.Vector3(0, 12.8, 38.8),
+  overview: new THREE.Vector3(0, 11.2, 34.2),
   command: new THREE.Vector3(0, 6.8, 17.6),
   build: new THREE.Vector3(0, 8.8, 25.8),
   review: new THREE.Vector3(0, 8.8, 25.8),
@@ -289,7 +289,6 @@ function buildOffice() {
   addLight('point', COLORS.amber, 3.4, [0, 4.15, -2.3], 11.0);
   addLight('point', COLORS.coral, 3.2, [4.2, 2.2, 1.2], 9.2);
 
-  buildApprovedAsteroidShellFirstFraming();
   buildShell();
   buildCeilingAndBulkheads();
   buildOverheadRibPracticalArchitecture();
@@ -484,64 +483,6 @@ function buildVerifiedCeilingOculusHubFrame() {
   addLight('point', COLORS.amber, 0.95, [-5.1, 4.2, 0.1], 6.2);
   addLight('point', COLORS.amber, 0.95, [5.1, 4.2, 0.1], 6.2);
   addLight('point', COLORS.cyan, 0.72, [0, 4.1, 2.4], 5.4);
-}
-
-function buildApprovedAsteroidShellFirstFraming() {
-  const starGeo = new THREE.BufferGeometry();
-  const starVerts = [];
-  Array.from({ length: 360 }).forEach((_, i) => {
-    const rx = Math.sin(i * 31.7) * 0.5 + 0.5;
-    const ry = Math.sin(i * 17.3 + 2.1) * 0.5 + 0.5;
-    const rz = Math.sin(i * 43.1 + 0.7) * 0.5 + 0.5;
-    const x = (rx - 0.5) * 64;
-    const y = -3.2 + ry * 18.6;
-    if (Math.abs(x) < 17.4 && y > -0.2 && y < 8.4) return;
-    starVerts.push(x, y, -31 - rz * 26);
-  });
-  starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starVerts, 3));
-  const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xd8efff, size: 0.12, transparent: true, opacity: 0.96, sizeAttenuation: true }));
-  stars.name = 'approved asteroid shell first open-space corner starfield marker';
-  scene.add(stars);
-
-  const rock = mat(0x1a151f, { roughness: 1.0, metalness: 0.0 });
-  const cut = mat(0x4a3b4b, { roughness: 0.94, metalness: 0.02 });
-  const shadow = mat(0x010309, { roughness: 1.0, metalness: 0.0 });
-  const cold = mat(0x76bfff, { emissive: 0x2a76ff, emissiveIntensity: 0.18, transparent: true, opacity: 0.26 });
-  const warm = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.15, transparent: true, opacity: 0.14 });
-
-  const shell = new THREE.Group();
-  shell.name = 'approved asteroid-shell-first 85-percent macro frame';
-  root.add(shell);
-  const lobe = (name, pos, scale, rot = [0, 0, 0]) => {
-    const mesh = sphere(`approved asteroid-shell-first ${name}`, 1, 7, pos, rock, shell);
-    mesh.scale.set(...scale);
-    mesh.rotation.set(...rot);
-    return mesh;
-  };
-
-  lobe('left exterior shoulder mass leaves star corner', [-14.6, 3.18, -4.1], [4.6, 5.4, 9.2], [0.2, 0.18, -0.18]);
-  lobe('right exterior shoulder mass leaves star corner', [14.6, 3.18, -4.1], [4.6, 5.4, 9.2], [-0.18, -0.22, 0.15]);
-  lobe('upper crown asteroid silhouette', [0, 6.68, -4.9], [10.4, 2.1, 6.1], [0.06, 0, 0.02]);
-  lobe('lower foreground asteroid sill silhouette', [0, -0.12, 4.8], [8.4, 0.86, 2.7], [0.03, 0.1, 0]);
-  lobe('left lower broken cheek', [-9.8, 0.92, 3.1], [3.4, 1.55, 3.6], [0.15, -0.35, -0.12]);
-  lobe('right lower broken cheek', [9.8, 0.92, 3.1], [3.4, 1.55, 3.6], [-0.12, 0.35, 0.12]);
-
-  box('approved asteroid-shell-first carved cavity deep shadow left', [1.25, 5.7, 13.5], [-12.3, 3.05, -2.4], shadow, shell);
-  box('approved asteroid-shell-first carved cavity deep shadow right', [1.25, 5.7, 13.5], [12.3, 3.05, -2.4], shadow, shell);
-  box('approved asteroid-shell-first carved cavity crown shadow', [23.4, 0.78, 6.6], [0, 5.42, -2.6], shadow, shell);
-  box('approved asteroid-shell-first rough cut left vertical face', [0.42, 5.15, 12.0], [-10.86, 3.06, -2.7], cut, shell);
-  box('approved asteroid-shell-first rough cut right vertical face', [0.42, 5.15, 12.0], [10.86, 3.06, -2.7], cut, shell);
-  box('approved asteroid-shell-first rough cut upper face', [20.4, 0.2, 4.9], [0, 4.88, -2.1], cut, shell);
-  box('approved asteroid-shell-first production cavity cold left rim', [0.052, 3.1, 0.055], [-10.92, 3.12, -6.7], cold, shell);
-  box('approved asteroid-shell-first production cavity cold right rim', [0.052, 3.1, 0.055], [10.92, 3.12, -6.7], cold, shell);
-  box('approved asteroid-shell-first retained industrial amber lip', [14.2, 0.04, 0.052], [0, 1.02, 5.7], warm, shell);
-  const facetA = box('approved asteroid-shell-first left chipped inner-rock shelf', [4.6, 0.16, 1.1], [-9.25, 4.58, -5.1], cut, shell);
-  facetA.rotation.z = -0.18;
-  const facetB = box('approved asteroid-shell-first right chipped inner-rock shelf', [4.6, 0.16, 1.1], [9.25, 4.58, -5.1], cut, shell);
-  facetB.rotation.z = 0.18;
-  addLight('point', 0x6eaaff, 3.4, [0, 6.2, -12.8], 28);
-  addLight('point', 0xffb96a, 1.2, [-12.0, 3.6, -1.0], 10);
-  addLight('point', 0xffb96a, 1.2, [12.0, 3.6, -1.0], 10);
 }
 
 function buildCalibratedAsteroidProscenium() {

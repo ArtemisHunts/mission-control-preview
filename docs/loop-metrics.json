@@ -595,21 +595,13 @@
       "status": "shipped",
       "type": "verification-first composition/lighting/asset-pipeline/playtest-fix pass",
       "notes": "Credibility-gated loop: repo clean and locked; deployed Pages was proven before edits with app.js?v=verified-rear-hangar-window-context-20260428, live app.js SHA matched repo, and recent rear-hangar/ceiling/side markers were present. New deployed CDP screenshot and headless screenshot attempts failed, so an existing active CDP current-build target with canvas and app.js?v=verified-rear-hangar-window-context-20260428 captured the pre-edit proof. Added a sunken circular command arena blockout: broad dark recessed pit floor, thick outer pit lip, wide operations walkway ring, cyan/amber tactical rim rings, radial access bridge cuts, and six larger seated operator/console silhouettes around the hub. Final visual assessment: honestly closer, mainly by improving station visibility and depth/scale while preserving table hierarchy, ceiling, and rear context."
-    },
-    {
-      "date": "2026-04-28",
-      "label": "approved asteroid shell first framing pass",
-      "durationMs": 900000,
-      "status": "shipped",
-      "type": "approved concept composition/playtest-fix pass",
-      "notes": "Michael approved the asteroid-shell-first concept direction, so the loop pivoted from micro interior deltas to macro framing. Proved current live HTML/app version before edits, then added a deterministic starfield with visible open-space corners, larger irregular asteroid shell lobes, rough carved cavity faces/shadows, retained industrial lip, cool cavity fill, and a higher/farther overview camera/fog range. Local CDP screenshot captured; visual assessment says honestly closer with the asteroid now reading as the primary frame around the carved production facility."
     }
   ],
   "stats": {
-    "count": 76,
+    "count": 74,
     "minMs": 90000,
     "maxMs": 1080000,
-    "avgMs": 455467,
+    "avgMs": 449459,
     "subagents": {
       "count": 3,
       "minMs": 47000,
