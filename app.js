@@ -257,6 +257,7 @@ function buildOffice() {
   buildStationWorkspaceIdentityKits();
   buildCommandHoloTableHero();
   buildCommandPitLightingHierarchy();
+  buildCommandPitMaterialContrast();
   buildRailingsAndCatwalks();
   buildCommandCrewInteractionSilhouettes();
   buildOperators();
@@ -691,6 +692,43 @@ function buildCommandPitLightingHierarchy() {
   box('lighting hierarchy center supervisor sightline glow', [1.1, 0.035, 0.04], [0, 1.56, 1.88], mutedAmber);
   box('lighting hierarchy pit amber threshold emphasis', [5.2, 0.035, 0.05], [0, 1.03, 2.92], mutedAmber);
   box('lighting hierarchy rear cyan depth kept secondary', [8.8, 0.035, 0.04], [0, 2.68, -9.86], heroCyan);
+}
+
+function buildCommandPitMaterialContrast() {
+  const blackGlass = mat(0x030912, { roughness: 0.08, metalness: 0.3, transparent: true, opacity: 0.72, emissive: 0x031627, emissiveIntensity: 0.1 });
+  const graphite = mat(0x101723, { roughness: 0.32, metalness: 0.82 });
+  const bronze = mat(0x9b6b32, { roughness: 0.26, metalness: 0.84, emissive: 0x4d2a08, emissiveIntensity: 0.08 });
+  const warm = mat(0xffb56a, { emissive: COLORS.amber, emissiveIntensity: 0.26, transparent: true, opacity: 0.18, roughness: 0.12 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.24, transparent: true, opacity: 0.18, roughness: 0.07 });
+  const shadow = mat(0x02040a, { roughness: 0.92, metalness: 0.12 });
+
+  cylinder('material contrast polished black glass outer command deck', 4.34, 4.52, 0.026, 48, [0, 1.205, 0.38], blackGlass);
+  cylinder('material contrast dark graphite inner pit liner', 3.02, 3.18, 0.045, 48, [0, 1.235, 0.38], graphite);
+  const bronzeOuter = torus('material contrast bronze command deck outer bevel', 4.55, 0.026, 8, 72, [0, 1.255, 0.38], bronze);
+  bronzeOuter.rotation.x = Math.PI / 2;
+  const bronzeInner = torus('material contrast bronze command deck inner bevel', 3.08, 0.022, 8, 72, [0, 1.27, 0.38], bronze);
+  bronzeInner.rotation.x = Math.PI / 2;
+  const glassSeam = torus('material contrast restrained cyan glass seam', 3.78, 0.012, 8, 72, [0, 1.29, 0.38], cyan);
+  glassSeam.rotation.x = Math.PI / 2;
+
+  const consoleCaps = [
+    ['front', 0, 3.02, 0], ['left', -3.18, 0.94, -62], ['right', 3.18, 0.94, 62], ['rear', 0, -2.58, 180]
+  ];
+  consoleCaps.forEach(([name, x, z, yaw], index) => {
+    const cap = box(`material contrast ${name} graphite console cap`, [1.5, 0.08, 0.56], [x, 1.36, z], graphite);
+    cap.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const trim = box(`material contrast ${name} bronze console lip`, [1.36, 0.035, 0.045], [x, 1.43, z + 0.28], bronze);
+    trim.rotation.y = cap.rotation.y;
+    const pool = box(`material contrast ${name} warm operator pool`, [1.04, 0.03, 0.08], [x, 1.48, z + 0.18], index === 0 ? warm : bronze);
+    pool.rotation.y = cap.rotation.y;
+  });
+  box('material contrast front stair bronze threshold', [4.2, 0.04, 0.05], [0, 1.16, 3.55], bronze);
+  box('material contrast rear stair bronze threshold', [3.8, 0.04, 0.05], [0, 1.16, -2.54], bronze);
+  box('material contrast left rail bronze catchlight', [0.05, 0.035, 2.7], [-2.72, 1.48, 0.46], bronze);
+  box('material contrast right rail bronze catchlight', [0.05, 0.035, 2.7], [2.72, 1.48, 0.46], bronze);
+  box('material contrast table base warm reflection line', [2.2, 0.035, 0.045], [0, 1.39, 1.34], warm);
+  box('material contrast left pit shadow value mass', [0.52, 0.08, 3.2], [-3.08, 1.13, 0.38], shadow);
+  box('material contrast right pit shadow value mass', [0.52, 0.08, 3.2], [3.08, 1.13, 0.38], shadow);
 }
 
 

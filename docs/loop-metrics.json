@@ -371,13 +371,21 @@
       "status": "shipped",
       "type": "focused 30-minute lighting/composition pass",
       "notes": "Added command-pit lighting hierarchy: warm under-table bounce, cyan hologram haze/backplate, crew and console rim strips, peripheral dim veils, rear hangar contrast dampers, ceiling vignette baffles, and floor bounce accents. The pass is intended to make the table/crew first-read while keeping stations and rear hangar secondary. Browser screenshot capture remained blocked by policy and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "command pit material contrast pass",
+      "durationMs": 480000,
+      "status": "shipped",
+      "type": "focused 30-minute asset-pipeline/lighting/composition pass",
+      "notes": "Added premium command-pit material contrast: polished black-glass deck panels, dark graphite pit liner, bronze bevel rings, cyan glass seam, graphite console caps, bronze console lips, warm operator pools, stair thresholds, rail catchlights, and shadow value masses. Browser screenshot capture remained blocked by policy and is documented."
     }
   ],
   "stats": {
-    "count": 46,
+    "count": 47,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 314565,
+    "avgMs": 318085,
     "subagents": {
       "count": 3,
       "minMs": 47000,
