@@ -395,13 +395,21 @@
       "status": "shipped",
       "type": "verification-first playtest-fix/composition pass",
       "notes": "First proved deployed Pages was loading app.js?v=asteroid-inserted-architecture-20260427 and recent runtime markers. Captured deployed proof screenshot via CDP. Then changed overview camera/framing from one fixed offset to mode-aware offsets with portrait viewport relief, pulling overview higher/farther back and lowering target slightly. Captured post-change local proof screenshot before commit."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "verified occlusion relief pass",
+      "durationMs": 720000,
+      "status": "shipped",
+      "type": "verification-first playtest-fix/composition pass",
+      "notes": "Verified deployed Pages loaded latest app.js?v=verified-overview-framing-20260427 and recent runtime markers, captured deployed screenshot, then reduced named ceiling/foreground/sill occluders and tightened overview framing. Captured local post-change screenshot before commit; visual assessment said it is a legitimate closer pass though upper/mid bands still need further pruning."
     }
   ],
   "stats": {
-    "count": 49,
+    "count": 50,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 327143,
+    "avgMs": 335000,
     "subagents": {
       "count": 3,
       "minMs": 47000,

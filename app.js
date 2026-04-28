@@ -26,7 +26,7 @@ const ROOMS = {
   overview: {
     title: 'Asteroid Base Overview',
     body: 'A full spatial read of Mission Control: assembly shaft, fabrication line, production bays, visible operators, and deploy traffic.',
-    camera: [0, 12.6, 38.6],
+    camera: [0, 11.4, 34.6],
     target: [0, 1.35, -2.35],
     accent: COLORS.cyan
   },
@@ -144,7 +144,7 @@ const navKeys = new Set();
 const facilityFocus = new THREE.Vector3(...ROOMS.overview.target);
 const facilityTarget = new THREE.Vector3(...ROOMS.overview.target);
 const cameraOffsets = {
-  overview: new THREE.Vector3(0, 12.4, 38.2),
+  overview: new THREE.Vector3(0, 11.2, 34.2),
   command: new THREE.Vector3(0, 6.8, 17.6),
   build: new THREE.Vector3(0, 8.8, 25.8),
   review: new THREE.Vector3(0, 8.8, 25.8),
@@ -289,6 +289,7 @@ function buildOffice() {
   buildRailingsAndCatwalks();
   buildCommandCrewInteractionSilhouettes();
   buildOperators();
+  applyVerifiedOverviewOcclusionRelief();
 
   const title = makeTextSprite('MISSION CONTROL', '#f8fbff', 86);
   title.position.set(0, 3.92, -6.52);
@@ -602,6 +603,41 @@ function buildAsteroidInsertedArchitectureContrast() {
   box('inserted architecture front command bronze retaining lip', [8.8, 0.08, 0.08], [0, 1.42, 3.88], bronze);
   box('inserted architecture rear command bronze retaining lip', [7.8, 0.06, 0.06], [0, 1.4, -2.88], bronze);
   box('inserted architecture rear command shadow undercut', [8.2, 0.12, 0.08], [0, 1.36, -3.06], shadow);
+}
+
+function applyVerifiedOverviewOcclusionRelief() {
+  const relief = [
+    ['heavy ceiling slab left', [0.72, 0.48, 0.62], [0, 0.72, -0.25]],
+    ['heavy ceiling slab right', [0.72, 0.48, 0.62], [0, 0.72, -0.25]],
+    ['rear ceiling cap', [0.78, 0.5, 0.72], [0, 0.62, -0.18]],
+    ['front ceiling bulkhead', [0.72, 0.42, 0.42], [0, 0.7, 0.44]],
+    ['calibrated top interior shadow reveal', [0.82, 0.42, 0.46], [0, 0.58, -0.34]],
+    ['calibrated foreground sill interior shadow reveal', [0.78, 0.54, 0.42], [0, -0.34, 0.24]],
+    ['dominance lower command sill', [0.82, 0.58, 0.46], [0, -0.2, 0.38]],
+    ['lighting hierarchy ceiling left corner vignette baffle', [0.58, 0.42, 0.42], [0, 0.36, -0.28]],
+    ['lighting hierarchy ceiling right corner vignette baffle', [0.58, 0.42, 0.42], [0, 0.36, -0.28]]
+  ];
+
+  relief.forEach(([name, scale, offset]) => {
+    const mesh = root.getObjectByName(name);
+    if (!mesh) return;
+    mesh.scale.multiply(new THREE.Vector3(...scale));
+    mesh.position.add(new THREE.Vector3(...offset));
+  });
+
+  const dimmed = [
+    'calibrated asteroid lower sill proscenium',
+    'calibrated lower exposed cut shelf',
+    'inserted architecture rear lower rough cut sill',
+    'inserted architecture rear command shadow undercut'
+  ];
+
+  dimmed.forEach((name) => {
+    const mesh = root.getObjectByName(name);
+    if (!mesh) return;
+    mesh.scale.y *= 0.72;
+    mesh.position.y -= 0.12;
+  });
 }
 
 function buildNorthStarOperationsHub() {
