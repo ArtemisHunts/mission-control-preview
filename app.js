@@ -20,7 +20,7 @@ const COLORS = {
 };
 
 const container = document.getElementById('office-canvas');
-const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.2));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -486,6 +486,175 @@ function buildHifiCommandShaft() {
   lowerGlow.rotation.x = Math.PI / 2;
 }
 
+function buildHifiCarvedIntegrationKit() {
+  const kit = new THREE.Group();
+  kit.name = 'concept-c hifi carved integration kit v3';
+  root.add(kit);
+
+  const cableMat = mat(0x171b26, { roughness: 0.86, metalness: 0.18 });
+  const dustMat = mat(0xa68472, { roughness: 0.98, transparent: true, opacity: 0.34 });
+
+  const addBoltRun = (name, start, end, count, material = MATS.rockWarm, size = [0.08, 0.045, 0.045]) => {
+    for (let i = 0; i < count; i += 1) {
+      const t = count === 1 ? 0.5 : i / (count - 1);
+      const bolt = box(`${name} bolt ${i}`, size, [
+        THREE.MathUtils.lerp(start[0], end[0], t),
+        THREE.MathUtils.lerp(start[1], end[1], t),
+        THREE.MathUtils.lerp(start[2], end[2], t)
+      ], material, kit);
+      bolt.rotation.z = THREE.MathUtils.degToRad((i % 2 ? -8 : 8));
+    }
+  };
+
+  const addApertureFrame = ({
+    name,
+    x,
+    y,
+    z,
+    width,
+    height,
+    material = MATS.darkSteel,
+    accent = MATS.amber,
+    braceColor = MATS.steel,
+    braceReach = 0.92,
+    braceDrop = 0.74,
+    accentInset = 0.14,
+    backDepth = 0.48
+  }) => {
+    box(`${name} top lintel`, [width, 0.12, 0.14], [x, y + height * 0.5, z], material, kit);
+    box(`${name} bottom sill`, [width, 0.12, 0.12], [x, y - height * 0.5, z], material, kit);
+    box(`${name} left jamb`, [0.14, height, 0.14], [x - width * 0.5, y, z], material, kit);
+    box(`${name} right jamb`, [0.14, height, 0.14], [x + width * 0.5, y, z], material, kit);
+    box(`${name} top accent`, [width - accentInset * 2, 0.03, 0.04], [x, y + height * 0.5 + 0.08, z + 0.02], accent, kit);
+    box(`${name} bottom accent`, [width - accentInset * 2.4, 0.024, 0.035], [x, y - height * 0.5 - 0.08, z + 0.01], accent, kit);
+
+    const leftBrace = box(`${name} left retaining brace driven into rock`, [0.16, braceDrop, braceReach], [x - width * 0.5 - 0.34, y + height * 0.26, z - backDepth], braceColor, kit);
+    leftBrace.rotation.z = THREE.MathUtils.degToRad(-16);
+    const rightBrace = box(`${name} right retaining brace driven into rock`, [0.16, braceDrop, braceReach], [x + width * 0.5 + 0.34, y + height * 0.26, z - backDepth], braceColor, kit);
+    rightBrace.rotation.z = THREE.MathUtils.degToRad(16);
+    const leftKnee = box(`${name} left knee brace buried in cut wall`, [0.64, 0.12, 0.14], [x - width * 0.5 - 0.32, y - height * 0.14, z - 0.12], braceColor, kit);
+    leftKnee.rotation.z = THREE.MathUtils.degToRad(-22);
+    const rightKnee = box(`${name} right knee brace buried in cut wall`, [0.64, 0.12, 0.14], [x + width * 0.5 + 0.32, y - height * 0.14, z - 0.12], braceColor, kit);
+    rightKnee.rotation.z = THREE.MathUtils.degToRad(22);
+
+    addBoltRun(`${name} top`, [x - width * 0.44, y + height * 0.5, z + 0.04], [x + width * 0.44, y + height * 0.5, z + 0.04], 7);
+    addBoltRun(`${name} left`, [x - width * 0.5, y + height * 0.34, z + 0.04], [x - width * 0.5, y - height * 0.34, z + 0.04], 4);
+    addBoltRun(`${name} right`, [x + width * 0.5, y + height * 0.34, z + 0.04], [x + width * 0.5, y - height * 0.34, z + 0.04], 4);
+    addBoltRun(`${name} sill`, [x - width * 0.36, y - height * 0.5, z + 0.03], [x + width * 0.36, y - height * 0.5, z + 0.03], 5, MATS.steel, [0.06, 0.04, 0.04]);
+  };
+
+  const addConduit = ({ name, x, y, z, length, yaw = 0, pitch = 0, accent = MATS.cyanDim, clamps = 3 }) => {
+    const conduit = box(`${name} conduit trunk`, [0.09, 0.09, length], [x, y, z], cableMat, kit);
+    conduit.rotation.y = THREE.MathUtils.degToRad(yaw);
+    conduit.rotation.x = THREE.MathUtils.degToRad(pitch);
+    box(`${name} emissive service stripe`, [0.03, 0.024, length * 0.78], [x, y + 0.05, z + 0.01], accent, kit).rotation.y = conduit.rotation.y;
+    const yawRad = THREE.MathUtils.degToRad(yaw);
+    for (let i = 0; i < clamps; i += 1) {
+      const t = clamps === 1 ? 0.5 : i / (clamps - 1);
+      const offset = (t - 0.5) * length * 0.76;
+      const clamp = box(`${name} clamp ${i}`, [0.18, 0.05, 0.06], [x + Math.sin(yawRad) * offset, y - 0.04, z + Math.cos(yawRad) * offset], MATS.steel, kit);
+      clamp.rotation.y = conduit.rotation.y;
+    }
+  };
+
+  const aoStrips = [
+    ['hero bay floor contact ao strip', [4.8, 0.05, 0.08], [-6.72, 0.92, 1.72]],
+    ['left fabrication deck underside ao strip', [5.3, 0.06, 0.1], [-6.35, 0.45, -1.02]],
+    ['right deploy deck underside ao strip', [5.3, 0.06, 0.1], [6.35, 0.45, -1.02]],
+    ['left observatory deck underside ao strip', [5.2, 0.06, 0.1], [-6.55, 0.45, -5.92]],
+    ['right review deck underside ao strip', [5.2, 0.06, 0.1], [6.55, 0.45, -5.92]],
+    ['rear hangar aperture upper ao strip', [12.1, 0.08, 0.08], [0, 3.98, -9.72]],
+    ['rear hangar aperture lower ao strip', [11.8, 0.06, 0.08], [0, 1.76, -9.7]],
+    ['command well floor-ring contact ao strip', [5.8, 0.05, 0.08], [0, 0.88, 2.26]]
+  ];
+  aoStrips.forEach(([name, size, position]) => box(`hifi ${name}`, size, position, MATS.shadow, kit));
+
+  addApertureFrame({
+    name: 'hifi hero fabrication mouth collar',
+    x: -6.72,
+    y: 2.02,
+    z: -0.64,
+    width: 4.9,
+    height: 2.28,
+    accent: MATS.amber,
+    braceColor: MATS.steel,
+    braceReach: 0.88,
+    braceDrop: 0.92,
+    backDepth: 0.56
+  });
+
+  addApertureFrame({
+    name: 'hifi right deploy bay collar',
+    x: 6.35,
+    y: 1.98,
+    z: -2.46,
+    width: 4.76,
+    height: 2.14,
+    accent: MATS.green,
+    braceColor: MATS.steel,
+    braceReach: 0.84,
+    braceDrop: 0.78,
+    backDepth: 0.44
+  });
+
+  addApertureFrame({
+    name: 'hifi rear hangar pressure collar',
+    x: 0,
+    y: 2.84,
+    z: -9.76,
+    width: 12.86,
+    height: 2.34,
+    accent: MATS.cyanDim,
+    braceColor: MATS.darkSteel,
+    braceReach: 0.74,
+    braceDrop: 1.04,
+    accentInset: 0.28,
+    backDepth: 0.3
+  });
+
+  const retainingRibs = [
+    ['hifi left fabrication upper retaining rib A', [0.16, 1.78, 0.2], [-9.12, 2.54, -0.96], -8],
+    ['hifi left fabrication upper retaining rib B', [0.16, 1.52, 0.18], [-4.34, 2.36, -1.04], 10],
+    ['hifi right deploy retaining rib A', [0.16, 1.54, 0.2], [4.18, 2.16, -2.44], -10],
+    ['hifi right deploy retaining rib B', [0.16, 1.72, 0.18], [8.56, 2.24, -2.26], 8],
+    ['hifi rear hangar left pressure rib', [0.18, 1.84, 0.2], [-5.9, 2.84, -9.52], -4],
+    ['hifi rear hangar right pressure rib', [0.18, 1.84, 0.2], [5.9, 2.84, -9.52], 4]
+  ];
+  retainingRibs.forEach(([name, size, position, angle]) => {
+    const rib = box(name, size, position, MATS.steel, kit);
+    rib.rotation.z = THREE.MathUtils.degToRad(angle);
+  });
+
+  addConduit({ name: 'hifi hero bay left rock feed', x: -8.94, y: 2.18, z: -2.08, length: 2.5, yaw: 18, accent: MATS.amber, clamps: 4 });
+  addConduit({ name: 'hifi hero bay right coolant feed', x: -4.72, y: 2.1, z: -1.96, length: 2.1, yaw: -18, accent: MATS.cyanDim, clamps: 3 });
+  addConduit({ name: 'hifi right bay utility trunk', x: 8.52, y: 2.08, z: -2.02, length: 2.36, yaw: -14, accent: MATS.green, clamps: 4 });
+  addConduit({ name: 'hifi underfloor command conduit left', x: -2.2, y: 0.74, z: -1.48, length: 2.6, yaw: 66, accent: MATS.amber, clamps: 3 });
+  addConduit({ name: 'hifi underfloor command conduit right', x: 2.2, y: 0.74, z: -1.48, length: 2.6, yaw: -66, accent: MATS.cyanDim, clamps: 3 });
+  addConduit({ name: 'hifi rear hangar service conduit', x: 0, y: 3.46, z: -9.34, length: 6.6, yaw: 90, accent: MATS.cyanDim, clamps: 5 });
+
+  const debrisClusters = [
+    { name: 'hifi left fabrication dust spill', x: -8.62, z: 1.46, pieces: 5, color: MATS.rockWarm },
+    { name: 'hifi hero bay center debris ridge', x: -6.12, z: 1.86, pieces: 4, color: MATS.rockCut },
+    { name: 'hifi right deploy debris pocket', x: 7.58, z: 0.84, pieces: 4, color: MATS.rockWarm },
+    { name: 'hifi command floor rubble sweep', x: 3.45, z: -0.66, pieces: 3, color: MATS.rockCut }
+  ];
+  debrisClusters.forEach(({ name, x, z, pieces, color }, clusterIndex) => {
+    for (let i = 0; i < pieces; i += 1) {
+      const shard = box(`${name} shard ${i}`, [0.22 + (i % 2) * 0.08, 0.08 + (i % 3) * 0.02, 0.18 + (i % 2) * 0.06], [x + i * 0.24 - 0.36, 0.1, z + (i % 3) * 0.14 - 0.18], color, kit);
+      shard.rotation.z = THREE.MathUtils.degToRad((clusterIndex % 2 ? -18 : 18) + i * 7);
+    }
+    const dust = cylinder(`${name} dust halo`, 0.42 + pieces * 0.04, 0.42 + pieces * 0.04, 0.018, 18, [x, 0.03, z], dustMat, kit);
+  });
+
+  const commandBrackets = [
+    [-2.88, 0.98, 1.18, -34], [-1.52, 0.88, 2.06, -12], [1.52, 0.88, 2.06, 12], [2.88, 0.98, 1.18, 34]
+  ];
+  commandBrackets.forEach(([x, y, z, angle], index) => {
+    const bracket = box(`hifi command collar retaining bracket ${index}`, [0.62, 0.1, 0.14], [x, y, z], MATS.steel, kit);
+    bracket.rotation.y = THREE.MathUtils.degToRad(angle);
+  });
+}
+
 function buildAsteroidCutawayShell() {
   const shell = new THREE.Group();
   shell.name = 'concept-c dedicated faceted asteroid shell asset kit';
@@ -867,6 +1036,7 @@ function buildScene() {
   buildProductionCavity();
   buildHeroProductionBay();
   buildHifiCommandShaft();
+  buildHifiCarvedIntegrationKit();
   buildCommandPit();
   buildScaleAndAtmosphere();
   updateReadout();
