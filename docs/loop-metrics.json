@@ -250,7 +250,7 @@
       "durationMs": 360000,
       "status": "shipped",
       "type": "direction correction prune/composition/performance pass",
-      "notes": "Continued Michael correction: consolidated three overlapping asteroid border passes into one calibrated proscenium, removed small glints/lamps/strata clutter from those border systems, added one dominant assembly shaft with broad clamp/core/hopper/conveyor forms, and preserved the asteroid as a 15\u201325% edge frame while the interior production facility owns the subject. Mesh constructor count stayed at 11 and loop markers at zero. Browser screenshot capture remained policy-blocked and is documented."
+      "notes": "Continued Michael correction: consolidated three overlapping asteroid border passes into one calibrated proscenium, removed small glints/lamps/strata clutter from those border systems, added one dominant assembly shaft with broad clamp/core/hopper/conveyor forms, and preserved the asteroid as a 15–25% edge frame while the interior production facility owns the subject. Mesh constructor count stayed at 11 and loop markers at zero. Browser screenshot capture remained policy-blocked and is documented."
     },
     {
       "date": "2026-04-27",
@@ -595,10 +595,18 @@
       "status": "shipped",
       "type": "verification-first composition/lighting/asset-pipeline/playtest-fix pass",
       "notes": "Credibility-gated loop: repo clean and locked; deployed Pages was proven before edits with app.js?v=verified-rear-hangar-window-context-20260428, live app.js SHA matched repo, and recent rear-hangar/ceiling/side markers were present. New deployed CDP screenshot and headless screenshot attempts failed, so an existing active CDP current-build target with canvas and app.js?v=verified-rear-hangar-window-context-20260428 captured the pre-edit proof. Added a sunken circular command arena blockout: broad dark recessed pit floor, thick outer pit lip, wide operations walkway ring, cyan/amber tactical rim rings, radial access bridge cuts, and six larger seated operator/console silhouettes around the hub. Final visual assessment: honestly closer, mainly by improving station visibility and depth/scale while preserving table hierarchy, ceiling, and rear context."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "concept-c hifi HIFI-02 secondary breakup pass",
+      "durationMs": null,
+      "status": "shipped",
+      "type": "hifi asset-pipeline shell-detail pass",
+      "notes": "Added a dedicated HIFI-02 procedural shell-detail layer on concept-c-hifi: chipped crown/sill shards, secondary fracture plates, crater pockets with dust halos, fracture seams, rubble pockets, underside occlusion wedges, rim accents, and stronger warm/cool/depth-biased rock vertex color. Smoke checks passed. Local screenshot/gate remained blocked by browser policy, refused CDP access, and failed headless capture; blocker is documented in the paired visual review."
     }
   ],
   "stats": {
-    "count": 74,
+    "count": 76,
     "minMs": 90000,
     "maxMs": 1080000,
     "avgMs": 449459,
