@@ -487,6 +487,15 @@ function buildBrutalMassDepthPass() {
     chunk.rotation.z = THREE.MathUtils.degToRad(rot);
   });
 
+  polyMesh('concept-c final upper center missing bite void breaks roof continuity', [
+    [-1.02, 5.46], [0.22, 5.08], [1.3, 4.42], [0.62, 3.94], [-0.82, 4.16], [-1.45, 4.82]
+  ], MATS.shadow, 4.86, brutal);
+  polyMesh('concept-c final upper right chipped star bite', [
+    [6.7, 5.88], [8.75, 5.42], [9.72, 5.62], [9.02, 4.7], [7.28, 4.9]
+  ], MATS.shadow, 4.88, brutal);
+  box('concept-c bright cut rim left edge of final roof bite', [0.82, 0.055, 0.045], [-0.98, 4.86, 4.98], MATS.rockWarm, brutal).rotation.z = THREE.MathUtils.degToRad(-26);
+  box('concept-c bright cut rim right edge of final roof bite', [0.92, 0.055, 0.045], [0.78, 4.42, 4.98], MATS.rockWarm, brutal).rotation.z = THREE.MathUtils.degToRad(22);
+
   box('concept-c deep rear cavern void behind central command shaft', [6.0, 2.6, 0.12], [0.25, 1.58, -3.92], MATS.shadow, brutal);
   box('concept-c black vertical shaft face visible behind command core', [2.9, 1.55, 0.08], [0.15, 0.86, -1.96], MATS.shadow, brutal);
   box('concept-c narrow cyan depth lights descending rear shaft A', [0.08, 0.45, 0.035], [-1.9, 1.1, -3.78], MATS.cyanDim, brutal);
