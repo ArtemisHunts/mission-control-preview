@@ -297,6 +297,7 @@ function buildOffice() {
   buildAsteroidInsertedArchitectureContrast();
   buildNorthStarOperationsHub();
   buildReadabilityHotfixLighting();
+  buildVerifiedUpperBandSidePlatformReadability();
   buildRooms();
   buildStationWorkspaceIdentityKits();
   buildCommandHoloTableHero();
@@ -925,6 +926,51 @@ function buildReadabilityHotfixLighting() {
   box('readability lock left vertical witness pier', [0.18, 3.1, 0.2], [-12.64, 2.74, -2.4], readableSteel);
   box('readability lock right vertical witness pier', [0.18, 3.1, 0.2], [12.64, 2.74, -2.4], readableSteel);
   box('readability lock rear factory horizon witness', [16.8, 0.16, 0.18], [0, 2.18, -10.32], readableSteel);
+}
+
+function buildVerifiedUpperBandSidePlatformReadability() {
+  const ribMat = mat(0x20283a, { roughness: 0.42, metalness: 0.72 });
+  const panelMat = mat(0x0b1220, { roughness: 0.68, metalness: 0.42 });
+  const warmTrim = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.34, transparent: true, opacity: 0.2, roughness: 0.16 });
+  const coolTrim = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.32, transparent: true, opacity: 0.18, roughness: 0.12 });
+  const violetTrim = mat(COLORS.violet, { emissive: COLORS.violet, emissiveIntensity: 0.22, transparent: true, opacity: 0.14, roughness: 0.16 });
+  const platformLip = mat(0x43516c, { roughness: 0.36, metalness: 0.78 });
+  const darkBracket = mat(0x070b13, { roughness: 0.74, metalness: 0.28 });
+
+  // Screenshot-driven fix: break the upper black stripe into readable service infrastructure.
+  const overheadSegments = [
+    [-8.8, 1.55, 2.4, warmTrim],
+    [-4.4, -0.8, 2.9, coolTrim],
+    [0, 1.05, 3.4, warmTrim],
+    [4.4, -0.8, 2.9, coolTrim],
+    [8.8, 1.55, 2.4, warmTrim]
+  ];
+  overheadSegments.forEach(([x, z, length, lightMat], index) => {
+    const rib = box(`verified upper band service divider ${index + 1}`, [0.16, 0.28, length], [x, 4.86, z], ribMat);
+    rib.rotation.y = THREE.MathUtils.degToRad(index % 2 ? -8 : 8);
+    const seam = box(`verified upper band inset practical ${index + 1}`, [0.045, 0.035, length - 0.42], [x + (index - 2) * 0.035, 4.66, z], lightMat);
+    seam.rotation.y = rib.rotation.y;
+    const panel = box(`verified upper band dark recessed service panel ${index + 1}`, [1.45, 0.055, 0.2], [x, 4.62, z + 1.18], panelMat);
+    panel.rotation.y = THREE.MathUtils.degToRad(index % 2 ? 4 : -4);
+  });
+  box('verified upper command crown interrupted amber datum', [5.4, 0.035, 0.045], [-4.8, 4.72, 2.42], warmTrim);
+  box('verified upper command crown interrupted cyan datum', [5.4, 0.035, 0.045], [4.8, 4.72, 2.42], coolTrim);
+
+  // Side decks should read as inhabited work platforms, not dark walls. Keep them secondary to the table.
+  const sidePlatforms = [
+    ['left', -8.05, warmTrim, coolTrim, -1],
+    ['right', 8.05, coolTrim, violetTrim, 1]
+  ];
+  sidePlatforms.forEach(([side, x, primary, secondary, sign]) => {
+    box(`verified ${side} platform front luminous lip`, [4.9, 0.045, 0.055], [x, 0.82, 3.12], primary);
+    box(`verified ${side} platform rear luminous lip`, [4.4, 0.045, 0.055], [x, 0.86, -5.08], secondary);
+    box(`verified ${side} platform inner catwalk edge`, [0.055, 0.04, 6.2], [x - sign * 2.55, 0.84, -1.0], primary);
+    box(`verified ${side} platform outer rail silhouette`, [0.08, 0.22, 5.6], [x + sign * 2.32, 0.98, -1.18], platformLip);
+    [-3.65, -1.65, 0.35, 2.35].forEach((z, index) => {
+      box(`verified ${side} platform vertical support ${index + 1}`, [0.12, 0.62, 0.1], [x + sign * 2.18, 0.72, z], darkBracket);
+      box(`verified ${side} platform console pinlight ${index + 1}`, [0.34, 0.035, 0.04], [x - sign * 1.08, 1.18, z], index % 2 ? secondary : primary);
+    });
+  });
 }
 
 
