@@ -308,6 +308,7 @@ function buildOffice() {
   buildVerifiedRearPanoramaCeilingStrips();
   buildVerifiedRearWindowShipSilhouette();
   buildVerifiedRearOperationsAtriumDepth();
+  buildVerifiedModularRearBayWall();
   buildRooms();
   buildStationWorkspaceIdentityKits();
   buildVerifiedOuterBayActivityReadability();
@@ -1618,6 +1619,90 @@ function buildVerifiedRearOperationsAtriumDepth() {
   cylinder('verified rear operations atrium visible tiny operator right helmet', 0.055, 0.055, 0.06, 10, [5.82, 3.2, -6.18], tinySuit);
   sphere('verified rear operations atrium visible center service drone', 0.07, 12, [0.9, 3.82, -6.12], droneMat);
   addLight('point', 0x86cfff, 1.65, [0, 3.65, -6.45], 7.4);
+}
+
+
+function buildVerifiedModularRearBayWall() {
+  const slab = mat(0x111827, { roughness: 0.58, metalness: 0.58 });
+  const dark = mat(0x03060d, { roughness: 0.96, metalness: 0.08 });
+  const graphite = mat(0x202b3d, { roughness: 0.42, metalness: 0.78 });
+  const steel = mat(0x5b687e, { roughness: 0.32, metalness: 0.82 });
+  const glass = mat(0x092238, { emissive: 0x0c4b72, emissiveIntensity: 0.18, transparent: true, opacity: 0.34, roughness: 0.16, metalness: 0.18 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.34, transparent: true, opacity: 0.24, roughness: 0.08 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.3, transparent: true, opacity: 0.22, roughness: 0.12 });
+  const dimCyan = mat(0x82dfff, { emissive: COLORS.cyan, emissiveIntensity: 0.22, transparent: true, opacity: 0.16, roughness: 0.1 });
+  const suit = mat(0xc7ccd8, { emissive: 0x263b55, emissiveIntensity: 0.05, roughness: 0.48, metalness: 0.2 });
+
+  // Bolder modular bay wall: a few large forms readable from overview, not greeble noise.
+  box('verified modular rear bay wall left production cell mass', [3.45, 2.25, 0.26], [-6.6, 3.08, -5.96], slab);
+  box('verified modular rear bay wall right production cell mass', [3.45, 2.25, 0.26], [6.6, 3.08, -5.96], slab);
+  box('verified modular rear bay wall center high command lintel', [9.2, 0.42, 0.28], [0, 4.34, -5.9], graphite);
+  box('verified modular rear bay wall lower gantry bridge slab', [12.4, 0.24, 0.36], [0, 2.42, -5.72], graphite);
+  box('verified modular rear bay wall central dark blast-door aperture', [4.4, 1.56, 0.14], [0, 3.26, -5.62], dark);
+  box('verified modular rear bay wall central blue pressure glass', [3.74, 0.74, 0.06], [0, 3.36, -5.48], glass);
+
+  const sideCells = [
+    ['left upper recessed fabrication bay', -6.6, 3.66, cyan],
+    ['left lower cargo lift bay', -6.6, 2.62, amber],
+    ['right upper recessed comms bay', 6.6, 3.66, amber],
+    ['right lower assembly lift bay', 6.6, 2.62, cyan]
+  ];
+  sideCells.forEach(([name, x, y, edge]) => {
+    box(`verified modular rear bay wall ${name} dark mouth`, [2.38, 0.64, 0.08], [x, y, -5.72], dark);
+    box(`verified modular rear bay wall ${name} top edge`, [2.08, 0.04, 0.04], [x, y + 0.36, -5.54], edge);
+    box(`verified modular rear bay wall ${name} left jamb`, [0.06, 0.5, 0.04], [x - 1.24, y, -5.54], steel);
+    box(`verified modular rear bay wall ${name} right jamb`, [0.06, 0.5, 0.04], [x + 1.24, y, -5.54], steel);
+  });
+
+  const towers = [
+    ['far left lift tower', -9.25, -4], ['inner left lift tower', -3.15, -2],
+    ['inner right lift tower', 3.15, 2], ['far right lift tower', 9.25, 4]
+  ];
+  towers.forEach(([name, x, lean]) => {
+    const tower = box(`verified modular rear bay wall ${name} armored vertical`, [0.38, 3.26, 0.28], [x, 3.12, -5.82], graphite);
+    tower.rotation.z = THREE.MathUtils.degToRad(lean);
+    const slit = box(`verified modular rear bay wall ${name} dim status slit`, [0.052, 2.3, 0.045], [x + (x < 0 ? 0.28 : -0.28), 3.12, -5.5], x < 0 ? dimCyan : amber);
+    slit.rotation.z = tower.rotation.z;
+  });
+
+  const rails = [
+    ['upper left crane rail', -4.65, 4.05, -9], ['upper right crane rail', 4.65, 4.05, 9],
+    ['mid left transfer rail', -4.9, 2.78, -5], ['mid right transfer rail', 4.9, 2.78, 5]
+  ];
+  rails.forEach(([name, x, y, yaw]) => {
+    const rail = box(`verified modular rear bay wall ${name} chunky perspective beam`, [4.4, 0.14, 0.16], [x, y, -5.22], steel);
+    rail.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const glow = box(`verified modular rear bay wall ${name} underside guide light`, [3.4, 0.036, 0.036], [x, y - 0.13, -5.04], name.includes('upper') ? cyan : amber);
+    glow.rotation.y = rail.rotation.y;
+  });
+
+  box('verified modular rear bay wall left suspended cargo block', [0.68, 0.48, 0.34], [-5.82, 3.46, -4.92], dark);
+  box('verified modular rear bay wall right suspended cargo block', [0.68, 0.48, 0.34], [5.82, 3.46, -4.92], dark);
+  box('verified modular rear bay wall long amber bridge underside', [10.8, 0.05, 0.045], [0, 2.23, -5.34], amber);
+  box('verified modular rear bay wall long cyan upper datum', [7.4, 0.045, 0.04], [0, 4.08, -5.34], dimCyan);
+
+  const scaleOps = [
+    ['left bridge operator', -4.88, 2.67], ['right bridge operator', 4.88, 2.67],
+    ['left upper gantry operator', -7.42, 3.98], ['right upper gantry operator', 7.42, 3.98]
+  ];
+  scaleOps.forEach(([name, x, y]) => {
+    cylinder(`verified modular rear bay wall ${name} helmet`, 0.052, 0.052, 0.055, 10, [x, y + 0.18, -4.82], suit);
+    box(`verified modular rear bay wall ${name} body`, [0.08, 0.2, 0.044], [x, y + 0.035, -4.82], suit);
+  });
+
+  // Near-rear side portals keep the center open while making the bay wall read at thumbnail scale.
+  box('verified modular rear bay wall left near portal armored cheek', [1.28, 2.72, 0.26], [-8.6, 2.92, -4.42], graphite);
+  box('verified modular rear bay wall right near portal armored cheek', [1.28, 2.72, 0.26], [8.6, 2.92, -4.42], graphite);
+  box('verified modular rear bay wall left near portal dark opening', [2.28, 1.42, 0.12], [-7.15, 2.9, -4.28], dark);
+  box('verified modular rear bay wall right near portal dark opening', [2.28, 1.42, 0.12], [7.15, 2.9, -4.28], dark);
+  box('verified modular rear bay wall left near portal cyan vertical edge', [0.052, 2.18, 0.044], [-6.02, 2.95, -4.08], cyan);
+  box('verified modular rear bay wall right near portal amber vertical edge', [0.052, 2.18, 0.044], [6.02, 2.95, -4.08], amber);
+  box('verified modular rear bay wall left near portal lower deck ledge', [3.1, 0.14, 0.2], [-7.25, 2.08, -4.05], steel);
+  box('verified modular rear bay wall right near portal lower deck ledge', [3.1, 0.14, 0.2], [7.25, 2.08, -4.05], steel);
+  box('verified modular rear bay wall wide upper truss silhouette', [15.2, 0.22, 0.2], [0, 4.62, -4.7], graphite);
+  box('verified modular rear bay wall wide upper truss warm underside', [12.4, 0.044, 0.04], [0, 4.42, -4.48], amber);
+
+  addLight('point', 0x7ecbff, 1.55, [0, 3.55, -5.25], 6.4);
 }
 
 function buildRooms() {
