@@ -507,13 +507,21 @@
       "status": "shipped",
       "type": "verification-first playtest-fix/composition-lighting-asset pass",
       "notes": "Verified deployed Pages loaded app.js?v=verified-holo-globe-command-scale-20260428 with holo-globe and rear-panorama runtime markers and live app.js SHA matching the repo, captured deployed proof via direct CDP screenshot, then added readable outer-bay activity kits: lit workpools/status walls, console islands, operator silhouettes, cargo carts, robotic arms, and restrained bay fill lights. Captured local post-change screenshot; visual assessment said the pass is honestly closer with better station activity/readability and no central holo-table regression, though operators remain small and further glow could become noisy."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "verified rear window ship silhouette pass",
+      "durationMs": 600000,
+      "status": "shipped",
+      "type": "verification-first playtest-fix/composition-lighting-asset pass",
+      "notes": "Verified deployed Pages loaded app.js?v=verified-outer-bay-activity-20260428 with outer-bay and holo-globe runtime markers and live app.js SHA matching the repo, captured deployed proof via direct CDP screenshot, then added a bolder rear hangar/window backdrop with large blue glass lift, docked hauler silhouette, asteroid cavern shoulders, docking ribs, runway lines, and cool rear spill. Captured local post-change screenshot; visual assessment said the pass is honestly closer but marginal, with stronger rear silhouette presence and no central holo-table regression."
     }
   ],
   "stats": {
-    "count": 63,
+    "count": 64,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 399365,
+    "avgMs": 402500,
     "subagents": {
       "count": 3,
       "minMs": 47000,

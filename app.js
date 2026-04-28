@@ -306,6 +306,7 @@ function buildOffice() {
   buildVerifiedRearRibMachineryBand();
   buildVerifiedUpperRearVoidBreaks();
   buildVerifiedRearPanoramaCeilingStrips();
+  buildVerifiedRearWindowShipSilhouette();
   buildRooms();
   buildStationWorkspaceIdentityKits();
   buildVerifiedOuterBayActivityReadability();
@@ -1390,6 +1391,48 @@ function buildVerifiedRearPanoramaCeilingStrips() {
     const backing = box(`verified rear panorama ceiling ${name} dark rib backing`, [0.22, 0.12, length + 0.4], [x, y + 0.06, z], deepSpace);
     backing.rotation.y = strip.rotation.y;
   });
+}
+
+
+function buildVerifiedRearWindowShipSilhouette() {
+  const glassLift = mat(0x0d4875, { emissive: 0x1593d6, emissiveIntensity: 0.5, transparent: true, opacity: 0.34, roughness: 0.06, metalness: 0.12 });
+  const haze = mat(0xb7e8ff, { emissive: 0x55baf2, emissiveIntensity: 0.42, transparent: true, opacity: 0.24, roughness: 0.04 });
+  const ship = mat(0x03060d, { roughness: 0.82, metalness: 0.32 });
+  const shipEdge = mat(0x7bd8ff, { emissive: COLORS.cyan, emissiveIntensity: 0.42, transparent: true, opacity: 0.26, roughness: 0.08 });
+  const amberEdge = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.28, transparent: true, opacity: 0.2, roughness: 0.12 });
+  const rock = mat(0x120d16, { roughness: 0.98, metalness: 0.02 });
+  const frame = mat(0x44536d, { roughness: 0.38, metalness: 0.76 });
+
+  // Fewer, larger forms: the rear window should read as an asteroid hangar, not a field of tiny UI dots.
+  box('verified rear window ship silhouette broad readable blue glass lift', [18.8, 1.42, 0.034], [0, 3.18, -7.86], glassLift);
+  box('verified rear window ship silhouette exterior haze behind dock', [16.4, 0.68, 0.03], [0, 3.2, -7.82], haze);
+  box('verified rear window ship silhouette left cavern rock shoulder', [2.7, 1.12, 0.05], [-7.7, 3.1, -7.76], rock);
+  box('verified rear window ship silhouette right cavern rock shoulder', [2.55, 1.08, 0.05], [7.7, 3.14, -7.76], rock);
+  box('verified rear window ship silhouette upper cavern bite', [13.6, 0.28, 0.045], [0, 3.94, -7.74], rock);
+
+  const ribs = [-5.45, -3.2, 3.2, 5.45];
+  ribs.forEach((x, index) => {
+    box(`verified rear window ship silhouette docking bay vertical rib ${index + 1}`, [0.13, 1.34, 0.05], [x, 3.16, -7.7], frame);
+    box(`verified rear window ship silhouette docking rib cyan edge ${index + 1}`, [0.032, 1.02, 0.03], [x + 0.1, 3.16, -7.66], shipEdge);
+  });
+
+  const body = box('verified rear window ship silhouette docked hauler main body', [6.1, 0.58, 0.06], [-0.72, 3.2, -7.58], ship);
+  body.rotation.z = THREE.MathUtils.degToRad(-1.5);
+  const nose = box('verified rear window ship silhouette docked hauler nose block', [1.24, 0.4, 0.055], [2.68, 3.22, -7.56], ship);
+  nose.rotation.z = THREE.MathUtils.degToRad(5);
+  const leftWing = box('verified rear window ship silhouette docked hauler left wing', [2.4, 0.18, 0.05], [-3.34, 2.9, -7.55], ship);
+  leftWing.rotation.z = THREE.MathUtils.degToRad(-9);
+  const rightWing = box('verified rear window ship silhouette docked hauler right wing', [2.1, 0.16, 0.05], [0.9, 2.9, -7.55], ship);
+  rightWing.rotation.z = THREE.MathUtils.degToRad(8);
+  box('verified rear window ship silhouette docked hauler cyan cockpit slash', [1.0, 0.055, 0.032], [1.9, 3.34, -7.5], shipEdge);
+  box('verified rear window ship silhouette docked hauler engine glow left', [0.8, 0.055, 0.032], [-4.02, 3.2, -7.5], shipEdge);
+  box('verified rear window ship silhouette docked hauler engine glow right', [0.64, 0.05, 0.032], [-3.28, 3.08, -7.5], amberEdge);
+
+  box('verified rear window ship silhouette low hangar runway perspective left', [6.2, 0.05, 0.034], [-4.8, 2.48, -7.5], shipEdge);
+  box('verified rear window ship silhouette low hangar runway perspective right', [6.2, 0.05, 0.034], [4.8, 2.48, -7.5], shipEdge);
+  box('verified rear window ship silhouette far dock amber beacon bar', [1.6, 0.06, 0.032], [5.35, 3.52, -7.5], amberEdge);
+
+  addLight('point', 0x75cfff, 4.0, [0, 3.32, -6.9], 9.2);
 }
 
 
