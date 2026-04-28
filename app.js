@@ -222,9 +222,9 @@ function buildAsteroidCutawayShell() {
 
   // Foreground silhouette: four separate jagged masses, leaving all corners visibly open to stars.
   polyMesh('concept-c jagged upper asteroid shell crown', [
-    [-10.7, 5.05], [-9.0, 6.34], [-6.9, 5.88], [-4.5, 6.72], [-1.8, 6.06], [1.0, 6.64],
-    [4.3, 5.96], [6.8, 6.42], [9.6, 5.62], [11.0, 5.05], [9.5, 4.64], [7.2, 4.86],
-    [4.8, 4.42], [2.0, 4.74], [-0.5, 4.36], [-3.2, 4.78], [-5.7, 4.42], [-8.3, 4.86]
+    [-10.9, 5.08], [-9.6, 6.54], [-7.4, 5.72], [-5.75, 6.92], [-3.05, 5.98], [-1.0, 6.36],
+    [0.8, 5.02], [2.72, 6.18], [5.7, 5.68], [8.35, 6.36], [11.15, 5.0], [9.32, 4.5],
+    [6.42, 4.94], [3.75, 4.22], [1.42, 4.72], [-1.18, 4.12], [-4.2, 4.92], [-6.86, 4.36], [-9.42, 4.82]
   ], MATS.rockOuter, 4.05, shell);
   polyMesh('concept-c left asteroid wall with broken bite silhouette', [
     [-13.5, 4.65], [-10.75, 4.3], [-10.05, 3.18], [-10.65, 2.38], [-9.82, 1.22], [-10.82, 0.34],
@@ -260,7 +260,8 @@ function buildAsteroidCutawayShell() {
   const thicknessBlocks = [
     ['left rear asteroid thickness volume', -11.15, 2.75, -2.8, 0.85, 4.4, 6.8],
     ['right rear asteroid thickness volume', 11.15, 2.75, -2.8, 0.85, 4.4, 6.8],
-    ['upper rear asteroid thickness volume', 0, 5.18, -3.0, 16.8, 0.72, 6.2]
+    ['upper left rear asteroid thickness volume', -5.4, 5.26, -3.0, 8.8, 0.84, 6.2],
+    ['upper right rear asteroid thickness volume', 5.9, 5.08, -3.25, 6.6, 0.62, 5.8]
   ];
   thicknessBlocks.forEach(([name, x, y, z, sx, sy, sz]) => box(`concept-c ${name}`, [sx, sy, sz], [x, y, z], MATS.rockOuter, shell));
   addRockSurfaceDetail(shell);
@@ -335,7 +336,8 @@ function buildProductionCavity() {
 function buildHeroProductionBay() {
   const bay = new THREE.Group();
   bay.name = 'concept-c left hero fabrication bay unmistakable production read';
-  bay.position.set(-6.55, 0, -0.15);
+  bay.position.set(-6.72, -0.02, -0.05);
+  bay.scale.set(1.22, 1.14, 1.12);
   root.add(bay);
 
   box('hero bay carved alcove shadow behind machinery', [4.9, 2.35, 0.22], [0, 2.05, -1.9], MATS.shadow, bay);
@@ -349,6 +351,12 @@ function buildHeroProductionBay() {
   box('hero bay hanging crane cable', [0.055, 0.78, 0.055], [-0.95, 2.24, -0.48], MATS.blackMetal, bay);
   box('hero bay suspended engine module being assembled', [0.82, 0.46, 0.62], [-0.95, 1.72, -0.36], MATS.darkSteel, bay);
   box('hero bay engine cyan core glow', [0.46, 0.07, 0.08], [-0.95, 1.78, -0.01], MATS.cyan, bay);
+  box('hero bay large ship-frame keel on build bed', [2.35, 0.1, 0.12], [0.15, 1.45, 0.78], MATS.steel, bay);
+  const ribA = box('hero bay left angled ship-frame rib', [0.12, 0.82, 0.12], [-0.86, 1.7, 0.78], MATS.amber, bay);
+  ribA.rotation.z = THREE.MathUtils.degToRad(-24);
+  const ribB = box('hero bay right angled ship-frame rib', [0.12, 0.82, 0.12], [1.08, 1.7, 0.78], MATS.amber, bay);
+  ribB.rotation.z = THREE.MathUtils.degToRad(24);
+  box('hero bay bright rectangular build platform under ship frame', [2.7, 0.05, 0.72], [0.15, 1.18, 0.78], MATS.orange, bay);
 
   const belt = box('hero bay wide conveyor belt exiting rock cut', [4.35, 0.18, 0.62], [0, 0.96, 1.1], MATS.blackMetal, bay);
   belt.rotation.y = THREE.MathUtils.degToRad(-2);
@@ -366,6 +374,10 @@ function buildHeroProductionBay() {
   box('hero bay welding spark at workpiece', [0.18, 0.18, 0.18], [0.12, 1.68, 0.52], MATS.cyan, bay);
 
   box('hero bay warm foundry glow pit under conveyor', [3.9, 0.05, 0.72], [0, 0.74, 1.1], MATS.orange, bay);
+  const productionKey = new THREE.PointLight(COLORS.orange, 5.2, 6.8);
+  productionKey.name = 'concept-c hero production bay local warm light';
+  productionKey.position.set(-6.7, 1.7, 1.0);
+  root.add(productionKey);
   box('hero bay pipe disappearing into rock left', [0.08, 0.08, 2.4], [-2.42, 2.32, -2.05], MATS.amber, bay).rotation.y = THREE.MathUtils.degToRad(18);
   box('hero bay pipe disappearing into rock right', [0.08, 0.08, 2.0], [2.28, 2.18, -2.02], MATS.cyanDim, bay).rotation.y = THREE.MathUtils.degToRad(-18);
 }
@@ -414,12 +426,26 @@ function buildCommandPit() {
   });
   box('concept-c black occlusion slot inside pit front wall', [4.2, 0.1, 0.08], [0, 0.62, 2.18], MATS.shadow);
   box('concept-c black occlusion slot inside pit rear wall', [4.0, 0.1, 0.08], [0, 0.62, -2.1], MATS.shadow);
+  cylinder('concept-c lower pit cyan glow at true bottom', 1.58, 1.72, 0.035, 48, [0, 0.52, 0.02], MATS.cyanDim);
+  box('concept-c heavy foreground lip occluding lower pit floor', [5.2, 0.18, 0.42], [0, 1.18, 3.02], MATS.blackMetal);
+  box('concept-c amber highlight on foreground pit lip', [4.4, 0.035, 0.045], [0, 1.32, 2.82], MATS.amber);
+  const stairTreads = [-0.52, -0.2, 0.12, 0.44].forEach((offset, index) => {
+    const treadL = box(`concept-c left visible stair tread down into pit ${index}`, [0.62, 0.035, 0.18], [-2.74 + index * 0.22, 0.98 - index * 0.1, 0.62 + offset], MATS.steel);
+    treadL.rotation.y = THREE.MathUtils.degToRad(-22);
+    const treadR = box(`concept-c right visible stair tread down into pit ${index}`, [0.62, 0.035, 0.18], [2.74 - index * 0.22, 0.98 - index * 0.1, 0.62 + offset], MATS.steel);
+    treadR.rotation.y = THREE.MathUtils.degToRad(22);
+  });
   const holo = cylinder('concept-c blue holographic asteroid ops globe', 0.9, 0.9, 0.02, 48, [0, 1.72, 0.02], MATS.cyan);
   holo.rotation.x = Math.PI / 2;
   const halo = torus('concept-c projected orbital halo around holo globe', 1.18, 0.022, 8, 64, [0, 1.72, 0.02], MATS.cyan);
   halo.rotation.x = Math.PI / 2;
   halo.rotation.z = 0.42;
   animated.push({ mesh: halo, spin: 0.18 });
+
+  [[-3.15, 2.55], [-2.55, 2.8], [2.9, 2.5], [3.4, -2.05]].forEach(([x, z], index) => {
+    cylinder(`concept-c tiny crew scale marker near sunken pit ${index}`, 0.045, 0.06, 0.32, 7, [x, 1.22, z], MATS.blackMetal);
+    box(`concept-c tiny crew visor cue near pit ${index}`, [0.09, 0.025, 0.02], [x, 1.42, z + 0.04], index % 2 ? MATS.amber : MATS.cyan);
+  });
 
   const stations = [
     [-2.45, 1.24, -34, MATS.cyan], [-1.12, 2.16, -14, MATS.amber], [1.12, 2.16, 14, MATS.cyan], [2.45, 1.24, 34, MATS.amber],
