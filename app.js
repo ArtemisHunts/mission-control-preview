@@ -312,6 +312,7 @@ function buildOffice() {
   buildVerifiedOuterBayActivityReadability();
   buildCommandHoloTableHero();
   buildVerifiedHoloGlobeCommandScale();
+  buildVerifiedReadableWorkstationSilhouettes();
   buildCommandPitLightingHierarchy();
   buildCommandPitMaterialContrast();
   buildRailingsAndCatwalks();
@@ -808,7 +809,7 @@ function buildVerifiedOuterBayActivityReadability() {
     cargo.rotation.y = cart.rotation.y;
     const arm = box(`verified outer bay activity ${name} robotic service arm`, [0.12, 0.96, 0.1], [x - 2.08 * side, 1.92, z - 0.72], graphite);
     arm.rotation.z = THREE.MathUtils.degToRad(12 * side);
-    const claw = box(`verified outer bay activity ${name} robotic arm lit toolhead`, [0.42, 0.08, 0.08], [x - 2.24 * side, 1.42, z - 0.42], accent);
+    const claw = box(`verified outer bay activity ${name} robotic arm lit toolhead`, [0.5, 0.09, 0.08], [x - 2.24 * side, 1.42, z - 0.42], accent);
     claw.rotation.y = THREE.MathUtils.degToRad(yaw);
 
     const plaque = box(`verified outer bay activity ${name} bay identity plaque`, [1.15, 0.08, 0.045], [x, 2.82, z - 1.22], accent);
@@ -953,6 +954,54 @@ function buildVerifiedHoloGlobeCommandScale() {
   });
 
   addLight('point', COLORS.cyan, 5.6, [0, 2.75, 0.38], 8.8);
+}
+
+
+function buildVerifiedReadableWorkstationSilhouettes() {
+  const blackGlass = mat(0x030814, { roughness: 0.14, metalness: 0.38, transparent: true, opacity: 0.84, emissive: 0x061523, emissiveIntensity: 0.08 });
+  const graphite = mat(0x151d2d, { roughness: 0.38, metalness: 0.72 });
+  const suit = mat(0xa5b0c2, { roughness: 0.44, metalness: 0.42, emissive: 0x172338, emissiveIntensity: 0.08 });
+  const shadow = mat(0x02040a, { roughness: 0.96, metalness: 0.04, transparent: true, opacity: 0.72 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.72, transparent: true, opacity: 0.38, roughness: 0.08 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.5, transparent: true, opacity: 0.3, roughness: 0.12 });
+
+  // Fewer, larger operators: readable at default camera, not another layer of tiny specks.
+  const pods = [
+    ['foreground commander', 0, 4.18, 0, 2.15, amber, 'standing'],
+    ['front left navigator', -2.95, 3.24, -24, 1.7, cyan, 'seated'],
+    ['front right quartermaster', 2.95, 3.24, 24, 1.7, cyan, 'seated'],
+    ['rear table watch', 0, -3.05, 180, 1.7, cyan, 'seated']
+  ];
+
+  pods.forEach(([name, x, z, yaw, width, accent, pose], index) => {
+    const rot = THREE.MathUtils.degToRad(yaw);
+    const console = box(`verified readable workstation silhouette ${name} large console pod`, [width, 0.46, 0.72], [x, 1.2, z], blackGlass);
+    console.rotation.y = rot;
+    const screen = box(`verified readable workstation silhouette ${name} facing readable screen`, [width * 0.78, 0.54, 0.052], [x, 1.62, z - 0.28], accent);
+    screen.rotation.y = rot;
+    const hood = box(`verified readable workstation silhouette ${name} dark screen hood`, [width * 0.9, 0.16, 0.08], [x, 1.88, z - 0.34], graphite);
+    hood.rotation.y = rot;
+    const chair = box(`verified readable workstation silhouette ${name} chair/readable base`, [0.42, 0.28, 0.42], [x, 1.16, z + (z > 0 ? 0.52 : -0.5)], graphite);
+    chair.rotation.y = rot;
+    const torsoHeight = pose === 'standing' ? 0.82 : 0.62;
+    const torsoY = pose === 'standing' ? 1.86 : 1.68;
+    const torso = box(`verified readable workstation silhouette ${name} large operator torso`, [0.4, torsoHeight, 0.26], [x, torsoY, z + (z > 0 ? 0.6 : -0.55)], suit);
+    torso.rotation.y = rot;
+    const head = sphere(`verified readable workstation silhouette ${name} readable helmet`, 0.19, 12, [x, torsoY + torsoHeight * 0.55, z + (z > 0 ? 0.6 : -0.55)], suit);
+    head.scale.y = 0.92;
+    const visor = box(`verified readable workstation silhouette ${name} bright visor slash`, [0.36, 0.045, 0.035], [x, torsoY + torsoHeight * 0.7, z + (z > 0 ? 0.72 : -0.67)], index % 2 ? cyan : amber);
+    visor.rotation.y = rot;
+    const arm = box(`verified readable workstation silhouette ${name} arm-to-console gesture`, [0.5, 0.09, 0.08], [x + (index % 2 ? 0.22 : -0.22), torsoY - 0.08, z + (z > 0 ? 0.28 : -0.24)], suit);
+    arm.rotation.y = rot + THREE.MathUtils.degToRad(index % 2 ? 16 : -16);
+    const contact = box(`verified readable workstation silhouette ${name} floor contact shadow`, [width * 1.25, 0.026, 0.82], [x, 0.99, z + (z > 0 ? 0.18 : -0.18)], shadow);
+    contact.rotation.y = rot;
+    const rim = box(`verified readable workstation silhouette ${name} warm/cool operator rim`, [0.5, 0.045, 0.04], [x, torsoY + torsoHeight * 0.25, z + (z > 0 ? 0.78 : -0.74)], accent);
+    rim.rotation.y = rot;
+  });
+
+  addLight('point', COLORS.cyan, 2.8, [0, 2.2, 3.6], 5.8);
+  addLight('point', COLORS.amber, 1.9, [-3.4, 2.0, 2.2], 4.8);
+  addLight('point', COLORS.amber, 1.9, [3.4, 2.0, 2.2], 4.8);
 }
 
 function buildCommandPitLightingHierarchy() {
