@@ -579,13 +579,21 @@
       "status": "shipped",
       "type": "verification-first composition/lighting/asset-pipeline/playtest-fix pass",
       "notes": "Credibility-gated loop: repo was clean, lock acquired, deployed Pages was proven before edits with app.js?v=verified-side-bay-role-props-20260428, live app.js SHA matched repo, and recent runtime markers were present. Browser screenshot tool timed out, so direct CDP Page.captureScreenshot captured deployed proof before edits. Added an open-center overhead oculus/rib frame with thin cyan/warm practical rings, side/raked ceiling ribs, dark canopy plates, and restrained overhead task lights to make the command hub feel more enclosed and north-star-like without stacking more side props. First variant competed with the holo-table, so revised to a higher/wider open-center frame and recaptured proof. Final visual assessment: honestly but marginally closer; container/shell improved, no major clutter regression, rear asteroid/window context remains the biggest gap."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "verified rear hangar window context pass",
+      "durationMs": 1080000,
+      "status": "shipped",
+      "type": "verification-first composition/lighting/asset-pipeline/playtest-fix pass",
+      "notes": "Credibility-gated loop: repo clean and locked; deployed Pages was proven before edits with app.js?v=verified-ceiling-oculus-hub-frame-20260428, live app.js SHA matched repo, and recent ceiling/side runtime markers were present. Direct CDP screenshot captured deployed proof before edits. Added a front-layer rear hangar/window context behind the command pit: wider blue glass aperture, blast frames/mullions, cropped asteroid shoulders, docked hauler silhouette, rear balcony/rails, runway lines, tiny silhouettes, stars, distant blue moon, and soft blue backlight. First placement was invisible/occluded, then moved after bay-wall passes and made brighter/closer with exterior anchors. Final visual assessment: honestly but only marginally closer; central holo-table and ceiling preserved, no clutter regression, rear vista still not materially north-star-level."
     }
   ],
   "stats": {
-    "count": 72,
+    "count": 73,
     "minMs": 90000,
-    "maxMs": 900000,
-    "avgMs": 436944,
+    "maxMs": 1080000,
+    "avgMs": 445753,
     "subagents": {
       "count": 3,
       "minMs": 47000,

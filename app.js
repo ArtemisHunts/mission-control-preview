@@ -311,6 +311,7 @@ function buildOffice() {
   buildVerifiedRearOperationsAtriumDepth();
   buildVerifiedModularRearBayWall();
   buildVerifiedBayWallRimReadability();
+  buildVerifiedRearHangarWindowContext();
   buildRooms();
   buildStationWorkspaceIdentityKits();
   buildVerifiedSideOperatorBayReadability();
@@ -1668,6 +1669,60 @@ function buildVerifiedRearWindowShipSilhouette() {
 }
 
 
+
+
+function buildVerifiedRearHangarWindowContext() {
+  const glass = mat(0x0a3f66, { emissive: 0x0b7fbd, emissiveIntensity: 0.62, transparent: true, opacity: 0.58, roughness: 0.06, metalness: 0.16 });
+  const deep = mat(0x01030a, { roughness: 1.0, metalness: 0.0 });
+  const haze = mat(0x9ee6ff, { emissive: 0x37b8ff, emissiveIntensity: 0.5, transparent: true, opacity: 0.24, roughness: 0.04 });
+  const frame = mat(0x4a5871, { roughness: 0.36, metalness: 0.78 });
+  const rock = mat(0x120d17, { roughness: 0.98, metalness: 0.02 });
+  const ship = mat(0x030711, { roughness: 0.84, metalness: 0.34 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.42, transparent: true, opacity: 0.26, roughness: 0.08 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.3, transparent: true, opacity: 0.2, roughness: 0.12 });
+
+  // One readable second-read vista behind the command pit: outside asteroid hangar, not another UI panel.
+  box('verified rear hangar window context deep exterior void panel', [18.4, 2.12, 0.035], [0, 3.02, -5.72], deep);
+  box('verified rear hangar window context wide blue glass aperture', [17.8, 1.82, 0.04], [0, 3.02, -5.66], glass);
+  box('verified rear hangar window context exterior atmospheric blue shelf', [15.8, 0.76, 0.032], [0, 3.12, -5.6], haze);
+  box('verified rear hangar window context armored top blast frame', [17.8, 0.16, 0.08], [0, 3.98, -5.52], frame);
+  box('verified rear hangar window context armored lower sill frame', [17.8, 0.14, 0.08], [0, 1.96, -5.52], frame);
+  box('verified rear hangar window context left heavy jamb', [0.16, 1.64, 0.08], [-9.1, 3.02, -5.5], frame);
+  box('verified rear hangar window context right heavy jamb', [0.16, 1.64, 0.08], [9.1, 3.02, -5.5], frame);
+
+  [-6.2, -3.1, 3.1, 6.2].forEach((x, index) => {
+    box(`verified rear hangar window context thick blast mullion ${index + 1}`, [0.12, 1.46, 0.065], [x, 3.02, -5.46], frame);
+    box(`verified rear hangar window context mullion cool edge ${index + 1}`, [0.032, 1.08, 0.034], [x + 0.11, 3.03, -5.41], cyan);
+  });
+
+  box('verified rear hangar window context cropped left asteroid outside glass', [2.6, 1.08, 0.05], [-7.48, 3.04, -5.36], rock);
+  box('verified rear hangar window context cropped right asteroid outside glass', [2.25, 0.98, 0.05], [7.48, 3.12, -5.36], rock);
+  box('verified rear hangar window context upper cavern bite silhouette', [9.8, 0.28, 0.045], [0, 3.7, -5.34], rock);
+  const hauler = box('verified rear hangar window context docked hauler broad silhouette', [4.8, 0.44, 0.055], [-0.92, 3.1, -5.28], ship);
+  hauler.rotation.z = THREE.MathUtils.degToRad(-2);
+  const nose = box('verified rear hangar window context docked hauler nose silhouette', [1.05, 0.28, 0.052], [2.02, 3.14, -5.26], ship);
+  nose.rotation.z = THREE.MathUtils.degToRad(5);
+  box('verified rear hangar window context hauler cyan cockpit slash', [0.82, 0.048, 0.03], [1.48, 3.26, -5.22], cyan);
+  box('verified rear hangar window context hauler amber engine cue', [0.62, 0.046, 0.03], [-3.12, 3.12, -5.22], amber);
+  box('verified rear hangar window context rear balcony dark rail', [14.2, 0.09, 0.07], [0, 2.08, -5.06], ship);
+  box('verified rear hangar window context rear balcony cyan rim', [12.6, 0.038, 0.035], [0, 2.22, -5.02], cyan);
+  box('verified rear hangar window context left receding runway line', [5.1, 0.035, 0.032], [-4.36, 2.42, -5.0], cyan);
+  box('verified rear hangar window context right receding runway line', [5.1, 0.035, 0.032], [4.36, 2.42, -5.0], cyan);
+  box('verified rear hangar window context tiny left operator silhouette', [0.16, 0.36, 0.05], [-5.25, 2.4, -4.98], ship);
+  box('verified rear hangar window context tiny right operator silhouette', [0.16, 0.36, 0.05], [5.38, 2.4, -4.98], ship);
+  // High-read exterior anchors: make the rear unmistakably outside glass at overview scale.
+  const star = mat(0xdff6ff, { emissive: 0xb7ecff, emissiveIntensity: 0.66, transparent: true, opacity: 0.72, roughness: 0.04 });
+  const planetGlow = mat(0x6fc8ff, { emissive: 0x3aa8ff, emissiveIntensity: 0.38, transparent: true, opacity: 0.34, roughness: 0.08 });
+  sphere('verified rear hangar window context distant blue moon outside glass', 0.42, 18, [6.62, 3.36, -5.18], planetGlow);
+  box('verified rear hangar window context readable docked ship top edge', [4.2, 0.05, 0.032], [-0.86, 3.36, -5.18], cyan);
+  box('verified rear hangar window context readable docked ship lower edge', [4.6, 0.045, 0.032], [-1.02, 2.78, -5.18], cyan);
+  box('verified rear hangar window context bright exterior star cluster left A', [0.07, 0.026, 0.024], [-6.82, 3.42, -5.16], star);
+  box('verified rear hangar window context bright exterior star cluster left B', [0.05, 0.022, 0.024], [-5.92, 3.18, -5.16], star);
+  box('verified rear hangar window context bright exterior star cluster center', [0.06, 0.024, 0.024], [0.3, 3.52, -5.16], star);
+  box('verified rear hangar window context bright exterior star cluster right A', [0.055, 0.022, 0.024], [5.28, 3.6, -5.16], star);
+  box('verified rear hangar window context bright exterior star cluster right B', [0.07, 0.026, 0.024], [7.18, 3.24, -5.16], star);
+  addLight('point', 0x7fd3ff, 3.2, [0, 3.1, -4.9], 9.6);
+}
 
 function buildVerifiedRearOperationsAtriumDepth() {
   const pressureShell = mat(0x060913, { roughness: 0.88, metalness: 0.22 });
