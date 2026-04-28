@@ -12,7 +12,11 @@ It should not feel like a website with a 3D decoration behind it.
 
 ## 2. North-star references
 
-The target is a synthesis, not a clone:
+Primary north-star image:
+
+- `docs/moodboards/north-star-asteroid-operations-floor.png` — this is the visual target for Mission Control. Default overview should converge toward this board: premium asteroid-base operations floor, circular sunken command hub, blue holographic globe/table, surrounding operator stations, hangar/window views, warm/cool practical lighting, dense but readable sci-fi material language.
+
+The rest of the target is a synthesis, not a clone:
 
 - **Star Atlas** — premium sci-fi polish, space-economy grandeur, cinematic ship/showroom lighting.
 - **Star Citizen** — believable spatial scale, high-density interiors, hangars, cities, ship/deck material realism.
@@ -26,18 +30,30 @@ Reference boards live here:
 - `docs/moodboards/holographic-ui.png`
 - `docs/moodboards/materials-avatars.png`
 - `docs/moodboards/mission-control-design-boards-combined.jpg`
+- `docs/moodboards/north-star-asteroid-operations-floor.png`
 
 ---
 
 ## 3. What the user should see first
 
-On load, the user sees a **full-screen 3D asteroid-base command floor**.
+On load, the user sees a **full-screen 3D asteroid-base command floor** that clearly echoes `docs/moodboards/north-star-asteroid-operations-floor.png`.
 
 The environment owns the frame. UI is minimal.
 
 Immediate impression:
 
 > “I’m looking into a real operations room carved into an asteroid, with a glowing holo-table at the center and specialized agent workspaces around it.”
+
+North-star frame requirements from the image:
+
+- circular/sunken operations hub owns the center
+- large blue holographic globe/table is the hero read
+- operators and consoles encircle the table
+- ceiling ribs and practical strip lights frame the room
+- rear/side hangar windows show asteroid/deep-space context
+- warm amber practicals + cool cyan holograms create cinematic contrast
+- dense material detail exists in organized bands, not random neon clutter
+- left/right auxiliary scenes imply logistics lanes, observation galleries, hangar, and workstation clusters
 
 Scale correction from Michael: the facility should feel **large — borderline massive**. Individual stations should read as small parts of a much larger asteroid base, not as evenly spaced kiosks in a compact diorama. Separation, negative space, catwalk distance, background structures, and exterior hangar depth should do more of the work than extra HUD.
 

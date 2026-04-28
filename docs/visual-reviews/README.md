@@ -9,7 +9,7 @@ Required fields for `scripts/macro-gate.mjs`:
 
 Commit under review: pending
 Screenshot: docs/visual-reviews/YYYY-MM-DD-short-title.png
-References benchmarked: docs/moodboards/world-architecture.png, docs/moodboards/materials-avatars.png
+References benchmarked: docs/moodboards/north-star-asteroid-operations-floor.png, docs/moodboards/world-architecture.png, docs/moodboards/materials-avatars.png
 Game Studio route: game-studio -> web-game-foundations -> three-webgl-game -> web-3d-asset-pipeline -> game-playtest
 Pass type: composition | lighting | asset-pipeline | UI | performance | playtest-fix
 Skill focus: ...

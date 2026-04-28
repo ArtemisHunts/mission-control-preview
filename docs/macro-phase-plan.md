@@ -32,6 +32,7 @@ Every macro pass must ask:
 
 The answer must be recorded in `docs/visual-reviews/`. The review must benchmark against:
 
+- `docs/moodboards/north-star-asteroid-operations-floor.png` — primary board
 - `docs/moodboards/world-architecture.png`
 - `docs/moodboards/materials-avatars.png`
 - `docs/target-design-spec.md`

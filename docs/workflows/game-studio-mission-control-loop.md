@@ -20,6 +20,11 @@ Shared references live at:
 
 - `../skills/_game-studio-references/`
 
+## Primary north star
+
+- `docs/moodboards/north-star-asteroid-operations-floor.png` is the primary visual target.
+- Every scene pass should explicitly move toward its default-view qualities: circular sunken command hub, large blue holographic globe/table, encircling operator consoles, ceiling ribs/practical strips, asteroid/hangar window context, warm/cool cinematic lighting, and dense organized sci-fi material detail.
+
 ## Entry point
 
 Start every Mission Control macro pass with `game-studio` routing, then immediately move to the specialist stack. For this project, the default route is:
@@ -191,7 +196,7 @@ A pass is not done until it has:
    - `node scripts/macro-gate.mjs --min-source-lines=120 --max-app-lines=2600 --max-mesh-constructors=70 --max-loop-markers=75`
 7. A visual review with:
    - screenshot path or explicit blocker
-   - references benchmarked
+   - references benchmarked, including `docs/moodboards/north-star-asteroid-operations-floor.png`
    - Game Studio route
    - asset pipeline stance
    - lighting/readability note

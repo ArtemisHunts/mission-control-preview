@@ -16,6 +16,7 @@ Primary visual references:
 - `docs/moodboards/materials-avatars.png`
 - `docs/moodboards/holographic-ui.png`
 - `docs/moodboards/mission-control-design-boards-combined.jpg`
+- `docs/moodboards/north-star-asteroid-operations-floor.png` — primary north-star board
 
 Asset pipeline reference:
 
