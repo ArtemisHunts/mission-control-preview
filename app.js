@@ -249,6 +249,7 @@ function buildOffice() {
   buildOverheadRibPracticalArchitecture();
   buildCalibratedAsteroidProscenium();
   buildTargetCutawayMissionControl();
+  buildRearHangarWindowScaleContext();
   buildInteriorDominanceMassing();
   buildNorthStarOperationsHub();
   buildReadabilityHotfixLighting();
@@ -440,6 +441,43 @@ function buildTargetCutawayMissionControl() {
   bay('review containment', 8.4, 1.35, coral);
   bay('observatory signal', -8.4, -7.2, violet);
   bay('deploy dock', 8.4, -7.2, green);
+}
+
+function buildRearHangarWindowScaleContext() {
+  const glass = mat(0x071b31, { emissive: 0x0d3e64, emissiveIntensity: 0.28, transparent: true, opacity: 0.26, roughness: 0.12, metalness: 0.16 });
+  const haze = mat(0x59f1ff, { emissive: COLORS.cyan, emissiveIntensity: 0.16, transparent: true, opacity: 0.12, roughness: 0.06 });
+  const steel = mat(0x46536a, { roughness: 0.36, metalness: 0.8 });
+  const shadow = mat(0x02040a, { roughness: 0.95, metalness: 0.1 });
+  const cyan = mat(COLORS.cyan, { emissive: COLORS.cyan, emissiveIntensity: 0.42, transparent: true, opacity: 0.26, roughness: 0.08 });
+  const amber = mat(COLORS.amber, { emissive: COLORS.amber, emissiveIntensity: 0.34, transparent: true, opacity: 0.22, roughness: 0.12 });
+  const red = mat(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: 0.2, transparent: true, opacity: 0.18, roughness: 0.12 });
+
+  box('rear hangar panoramic cool glass depth layer', [15.2, 1.42, 0.045], [0, 3.13, -10.34], glass);
+  box('rear hangar soft exterior haze shelf', [13.6, 0.62, 0.04], [0, 3.02, -10.26], haze);
+  box('rear hangar upper pressure frame', [16.4, 0.18, 0.16], [0, 3.98, -10.18], steel);
+  box('rear hangar lower pressure frame', [16.4, 0.16, 0.16], [0, 2.16, -10.18], steel);
+  box('rear hangar left pressure mullion', [0.22, 1.82, 0.16], [-8.34, 3.06, -10.18], steel);
+  box('rear hangar right pressure mullion', [0.22, 1.82, 0.16], [8.34, 3.06, -10.18], steel);
+
+  box('rear hangar docked shuttle broad silhouette body', [3.9, 0.42, 0.08], [-2.2, 3.02, -10.08], shadow);
+  box('rear hangar docked shuttle nose wedge read', [0.74, 0.28, 0.08], [0.08, 3.02, -10.06], shadow);
+  box('rear hangar docked shuttle left wing mass', [1.42, 0.12, 0.08], [-3.35, 2.82, -10.05], shadow);
+  box('rear hangar docked shuttle right wing mass', [1.18, 0.1, 0.08], [-1.05, 2.82, -10.05], shadow);
+  box('rear hangar shuttle cyan engine line', [1.04, 0.04, 0.045], [-4.14, 3.02, -10.0], cyan);
+
+  const craneA = box('rear hangar diagonal maintenance crane arm A', [4.6, 0.12, 0.08], [4.26, 3.52, -10.02], steel);
+  craneA.rotation.z = THREE.MathUtils.degToRad(-12);
+  const craneB = box('rear hangar diagonal maintenance crane arm B', [3.6, 0.1, 0.08], [5.24, 2.64, -10.01], steel);
+  craneB.rotation.z = THREE.MathUtils.degToRad(18);
+  box('rear hangar crane amber joint beacon', [0.3, 0.06, 0.045], [3.02, 3.28, -9.98], amber);
+  box('rear hangar far runway cyan recession left', [4.8, 0.045, 0.04], [-5.2, 2.42, -10.02], cyan);
+  box('rear hangar far runway cyan recession right', [4.8, 0.045, 0.04], [5.2, 2.42, -10.02], cyan);
+  box('rear hangar left asteroid dock shadow shoulder', [1.1, 1.1, 0.05], [-7.12, 2.9, -10.04], shadow);
+  box('rear hangar right asteroid dock shadow shoulder', [1.1, 1.0, 0.05], [7.12, 2.85, -10.04], shadow);
+  box('rear hangar distant service beacon cluster A', [0.42, 0.05, 0.04], [-6.7, 3.52, -9.98], amber);
+  box('rear hangar distant service beacon cluster B', [0.36, 0.05, 0.04], [6.9, 3.42, -9.98], red);
+  box('rear hangar centerline docking clearance light', [0.5, 0.045, 0.04], [0.9, 2.5, -9.98], amber);
+  box('rear hangar cyan rim reflected on command glass', [7.6, 0.035, 0.04], [0, 2.02, -9.96], cyan);
 }
 
 function buildInteriorDominanceMassing() {

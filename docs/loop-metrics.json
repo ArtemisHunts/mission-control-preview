@@ -355,13 +355,21 @@
       "status": "shipped",
       "type": "focused 30-minute composition/lighting/asset-blockout pass",
       "notes": "Added broad overhead rib architecture and restrained warm/cool practical strips around the command oculus: six large command ceiling ribs with service-shadow cheeks, side longitudinal service spines, amber wall wash slots, rear hangar header truss, and cyan oculus support slits. The pass strengthens the north-star ceiling rhythm without changing camera/fog/exposure or adding exterior clutter. Browser screenshot capture remained blocked by policy and is documented."
+    },
+    {
+      "date": "2026-04-27",
+      "label": "rear hangar window scale context pass",
+      "durationMs": 480000,
+      "status": "shipped",
+      "type": "focused 30-minute composition/lighting/asset-blockout pass",
+      "notes": "Added a stronger rear hangar/window context layer behind the command floor: cool panoramic glass/haze, pressure frame and mullions, docked shuttle silhouette, maintenance crane arms, runway recession lines, side asteroid dock shoulders, service beacons, and a cyan reflected rim. The pass anchors the operations floor inside a larger asteroid-base hangar without changing camera/fog/exposure or adding exterior clutter. Browser screenshot capture remained blocked by policy and is documented."
     }
   ],
   "stats": {
-    "count": 44,
+    "count": 45,
     "minMs": 90000,
     "maxMs": 900000,
-    "avgMs": 307045,
+    "avgMs": 310889,
     "subagents": {
       "count": 3,
       "minMs": 47000,
