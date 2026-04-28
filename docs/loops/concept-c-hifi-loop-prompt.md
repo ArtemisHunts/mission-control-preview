@@ -55,7 +55,10 @@ Gold-standard gate:
    - `node --check --input-type=module < app.js`
    - `git diff --check`
 9. Capture a screenshot using local server/CDP/browser tooling when available.
-10. Run a visual gate against gold-standard Concept C.
+   - Prefer the direct CDP screenshot pattern used by prior successful manual passes.
+   - Do **not** rely on Canvas tooling as the only path; if Canvas/browser policy fails, fall back to direct CDP or record a screenshot blocker.
+   - A screenshot-tool failure is not a full loop failure if code checks pass, a real blocker is documented, and the commit is useful.
+10. Run a visual gate against gold-standard Concept C when a screenshot exists. If no screenshot exists, write a provisional review and make screenshot recovery the next task.
 11. Write a visual review markdown file with scores and next target.
 12. Commit and push to `origin/concept-c-hifi`.
 13. Reply/record concise status only if the environment asks; otherwise leave durable evidence in docs and git.
@@ -97,6 +100,7 @@ Work down this ladder. Do not skip to polish if foundations fail.
 - Do not edit workspace bootstrap files (`MEMORY.md`, `DREAMS.md`, `SOUL.md`, `TOOLS.md`, `AGENTS.md`).
 - Do not report placeholder progress.
 - No commit unless the screenshot/gate exists or a real blocker is documented.
+- Do not throw/exit the whole job as failed solely because Canvas/browser screenshot capture failed after useful code/checks/commit work. Document it as a blocker and keep the loop moving.
 - No random prop/noodle pass. Every edit must serve the chosen thesis.
 - If a pass makes the scene worse, revert or document honestly and do not claim improvement.
 
