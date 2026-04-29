@@ -5161,9 +5161,85 @@ function buildHifi22CupBowlOverhangShapePass() {
   scene.add(bowlDepthLight);
 }
 
+
+function buildHifi23RestoreBowlOpeningPass() {
+  const pass = new THREE.Group();
+  pass.name = 'concept-c HIFI-23 restore visible bowl opening pass';
+  root.add(pass);
+
+  // HIFI-22 got cohesion but filled the aperture. Keep the cup/bowl body, but cut a clear visible mouth back into it.
+  root.traverse((node) => {
+    if (!node.name) return;
+    if (node.name.includes('hifi22 unified outer cup body overlay') || node.name.includes('hifi22 final crescent bowl scoop')) node.visible = false;
+  });
+
+  const aperture = new THREE.Group();
+  aperture.name = 'hifi23 clear dark opening inside cohesive bowl shell';
+  pass.add(aperture);
+
+  const deepVoidMat = mat(0x000105, { roughness: 1, transparent: true, opacity: 0.96, side: THREE.DoubleSide });
+  const innerAirMat = mat(0x0d2332, { roughness: 1, transparent: true, opacity: 0.28, side: THREE.DoubleSide });
+
+  // Large visible cut. This is deliberately obvious because Michael's critique was: no opening.
+  const mainOpening = polyMesh('hifi23 obvious cup bowl mouth opening restored', [
+    [-14.6, 2.72], [-10.0, 4.15], [-4.2, 3.72], [1.8, 3.18], [7.8, 3.45], [12.4, 1.52], [13.3, -1.45],
+    [10.8, -4.25], [5.2, -5.35], [-1.6, -5.08], [-7.8, -4.4], [-12.6, -2.25]
+  ], deepVoidMat, 20.2, aperture);
+  mainOpening.scale.z = 0.045;
+
+  const rearOpening = polyMesh('hifi23 visible rear depth inside restored bowl opening', [
+    [-8.8, 2.2], [-3.2, 2.95], [3.2, 2.7], [8.2, 1.5], [8.8, -1.1], [6.4, -3.2], [1.2, -3.9], [-4.8, -3.25], [-8.6, -1.8]
+  ], innerAirMat, 19.75, aperture);
+  rearOpening.scale.z = 0.04;
+
+  // Undercut shadow: this makes the roof lip read as overhanging the opening instead of the opening being a flat decal.
+  const shadowLipMat = mat(0x020204, { roughness: 1, transparent: true, opacity: 0.88, side: THREE.DoubleSide });
+  [
+    [-10.8, 3.72, 5.0, 0.38, 9], [-4.4, 3.48, 5.6, 0.36, -4], [2.6, 3.25, 5.8, 0.36, 4], [8.8, 2.5, 4.5, 0.34, -14]
+  ].forEach(([x, y, w, h, angle], index) => {
+    const shadow = hifiShard(`hifi23 dark undercut shadow under roof lip ${index}`, x, y, {
+      z: 20.55,
+      width: w,
+      height: h,
+      depth: 0.3,
+      angle,
+      warmBias: -0.12,
+      roughness: 0.01,
+      material: shadowLipMat,
+      parent: aperture
+    });
+    shadow.scale.z = 0.18;
+  });
+
+  // A few broad bright rim planes sit above the dark mouth and preserve the cup/lip read without clutter.
+  const rimMat = mat(0x958d82, { roughness: 0.98, side: THREE.DoubleSide });
+  [
+    [-11.0, 4.12, 4.8, 0.24, 10], [-4.2, 3.86, 5.2, 0.23, -5], [3.0, 3.72, 5.2, 0.23, 4], [9.4, 2.92, 3.8, 0.24, -15],
+    [-10.2, -3.92, 4.2, 0.2, 18], [-2.4, -4.92, 5.0, 0.2, -6], [5.8, -4.45, 4.2, 0.2, 8]
+  ].forEach(([x, y, w, h, angle], index) => {
+    const rim = hifiShard(`hifi23 sparse cup mouth rock lip ${index}`, x, y, {
+      z: 20.72,
+      width: w,
+      height: h,
+      depth: 0.28,
+      angle,
+      warmBias: -0.02,
+      roughness: 0.018,
+      material: rimMat,
+      parent: aperture
+    });
+    rim.scale.z = 0.16;
+  });
+
+  const openingDepth = new THREE.PointLight(0x6f9ec4, 7.0, 28.0);
+  openingDepth.name = 'hifi23 cold depth cue inside restored opening';
+  openingDepth.position.set(1.5, -0.8, -10.8);
+  scene.add(openingDepth);
+}
+
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-22: cup/bowl asteroid shape with a concave hollow and forward roof overhang, still shape-only before interior detailing.';
+  document.getElementById('focus-body').textContent = 'HIFI-23: restores a clear dark bowl opening inside the cohesive cup shell with a visible roof-lip undercut, still shape-only.';
 }
 
 function buildScene() {
@@ -5185,6 +5261,7 @@ function buildScene() {
   buildHifi20ShellFirstOpenCavernQualityPass();
   buildHifi21CohesiveShapeResetPass();
   buildHifi22CupBowlOverhangShapePass();
+  buildHifi23RestoreBowlOpeningPass();
   updateReadout();
 }
 
