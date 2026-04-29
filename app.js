@@ -25,12 +25,12 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.28;
+renderer.toneMappingExposure = 1.42;
 container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
-scene.fog = new THREE.Fog(COLORS.bg, 20, 64);
+scene.fog = new THREE.Fog(COLORS.bg, 28, 92);
 
 const camera = new THREE.PerspectiveCamera(46, window.innerWidth / window.innerHeight, 0.1, 160);
 camera.position.set(0, 8.2, 31.5);
@@ -48,10 +48,10 @@ controls.target.set(0, 3.8, -3.8);
 
 
 const CAMERA_PRESETS = {
-  full: { label: 'FULL', position: [0, 8.2, 31.5], target: [0, 3.8, -3.8], fov: 46 },
-  wide: { label: 'WIDE', position: [0, 9.4, 38.5], target: [0, 4.25, -4.6], fov: 50 },
-  detail: { label: 'DETAIL', position: [0, 6.4, 18.2], target: [0, 3.45, -2.4], fov: 42 },
-  ceiling: { label: 'CEILING', position: [0, 10.4, 28.0], target: [0, 6.15, -3.4], fov: 43 }
+  full: { label: 'FULL', position: [0, 4.3, 26.4], target: [0, 2.2, -7.8], fov: 42 },
+  wide: { label: 'WIDE', position: [0, 5.2, 31.8], target: [0, 2.6, -8.4], fov: 44 },
+  detail: { label: 'DETAIL', position: [0, 3.0, 18.8], target: [0, 1.6, -6.9], fov: 36 },
+  ceiling: { label: 'CEILING', position: [0, 6.1, 27.0], target: [0, 4.8, -9.2], fov: 40 }
 };
 
 let activeCameraPreset = 'full';
@@ -2270,25 +2270,453 @@ function buildScaleAndAtmosphere() {
   box('concept-c top broken cut warm practical line', [8.4, 0.04, 0.05], [0, 4.5, 3.55], MATS.amber);
 }
 
+function addReferenceLights() {
+  scene.add(new THREE.AmbientLight(0x4f6484, 0.18));
+  scene.add(new THREE.HemisphereLight(0x8fa9ce, 0x0a0708, 0.46));
+
+  const ceilingFill = new THREE.DirectionalLight(0xc8dcf7, 1.15);
+  ceilingFill.position.set(-8.5, 12.0, 8.0);
+  scene.add(ceilingFill);
+
+  const pitGlow = new THREE.PointLight(COLORS.cyan, 18.0, 34.0);
+  pitGlow.position.set(0, -0.95, -8.2);
+  scene.add(pitGlow);
+
+  const leftBayGlow = new THREE.PointLight(0x72eeff, 10.6, 22.0);
+  leftBayGlow.position.set(-9.4, 3.0, -10.6);
+  scene.add(leftBayGlow);
+
+  const warmCore = new THREE.PointLight(0xffa660, 13.0, 24.0);
+  warmCore.position.set(1.1, 3.9, -10.8);
+  scene.add(warmCore);
+
+  const rightSpaceFlood = new THREE.PointLight(0xd9e8ff, 18.0, 32.0);
+  rightSpaceFlood.position.set(15.2, 4.2, -14.8);
+  scene.add(rightSpaceFlood);
+
+  const rightSpaceRim = new THREE.DirectionalLight(0x9fc5ff, 1.7);
+  rightSpaceRim.position.set(18.0, 5.8, -18.0);
+  scene.add(rightSpaceRim);
+
+  const topAmber = new THREE.PointLight(0xffb877, 4.2, 20.0);
+  topAmber.position.set(0.4, 7.6, -6.0);
+  scene.add(topAmber);
+}
+
+function buildReferenceStarfield() {
+  const vertices = [];
+  for (let i = 0; i < 1800; i += 1) {
+    const rx = hifiNoise(i * 17.31 + 1.2);
+    const ry = hifiNoise(i * 9.17 + 5.4);
+    const rz = hifiNoise(i * 13.73 + 9.2);
+    vertices.push(
+      (rx - 0.5) * 92,
+      -16 + ry * 40,
+      -34 - rz * 64
+    );
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+  const stars = new THREE.Points(geo, new THREE.PointsMaterial({
+    color: 0xe8f6ff,
+    size: 0.11,
+    transparent: true,
+    opacity: 0.96,
+    sizeAttenuation: true
+  }));
+  stars.name = 'concept-c HIFI-07 dense starfield around asteroid cavern';
+  scene.add(stars);
+
+  const heroStars = [
+    [18.8, 8.8, -44.0, 0.16], [15.8, 5.6, -40.0, 0.1], [14.6, -1.4, -38.0, 0.09],
+    [-18.8, 6.6, -42.0, 0.11], [-15.4, -2.2, -40.0, 0.08], [0.0, 10.8, -48.0, 0.08]
+  ];
+  heroStars.forEach(([x, y, z, r], index) => {
+    const star = cylinder(`concept-c hifi07 hero star ${index}`, r, r, 0.02, 16, [x, y, z], mat(0xf7fbff, { emissive: 0xcde6ff, emissiveIntensity: 1.4 }));
+    star.rotation.x = Math.PI / 2;
+  });
+
+  const outsideRock = new THREE.Group();
+  outsideRock.name = 'concept-c hifi07 distant exterior asteroid outside right hangar';
+  scene.add(outsideRock);
+  buildHifiRockPanel('hifi07 distant outside asteroid slab', [
+    [15.1, 2.0], [17.2, 3.9], [19.0, 4.2], [20.6, 2.8], [19.9, 0.4], [17.6, -0.2], [15.8, 0.5]
+  ], {
+    z: -25.8,
+    depth: 4.4,
+    grid: 0.18,
+    rimInset: 0.12,
+    backShrink: 0.14,
+    relief: 0.26,
+    mediumRelief: 0.08,
+    microRelief: 0.02,
+    frontWarp: 0.1,
+    warmBias: -0.1,
+    parent: outsideRock,
+    valueZones: [
+      { x: 17.8, y: 2.2, rx: 4.6, ry: 2.6, shadow: 0.28, cool: 0.16 },
+      { x: 18.8, y: 3.6, rx: 2.6, ry: 1.4, dust: 0.18 }
+    ]
+  });
+}
+
+function buildReferenceApertureShell() {
+  const shell = new THREE.Group();
+  shell.name = 'concept-c HIFI-07 reference-matched asteroid cavern shell';
+  root.add(shell);
+
+  const foregroundShadow = mat(0x010104, { roughness: 1, side: THREE.DoubleSide });
+
+  const rockPasses = [
+    {
+      name: 'hifi07 massive foreground top aperture arch',
+      pts: [[-17.2, 5.6], [-15.7, 8.4], [-12.8, 10.2], [-8.8, 10.9], [-4.8, 10.1], [0.2, 10.6], [5.0, 10.2], [9.2, 9.2], [12.8, 8.1], [15.8, 6.4], [14.8, 5.4], [11.0, 4.8], [6.6, 5.0], [1.2, 4.4], [-3.8, 4.8], [-8.6, 4.6], [-13.0, 4.8], [-16.0, 5.0]],
+      z: 9.0,
+      depth: 14.0,
+      warmBias: -0.12,
+      relief: 0.52,
+      geology: [
+        { type: 'band', ax: -15.4, ay: 7.9, bx: 15.1, by: 7.2, width: 1.6, height: 0.24, terraces: 10, terraceHeight: 0.12, dust: 0.08, shadow: 0.12 },
+        { type: 'fault', ax: -10.8, ay: 9.8, bx: -7.8, by: 5.2, width: 0.42, depth: 0.18, rim: 0.06, shadow: 0.18 },
+        { type: 'fault', ax: 7.2, ay: 9.4, bx: 12.4, by: 5.8, width: 0.46, depth: 0.16, rim: 0.06, shadow: 0.16 },
+        { type: 'basin', x: 0.4, y: 8.0, rx: 2.2, ry: 1.0, angle: -4, depth: 0.1, rim: 0.04, shadow: 0.1 }
+      ],
+      valueZones: [
+        { x: 0.2, y: 7.3, rx: 18.0, ry: 3.5, shadow: 0.42, cool: 0.18 },
+        { x: -5.6, y: 9.2, rx: 4.4, ry: 1.6, dust: 0.18 },
+        { x: 9.8, y: 8.2, rx: 5.2, ry: 1.8, cool: 0.14 }
+      ]
+    },
+    {
+      name: 'hifi07 massive left foreground cavern wall',
+      pts: [[-17.6, -3.8], [-17.1, 1.8], [-16.0, 4.8], [-14.4, 5.7], [-13.0, 3.8], [-12.6, 1.0], [-12.0, -1.2], [-12.8, -3.8], [-15.2, -5.4]],
+      z: 8.8,
+      depth: 12.2,
+      warmBias: -0.14,
+      relief: 0.48,
+      geology: [
+        { type: 'band', ax: -16.8, ay: 4.2, bx: -13.2, by: -3.8, width: 1.0, height: 0.2, terraces: 6, terraceHeight: 0.08, shadow: 0.12 },
+        { type: 'basin', x: -15.2, y: 1.1, rx: 1.2, ry: 2.0, angle: 18, depth: 0.1, rim: 0.04, shadow: 0.16 }
+      ],
+      valueZones: [
+        { x: -15.0, y: 0.2, rx: 3.6, ry: 6.0, shadow: 0.44, cool: 0.18 },
+        { x: -13.6, y: 4.6, rx: 1.8, ry: 1.2, dust: 0.14 }
+      ]
+    },
+    {
+      name: 'hifi07 massive lower sill aperture shelf',
+      pts: [[-13.8, -3.6], [-9.2, -2.2], [-4.2, -1.7], [1.6, -1.8], [7.0, -2.2], [12.2, -1.7], [14.6, -2.6], [14.0, -5.6], [8.4, -6.6], [2.0, -7.1], [-4.2, -6.8], [-10.2, -6.1], [-14.1, -5.0]],
+      z: 8.7,
+      depth: 11.6,
+      warmBias: -0.1,
+      relief: 0.44,
+      geology: [
+        { type: 'band', ax: -12.8, ay: -3.3, bx: 13.2, by: -3.2, width: 0.92, height: 0.18, terraces: 8, terraceHeight: 0.08, dust: 0.18, warm: 0.04 },
+        { type: 'fault', ax: -6.4, ay: -2.1, bx: -1.0, by: -6.0, width: 0.32, depth: 0.12, rim: 0.04, shadow: 0.16 },
+        { type: 'fault', ax: 4.8, ay: -1.8, bx: 10.2, by: -5.9, width: 0.34, depth: 0.12, rim: 0.04, shadow: 0.16 }
+      ],
+      valueZones: [
+        { x: 0.2, y: -3.8, rx: 15.0, ry: 2.4, shadow: 0.38 },
+        { x: -7.8, y: -2.6, rx: 3.8, ry: 1.1, dust: 0.2 },
+        { x: 8.6, y: -2.8, rx: 4.0, ry: 1.1, dust: 0.16 }
+      ]
+    },
+    {
+      name: 'hifi07 right outer cavern cheek leaving hangar break',
+      pts: [[11.2, 5.0], [13.6, 6.8], [16.4, 5.6], [17.2, 2.2], [16.2, -1.8], [14.2, -4.6], [12.2, -3.4], [12.8, -0.4], [11.4, 2.6]],
+      z: 8.6,
+      depth: 11.8,
+      warmBias: -0.08,
+      relief: 0.46,
+      geology: [
+        { type: 'band', ax: 12.2, ay: 5.6, bx: 14.6, by: -3.2, width: 1.02, height: 0.18, terraces: 7, terraceHeight: 0.08, shadow: 0.12 },
+        { type: 'basin', x: 14.8, y: 1.8, rx: 1.2, ry: 2.1, angle: -20, depth: 0.1, rim: 0.04, shadow: 0.16 }
+      ],
+      valueZones: [
+        { x: 14.0, y: 1.6, rx: 3.2, ry: 5.2, shadow: 0.36, cool: 0.16 },
+        { x: 12.2, y: 5.8, rx: 1.8, ry: 1.2, dust: 0.14 }
+      ]
+    },
+    {
+      name: 'hifi07 rear cavern roof mass above city',
+      pts: [[-13.0, 4.5], [-9.8, 6.2], [-5.0, 6.8], [0.8, 6.7], [5.6, 6.4], [9.4, 5.8], [11.4, 4.9], [9.6, 4.2], [5.2, 4.0], [0.4, 3.9], [-4.6, 4.0], [-9.0, 3.8], [-12.4, 4.0]],
+      z: 1.8,
+      depth: 8.6,
+      warmBias: -0.06,
+      relief: 0.36,
+      mediumRelief: 0.08,
+      microRelief: 0.01,
+      geology: [
+        { type: 'band', ax: -11.4, ay: 5.6, bx: 10.1, by: 5.1, width: 1.0, height: 0.12, terraces: 8, terraceHeight: 0.06, shadow: 0.08 },
+        { type: 'basin', x: -0.4, y: 5.8, rx: 2.0, ry: 0.8, angle: 0, depth: 0.08, rim: 0.02, shadow: 0.1 }
+      ],
+      valueZones: [
+        { x: 0.0, y: 5.0, rx: 12.4, ry: 2.2, shadow: 0.22, cool: 0.1 }
+      ]
+    },
+    {
+      name: 'hifi07 rear left cyan chamber shoulder',
+      pts: [[-13.4, 3.8], [-10.6, 4.6], [-8.8, 3.2], [-8.6, 0.4], [-10.1, -0.8], [-12.8, -0.4], [-13.9, 1.4]],
+      z: 2.0,
+      depth: 7.2,
+      warmBias: -0.08,
+      relief: 0.32,
+      mediumRelief: 0.07,
+      microRelief: 0.01,
+      valueZones: [
+        { x: -11.4, y: 1.8, rx: 3.2, ry: 2.6, shadow: 0.2, cool: 0.14 }
+      ]
+    },
+    {
+      name: 'hifi07 right hangar roof lip to space',
+      pts: [[8.6, 5.3], [10.6, 5.6], [13.6, 5.9], [14.6, 4.8], [13.2, 4.0], [11.0, 4.0], [9.2, 4.4]],
+      z: 3.2,
+      depth: 6.2,
+      warmBias: -0.04,
+      relief: 0.26,
+      mediumRelief: 0.06,
+      microRelief: 0.01,
+      valueZones: [
+        { x: 12.1, y: 4.9, rx: 3.8, ry: 1.2, shadow: 0.18, cool: 0.16 }
+      ]
+    }
+  ];
+
+  rockPasses.forEach(({ name, pts, z, depth, warmBias, relief, mediumRelief = 0.1, microRelief = 0.014, geology = [], valueZones = [] }) => {
+    buildHifiRockPanel(name, pts, {
+      z,
+      depth,
+      grid: 0.12,
+      rimInset: 0.16,
+      backShrink: 0.18,
+      relief,
+      mediumRelief,
+      microRelief,
+      strataRelief: 0.1,
+      radialRelief: 0.04,
+      frontWarp: 0.14,
+      warmBias,
+      geology,
+      valueZones,
+      parent: shell
+    });
+  });
+
+  polyMesh('hifi07 pure shadow top aperture mask', [
+    [-18.5, 10.0], [-15.4, 13.4], [-8.8, 14.2], [-0.8, 13.7], [7.9, 13.5], [14.4, 12.4], [18.6, 10.8], [18.8, 14.8], [-18.8, 14.8]
+  ], foregroundShadow, 12.6, shell);
+  polyMesh('hifi07 pure shadow bottom aperture mask', [
+    [-18.8, -7.9], [-14.4, -9.4], [-7.0, -10.4], [1.0, -10.9], [8.2, -10.2], [14.4, -8.9], [18.8, -7.2], [18.8, -14.2], [-18.8, -14.2]
+  ], foregroundShadow, 12.7, shell);
+  polyMesh('hifi07 pure shadow left aperture mask', [
+    [-18.8, -8.8], [-16.1, -6.0], [-14.5, -0.2], [-14.3, 6.0], [-16.0, 10.8], [-18.8, 12.6]
+  ], foregroundShadow, 12.5, shell);
+  polyMesh('hifi07 pure shadow right aperture mask', [
+    [18.8, -7.8], [15.0, -5.2], [13.2, 0.2], [13.6, 6.2], [16.0, 10.6], [18.8, 12.6]
+  ], foregroundShadow, 12.5, shell);
+
+  const rearVoid = box('hifi07 rear cavern black depth wall', [16.0, 6.8, 0.24], [0.4, 2.8, -16.6], MATS.shadow, shell);
+  rearVoid.rotation.x = THREE.MathUtils.degToRad(-2);
+  const leftVoid = box('hifi07 left cavern black depth pocket', [5.0, 4.4, 0.18], [-10.2, 2.6, -14.8], MATS.shadow, shell);
+  leftVoid.rotation.z = THREE.MathUtils.degToRad(6);
+
+  const rightOpeningGlow = box('hifi07 giant right hangar opening to space', [6.6, 5.2, 0.08], [13.0, 3.1, -16.8], mat(0xbcd6ff, {
+    emissive: 0xa9c8ff,
+    emissiveIntensity: 1.4,
+    transparent: true,
+    opacity: 0.8,
+    roughness: 0.08
+  }), shell);
+  rightOpeningGlow.rotation.z = THREE.MathUtils.degToRad(-2);
+
+  const openingFrame = new THREE.Group();
+  openingFrame.name = 'concept-c hifi07 right hangar frame';
+  shell.add(openingFrame);
+  box('hifi07 right hangar top frame', [5.8, 0.26, 0.4], [12.7, 5.7, -15.9], MATS.darkSteel, openingFrame);
+  box('hifi07 right hangar bottom frame', [5.4, 0.22, 0.34], [12.8, 0.3, -15.7], MATS.darkSteel, openingFrame);
+  box('hifi07 right hangar left jamb', [0.26, 4.8, 0.34], [10.1, 3.0, -15.7], MATS.darkSteel, openingFrame);
+  box('hifi07 right hangar right jamb', [0.26, 4.4, 0.34], [15.3, 3.2, -15.7], MATS.darkSteel, openingFrame);
+  box('hifi07 right hangar icy header glow', [5.0, 0.06, 0.08], [12.8, 5.9, -15.42], MATS.cyan, openingFrame);
+}
+
+function buildReferenceFacilityMassing() {
+  const facility = new THREE.Group();
+  facility.name = 'concept-c HIFI-07 embedded industrial city';
+  root.add(facility);
+
+  const addLightRun = (name, start, end, count, material, yJitter = 0, zJitter = 0) => {
+    for (let i = 0; i < count; i += 1) {
+      const t = count === 1 ? 0.5 : i / (count - 1);
+      box(`${name} ${i}`, [0.14, 0.04, 0.04], [
+        THREE.MathUtils.lerp(start[0], end[0], t),
+        THREE.MathUtils.lerp(start[1], end[1], t) + Math.sin(i * 0.9) * yJitter,
+        THREE.MathUtils.lerp(start[2], end[2], t) + Math.cos(i * 0.8) * zJitter
+      ], material, facility);
+    }
+  };
+
+  const addBridge = (name, x, y, z, length, yaw, accent = MATS.amber) => {
+    const deck = box(`${name} deck`, [length, 0.12, 0.46], [x, y, z], MATS.steel, facility);
+    deck.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const railL = box(`${name} rail L`, [length * 0.9, 0.03, 0.04], [x, y + 0.12, z + 0.22], accent, facility);
+    const railR = box(`${name} rail R`, [length * 0.9, 0.03, 0.04], [x, y + 0.12, z - 0.22], accent, facility);
+    railL.rotation.y = deck.rotation.y;
+    railR.rotation.y = deck.rotation.y;
+  };
+
+  box('hifi07 central ring megadeck', [21.0, 0.48, 13.6], [0.2, 0.62, -8.6], MATS.darkSteel, facility);
+  box('hifi07 central ring rear dark bite', [14.4, 0.14, 6.2], [0.0, 1.2, -11.6], MATS.shadow, facility);
+
+  const pitOuter = cylinder('hifi07 central circular deck around blue pit', 7.2, 7.5, 0.46, 72, [0.0, 0.92, -8.2], MATS.darkSteel, facility);
+  const pitVoid = cylinder('hifi07 central circular pit mouth', 4.8, 5.1, 0.52, 72, [0.0, 0.72, -8.2], MATS.shadow, facility);
+  const pitRingA = cylinder('hifi07 pit ring level A', 4.2, 4.5, 0.28, 64, [0.0, 0.28, -8.2], MATS.blackMetal, facility);
+  const pitRingB = cylinder('hifi07 pit ring level B', 3.5, 3.8, 0.26, 64, [0.0, -0.28, -8.2], MATS.blackMetal, facility);
+  const pitRingC = cylinder('hifi07 pit ring level C', 2.7, 3.1, 0.22, 64, [0.0, -0.92, -8.2], MATS.shadow, facility);
+  const pitRimGlow = torus('hifi07 pit outer cyan rim', 5.06, 0.07, 12, 96, [0.0, 0.84, -8.2], MATS.cyan, facility);
+  pitRimGlow.rotation.x = Math.PI / 2;
+  const pitMidGlow = torus('hifi07 pit mid amber rim', 3.86, 0.05, 12, 88, [0.0, 0.2, -8.2], MATS.amber, facility);
+  pitMidGlow.rotation.x = Math.PI / 2;
+  const pitDeepGlow = torus('hifi07 pit deep cyan rim', 2.88, 0.04, 12, 80, [0.0, -0.6, -8.2], MATS.cyanDim, facility);
+  pitDeepGlow.rotation.x = Math.PI / 2;
+  const pitCore = cylinder('hifi07 blue pit core', 1.2, 1.7, 1.6, 36, [0.0, -1.54, -8.2], mat(0x0f2744, {
+    emissive: 0x59f1ff,
+    emissiveIntensity: 1.0,
+    transparent: true,
+    opacity: 0.38,
+    roughness: 0.12
+  }), facility);
+  pitCore.rotation.z = THREE.MathUtils.degToRad(2);
+  const pitGlow = cylinder('hifi07 pit floor glow', 2.4, 2.8, 0.05, 52, [0.0, -2.26, -8.2], MATS.cyan, facility);
+  pitGlow.rotation.x = Math.PI / 2;
+  [pitOuter, pitVoid, pitRingA, pitRingB, pitRingC].forEach((mesh) => { mesh.rotation.y = 0.04; });
+
+  [
+    { x: -5.1, z: -6.8, yaw: -32, accent: MATS.amber },
+    { x: 5.2, z: -6.8, yaw: 32, accent: MATS.cyanDim },
+    { x: -2.0, z: -10.9, yaw: -8, accent: MATS.amber },
+    { x: 2.2, z: -10.9, yaw: 8, accent: MATS.cyanDim }
+  ].forEach(({ x, z, yaw, accent }, index) => addBridge(`hifi07 pit bridge ${index}`, x, 1.12, z, 4.4, yaw, accent));
+
+  const leftBay = new THREE.Group();
+  leftBay.name = 'concept-c hifi07 cyan left bay';
+  facility.add(leftBay);
+  box('hifi07 left bay lower platform', [7.6, 0.3, 5.0], [-8.9, 1.0, -10.0], MATS.darkSteel, leftBay);
+  box('hifi07 left bay mid terrace', [6.8, 0.26, 4.6], [-9.6, 2.1, -11.0], MATS.steel, leftBay);
+  box('hifi07 left bay upper terrace', [5.8, 0.24, 4.2], [-10.3, 3.15, -11.9], MATS.darkSteel, leftBay);
+  box('hifi07 left bay rear excavation wall', [3.4, 4.0, 0.22], [-12.2, 2.8, -13.5], MATS.shadow, leftBay);
+  box('hifi07 left bay glowing chamber wall', [6.4, 3.2, 0.08], [-10.3, 3.4, -12.9], MATS.glass, leftBay);
+  box('hifi07 left bay cyan header', [5.8, 0.1, 0.08], [-10.2, 4.9, -12.54], MATS.cyan, leftBay);
+  box('hifi07 left bay lower cyan datum', [6.6, 0.06, 0.06], [-9.0, 1.24, -8.1], MATS.cyanDim, leftBay);
+  box('hifi07 left bay broad cyan wash panel', [6.8, 1.2, 0.08], [-10.0, 2.5, -11.5], mat(0x123449, {
+    emissive: COLORS.cyan,
+    emissiveIntensity: 0.48,
+    transparent: true,
+    opacity: 0.24,
+    roughness: 0.08
+  }), leftBay);
+  for (let i = 0; i < 7; i += 1) {
+    const deck = box(`hifi07 left bay inset deck ${i}`, [2.2 + (i % 2) * 0.7, 0.16, 1.2], [-11.2 + i * 0.7, 1.4 + (i % 3) * 0.58, -10.4 - (i % 4) * 0.84], i % 2 ? MATS.darkSteel : MATS.blackMetal, leftBay);
+    deck.rotation.y = THREE.MathUtils.degToRad(i % 2 ? -8 : 6);
+  }
+
+  const warmCore = new THREE.Group();
+  warmCore.name = 'concept-c hifi07 warm amber industrial core';
+  facility.add(warmCore);
+  box('hifi07 warm core rear tower', [4.2, 4.6, 2.2], [0.8, 2.7, -12.0], MATS.darkSteel, warmCore);
+  box('hifi07 warm core lower foundry block', [6.4, 1.8, 2.6], [0.4, 1.3, -10.5], MATS.blackMetal, warmCore);
+  box('hifi07 warm core amber vent strip', [4.8, 0.08, 0.08], [0.8, 3.9, -10.84], MATS.amber, warmCore);
+  box('hifi07 warm core lower vent strip', [5.2, 0.08, 0.08], [0.2, 1.7, -9.24], MATS.orange, warmCore);
+  box('hifi07 warm core broad furnace glow', [5.4, 1.1, 0.08], [0.6, 2.8, -10.0], mat(0x4a2515, {
+    emissive: COLORS.orange,
+    emissiveIntensity: 0.42,
+    transparent: true,
+    opacity: 0.24,
+    roughness: 0.1
+  }), warmCore);
+  box('hifi07 warm core left service tower', [0.42, 3.8, 0.42], [-1.9, 2.5, -10.9], MATS.steel, warmCore);
+  box('hifi07 warm core right service tower', [0.42, 4.2, 0.42], [2.9, 2.7, -11.4], MATS.steel, warmCore);
+  addBridge('hifi07 overhead crane span', -0.2, 5.2, -9.7, 11.4, 0, MATS.amber);
+  box('hifi07 overhead crane trolley', [0.62, 0.46, 0.34], [1.2, 4.86, -9.34], MATS.orange, facility);
+  box('hifi07 overhead crane cable', [0.08, 1.8, 0.08], [1.2, 3.9, -9.34], MATS.blackMetal, facility);
+  box('hifi07 hanging workpod', [0.74, 0.42, 0.5], [1.2, 2.8, -9.1], MATS.darkSteel, facility);
+
+  const rightHangar = new THREE.Group();
+  rightHangar.name = 'concept-c hifi07 right hangar deck';
+  facility.add(rightHangar);
+  box('hifi07 right hangar upper apron', [7.2, 0.26, 5.4], [10.4, 2.5, -12.1], MATS.steel, rightHangar);
+  box('hifi07 right hangar lower apron', [8.4, 0.24, 4.4], [10.8, 1.1, -10.4], MATS.darkSteel, rightHangar);
+  box('hifi07 right hangar black runway trench', [5.0, 0.08, 2.8], [11.6, 1.22, -11.3], MATS.shadow, rightHangar);
+  box('hifi07 right hangar cool runway stripe A', [4.8, 0.04, 0.06], [11.6, 1.34, -10.6], MATS.cyanDim, rightHangar);
+  box('hifi07 right hangar cool runway stripe B', [4.8, 0.04, 0.06], [11.6, 1.34, -12.0], MATS.cyanDim, rightHangar);
+  box('hifi07 right hangar cold space splash', [6.4, 1.6, 0.08], [12.4, 3.0, -13.8], mat(0x17314b, {
+    emissive: 0xbcd6ff,
+    emissiveIntensity: 0.42,
+    transparent: true,
+    opacity: 0.18,
+    roughness: 0.08
+  }), rightHangar);
+  box('hifi07 right hangar warm service block', [1.6, 1.4, 1.2], [13.6, 1.7, -8.7], MATS.darkSteel, rightHangar);
+  box('hifi07 right hangar amber service strip', [1.2, 0.06, 0.06], [13.6, 2.18, -8.04], MATS.amber, rightHangar);
+  for (let i = 0; i < 4; i += 1) {
+    const cargo = box(`hifi07 right hangar cargo sled ${i}`, [0.8, 0.32, 0.56], [9.3 + i * 1.2, 1.34, -10.9 + (i % 2) * 1.1], i % 2 ? MATS.steel : MATS.blackMetal, rightHangar);
+    cargo.rotation.y = THREE.MathUtils.degToRad(-8 + i * 4);
+  }
+
+  addBridge('hifi07 left gantry bridge', -5.6, 2.8, -8.0, 4.8, -12, MATS.cyanDim);
+  addBridge('hifi07 right gantry bridge', 5.8, 2.8, -8.2, 5.2, 12, MATS.amber);
+  addBridge('hifi07 high cross-cavern bridge', 0.6, 4.4, -11.2, 7.6, 0, MATS.amber);
+
+  addLightRun('hifi07 pit perimeter lights front', [-6.4, 1.28, -3.9], [6.4, 1.28, -3.9], 20, MATS.amber);
+  addLightRun('hifi07 pit perimeter lights rear', [-6.0, 1.24, -12.3], [6.0, 1.24, -12.3], 18, MATS.cyanDim);
+  addLightRun('hifi07 left bay tiny practicals', [-12.6, 2.0, -12.0], [-6.7, 3.8, -8.7], 18, MATS.cyanDim, 0.04, 0.08);
+  addLightRun('hifi07 warm core tiny practicals', [-1.8, 2.0, -11.8], [3.4, 4.0, -9.2], 16, MATS.amber, 0.03, 0.04);
+  addLightRun('hifi07 hangar tiny practicals', [8.0, 2.1, -13.0], [14.2, 2.5, -10.2], 16, MATS.cyanDim, 0.02, 0.05);
+
+  for (let i = 0; i < 12; i += 1) {
+    const x = -11.8 + (i % 6) * 1.1;
+    const y = 1.1 + Math.floor(i / 6) * 0.9;
+    const z = -8.9 - (i % 3) * 1.4;
+    cylinder(`hifi07 tiny worker scale cue ${i}`, 0.04, 0.05, 0.24, 8, [x, y, z], MATS.blackMetal, facility);
+    box(`hifi07 tiny worker visor cue ${i}`, [0.08, 0.02, 0.02], [x, y + 0.16, z + 0.03], i % 2 ? MATS.amber : MATS.cyan, facility);
+  }
+
+  const pitHaze = cylinder('hifi07 pit atmospheric haze column', 1.8, 2.8, 3.6, 32, [0.0, -0.3, -8.2], mat(0x102847, {
+    emissive: 0x2d8fd0,
+    emissiveIntensity: 0.22,
+    transparent: true,
+    opacity: 0.16,
+    roughness: 0.08
+  }), facility);
+  pitHaze.rotation.z = THREE.MathUtils.degToRad(2);
+
+  const leftFog = box('hifi07 left bay atmospheric fog', [6.2, 2.0, 1.8], [-10.1, 2.1, -11.6], mat(0x224c63, {
+    emissive: 0x58dfff,
+    emissiveIntensity: 0.12,
+    transparent: true,
+    opacity: 0.12,
+    roughness: 0.1
+  }), facility);
+  const warmFog = box('hifi07 warm core industrial haze', [5.2, 2.1, 2.0], [1.0, 2.4, -10.8], mat(0x48281a, {
+    emissive: 0xffa660,
+    emissiveIntensity: 0.12,
+    transparent: true,
+    opacity: 0.1,
+    roughness: 0.1
+  }), facility);
+  leftFog.rotation.y = THREE.MathUtils.degToRad(8);
+  warmFog.rotation.y = THREE.MathUtils.degToRad(-6);
+}
+
 function updateReadout() {
-  document.getElementById('focus-title').textContent = 'Concept C Asteroid Cutaway';
-  document.getElementById('focus-body').textContent = 'Asteroid-first HIFI-06 pass: macro geology, readable strata, crater basins, and taller shell. Use Full/Wide/Detail/Ceiling or mouse wheel.';
+  document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
+  document.getElementById('focus-body').textContent = 'HIFI-07 REF-01 rebuild: dark oval aperture, one hollow cavern, giant right hangar to space, embedded industrial city, and a deeper blue central pit. Use Full/Wide/Detail/Ceiling or mouse wheel.';
 }
 
 function buildScene() {
-  addLights();
-  buildStarfield();
-  buildHifiAsteroidShell();
-  buildHifiSecondaryAsteroidBreakup();
-  buildUltraHighResolutionAsteroidCeiling();
-  buildHifi06AuthoredAsteroidGeology();
-  buildAsteroidMacroGeologyPass();
-  buildProductionCavity();
-  buildHeroProductionBay();
-  buildHifiCommandShaft();
-  buildHifiCarvedIntegrationKit();
-  buildCommandPit();
-  buildScaleAndAtmosphere();
+  addReferenceLights();
+  buildReferenceStarfield();
+  buildReferenceApertureShell();
+  buildReferenceFacilityMassing();
   updateReadout();
 }
 
