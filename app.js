@@ -4301,9 +4301,272 @@ function buildHifi18OperationsCavernCarveoutPass() {
   scene.add(rearCold);
 }
 
+
+function buildHifi19MassiveShellDepthRecoveryPass() {
+  const pass = new THREE.Group();
+  pass.name = 'concept-c HIFI-19 massive shell and rear depth recovery pass';
+  root.add(pass);
+
+  // HIFI-18 solved some interior openness but made the rim too diagram-thin. Hide the thinnest line-art accents
+  // and replace them with broad lumpy asteroid lobes that still leave a big operations mouth open.
+  const suppressTerms = [
+    'hifi18 thin asteroid wall edge accents',
+    'hifi18 thin cut wall highlight',
+    'hifi18 visible back wall depth plane not blocker'
+  ];
+  root.traverse((node) => {
+    if (!node.name) return;
+    if (suppressTerms.some((term) => node.name.includes(term))) node.visible = false;
+  });
+
+  const shell = new THREE.Group();
+  shell.name = 'hifi19 restored heavy lumpy asteroid shell around open cavern';
+  pass.add(shell);
+
+  const shellPanels = [
+    {
+      name: 'upper heavy roof mass with carved underside',
+      pts: [[-20.6, 8.0], [-18.2, 11.3], [-13.2, 13.1], [-7.0, 12.6], [-1.4, 11.2], [4.6, 11.9], [10.8, 10.7], [15.0, 8.1], [10.4, 6.85], [4.1, 7.45], [-2.6, 7.05], [-9.4, 7.55], [-15.2, 6.85]],
+      z: 17.28,
+      depth: 3.35,
+      relief: 0.34,
+      warmBias: -0.08,
+      valueZones: [
+        { x: -6.0, y: 10.8, rx: 11.5, ry: 2.2, dust: 0.16 },
+        { x: 7.6, y: 7.1, rx: 5.8, ry: 1.3, shadow: 0.22, cool: 0.12 },
+        { x: -15.8, y: 7.4, rx: 3.4, ry: 1.1, shadow: 0.24 }
+      ]
+    },
+    {
+      name: 'left load bearing cavern wall mass',
+      pts: [[-21.1, 8.5], [-18.6, 7.1], [-16.4, 3.8], [-16.0, -0.8], [-17.0, -5.0], [-19.7, -8.6], [-22.2, -7.6], [-22.4, 1.2]],
+      z: 17.05,
+      depth: 3.25,
+      relief: 0.31,
+      warmBias: -0.1,
+      valueZones: [
+        { x: -17.6, y: 1.2, rx: 2.6, ry: 6.2, shadow: 0.32, cool: 0.16 },
+        { x: -19.4, y: 6.3, rx: 2.5, ry: 1.8, dust: 0.12 }
+      ]
+    },
+    {
+      name: 'lower foreground massive broken sill',
+      pts: [[-19.8, -7.7], [-14.4, -6.15], [-7.7, -5.65], [-1.0, -5.95], [5.8, -5.55], [12.0, -5.95], [18.0, -7.25], [16.6, -10.4], [8.6, -11.35], [-0.4, -11.05], [-9.8, -11.35], [-17.4, -10.2]],
+      z: 17.18,
+      depth: 3.15,
+      relief: 0.32,
+      warmBias: -0.06,
+      valueZones: [
+        { x: -1.0, y: -6.2, rx: 12.6, ry: 1.1, shadow: 0.24 },
+        { x: 10.8, y: -6.1, rx: 4.2, ry: 1.0, dust: 0.18 },
+        { x: -13.2, y: -8.9, rx: 4.0, ry: 1.4, cool: 0.12, shadow: 0.14 }
+      ]
+    },
+    {
+      name: 'right lower cheek heavy retained asteroid mass',
+      pts: [[11.7, 2.6], [15.6, 1.6], [19.0, -1.2], [19.5, -4.8], [16.4, -7.6], [12.1, -6.2], [10.1, -2.4], [10.4, 1.0]],
+      z: 17.02,
+      depth: 3.0,
+      relief: 0.28,
+      warmBias: -0.08,
+      valueZones: [
+        { x: 15.8, y: -2.7, rx: 3.2, ry: 3.4, shadow: 0.3, cool: 0.12 },
+        { x: 12.0, y: 1.4, rx: 2.5, ry: 1.1, dust: 0.12 }
+      ]
+    },
+    {
+      name: 'upper right recessed torn rim not closing opening',
+      pts: [[8.8, 7.9], [13.0, 8.85], [17.4, 7.0], [19.5, 4.2], [18.1, 2.0], [14.4, 3.2], [11.4, 5.6]],
+      z: 16.78,
+      depth: 2.15,
+      relief: 0.25,
+      warmBias: -0.07,
+      valueZones: [
+        { x: 15.2, y: 6.2, rx: 3.4, ry: 1.6, dust: 0.16 },
+        { x: 15.0, y: 3.2, rx: 3.8, ry: 1.0, shadow: 0.24 }
+      ]
+    }
+  ];
+
+  shellPanels.forEach(({ name, pts, z, depth, relief, warmBias, valueZones }, index) => {
+    buildHifiRockPanel(`hifi19 ${name}`, pts, {
+      z,
+      depth,
+      grid: index === 4 ? 0.22 : 0.2,
+      rimInset: 0.14,
+      backShrink: 0.1,
+      relief,
+      mediumRelief: 0.12,
+      microRelief: 0.012,
+      strataRelief: 0.09,
+      radialRelief: 0.035,
+      frontWarp: 0.1,
+      warmBias,
+      valueZones,
+      geology: [
+        { type: 'band', ax: pts[0][0], ay: pts[0][1] - 0.2, bx: pts[Math.floor(pts.length / 2)][0], by: pts[Math.floor(pts.length / 2)][1] + 0.25, width: 1.15, height: 0.13, terraces: 9, terraceHeight: 0.065, shadow: 0.12, dust: 0.08 },
+        { type: 'fault', ax: pts[1][0], ay: pts[1][1], bx: pts[Math.max(2, pts.length - 3)][0], by: pts[Math.max(2, pts.length - 3)][1], width: 0.36, depth: 0.12, rim: 0.045, shadow: 0.16 },
+        { type: 'basin', x: pts[Math.floor(pts.length / 3)][0], y: pts[Math.floor(pts.length / 3)][1], rx: 1.7, ry: 0.75, angle: index * 11 - 18, depth: 0.09, rim: 0.045, shadow: 0.12, dust: 0.08 }
+      ],
+      parent: shell
+    });
+  });
+
+  // Hard chipped grey fracture plates along the mouth: this sells wall thickness without returning to the oval-portal read.
+  const mouthMat = mat(0x8f867b, { roughness: 0.96, emissive: 0x17100b, emissiveIntensity: 0.12, side: THREE.DoubleSide });
+  const shadowMat = mat(0x07070b, { roughness: 1, side: THREE.DoubleSide });
+  const chips = [
+    [-14.5, 6.25, 4.7, 0.36, -16, mouthMat], [-8.7, 6.65, 5.6, 0.3, 9, mouthMat], [-2.0, 6.45, 5.2, 0.28, -4, mouthMat], [5.2, 6.75, 5.0, 0.28, 8, mouthMat], [11.8, 5.05, 4.3, 0.36, -21, shadowMat],
+    [-14.0, -5.05, 5.6, 0.34, 11, mouthMat], [-6.0, -4.72, 5.8, 0.29, -7, mouthMat], [2.2, -4.95, 5.9, 0.3, 4, mouthMat], [10.0, -4.75, 4.9, 0.32, -9, mouthMat]
+  ];
+  chips.forEach(([x, y, w, h, angle, material], index) => {
+    const chip = hifiShard(`hifi19 thick chipped cavern mouth bevel ${index}`, x, y, {
+      z: 17.58,
+      width: w,
+      height: h,
+      depth: 0.48,
+      angle,
+      warmBias: 0.12,
+      roughness: 0.04,
+      material,
+      parent: shell
+    });
+    chip.scale.z = 0.34;
+  });
+
+  // Restore a real tunnel of depth: foreground -> middle operations -> rear hangar, with side walls so it is not a flat poster.
+  const depth = new THREE.Group();
+  depth.name = 'hifi19 deep operations cavern perspective stack';
+  pass.add(depth);
+  const depthAir = box('hifi19 clear but deeper cavern air volume', [25.5, 12.0, 0.05], [-0.7, 2.0, -8.8], mat(0x5f788c, {
+    emissive: 0x3b647e,
+    emissiveIntensity: 0.36,
+    transparent: true,
+    opacity: 0.095,
+    roughness: 0.08,
+    side: THREE.DoubleSide
+  }), depth);
+  depthAir.rotation.z = THREE.MathUtils.degToRad(-0.8);
+
+  const leftWall = polyMesh('hifi19 rear tunnel left receding rock wall shadow', [[-10.6, 5.9], [-7.2, 5.4], [-3.2, 3.3], [-2.2, 0.8], [-4.8, 0.0], [-8.8, 2.4], [-12.0, 5.0]], mat(0x090b10, { roughness: 1, transparent: true, opacity: 0.58, side: THREE.DoubleSide }), -12.2, depth);
+  leftWall.scale.z = 0.16;
+  const rightWall = polyMesh('hifi19 rear tunnel right receding rock wall shadow', [[10.6, 5.7], [8.0, 5.1], [4.5, 3.2], [3.2, 0.85], [6.0, 0.1], [10.0, 2.6], [13.0, 5.0]], mat(0x08090e, { roughness: 1, transparent: true, opacity: 0.54, side: THREE.DoubleSide }), -12.1, depth);
+  rightWall.scale.z = 0.16;
+
+  const hangarGlow = box('hifi19 deeper rear hangar cold endpoint set far back', [8.6, 4.7, 0.05], [4.6, 5.25, -17.35], mat(0xdcecff, {
+    emissive: 0xd2eaff,
+    emissiveIntensity: 3.15,
+    transparent: true,
+    opacity: 0.66,
+    roughness: 0.05,
+    side: THREE.DoubleSide
+  }), depth);
+  hangarGlow.rotation.z = THREE.MathUtils.degToRad(-5);
+  box('hifi19 deeper rear hangar heavy top frame', [9.2, 0.24, 0.4], [4.6, 7.7, -16.95], MATS.blackMetal, depth).rotation.z = hangarGlow.rotation.z;
+  box('hifi19 deeper rear hangar lower threshold', [8.4, 0.2, 0.34], [4.6, 2.74, -16.92], MATS.blackMetal, depth).rotation.z = hangarGlow.rotation.z;
+  box('hifi19 deeper rear hangar left frame', [0.24, 4.35, 0.34], [0.2, 5.23, -16.92], MATS.blackMetal, depth).rotation.z = hangarGlow.rotation.z;
+  box('hifi19 deeper rear hangar right frame', [0.24, 4.35, 0.34], [9.0, 5.23, -16.92], MATS.blackMetal, depth).rotation.z = hangarGlow.rotation.z;
+
+  const addZone = (name, x, y, z, w, d, yaw, material, accent, towers = 3) => {
+    const slab = box(`${name} tiered operations slab`, [w, 0.15, d], [x, y, z], material, depth);
+    slab.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const edge = box(`${name} edge light perspective cue`, [w * 0.88, 0.034, 0.034], [x, y + 0.16, z + d * 0.52], accent, depth);
+    edge.rotation.y = slab.rotation.y;
+    for (let i = 0; i < towers; i += 1) {
+      const t = towers === 1 ? 0.5 : i / (towers - 1);
+      const px = x - w * 0.36 + w * 0.72 * t;
+      const h = 0.8 + (i % 3) * 0.35;
+      const tower = box(`${name} equipment block ${i}`, [0.34, h, 0.42], [px, y + h * 0.5 + 0.15, z - d * 0.15 + (i % 2) * d * 0.34], i % 2 ? MATS.blackMetal : MATS.darkSteel, depth);
+      tower.rotation.y = slab.rotation.y;
+      box(`${name} equipment status light ${i}`, [0.32, 0.035, 0.03], [px, y + h + 0.28, z + d * 0.1], i % 2 ? MATS.cyanDim : MATS.amber, depth).rotation.y = slab.rotation.y;
+    }
+    return slab;
+  };
+
+  addZone('hifi19 foreground operations yard with empty working volume', -0.8, -0.45, -4.8, 21.5, 1.15, 0, MATS.darkSteel, MATS.amber, 7);
+  addZone('hifi19 middle left tiered industrial bay', -7.6, 1.9, -7.6, 9.6, 0.95, -8, MATS.blackMetal, MATS.cyanDim, 4);
+  addZone('hifi19 middle right tiered industrial bay', 6.6, 2.0, -7.9, 9.8, 0.95, 8, MATS.blackMetal, MATS.amber, 4);
+  addZone('hifi19 rear wall operations deck below hangar', -0.2, 4.35, -11.8, 17.0, 0.78, -2, MATS.darkSteel, MATS.cyanDim, 6);
+  addZone('hifi19 far hangar approach apron', 4.6, 5.85, -14.7, 9.2, 0.62, -5, MATS.blackMetal, MATS.amber, 3);
+
+  // Pit stays readable but smaller than the cavern, so the open operations volume remains the main win.
+  const pit = new THREE.Group();
+  pit.name = 'hifi19 recentered operations pit with open clearance';
+  pit.position.set(-0.7, -2.05, -4.9);
+  pass.add(pit);
+  [4.9, 4.0, 3.1, 2.25, 1.5].forEach((radius, tier) => {
+    const ring = torus(`hifi19 operations pit depth ring ${tier}`, radius, 0.048, 10, 112, [0, -tier * 0.43, 0], tier % 2 ? MATS.cyanDim : MATS.blackMetal, pit);
+    ring.rotation.x = Math.PI / 2;
+  });
+  const pitGlow = cylinder('hifi19 lower pit cyan glow with restraint', 1.05, 1.8, 2.9, 56, [0, -1.65, 0], mat(0x0a2c48, {
+    emissive: COLORS.cyan,
+    emissiveIntensity: 0.98,
+    transparent: true,
+    opacity: 0.34,
+    roughness: 0.08
+  }), pit);
+  pitGlow.rotation.z = THREE.MathUtils.degToRad(2);
+
+  // Larger silhouettes for operations scale: cranes and ramps beat micro-light soup.
+  const cranes = [
+    [-11.2, 5.25, -8.2, 4.6, 1.7, -10],
+    [-2.6, 6.25, -10.8, 5.2, 1.45, 7],
+    [7.4, 5.95, -10.3, 4.8, 1.55, -8],
+    [2.6, 7.3, -14.1, 4.0, 1.2, 10]
+  ];
+  cranes.forEach(([x, y, z, arm, mast, yaw], index) => {
+    const mastMesh = box(`hifi19 macro operations crane mast ${index}`, [0.11, mast, 0.11], [x, y - mast * 0.5, z], MATS.blackMetal, depth);
+    const armMesh = box(`hifi19 macro operations crane arm ${index}`, [arm, 0.075, 0.075], [x + arm * 0.38, y, z], index % 2 ? MATS.cyanDim : MATS.amber, depth);
+    mastMesh.rotation.y = THREE.MathUtils.degToRad(yaw);
+    armMesh.rotation.y = THREE.MathUtils.degToRad(yaw);
+    box(`hifi19 macro operations crane hook ${index}`, [0.065, 0.5, 0.065], [x + arm * 0.72, y - 0.36, z], MATS.darkSteel, depth).rotation.y = armMesh.rotation.y;
+  });
+
+  for (let i = 0; i < 170; i += 1) {
+    const band = i % 6;
+    const t = band / 5;
+    const width = THREE.MathUtils.lerp(20.0, 7.6, t);
+    const centerX = THREE.MathUtils.lerp(-0.7, 4.4, t);
+    const x = centerX + (hifiNoise(i * 1.23) - 0.5) * width;
+    const y = THREE.MathUtils.lerp(-0.1, 6.6, t) + hifiNoise(i * 1.67) * 1.15;
+    const z = THREE.MathUtils.lerp(-4.8, -15.0, t) - hifiNoise(i * 2.17) * 0.65;
+    const tick = box(`hifi19 restrained perspective operations light ${i}`, [0.062, 0.023, 0.023], [x, y, z], band % 3 === 1 ? MATS.amber : MATS.cyanDim, depth);
+    tick.rotation.y = THREE.MathUtils.degToRad(-12 + hifiNoise(i * 2.71) * 24);
+  }
+
+  // Small crater/fault accents on the heavy lobes only, so the surface reads sharp instead of fuzzy.
+  [
+    [-15.8, 9.2, 0.58, 1.35, 0.72, -18], [-8.6, 10.6, 0.48, 1.55, 0.68, 8], [3.8, 9.5, 0.42, 1.5, 0.65, -5],
+    [-18.4, 0.8, 0.5, 0.95, 1.35, 12], [-10.0, -8.4, 0.46, 1.55, 0.62, 5], [8.8, -8.0, 0.5, 1.45, 0.7, -12], [15.2, -3.5, 0.44, 0.98, 1.1, 18]
+  ].forEach(([x, y, radius, scaleX, scaleY, angle], index) => {
+    buildHifiCraterCluster(`hifi19 sharp crater and chip cluster ${index}`, x, y, {
+      z: 17.72,
+      radius,
+      scaleX,
+      scaleY,
+      angle,
+      warmBias: -0.04,
+      parent: shell
+    });
+  });
+
+  const shellKey = new THREE.DirectionalLight(0xd8d5ce, 2.2);
+  shellKey.name = 'hifi19 restored asteroid shell top rim key light';
+  shellKey.position.set(-5.0, 10.0, 8.0);
+  scene.add(shellKey);
+  const interiorWarm = new THREE.PointLight(0xffae6b, 18.0, 36.0);
+  interiorWarm.name = 'hifi19 operations warm depth light';
+  interiorWarm.position.set(-2.4, 2.2, -5.4);
+  scene.add(interiorWarm);
+  const farCold = new THREE.PointLight(0xd8edff, 34.0, 48.0);
+  farCold.name = 'hifi19 far rear hangar cold depth light';
+  farCold.position.set(5.0, 5.4, -13.4);
+  scene.add(farCold);
+}
+
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-18: interior cavern carved wider for operations volume, thinner walls, open floors, rear hangar depth, and readable work lights.';
+  document.getElementById('focus-body').textContent = 'HIFI-19: restored heavy lumpy asteroid shell mass while keeping the large carved operations cavern, rear hangar depth, and tiered work zones.';
 }
 
 function buildScene() {
@@ -4321,6 +4584,7 @@ function buildScene() {
   buildHifi16TopRightCornerCleanoutPass();
   buildHifi17TrueGeometryCavernRebuildPass();
   buildHifi18OperationsCavernCarveoutPass();
+  buildHifi19MassiveShellDepthRecoveryPass();
   updateReadout();
 }
 
