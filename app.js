@@ -3289,7 +3289,7 @@ function buildHifi12EfficientHighresCutawayAssetPass() {
   const darkMask = mat(0x000104, { roughness: 1, transparent: true, opacity: 0.16, side: THREE.DoubleSide });
 
   const segments = 256;
-  const bands = 14;
+  const bands = 12;
   const cx = -0.8;
   const cy = 1.7;
   const outerPts = [];
@@ -3316,8 +3316,8 @@ function buildHifi12EfficientHighresCutawayAssetPass() {
     const biteTop = Math.exp(-Math.pow(a - Math.PI * 0.47, 2) / 0.12) * 0.08;
     const biteRight = Math.exp(-Math.pow(a, 2) / 0.18) * 0.10;
     const lowerShelf = Math.exp(-Math.pow(a - Math.PI * 1.5, 2) / 0.16) * 0.07;
-    const ix = cx + 0.3 + Math.cos(a) * 16.85 * innerScale + Math.sin(a * 4.2) * 0.86 - biteRight * 0.95;
-    const iy = cy + 0.05 + Math.sin(a) * 8.65 * (innerScale - biteTop + lowerShelf) + Math.cos(a * 2.8) * 0.62 - lowerShelf * 0.45;
+    const ix = cx + 0.18 + Math.cos(a) * 18.05 * innerScale + Math.sin(a * 4.2) * 0.96 - biteRight * 0.55;
+    const iy = cy + 0.18 + Math.sin(a) * 9.75 * (innerScale - biteTop + lowerShelf) + Math.cos(a * 2.8) * 0.72 - lowerShelf * 0.32;
     outerPts.push([ox, oy]);
     innerPts.push([ix, iy]);
   }
@@ -3365,7 +3365,7 @@ function buildHifi12EfficientHighresCutawayAssetPass() {
     const ni = (i + 1) % segments;
     for (let j = 0; j < bands; j += 1) {
       const segmentAngle = (Math.PI * 2 * i) / segments;
-      const topRightCornerRemoved = segmentAngle > 0.02 && segmentAngle < 1.22 && j < bands * 0.96;
+      const topRightCornerRemoved = segmentAngle >= 0.0 && segmentAngle < 1.66 && j < bands + 1;
       if (topRightCornerRemoved) continue;
       const a = samplePoint(i, j);
       const b = samplePoint(ni, j);
@@ -3389,7 +3389,7 @@ function buildHifi12EfficientHighresCutawayAssetPass() {
   const rimVerts = [];
   const rimColors = [];
   const pushRim = (x, y, z, color) => { rimVerts.push(x, y, z); rimColors.push(color.r, color.g, color.b); };
-  const rimLayers = 7;
+  const rimLayers = 5;
   for (let i = 0; i < segments; i += 1) {
     const ni = (i + 1) % segments;
     const [ax, ay] = innerPts[i];
@@ -3397,7 +3397,7 @@ function buildHifi12EfficientHighresCutawayAssetPass() {
     const aAng = (Math.PI * 2 * i) / segments;
     const bAng = (Math.PI * 2 * ni) / segments;
     for (let l = 0; l < rimLayers; l += 1) {
-      const rimTopRightRemoved = aAng > 0.02 && aAng < 1.22;
+      const rimTopRightRemoved = aAng >= 0.0 && aAng < 1.66;
       if (rimTopRightRemoved) continue;
       const t0 = l / rimLayers;
       const t1 = (l + 1) / rimLayers;
@@ -3405,7 +3405,7 @@ function buildHifi12EfficientHighresCutawayAssetPass() {
         const cutNoise = (hifiNoise(salt + t * 11.0) - 0.5) * 0.32;
         const px = x + Math.cos(ang) * (t * 0.78 + cutNoise * 0.12);
         const py = y + Math.sin(ang) * (t * 0.52 + cutNoise * 0.08);
-        const pz = 15.55 - t * 4.0 + cutNoise + Math.sin(ang * 8.0) * 0.08;
+        const pz = 15.55 - t * 2.35 + cutNoise * 0.62 + Math.sin(ang * 8.0) * 0.06;
         const col = new THREE.Color(0x75685f);
         col.lerp(new THREE.Color(0xc2b1a2), THREE.MathUtils.clamp((1 - t) * 0.22 + (py + 4) / 24 * 0.18, 0, 0.42));
         col.lerp(new THREE.Color(0x111116), THREE.MathUtils.clamp(t * 0.62, 0, 0.78));
@@ -3992,9 +3992,167 @@ function buildHifi16TopRightCornerCleanoutPass() {
   scene.add(cornerCold);
 }
 
+
+function buildHifi17TrueGeometryCavernRebuildPass() {
+  const pass = new THREE.Group();
+  pass.name = 'concept-c HIFI-17 true geometry cavern rebuild and high fidelity asteroid plates';
+  root.add(pass);
+
+  // Remove old visual bandages / artifact layers from the live scene so the generator changes carry the read.
+  const suppressTerms = [
+    'hifi09 continuous dark oval asteroid aperture silhouette',
+    'hifi09 inner warm chipped oval rim highlight',
+    'hifi09 cold exterior rim kissing right opening',
+    'hifi10 overexposed right-space bloom plane',
+    'hifi11 upper black asteroid canopy occluding perfect oval',
+    'hifi11 right broken asteroid cheek leaving jagged window',
+    'hifi14 pulled-out upper asteroid void mask',
+    'hifi16 clean removed top-right corner space void',
+    'hifi16 clean exterior depth haze after top-right removal'
+  ];
+  root.traverse((node) => {
+    if (!node.name) return;
+    if (suppressTerms.some((term) => node.name.includes(term))) node.visible = false;
+  });
+
+  const plateParent = new THREE.Group();
+  plateParent.name = 'hifi17 high fidelity broad asteroid plate modules';
+  pass.add(plateParent);
+
+  // Broad grey asteroid plates: fewer, denser, less fuzzy/spiky. These replace procedural texture noise with editable surface assets.
+  const plateConfigs = [
+    {
+      name: 'upper left natural exterior lobe',
+      pts: [[-19.4, 9.8], [-16.2, 12.0], [-10.8, 12.8], [-5.2, 11.4], [-2.4, 9.2], [-6.4, 8.1], [-12.8, 8.6], [-17.6, 7.5]],
+      z: 16.25,
+      depth: 2.4,
+      relief: 0.28,
+      valueZones: [{ x: -11.5, y: 10.2, rx: 7.0, ry: 2.0, dust: 0.22 }, { x: -16.0, y: 8.2, rx: 3.2, ry: 1.4, shadow: 0.24 }]
+    },
+    {
+      name: 'left thin cavern wall fractured plate',
+      pts: [[-19.2, 8.4], [-16.6, 6.8], [-15.2, 2.4], [-15.8, -2.6], [-18.0, -6.8], [-20.2, -8.8], [-20.8, 1.0]],
+      z: 16.0,
+      depth: 2.2,
+      relief: 0.24,
+      valueZones: [{ x: -17.0, y: 1.0, rx: 2.6, ry: 6.0, shadow: 0.28, cool: 0.16 }]
+    },
+    {
+      name: 'lower foreground thin broken sill plate',
+      pts: [[-17.2, -8.4], [-10.0, -6.6], [-3.2, -6.0], [3.6, -6.5], [11.2, -5.4], [16.2, -7.0], [14.8, -9.6], [5.6, -10.5], [-4.8, -10.6], [-13.2, -9.8]],
+      z: 16.15,
+      depth: 2.1,
+      relief: 0.25,
+      valueZones: [{ x: 0.0, y: -6.2, rx: 12.0, ry: 1.2, shadow: 0.22 }, { x: 8.5, y: -5.8, rx: 4.0, ry: 1.1, dust: 0.18 }]
+    },
+    {
+      name: 'right lower retained asteroid cheek plate',
+      pts: [[12.8, 1.5], [16.4, 0.1], [18.6, -2.7], [17.0, -6.0], [13.0, -6.8], [10.6, -3.2], [10.9, 0.4]],
+      z: 15.9,
+      depth: 2.0,
+      relief: 0.22,
+      valueZones: [{ x: 14.8, y: -2.4, rx: 2.8, ry: 3.0, shadow: 0.24, cool: 0.12 }]
+    }
+  ];
+  plateConfigs.forEach(({ name, pts, z, depth, relief, valueZones }) => {
+    buildHifiRockPanel(`hifi17 ${name}`, pts, {
+      z,
+      depth,
+      grid: 0.11,
+      rimInset: 0.1,
+      backShrink: 0.08,
+      relief,
+      mediumRelief: 0.1,
+      microRelief: 0.006,
+      strataRelief: 0.08,
+      radialRelief: 0.035,
+      frontWarp: 0.08,
+      warmBias: -0.04,
+      valueZones,
+      geology: [
+        { type: 'band', ax: pts[0][0], ay: pts[0][1] - 0.4, bx: pts[Math.floor(pts.length / 2)][0], by: pts[Math.floor(pts.length / 2)][1] + 0.4, width: 0.9, height: 0.12, terraces: 8, terraceHeight: 0.06, shadow: 0.08, dust: 0.08 },
+        { type: 'basin', x: pts[1][0] * 0.45 + pts[2][0] * 0.55, y: pts[1][1] * 0.45 + pts[2][1] * 0.55, rx: 1.6, ry: 0.8, angle: 12, depth: 0.08, rim: 0.04, shadow: 0.1 }
+      ],
+      parent: plateParent
+    });
+  });
+
+  // The upper-right is now genuinely open: add only space/rear-facility depth, no fake rock slab.
+  const openSpace = box('hifi17 actual open upper-right space depth', [15.8, 9.4, 0.05], [11.4, 5.6, -14.4], mat(0x020813, {
+    emissive: 0x07172a,
+    emissiveIntensity: 0.26,
+    transparent: true,
+    opacity: 0.72,
+    roughness: 0.08,
+    side: THREE.DoubleSide
+  }), pass);
+  openSpace.rotation.z = THREE.MathUtils.degToRad(-10);
+
+  for (let i = 0; i < 80; i += 1) {
+    const x = 5.6 + hifiNoise(i * 1.9) * 14.2;
+    const y = 1.2 + hifiNoise(i * 2.7) * 9.0;
+    const star = cylinder(`hifi17 open upper-right clean star ${i}`, 0.02 + hifiNoise(i * 1.3) * 0.03, 0.02, 0.01, 8, [x, y, -15.9], mat(0xf5fbff, { emissive: 0xdcefff, emissiveIntensity: 1.25, roughness: 0.2 }), pass);
+    star.rotation.x = Math.PI / 2;
+  }
+
+  const cavern = new THREE.Group();
+  cavern.name = 'hifi17 expanded cavern facility volume';
+  pass.add(cavern);
+  const cavernHaze = box('hifi17 large cavernous interior volume haze', [25.8, 12.2, 0.05], [-0.8, 2.1, -7.6], mat(0x6f8292, {
+    emissive: 0x4f7086,
+    emissiveIntensity: 0.4,
+    transparent: true,
+    opacity: 0.14,
+    roughness: 0.08,
+    side: THREE.DoubleSide
+  }), cavern);
+  cavernHaze.rotation.z = THREE.MathUtils.degToRad(-1);
+
+  const macroDecks = [
+    ['front lower wide factory floor', -0.8, -0.75, -4.6, 19.0, 1.0, 0, MATS.darkSteel, MATS.amber],
+    ['middle broad exposed operations floor', -0.5, 1.5, -7.1, 20.5, 1.05, 0, MATS.steel, MATS.cyanDim],
+    ['rear manufacturing shelf visible through cavern', -0.2, 4.1, -11.0, 18.0, 0.8, -2, MATS.blackMetal, MATS.amber],
+    ['far rear hangar apron', 5.0, 5.8, -14.0, 9.8, 0.72, -6, MATS.darkSteel, MATS.cyanDim]
+  ];
+  macroDecks.forEach(([name, x, y, z, w, d, yaw, material, accent], index) => {
+    const deck = box(`hifi17 ${name}`, [w, 0.16, d], [x, y, z], material, cavern);
+    deck.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const edge = box(`hifi17 ${name} readable edge`, [w * 0.9, 0.035, 0.035], [x, y + 0.16, z + d * 0.52], accent, cavern);
+    edge.rotation.y = deck.rotation.y;
+    for (let p = 0; p < 5 + index; p += 1) {
+      const t = p / (4 + index);
+      const post = box(`hifi17 ${name} vertical support ${p}`, [0.07, 1.1 + index * 0.25, 0.07], [x - w * 0.42 + w * 0.84 * t, y - 0.65 - index * 0.05, z + (p % 2 ? d * 0.35 : -d * 0.35)], MATS.blackMetal, cavern);
+      post.rotation.y = deck.rotation.y;
+    }
+  });
+
+  const rearHangar = box('hifi17 far rear hangar bright clean aperture', [8.8, 4.8, 0.05], [5.4, 5.2, -15.5], mat(0xd8ebff, {
+    emissive: 0xd0e8ff,
+    emissiveIntensity: 2.85,
+    transparent: true,
+    opacity: 0.7,
+    roughness: 0.05,
+    side: THREE.DoubleSide
+  }), cavern);
+  rearHangar.rotation.z = THREE.MathUtils.degToRad(-5);
+
+  const plateLight = new THREE.DirectionalLight(0xd6d2c8, 1.9);
+  plateLight.name = 'hifi17 clean high fidelity asteroid plate light';
+  plateLight.position.set(-4.0, 9.0, 7.0);
+  scene.add(plateLight);
+  const cavernLight = new THREE.PointLight(0xffaa66, 18.0, 34.0);
+  cavernLight.name = 'hifi17 expanded cavern warm facility light';
+  cavernLight.position.set(-2.2, 2.2, -4.8);
+  scene.add(cavernLight);
+  const rearLight = new THREE.PointLight(0xd3e9ff, 28.0, 42.0);
+  rearLight.name = 'hifi17 clean rear hangar depth light';
+  rearLight.position.set(5.4, 5.1, -11.8);
+  scene.add(rearLight);
+}
+
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-16: top-right corner removed; exterior artifact texture cleaned into open space and rear facility visibility.';
+  document.getElementById('focus-body').textContent = 'HIFI-17: true generator rebuild widens/tallens the thin-walled cavern, removes upper-right geometry, and replaces fuzzy texture with dense asteroid plates.';
 }
 
 function buildScene() {
@@ -4010,6 +4168,7 @@ function buildScene() {
   buildHifi14UpperCutawayPulloutPass();
   buildHifi15DeepViewportRevealPass();
   buildHifi16TopRightCornerCleanoutPass();
+  buildHifi17TrueGeometryCavernRebuildPass();
   updateReadout();
 }
 
