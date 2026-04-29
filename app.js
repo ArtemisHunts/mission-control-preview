@@ -3627,9 +3627,141 @@ function buildHifi13WideFacilityRevealPass() {
   scene.add(hangarKey);
 }
 
+
+function buildHifi14UpperCutawayPulloutPass() {
+  const pass = new THREE.Group();
+  pass.name = 'concept-c HIFI-14 upper cutaway pullout pass';
+  root.add(pass);
+
+  // Visually carve back the top-center shell that was choking the facility reveal.
+  // This is a targeted negative-space pass: fewer blockers, more readable upper base.
+  const upperVoidMat = mat(0x05070d, {
+    roughness: 1,
+    emissive: 0x07111c,
+    emissiveIntensity: 0.34,
+    transparent: true,
+    opacity: 0.86,
+    side: THREE.DoubleSide
+  });
+  const upperVoid = polyMesh('hifi14 pulled-out upper asteroid void mask', [
+    [-13.6, 8.6], [-9.4, 9.9], [-4.4, 9.2], [0.0, 10.15], [4.6, 9.35], [9.8, 10.0], [14.2, 8.35], [13.2, 5.4], [8.0, 5.9], [3.2, 5.25], [-1.8, 5.85], [-6.8, 5.25], [-11.8, 6.05]
+  ], upperVoidMat, 15.85, pass);
+  upperVoid.scale.z = 0.18;
+
+  const deepCavityHaze = box('hifi14 upper cavity depth haze revealing rear base', [21.0, 6.2, 0.05], [0.2, 6.6, -8.6], mat(0x516a7d, {
+    emissive: 0x3f657f,
+    emissiveIntensity: 0.44,
+    transparent: true,
+    opacity: 0.18,
+    roughness: 0.1,
+    side: THREE.DoubleSide
+  }), pass);
+  deepCavityHaze.rotation.z = THREE.MathUtils.degToRad(-2);
+
+  const rim = new THREE.Group();
+  rim.name = 'hifi14 chunky retained upper asteroid rim after pullout';
+  pass.add(rim);
+  const rimMat = mat(0x756d65, { roughness: 0.96, emissive: 0x160f0a, emissiveIntensity: 0.12, side: THREE.DoubleSide });
+  const shadowRock = mat(0x070609, { roughness: 1, side: THREE.DoubleSide });
+  const rimChunks = [
+    ['left upper retained roof lobe', -13.4, 9.55, 4.7, 1.45, -14, rimMat],
+    ['left inner broken tooth', -8.6, 8.78, 3.5, 1.05, 12, shadowRock],
+    ['center sagging fractured lip', -1.6, 9.18, 5.4, 0.95, -3, rimMat],
+    ['right inner broken tooth', 5.8, 8.82, 3.8, 1.05, -13, shadowRock],
+    ['right upper retained roof lobe', 11.6, 9.3, 4.8, 1.42, 16, rimMat]
+  ];
+  rimChunks.forEach(([name, x, y, w, h, angle, material], index) => {
+    const chunk = hifiShard(`hifi14 ${name}`, x, y, {
+      z: 16.15 + (index % 2) * 0.08,
+      width: w,
+      height: h,
+      depth: 0.72,
+      angle,
+      warmBias: index % 2 ? -0.1 : 0.08,
+      roughness: 0.06,
+      material,
+      parent: rim
+    });
+    chunk.scale.z = 0.44;
+    hifiShard(`hifi14 ${name} warm exposed fracture`, x + (index - 2) * 0.18, y - h * 0.48, {
+      z: 16.34,
+      width: w * 0.62,
+      height: 0.13,
+      depth: 0.18,
+      angle: angle + (index % 2 ? -6 : 8),
+      warmBias: 0.24,
+      roughness: 0.035,
+      material: mat(0xb69a83, { roughness: 0.9, emissive: 0x2a1208, emissiveIntensity: 0.18, side: THREE.DoubleSide }),
+      parent: rim
+    }).scale.z = 0.28;
+  });
+
+  const upperFacility = new THREE.Group();
+  upperFacility.name = 'hifi14 newly revealed upper facility layers';
+  pass.add(upperFacility);
+
+  const addVisibleDeck = (name, x, y, z, w, d, yaw, matBase, accent) => {
+    const deck = box(`${name} slab`, [w, 0.14, d], [x, y, z], matBase, upperFacility);
+    deck.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const edge = box(`${name} bright edge run`, [w * 0.9, 0.035, 0.035], [x, y + 0.15, z + d * 0.52], accent, upperFacility);
+    edge.rotation.y = deck.rotation.y;
+    return deck;
+  };
+
+  addVisibleDeck('hifi14 high left exposed command deck', -7.2, 6.15, -9.6, 8.0, 0.92, -8, MATS.darkSteel, MATS.cyanDim);
+  addVisibleDeck('hifi14 high center exposed gantry deck', 0.8, 6.55, -10.8, 9.4, 0.82, 2, MATS.blackMetal, MATS.amber);
+  addVisibleDeck('hifi14 high right exposed hangar deck', 8.2, 6.05, -9.8, 7.8, 0.92, 9, MATS.darkSteel, MATS.cyanDim);
+  addVisibleDeck('hifi14 rear upper service balcony', 0.2, 7.55, -13.9, 13.4, 0.58, -2, MATS.blackMetal, MATS.amber);
+
+  // Make the rear tunnel more visible through the newly opened top third.
+  const rearAperture = box('hifi14 upper rear hangar cold opening reveal', [6.8, 3.2, 0.05], [4.4, 5.65, -14.65], mat(0xd7e7fb, {
+    emissive: 0xcfe7ff,
+    emissiveIntensity: 2.45,
+    transparent: true,
+    opacity: 0.68,
+    roughness: 0.05,
+    side: THREE.DoubleSide
+  }), upperFacility);
+  rearAperture.rotation.z = THREE.MathUtils.degToRad(-4);
+  box('hifi14 upper rear hangar silhouette frame', [7.2, 0.2, 0.32], [4.4, 7.3, -14.35], MATS.blackMetal, upperFacility).rotation.z = rearAperture.rotation.z;
+  box('hifi14 upper rear hangar lower sill', [6.6, 0.18, 0.28], [4.4, 3.95, -14.3], MATS.blackMetal, upperFacility).rotation.z = rearAperture.rotation.z;
+
+  // Readable silhouettes in the opened top: cranes, bridge spans, and pinlights.
+  const cranes = [
+    [-10.2, 7.45, -9.6, 3.4, 1.2, -10],
+    [-2.4, 7.95, -10.8, 4.2, 1.1, 8],
+    [6.8, 7.55, -10.2, 3.8, 1.25, -7]
+  ];
+  cranes.forEach(([x, y, z, arm, mast, yaw], index) => {
+    const mastMesh = box(`hifi14 upper crane mast ${index}`, [0.1, mast, 0.1], [x, y - mast * 0.5, z], MATS.blackMetal, upperFacility);
+    const armMesh = box(`hifi14 upper crane arm ${index}`, [arm, 0.07, 0.07], [x + arm * 0.38, y, z], index % 2 ? MATS.cyanDim : MATS.amber, upperFacility);
+    mastMesh.rotation.y = THREE.MathUtils.degToRad(yaw);
+    armMesh.rotation.y = THREE.MathUtils.degToRad(yaw);
+    box(`hifi14 upper crane hook ${index}`, [0.07, 0.46, 0.07], [x + arm * 0.72, y - 0.34, z], MATS.darkSteel, upperFacility).rotation.y = armMesh.rotation.y;
+  });
+
+  for (let i = 0; i < 160; i += 1) {
+    const zone = i % 4;
+    const x = [-9.8, -2.8, 4.0, 8.6][zone] + (hifiNoise(i * 1.17) - 0.5) * [4.0, 5.6, 5.0, 3.4][zone];
+    const y = [5.25, 5.75, 5.45, 5.2][zone] + hifiNoise(i * 1.61) * [2.0, 2.2, 2.0, 2.1][zone];
+    const z = [-9.0, -10.2, -10.4, -9.2][zone] - hifiNoise(i * 2.05) * 3.2;
+    const tick = box(`hifi14 upper opened facility pinlight ${i}`, [0.065, 0.024, 0.024], [x, y, z], zone === 1 ? MATS.amber : MATS.cyanDim, upperFacility);
+    tick.rotation.y = THREE.MathUtils.degToRad(-12 + hifiNoise(i * 2.7) * 24);
+  }
+
+  const upperCold = new THREE.PointLight(0xcfe7ff, 20.0, 34.0);
+  upperCold.name = 'hifi14 upper rear tunnel readability light';
+  upperCold.position.set(4.4, 6.1, -10.6);
+  scene.add(upperCold);
+  const upperWarm = new THREE.PointLight(0xffaf72, 14.0, 28.0);
+  upperWarm.name = 'hifi14 upper exposed deck work light';
+  upperWarm.position.set(-2.8, 6.4, -7.8);
+  scene.add(upperWarm);
+}
+
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-13: widened asteroid cutaway reveals more facility decks, central pit, rear tunnel, cranes, and readable scale lights.';
+  document.getElementById('focus-body').textContent = 'HIFI-14: upper cutaway pulled out further to reveal more rear facility, hangar light, cranes, and upper deck layers.';
 }
 
 function buildScene() {
@@ -3642,6 +3774,7 @@ function buildScene() {
   buildHifi11AsymmetricAsteroidMassPass();
   buildHifi12EfficientHighresCutawayAssetPass();
   buildHifi13WideFacilityRevealPass();
+  buildHifi14UpperCutawayPulloutPass();
   updateReadout();
 }
 
