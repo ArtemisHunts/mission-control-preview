@@ -85,6 +85,13 @@ const MATS = {
     metalness: 0.02,
     flatShading: true,
     side: THREE.DoubleSide
+  }),
+  rockDenseHifi: new THREE.MeshStandardMaterial({
+    vertexColors: true,
+    roughness: 0.98,
+    metalness: 0.02,
+    flatShading: false,
+    side: THREE.DoubleSide
   })
 };
 
@@ -173,6 +180,222 @@ function hifiPrism(name, points, { z = 4.15, depth = 3.8, parent = root, warmBia
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
   geometry.computeVertexNormals();
   const mesh = new THREE.Mesh(geometry, MATS.rockHifi);
+  mesh.name = name;
+  parent.add(mesh);
+  return mesh;
+}
+
+function resampleHifiContour(points, segmentLength = 0.42) {
+  const samples = [];
+  for (let i = 0; i < points.length; i += 1) {
+    const [ax, ay] = points[i];
+    const [bx, by] = points[(i + 1) % points.length];
+    const length = Math.hypot(bx - ax, by - ay);
+    const steps = Math.max(1, Math.ceil(length / segmentLength));
+    for (let step = 0; step < steps; step += 1) {
+      const t = step / steps;
+      samples.push([
+        THREE.MathUtils.lerp(ax, bx, t),
+        THREE.MathUtils.lerp(ay, by, t)
+      ]);
+    }
+  }
+  return samples;
+}
+
+function pointInPolygon(x, y, points) {
+  let inside = false;
+  for (let i = 0, j = points.length - 1; i < points.length; j = i, i += 1) {
+    const [xi, yi] = points[i];
+    const [xj, yj] = points[j];
+    const intersects = ((yi > y) !== (yj > y))
+      && (x < ((xj - xi) * (y - yi)) / ((yj - yi) || 0.00001) + xi);
+    if (intersects) inside = !inside;
+  }
+  return inside;
+}
+
+function buildHifiFractureRibbon(name, path, {
+  z = 5.05,
+  depth = 0.12,
+  widthStart = 0.12,
+  widthEnd = 0.05,
+  warmBias = -0.18,
+  parent = root,
+  opacity = 1
+} = {}) {
+  const vertices = [];
+  const colors = [];
+  const push = (x, y, zz, biasSeed, localWarmBias = warmBias) => {
+    vertices.push(x, y, zz);
+    const c = hifiColor(x + biasSeed * 0.1, y, zz, localWarmBias);
+    colors.push(c.r * opacity, c.g * opacity, c.b * opacity);
+  };
+
+  for (let i = 0; i < path.length - 1; i += 1) {
+    const [ax, ay] = path[i];
+    const [bx, by] = path[i + 1];
+    const dx = bx - ax;
+    const dy = by - ay;
+    const length = Math.hypot(dx, dy) || 1;
+    const nx = -dy / length;
+    const ny = dx / length;
+    const t0 = i / (path.length - 1);
+    const t1 = (i + 1) / (path.length - 1);
+    const w0 = THREE.MathUtils.lerp(widthStart, widthEnd, t0);
+    const w1 = THREE.MathUtils.lerp(widthStart, widthEnd, t1);
+    const z0 = z - t0 * depth + (hifiNoise(ax * 2.7 + ay * 4.1 + i) - 0.5) * 0.08;
+    const z1 = z - t1 * depth + (hifiNoise(bx * 2.7 + by * 4.1 + i + 9) - 0.5) * 0.08;
+
+    const aLeft = [ax + nx * w0, ay + ny * w0, z0];
+    const aRight = [ax - nx * w0, ay - ny * w0, z0 - 0.04];
+    const bLeft = [bx + nx * w1, by + ny * w1, z1];
+    const bRight = [bx - nx * w1, by - ny * w1, z1 - 0.04];
+
+    push(...aLeft, i + 0.2); push(...aRight, i + 0.4); push(...bLeft, i + 0.6);
+    push(...bLeft, i + 0.8); push(...aRight, i + 1.0); push(...bRight, i + 1.2);
+  }
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  geometry.computeVertexNormals();
+  const mesh = new THREE.Mesh(geometry, MATS.rockHifi);
+  mesh.name = name;
+  parent.add(mesh);
+  return mesh;
+}
+
+function buildHifiRockPanel(name, points, {
+  z = 4.4,
+  depth = 4.8,
+  grid = 0.34,
+  rimInset = 0.08,
+  backShrink = 0.12,
+  relief = 0.28,
+  warmBias = 0,
+  parent = root
+} = {}) {
+  const geometry = new THREE.BufferGeometry();
+  const vertices = [];
+  const colors = [];
+  const denseBase = new THREE.Color(COLORS.rockCut);
+  const denseCool = new THREE.Color(COLORS.rockOuter);
+  const center = points.reduce((acc, [x, y]) => {
+    acc.x += x;
+    acc.y += y;
+    return acc;
+  }, { x: 0, y: 0 });
+  center.x /= points.length;
+  center.y /= points.length;
+
+  const push = (x, y, zz, localWarmBias = warmBias, seed = 0) => {
+    vertices.push(x, y, zz);
+    const c = hifiColor(x + seed * 0.14, y, zz, localWarmBias);
+    c.lerp(denseBase, 0.24);
+    c.lerp(denseCool, 0.08);
+    colors.push(c.r, c.g, c.b);
+  };
+
+  const frontZ = (x, y, seed) => z
+    + (hifiNoise(x * 1.9 + y * 1.6 + seed * 0.33) - 0.5) * relief * 0.62
+    + (hifiNoise(x * 4.4 - y * 3.1 + seed * 0.77) - 0.5) * relief * 0.12;
+
+  const bounds = points.reduce((acc, [x, y]) => ({
+    minX: Math.min(acc.minX, x),
+    maxX: Math.max(acc.maxX, x),
+    minY: Math.min(acc.minY, y),
+    maxY: Math.max(acc.maxY, y)
+  }), { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity });
+
+  for (let x = bounds.minX; x < bounds.maxX; x += grid) {
+    for (let y = bounds.minY; y < bounds.maxY; y += grid) {
+      const x1 = Math.min(x + grid, bounds.maxX);
+      const y1 = Math.min(y + grid, bounds.maxY);
+      const triA = [[x, y], [x1, y], [x1, y1]];
+      const triB = [[x, y], [x1, y1], [x, y1]];
+      const triACenter = [(x + x1 + x1) / 3, (y + y + y1) / 3];
+      const triBCenter = [(x + x1 + x) / 3, (y + y1 + y1) / 3];
+
+      if (pointInPolygon(triACenter[0], triACenter[1], points)) {
+        triA.forEach(([vx, vy], index) => push(vx, vy, frontZ(vx, vy, index), warmBias, index + x + y));
+      }
+      if (pointInPolygon(triBCenter[0], triBCenter[1], points)) {
+        triB.forEach(([vx, vy], index) => push(vx, vy, frontZ(vx, vy, index + 5), warmBias, index + x1 + y1));
+      }
+    }
+  }
+
+  const outline = resampleHifiContour(points, Math.max(0.22, grid * 0.92));
+  const depthLayers = 8;
+  const rimLayers = 2;
+  const layerPoints = [];
+
+  for (let layer = 0; layer <= depthLayers; layer += 1) {
+    const t = layer / depthLayers;
+    const shrink = backShrink * t;
+    layerPoints[layer] = outline.map(([x, y], index) => {
+      const dx = x - center.x;
+      const dy = y - center.y;
+      const length = Math.hypot(dx, dy) || 1;
+      const noise = (hifiNoise(index * 0.19 + t * 4.7 + x * 0.03 + y * 0.05) - 0.5);
+      const radialJitter = noise * (0.03 + t * 0.16);
+      return {
+        x: THREE.MathUtils.lerp(x, center.x, shrink) + (dx / length) * radialJitter,
+        y: THREE.MathUtils.lerp(y, center.y, shrink * 0.82) + (dy / length) * radialJitter * 0.88,
+        z: z - depth * t + noise * relief * (0.18 + t * 0.42)
+      };
+    });
+  }
+
+  for (let layer = 0; layer < depthLayers; layer += 1) {
+    const current = layerPoints[layer];
+    const next = layerPoints[layer + 1];
+    for (let i = 0; i < current.length; i += 1) {
+      const a = current[i];
+      const b = current[(i + 1) % current.length];
+      const c = next[i];
+      const d = next[(i + 1) % current.length];
+      push(a.x, a.y, a.z, warmBias - layer * 0.01, i); push(c.x, c.y, c.z, warmBias - 0.04, i + 1); push(b.x, b.y, b.z, warmBias + 0.02, i + 2);
+      push(b.x, b.y, b.z, warmBias + 0.02, i + 3); push(c.x, c.y, c.z, warmBias - 0.04, i + 4); push(d.x, d.y, d.z, warmBias - 0.06, i + 5);
+    }
+  }
+
+  const backLayer = layerPoints[depthLayers];
+  const backCenterZ = z - depth - relief * 0.4;
+  for (let i = 0; i < backLayer.length; i += 1) {
+    const a = backLayer[i];
+    const b = backLayer[(i + 1) % backLayer.length];
+    push(center.x, center.y, backCenterZ, warmBias - 0.08, i + 8);
+    push(b.x, b.y, b.z - 0.06, warmBias - 0.1, i + 9);
+    push(a.x, a.y, a.z - 0.06, warmBias - 0.08, i + 10);
+  }
+
+  for (let layer = 0; layer < rimLayers; layer += 1) {
+    const t0 = layer / rimLayers;
+    const t1 = (layer + 1) / rimLayers;
+    for (let i = 0; i < outline.length; i += 1) {
+      const [ax, ay] = outline[i];
+      const [bx, by] = outline[(i + 1) % outline.length];
+      const a0x = THREE.MathUtils.lerp(ax, center.x, rimInset * t0);
+      const a0y = THREE.MathUtils.lerp(ay, center.y, rimInset * t0);
+      const b0x = THREE.MathUtils.lerp(bx, center.x, rimInset * t0);
+      const b0y = THREE.MathUtils.lerp(by, center.y, rimInset * t0);
+      const a1x = THREE.MathUtils.lerp(ax, center.x, rimInset * t1);
+      const a1y = THREE.MathUtils.lerp(ay, center.y, rimInset * t1);
+      const b1x = THREE.MathUtils.lerp(bx, center.x, rimInset * t1);
+      const b1y = THREE.MathUtils.lerp(by, center.y, rimInset * t1);
+      const z0 = frontZ(a0x, a0y, i + layer) + 0.05 - layer * 0.04;
+      const z1 = frontZ(a1x, a1y, i + layer + 3) + 0.02 - layer * 0.04;
+      push(a0x, a0y, z0, warmBias + 0.16, i); push(a1x, a1y, z1, warmBias + 0.2, i + 1); push(b0x, b0y, z0, warmBias + 0.18, i + 2);
+      push(b0x, b0y, z0, warmBias + 0.18, i + 3); push(a1x, a1y, z1, warmBias + 0.2, i + 4); push(b1x, b1y, z1, warmBias + 0.16, i + 5);
+    }
+  }
+
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  geometry.computeVertexNormals();
+  const mesh = new THREE.Mesh(geometry, MATS.rockDenseHifi);
   mesh.name = name;
   parent.add(mesh);
   return mesh;
@@ -313,28 +536,36 @@ function addRockSurfaceDetail(parent) {
 
 function buildHifiAsteroidShell() {
   const shell = new THREE.Group();
-  shell.name = 'concept-c hifi procedural asteroid shell mesh v1';
+  shell.name = 'concept-c hifi procedural asteroid shell mesh v2 dense foundation';
   root.add(shell);
 
-  hifiPrism('hifi single-body left oppressive asteroid mantle', [
+  buildHifiRockPanel('hifi dense left oppressive asteroid mantle', [
     [-14.8, 3.2], [-13.9, 5.25], [-10.9, 6.95], [-8.7, 6.22], [-7.0, 7.32], [-4.65, 6.24], [-2.7, 6.72],
     [-0.78, 5.2], [-1.86, 4.12], [-4.2, 4.58], [-6.8, 4.04], [-9.9, 4.42], [-10.6, 3.3], [-9.86, 2.18],
     [-10.8, 0.72], [-12.7, 0.22], [-14.28, 1.28]
-  ], { z: 4.55, depth: 5.8, parent: shell, warmBias: 0.03, roughness: 0.34 });
+  ], { z: 4.58, depth: 6.1, parent: shell, warmBias: 0.02, grid: 0.28, rimInset: 0.11, backShrink: 0.15, relief: 0.42 });
 
-  hifiPrism('hifi right recessed broken asteroid mantle', [
+  buildHifiRockPanel('hifi dense right recessed broken asteroid mantle', [
     [1.55, 5.55], [3.25, 5.08], [5.22, 5.92], [8.75, 5.12], [10.9, 5.72], [11.62, 4.65], [12.96, 3.78],
     [13.55, 2.7], [12.85, 1.64], [10.55, 0.62], [9.28, 1.22], [10.14, 2.48], [9.4, 3.04], [6.42, 4.74], [3.62, 4.04], [1.52, 4.44]
-  ], { z: 4.28, depth: 4.4, parent: shell, warmBias: -0.03, roughness: 0.3 });
+  ], { z: 4.34, depth: 4.9, parent: shell, warmBias: -0.02, grid: 0.3, rimInset: 0.1, backShrink: 0.13, relief: 0.36 });
 
-  hifiPrism('hifi sagging lower left asteroid shelf with real thickness', [
+  buildHifiRockPanel('hifi dense sagging lower left asteroid shelf with real thickness', [
     [-10.9, 0.82], [-8.7, 1.14], [-6.52, 0.48], [-4.72, 1.02], [-2.72, 0.2], [-1.35, 0.46],
     [-2.12, -0.58], [-4.7, -1.28], [-7.34, -0.68], [-10.05, -1.08]
-  ], { z: 4.5, depth: 5.2, parent: shell, warmBias: 0.02, roughness: 0.28 });
+  ], { z: 4.56, depth: 5.5, parent: shell, warmBias: 0.03, grid: 0.3, rimInset: 0.09, backShrink: 0.14, relief: 0.34 });
 
-  hifiPrism('hifi broken lower right asteroid shelf pulled backward', [
+  buildHifiRockPanel('hifi dense broken lower right asteroid shelf pulled backward', [
     [1.7, 0.16], [4.18, 0.78], [7.34, 0.2], [9.62, 0.5], [8.12, -0.3], [5.75, -0.92], [3.18, -0.46], [1.0, -0.82]
-  ], { z: 4.1, depth: 3.6, parent: shell, warmBias: -0.02, roughness: 0.22 });
+  ], { z: 4.16, depth: 4.0, parent: shell, warmBias: -0.01, grid: 0.32, rimInset: 0.08, backShrink: 0.11, relief: 0.28 });
+
+  buildHifiRockPanel('hifi dense upper left crown breakout bridge', [
+    [-12.9, 5.74], [-11.42, 6.52], [-9.54, 6.22], [-10.64, 5.12], [-12.32, 5.08]
+  ], { z: 4.92, depth: 2.5, parent: shell, warmBias: 0.1, grid: 0.24, rimInset: 0.12, backShrink: 0.18, relief: 0.24 });
+
+  buildHifiRockPanel('hifi dense right outer cheek shell buttress', [
+    [9.22, 4.42], [11.24, 4.04], [12.38, 2.8], [10.34, 2.02], [8.96, 2.74]
+  ], { z: 4.62, depth: 2.7, parent: shell, warmBias: 0.02, grid: 0.24, rimInset: 0.11, backShrink: 0.17, relief: 0.22 });
 
   const fracturePlates = [
     ['hifi warm cut plane above production bay', [[-8.2, 4.3], [-6.4, 4.95], [-4.9, 4.55], [-6.72, 3.92]], 4.92, 0.5],
@@ -342,7 +573,34 @@ function buildHifiAsteroidShell() {
     ['hifi lower left broken cut strata face', [[-8.8, 0.68], [-6.2, 0.36], [-5.0, -0.72], [-8.0, -0.52]], 4.96, 0.55],
     ['hifi right recessed side cut face', [[9.42, 3.88], [11.24, 3.58], [10.02, 1.2], [9.2, 2.14]], 4.72, 0.45]
   ];
-  fracturePlates.forEach(([name, pts, z, depth], index) => hifiPrism(name, pts, { z, depth, parent: shell, warmBias: 0.18, roughness: 0.12 + index * 0.02 }));
+  fracturePlates.forEach(([name, pts, plateZ, depth], index) => buildHifiRockPanel(name, pts, {
+    z: plateZ,
+    depth,
+    parent: shell,
+    warmBias: 0.18,
+    grid: 0.18,
+    rimInset: 0.16,
+    backShrink: 0.22,
+    relief: 0.14 + index * 0.02
+  }));
+
+  const fractureRibbons = [
+    ['hifi upper left dense fracture hierarchy', [[-12.8, 5.88], [-11.12, 5.46], [-9.54, 5.72], [-8.18, 5.04], [-6.44, 4.84]], 0.15, 0.06, 5.24, -0.12],
+    ['hifi upper left secondary strata crack', [[-10.94, 4.76], [-9.88, 4.34], [-8.36, 4.46], [-7.18, 4.08]], 0.09, 0.04, 5.18, -0.16],
+    ['hifi upper center roof bite crack ladder', [[-2.2, 4.86], [-1.38, 4.42], [-0.42, 4.62], [0.48, 4.24]], 0.11, 0.05, 5.18, -0.08],
+    ['hifi right outer cheek fracture hierarchy', [[9.32, 4.2], [10.22, 3.84], [10.82, 3.12], [10.12, 2.26], [9.44, 1.66]], 0.12, 0.05, 4.9, -0.12],
+    ['hifi lower sill primary broken seam', [[-9.3, 0.52], [-7.62, 0.18], [-5.92, -0.06], [-3.84, -0.14], [-1.52, -0.02], [1.26, -0.08], [4.08, -0.18], [7.24, 0.02]], 0.12, 0.04, 5.14, 0.06]
+  ];
+  fractureRibbons.forEach(([name, path, widthStart, widthEnd, fractureZ, warm]) => {
+    buildHifiFractureRibbon(name, path, {
+      z: fractureZ,
+      depth: 0.18,
+      widthStart,
+      widthEnd,
+      warmBias: warm,
+      parent: shell
+    });
+  });
 
   const tunnel = hifiPrism('hifi dark bored service tunnel bevel in left mantle', [
     [-10.95, 3.1], [-10.55, 3.42], [-10.04, 3.18], [-9.92, 2.7], [-10.22, 2.32], [-10.78, 2.42], [-11.08, 2.72]
