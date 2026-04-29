@@ -250,7 +250,7 @@
       "durationMs": 360000,
       "status": "shipped",
       "type": "direction correction prune/composition/performance pass",
-      "notes": "Continued Michael correction: consolidated three overlapping asteroid border passes into one calibrated proscenium, removed small glints/lamps/strata clutter from those border systems, added one dominant assembly shaft with broad clamp/core/hopper/conveyor forms, and preserved the asteroid as a 15–25% edge frame while the interior production facility owns the subject. Mesh constructor count stayed at 11 and loop markers at zero. Browser screenshot capture remained policy-blocked and is documented."
+      "notes": "Continued Michael correction: consolidated three overlapping asteroid border passes into one calibrated proscenium, removed small glints/lamps/strata clutter from those border systems, added one dominant assembly shaft with broad clamp/core/hopper/conveyor forms, and preserved the asteroid as a 15\u201325% edge frame while the interior production facility owns the subject. Mesh constructor count stayed at 11 and loop markers at zero. Browser screenshot capture remained policy-blocked and is documented."
     },
     {
       "date": "2026-04-27",
@@ -603,10 +603,18 @@
       "status": "shipped",
       "type": "hifi asset-pipeline shell-detail pass",
       "notes": "Added a dedicated HIFI-02 procedural shell-detail layer on concept-c-hifi: chipped crown/sill shards, secondary fracture plates, crater pockets with dust halos, fracture seams, rubble pockets, underside occlusion wedges, rim accents, and stronger warm/cool/depth-biased rock vertex color. Smoke checks passed. Local screenshot/gate remained blocked by browser policy, refused CDP access, and failed headless capture; blocker is documented in the paired visual review."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "concept-c hifi HIFI-05 ultra asteroid max-density pass",
+      "durationMs": null,
+      "status": "shipped",
+      "type": "asteroid-only hifi asset-pipeline pass",
+      "notes": "Added taller max-density asteroid ceiling shell, macro strata/crater basin hierarchy, zoom/view controls, and captured 3840x2160 plus zoom/ceiling proof screenshots."
     }
   ],
   "stats": {
-    "count": 76,
+    "count": 77,
     "minMs": 90000,
     "maxMs": 1080000,
     "avgMs": 449459,

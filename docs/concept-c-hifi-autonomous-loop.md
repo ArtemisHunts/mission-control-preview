@@ -113,3 +113,15 @@ Until the asteroid shell itself passes gate, the autonomous loop should ignore c
 5. asteroid-focused screenshot gate
 
 Interior work resumes only after the asteroid-focused gate reaches avg >= 4.5/5 with no asteroid category below 4.0.
+
+
+## Zoom and ceiling correction
+Michael said the screenshots were too full-scale compared with his closer view, asked what resolution they were, and requested zoom in/out plus the tallest/highest-resolution asteroid Artemis can build.
+
+Current screenshot proof uses 1600x900 for older 04A/04B captures and 3840x2160 for HIFI-05 full-frame proof. Future asteroid passes may touch camera/view controls even while other UI/HUD work remains paused.
+
+The active asteroid target now includes:
+- Full/Wide/Detail/Ceiling camera presets
+- mouse/keyboard zoom behavior
+- taller asteroid ceiling volume
+- max practical geometry/detail density while keeping the browser stable

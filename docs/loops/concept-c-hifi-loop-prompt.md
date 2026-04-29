@@ -47,7 +47,7 @@ Until the asteroid shell itself passes the asteroid-focused gold gate, the loop 
 - production bay
 - interior props
 - collars/braces/conduits around rooms
-- HUD/UI changes
+- HUD/UI changes except camera zoom/view controls Michael requested
 - live deploy/cache busts
 
 Allowed work only:
@@ -123,6 +123,9 @@ Work down this ladder. Do not resume interior work until the asteroid itself cle
    - if asteroid is still low-poly, repeat AST-01/02/03
 
 5. Interior work resumes only after asteroid-focused gate >= 4.5/5 with no asteroid category below 4.0.
+
+## Zoom/view exception
+Michael requested zoom in/out and a taller ceiling. Camera/view controls are allowed even while unrelated HUD/UI polish remains paused. Older asteroid screenshots were 1600x900; HIFI-05 proof should prefer a 3840x2160 full-frame capture when the browser can hold it.
 
 ## Hard rules
 - Do not work on command shaft, production bay, interior props, collars, braces, conduits, or UI until asteroid-only gate clears.

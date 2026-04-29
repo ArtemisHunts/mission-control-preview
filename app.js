@@ -21,7 +21,7 @@ const COLORS = {
 
 const container = document.getElementById('office-canvas');
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.2));
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -32,16 +32,54 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
 scene.fog = new THREE.Fog(COLORS.bg, 20, 64);
 
-const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 120);
-camera.position.set(0, 6.6, 23.5);
+const camera = new THREE.PerspectiveCamera(46, window.innerWidth / window.innerHeight, 0.1, 160);
+camera.position.set(0, 8.2, 31.5);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.06;
 controls.enableRotate = false;
-controls.enableZoom = false;
+controls.enableZoom = true;
 controls.enablePan = false;
-controls.target.set(0, 2.65, -2.8);
+controls.minDistance = 11;
+controls.maxDistance = 44;
+controls.zoomSpeed = 0.82;
+controls.target.set(0, 3.8, -3.8);
+
+
+const CAMERA_PRESETS = {
+  full: { label: 'FULL', position: [0, 8.2, 31.5], target: [0, 3.8, -3.8], fov: 46 },
+  wide: { label: 'WIDE', position: [0, 9.4, 38.5], target: [0, 4.25, -4.6], fov: 50 },
+  detail: { label: 'DETAIL', position: [0, 6.4, 18.2], target: [0, 3.45, -2.4], fov: 42 },
+  ceiling: { label: 'CEILING', position: [0, 10.4, 28.0], target: [0, 6.15, -3.4], fov: 43 }
+};
+
+let activeCameraPreset = 'full';
+function applyCameraPreset(name) {
+  const preset = CAMERA_PRESETS[name] || CAMERA_PRESETS.full;
+  activeCameraPreset = name;
+  camera.position.set(...preset.position);
+  controls.target.set(...preset.target);
+  camera.fov = preset.fov;
+  camera.updateProjectionMatrix();
+  controls.update();
+  document.querySelectorAll('[data-camera-preset]').forEach((button) => {
+    button.classList.toggle('active', button.dataset.cameraPreset === name);
+  });
+  const zoomLabel = document.getElementById('zoom-readout');
+  if (zoomLabel) zoomLabel.textContent = `${preset.label} · ${Math.round(camera.position.distanceTo(controls.target) * 10) / 10}m`;
+}
+
+function nudgeCameraZoom(delta) {
+  const direction = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
+  const distance = THREE.MathUtils.clamp(camera.position.distanceTo(controls.target) + delta, controls.minDistance, controls.maxDistance);
+  camera.position.copy(controls.target).addScaledVector(direction, distance);
+  controls.update();
+  activeCameraPreset = 'custom';
+  document.querySelectorAll('[data-camera-preset]').forEach((button) => button.classList.remove('active'));
+  const zoomLabel = document.getElementById('zoom-readout');
+  if (zoomLabel) zoomLabel.textContent = `CUSTOM · ${Math.round(distance * 10) / 10}m`;
+}
 
 const root = new THREE.Group();
 root.name = 'concept-c clean asteroid cutaway environment root';
@@ -564,7 +602,7 @@ function buildStarfield() {
     const y = -3.8 + ry * 17.5;
     const z = -28 - rz * 26;
     // Keep the central asteroid cavity cleaner; leave the four corners dense and legible.
-    if (Math.abs(x) < 13.5 && y > -0.4 && y < 7.4) continue;
+    if (Math.abs(x) < 14.5 && y > -0.6 && y < 10.2) continue;
     vertices.push(x, y, z);
     sizes.push(0.04 + rz * 0.08);
   }
@@ -914,6 +952,197 @@ function buildHifiSecondaryAsteroidBreakup() {
     const rim = box(`hifi chipped rim accent ${index}`, [length, 0.04, 0.045], [x, y, 5.2], material, detail);
     rim.rotation.z = THREE.MathUtils.degToRad(angle);
   });
+}
+
+
+function buildUltraHighResolutionAsteroidCeiling() {
+  const ultra = new THREE.Group();
+  ultra.name = 'concept-c AST-05 ultra high resolution taller asteroid ceiling volume';
+  root.add(ultra);
+
+  const panels = [
+    ['ultra tall left vertical asteroid wall continuous to ceiling', [
+      [-15.25, 1.12], [-14.74, 3.46], [-15.1, 5.72], [-13.98, 8.08], [-11.72, 9.68], [-9.22, 9.18], [-7.96, 7.98],
+      [-8.74, 6.74], [-10.52, 6.08], [-10.06, 4.82], [-11.18, 3.46], [-10.42, 2.16], [-11.72, 0.78], [-13.62, 0.42]
+    ], 5.82, 8.8, 0.085, 0.72, 0.04],
+    ['ultra high overhead asteroid ceiling crown with lifted cavern mass', [
+      [-11.52, 6.42], [-9.64, 8.72], [-6.58, 10.14], [-3.12, 9.48], [-0.48, 10.46], [2.54, 9.64], [5.88, 10.02], [9.34, 8.76], [11.34, 6.62],
+      [9.42, 5.66], [6.72, 5.94], [3.86, 5.28], [1.38, 5.74], [-1.08, 5.16], [-3.84, 5.84], [-6.74, 5.36], [-8.98, 5.92]
+    ], 5.94, 9.4, 0.082, 0.86, 0.08],
+    ['ultra tall right asteroid wall stepped back into starfield', [
+      [8.02, 7.64], [9.94, 8.94], [12.26, 8.28], [13.92, 6.48], [14.68, 4.28], [13.72, 2.32], [14.12, 1.18], [12.56, 0.54],
+      [10.76, 0.92], [9.72, 2.06], [10.52, 3.18], [9.86, 4.62], [8.42, 5.22]
+    ], 5.58, 7.8, 0.088, 0.68, -0.02],
+    ['ultra foreground lower asteroid belly mass with dense chipped sill', [
+      [-11.34, 0.88], [-8.88, 1.24], [-6.48, 0.58], [-4.38, 1.08], [-1.86, 0.34], [0.86, 0.58], [3.58, 0.08], [6.98, 0.48], [9.74, 0.18],
+      [8.3, -0.74], [4.82, -1.18], [1.34, -0.76], [-2.62, -1.42], [-6.72, -0.88], [-9.96, -1.2]
+    ], 5.62, 6.6, 0.092, 0.56, 0.05],
+    ['ultra rear ceiling shadow slab creating asteroid thickness', [
+      [-8.86, 7.28], [-6.16, 8.54], [-2.4, 8.08], [0.92, 8.74], [4.48, 8.2], [7.2, 8.64], [9.42, 7.2], [8.34, 6.38],
+      [5.52, 6.66], [2.18, 6.08], [-1.42, 6.54], [-4.98, 6.02], [-7.62, 6.42]
+    ], 3.62, 6.9, 0.105, 0.44, -0.18]
+  ];
+
+  panels.forEach(([name, pts, z, depth, grid, relief, warmBias]) => {
+    buildHifiRockPanel(name, pts, {
+      z,
+      depth,
+      parent: ultra,
+      warmBias,
+      grid,
+      rimInset: 0.2,
+      backShrink: 0.18,
+      relief
+    });
+  });
+
+  const ceilingFractures = [
+    [[-12.92, 7.86], [-11.12, 7.14], [-9.32, 7.82], [-7.28, 7.12], [-5.44, 7.54], [-3.28, 6.86]],
+    [[-6.44, 9.12], [-4.72, 8.28], [-2.76, 8.62], [-1.16, 7.84], [0.72, 8.18], [2.34, 7.36]],
+    [[2.12, 9.14], [4.38, 8.44], [6.22, 8.86], [8.18, 7.84], [10.04, 7.98], [11.96, 6.92]],
+    [[-13.42, 5.86], [-12.14, 5.02], [-10.72, 4.48], [-9.78, 3.34], [-10.42, 2.24]],
+    [[12.96, 6.08], [11.74, 5.06], [10.82, 3.96], [11.26, 2.86], [10.24, 1.76]],
+    [[-9.84, 0.76], [-7.42, 0.38], [-5.16, 0.08], [-2.36, 0.22], [0.62, 0.02], [3.76, -0.16], [7.42, 0.12]],
+    [[-1.8, 9.72], [-0.64, 8.94], [0.12, 8.04], [1.28, 7.28], [2.18, 6.36]],
+    [[-8.62, 8.72], [-7.72, 7.94], [-6.84, 7.1], [-5.9, 6.22]],
+    [[5.74, 9.02], [6.52, 8.2], [7.34, 7.42], [8.08, 6.56]],
+    [[-14.12, 3.96], [-13.02, 3.3], [-12.22, 2.56], [-11.82, 1.58]],
+    [[13.62, 4.02], [12.74, 3.26], [12.06, 2.34], [11.46, 1.3]],
+    [[-6.96, -0.38], [-4.44, -0.54], [-1.68, -0.34], [1.44, -0.48], [4.66, -0.42], [7.22, -0.66]]
+  ];
+
+  ceilingFractures.forEach((path, index) => {
+    buildHifiFractureRibbon(`ultra asteroid ceiling primary fracture network ${index}`, path, {
+      z: 6.08 - (index % 4) * 0.12,
+      depth: 0.32 + (index % 3) * 0.08,
+      widthStart: 0.16 - (index % 3) * 0.02,
+      widthEnd: 0.035,
+      warmBias: index % 3 === 0 ? -0.24 : 0.04,
+      parent: ultra,
+      opacity: 0.96
+    });
+
+    for (let branch = 1; branch < path.length - 1; branch += 2) {
+      const [x, y] = path[branch];
+      const dir = branch % 4 === 1 ? -1 : 1;
+      const branchPath = [
+        [x, y],
+        [x + dir * (0.42 + branch * 0.08), y + 0.42 + (index % 2) * 0.18],
+        [x + dir * (0.78 + branch * 0.08), y + 0.9 + (index % 3) * 0.14]
+      ];
+      buildHifiFractureRibbon(`ultra asteroid ceiling hairline branch ${index}-${branch}`, branchPath, {
+        z: 6.16 - (index % 5) * 0.1,
+        depth: 0.16,
+        widthStart: 0.045,
+        widthEnd: 0.014,
+        warmBias: -0.18,
+        parent: ultra,
+        opacity: 0.72
+      });
+    }
+  });
+
+  const craterSeeds = [
+    [-11.8, 7.52, 0.3, 1.7, 0.82, -18], [-8.4, 8.18, 0.22, 1.45, 0.72, 12], [-4.62, 8.72, 0.26, 1.55, 0.74, -8],
+    [-0.64, 9.08, 0.2, 1.42, 0.7, 20], [3.52, 8.66, 0.24, 1.5, 0.76, -14], [7.34, 8.08, 0.28, 1.58, 0.78, 9],
+    [10.72, 6.68, 0.22, 1.34, 0.8, -24], [-13.04, 4.82, 0.2, 1.28, 0.82, 18], [12.46, 4.4, 0.18, 1.22, 0.76, -12],
+    [-8.72, 0.18, 0.22, 1.52, 0.66, -6], [-4.3, -0.36, 0.18, 1.32, 0.62, 10], [5.9, -0.3, 0.2, 1.42, 0.64, -16]
+  ];
+  craterSeeds.forEach(([x, y, radius, scaleX, scaleY, angle], index) => {
+    buildHifiCraterCluster(`ultra asteroid high resolution crater and ejecta field ${index}`, x, y, {
+      z: 6.18 - (index % 4) * 0.12,
+      radius,
+      scaleX,
+      scaleY,
+      angle,
+      warmBias: index % 2 ? 0.08 : -0.02,
+      parent: ultra
+    });
+  });
+
+
+  const macroStrata = [
+    ['ultra ceiling broad ochre strata shelf left', [[-13.3, 7.04], [-10.6, 6.66], [-7.6, 6.9], [-4.84, 6.42], [-2.42, 6.72]], 0.28, 0.11, 6.28, 0.22],
+    ['ultra ceiling broad cold shadow strata center', [[-5.82, 8.42], [-2.94, 7.86], [0.4, 8.14], [3.3, 7.62], [6.14, 7.88]], 0.24, 0.09, 6.18, -0.26],
+    ['ultra right wall diagonal compression strata', [[7.7, 7.1], [9.12, 6.22], [10.38, 5.12], [11.5, 3.78], [12.46, 2.5]], 0.22, 0.08, 5.92, 0.1],
+    ['ultra left wall diagonal compression strata', [[-13.48, 6.34], [-12.34, 5.24], [-11.46, 4.0], [-11.86, 2.76], [-10.92, 1.54]], 0.22, 0.08, 6.02, -0.1],
+    ['ultra lower sill exposed mined sediment layer', [[-10.42, 0.42], [-7.36, 0.12], [-4.28, -0.1], [-1.02, 0.04], [2.48, -0.12], [5.74, -0.28], [8.42, -0.1]], 0.24, 0.08, 6.02, 0.18]
+  ];
+  macroStrata.forEach(([name, path, widthStart, widthEnd, z, warmBias]) => {
+    buildHifiFractureRibbon(name, path, {
+      z,
+      depth: 0.38,
+      widthStart,
+      widthEnd,
+      warmBias,
+      parent: ultra,
+      opacity: 0.9
+    });
+  });
+
+  const basinMat = mat(0x06050a, { roughness: 1, transparent: true, opacity: 0.52 });
+  const basinRimMat = mat(0xb3917d, { roughness: 0.96, transparent: true, opacity: 0.36, emissive: 0x24110a, emissiveIntensity: 0.08 });
+  const macroBasins = [
+    ['upper-left ancient impact basin', -10.92, 7.28, 6.34, 0.72, 1.8, 0.74, -18],
+    ['upper-center worn impact scar', -1.2, 8.72, 6.28, 0.62, 1.55, 0.68, 12],
+    ['upper-right ancient impact basin', 7.74, 7.64, 6.18, 0.66, 1.64, 0.72, 18],
+    ['right-wall dark crater scar', 11.42, 4.72, 5.94, 0.52, 1.22, 0.86, -24],
+    ['left-wall dark crater scar', -12.74, 4.66, 6.04, 0.5, 1.18, 0.84, 22],
+    ['lower-sill broad scraped crater', -6.94, 0.06, 6.02, 0.48, 1.76, 0.5, -6],
+    ['lower-right scraped crater', 5.84, -0.22, 5.88, 0.42, 1.52, 0.48, 8]
+  ];
+  macroBasins.forEach(([name, x, y, z, radius, sx, sy, angle], index) => {
+    const basin = new THREE.Mesh(new THREE.CircleGeometry(radius, 48), basinMat);
+    basin.name = `ultra asteroid macro dark basin ${name}`;
+    basin.position.set(x, y, z + 0.01);
+    basin.scale.set(sx, sy, 1);
+    basin.rotation.z = THREE.MathUtils.degToRad(angle);
+    ultra.add(basin);
+    const rim = new THREE.Mesh(new THREE.RingGeometry(radius * 0.82, radius * 1.08, 64), basinRimMat);
+    rim.name = `ultra asteroid macro broken raised rim ${name}`;
+    rim.position.set(x, y, z + 0.035);
+    rim.scale.set(sx, sy, 1);
+    rim.rotation.z = THREE.MathUtils.degToRad(angle + (index % 2 ? 8 : -6));
+    ultra.add(rim);
+  });
+
+  for (let i = 0; i < 72; i += 1) {
+    const band = i / 72;
+    const side = i % 3;
+    const xBase = side === 0 ? THREE.MathUtils.lerp(-12.8, -4.0, hifiNoise(i * 0.37)) : side === 1 ? THREE.MathUtils.lerp(3.6, 12.4, hifiNoise(i * 0.41)) : THREE.MathUtils.lerp(-8.8, 8.8, hifiNoise(i * 0.43));
+    const yBase = side === 2 ? THREE.MathUtils.lerp(-0.82, 0.72, hifiNoise(i * 0.71)) : THREE.MathUtils.lerp(4.62, 9.32, hifiNoise(i * 0.67));
+    hifiShard(`ultra asteroid micro chip raised silhouette ${i}`, xBase, yBase, {
+      z: 6.24 - (i % 5) * 0.08,
+      width: 0.22 + hifiNoise(i * 1.7) * 0.34,
+      height: 0.08 + hifiNoise(i * 1.9) * 0.16,
+      depth: 0.26 + hifiNoise(i * 2.1) * 0.52,
+      skew: 0.04 + hifiNoise(i * 2.3) * 0.12,
+      warmBias: i % 4 === 0 ? 0.14 : -0.04,
+      angle: -38 + hifiNoise(i * 2.9) * 76,
+      roughness: 0.035,
+      parent: ultra
+    });
+  }
+
+  const occlusionPockets = [
+    ['ultra deep left ceiling occlusion pocket', [-5.4, 0.16, 0.08], [-9.42, 6.22, 5.88], -12],
+    ['ultra central roof undercut occlusion shelf', [6.4, 0.18, 0.08], [-0.46, 5.76, 5.82], 4],
+    ['ultra right ceiling occlusion pocket', [4.9, 0.16, 0.08], [7.92, 5.62, 5.72], 12],
+    ['ultra lower belly contact darkness across chipped sill', [12.6, 0.12, 0.08], [-0.62, -0.72, 5.54], -2]
+  ];
+  occlusionPockets.forEach(([name, size, position, angle]) => {
+    const shadow = box(name, size, position, MATS.shadow, ultra);
+    shadow.rotation.z = THREE.MathUtils.degToRad(angle);
+  });
+
+  const ceilingKey = new THREE.PointLight(0xffb06b, 2.8, 18.0);
+  ceilingKey.name = 'ultra asteroid ceiling warm grazing light for tall rock relief';
+  ceilingKey.position.set(-2.8, 8.4, 7.4);
+  root.add(ceilingKey);
+  const coolCavity = new THREE.PointLight(0x6aa7ff, 2.2, 21.0);
+  coolCavity.name = 'ultra asteroid cool recess light revealing high resolution surface';
+  coolCavity.position.set(8.4, 7.2, 1.6);
+  root.add(coolCavity);
 }
 
 function buildHifiCommandShaft() {
@@ -1564,7 +1793,7 @@ function buildScaleAndAtmosphere() {
 
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cutaway';
-  document.getElementById('focus-body').textContent = 'A clean rebuild: asteroid shell first, carved production facility second. Previous room code is archived in git history.';
+  document.getElementById('focus-body').textContent = 'Asteroid-first hi-fi pass. Use Full/Wide/Detail/Ceiling or mouse wheel to inspect the taller high-density rock shell.';
 }
 
 function buildScene() {
@@ -1572,6 +1801,7 @@ function buildScene() {
   buildStarfield();
   buildHifiAsteroidShell();
   buildHifiSecondaryAsteroidBreakup();
+  buildUltraHighResolutionAsteroidCeiling();
   buildProductionCavity();
   buildHeroProductionBay();
   buildHifiCommandShaft();
@@ -1598,5 +1828,21 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
+
+document.querySelectorAll('[data-camera-preset]').forEach((button) => {
+  button.addEventListener('click', () => applyCameraPreset(button.dataset.cameraPreset));
+});
+const zoomInButton = document.getElementById('zoom-in-btn');
+const zoomOutButton = document.getElementById('zoom-out-btn');
+if (zoomInButton) zoomInButton.addEventListener('click', () => nudgeCameraZoom(-3.2));
+if (zoomOutButton) zoomOutButton.addEventListener('click', () => nudgeCameraZoom(3.2));
+window.addEventListener('keydown', (event) => {
+  if (event.key === '+' || event.key === '=') nudgeCameraZoom(-2.4);
+  if (event.key === '-' || event.key === '_') nudgeCameraZoom(2.4);
+  if (event.key === '0') applyCameraPreset('full');
+  if (event.key.toLowerCase() === 'c') applyCameraPreset('ceiling');
+});
+
 buildScene();
+applyCameraPreset('full');
 animate();

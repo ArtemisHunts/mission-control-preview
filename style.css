@@ -125,6 +125,57 @@ body::before {
   box-shadow: 0 0 26px rgba(230, 169, 58, 0.24);
 }
 
+
+.zoom-panel {
+  position: fixed;
+  right: clamp(14px, 2vw, 28px);
+  top: clamp(14px, 2vw, 28px);
+  width: min(352px, calc(100vw - 28px));
+  padding: 12px;
+  border-radius: 12px;
+  pointer-events: auto;
+  opacity: 0.82;
+}
+.zoom-panel:hover { opacity: 1; }
+#zoom-readout {
+  display: block;
+  margin: 0 0 7px;
+  color: rgba(246, 248, 255, 0.76);
+  font-family: Silkscreen, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+}
+.zoom-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+.zoom-row.compact {
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 5px;
+}
+.zoom-button {
+  appearance: none;
+  border: 1px solid rgba(89, 241, 255, 0.16);
+  border-radius: 7px;
+  padding: 10px 8px;
+  color: rgba(255, 255, 255, 0.78);
+  background: rgba(3, 5, 13, 0.28);
+  font: inherit;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 160ms ease;
+}
+.zoom-button:hover,
+.zoom-button.active {
+  color: #06101f;
+  background: var(--cyan);
+  box-shadow: 0 0 24px rgba(89, 241, 255, 0.22);
+}
+
 .vignette {
   position: fixed;
   inset: 0;
@@ -139,6 +190,7 @@ body::before {
   body { overflow: auto; }
   #office-canvas { height: 100vh; }
   .room-readout { max-width: 300px; }
+  .zoom-panel { top: auto; bottom: 88px; right: 12px; left: 12px; width: auto; }
   .bottom-dock {
     left: 12px;
     right: 12px;
