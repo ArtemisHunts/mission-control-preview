@@ -3364,6 +3364,9 @@ function buildHifi12EfficientHighresCutawayAssetPass() {
   for (let i = 0; i < segments; i += 1) {
     const ni = (i + 1) % segments;
     for (let j = 0; j < bands; j += 1) {
+      const segmentAngle = (Math.PI * 2 * i) / segments;
+      const topRightCornerRemoved = segmentAngle > 0.02 && segmentAngle < 1.22 && j < bands * 0.96;
+      if (topRightCornerRemoved) continue;
       const a = samplePoint(i, j);
       const b = samplePoint(ni, j);
       const c = samplePoint(i, j + 1);
@@ -3394,6 +3397,8 @@ function buildHifi12EfficientHighresCutawayAssetPass() {
     const aAng = (Math.PI * 2 * i) / segments;
     const bAng = (Math.PI * 2 * ni) / segments;
     for (let l = 0; l < rimLayers; l += 1) {
+      const rimTopRightRemoved = aAng > 0.02 && aAng < 1.22;
+      if (rimTopRightRemoved) continue;
       const t0 = l / rimLayers;
       const t1 = (l + 1) / rimLayers;
       const make = (x, y, ang, t, salt) => {
@@ -3885,9 +3890,111 @@ function buildHifi15DeepViewportRevealPass() {
   scene.add(pitCool);
 }
 
+
+function buildHifi16TopRightCornerCleanoutPass() {
+  const pass = new THREE.Group();
+  pass.name = 'concept-c HIFI-16 top-right corner removed and exterior texture cleaned';
+  root.add(pass);
+
+  // Clean starfield/space cutout where the old procedural shell/noise was showing behind the entrance.
+  const cleanSpaceMat = mat(0x02050c, {
+    roughness: 1,
+    emissive: 0x071321,
+    emissiveIntensity: 0.18,
+    transparent: true,
+    opacity: 0.94,
+    side: THREE.DoubleSide
+  });
+  const cleanVoid = polyMesh('hifi16 clean removed top-right corner space void', [
+    [4.8, 10.6], [9.4, 11.8], [14.6, 11.4], [20.8, 8.8], [22.4, 3.0], [20.6, -0.4], [16.2, 1.1], [12.0, 3.6], [8.6, 5.7], [5.4, 7.6]
+  ], cleanSpaceMat, 17.1, pass);
+  cleanVoid.scale.z = 0.12;
+
+  const softDepth = box('hifi16 clean exterior depth haze after top-right removal', [14.8, 8.8, 0.05], [12.2, 5.4, -12.8], mat(0x37526b, {
+    emissive: 0x294e70,
+    emissiveIntensity: 0.52,
+    transparent: true,
+    opacity: 0.22,
+    roughness: 0.08,
+    side: THREE.DoubleSide
+  }), pass);
+  softDepth.rotation.z = THREE.MathUtils.degToRad(-11);
+
+  // Keep the asteroid believable: a few retained broken boundary chunks, not the whole corner.
+  const edgeGroup = new THREE.Group();
+  edgeGroup.name = 'hifi16 retained broken boundary around removed top-right corner';
+  pass.add(edgeGroup);
+  const brightCut = mat(0x9a8c7d, { roughness: 0.94, emissive: 0x1c1009, emissiveIntensity: 0.14, side: THREE.DoubleSide });
+  const darkRock = mat(0x08070a, { roughness: 1, side: THREE.DoubleSide });
+  [
+    ['upper right severed roof stump', 5.8, 9.45, 4.0, 0.92, -10, brightCut],
+    ['far right lower cheek remnant', 15.6, 1.35, 3.4, 1.12, 18, darkRock],
+    ['diagonal broken rim segment', 10.6, 5.8, 4.8, 0.72, -28, brightCut],
+    ['small hanging fracture tooth', 8.2, 7.5, 2.4, 0.58, 22, darkRock]
+  ].forEach(([name, x, y, w, h, angle, material], index) => {
+    const chunk = hifiShard(`hifi16 ${name}`, x, y, {
+      z: 17.3 + index * 0.03,
+      width: w,
+      height: h,
+      depth: 0.44,
+      angle,
+      warmBias: index % 2 ? -0.08 : 0.16,
+      roughness: 0.04,
+      material,
+      parent: edgeGroup
+    });
+    chunk.scale.z = 0.32;
+  });
+
+  // Restore readable rear/hangar content through the new hole, not noisy exterior texture.
+  const rearReveal = new THREE.Group();
+  rearReveal.name = 'hifi16 rear facility visible through removed corner';
+  pass.add(rearReveal);
+  const hangarGlow = box('hifi16 clean rear hangar glow visible through removed corner', [7.2, 4.2, 0.05], [6.6, 5.4, -15.1], mat(0xdcecff, {
+    emissive: 0xd1e9ff,
+    emissiveIntensity: 2.6,
+    transparent: true,
+    opacity: 0.62,
+    roughness: 0.05,
+    side: THREE.DoubleSide
+  }), rearReveal);
+  hangarGlow.rotation.z = THREE.MathUtils.degToRad(-5);
+  box('hifi16 rear hangar top frame readable after cleanup', [7.6, 0.2, 0.32], [6.6, 7.6, -14.8], MATS.blackMetal, rearReveal).rotation.z = hangarGlow.rotation.z;
+  box('hifi16 rear hangar lower frame readable after cleanup', [7.0, 0.18, 0.28], [6.6, 3.18, -14.75], MATS.blackMetal, rearReveal).rotation.z = hangarGlow.rotation.z;
+
+  const upperDeck = box('hifi16 upper right rear deck now visible', [8.8, 0.14, 0.86], [5.8, 5.25, -11.6], MATS.darkSteel, rearReveal);
+  upperDeck.rotation.y = THREE.MathUtils.degToRad(-7);
+  const deckLight = box('hifi16 upper right rear deck cyan edge', [7.7, 0.035, 0.035], [5.8, 5.42, -11.15], MATS.cyanDim, rearReveal);
+  deckLight.rotation.y = upperDeck.rotation.y;
+  const craneArm = box('hifi16 clean corner visible crane arm', [4.2, 0.07, 0.07], [8.8, 7.0, -11.8], MATS.amber, rearReveal);
+  craneArm.rotation.y = THREE.MathUtils.degToRad(-12);
+  box('hifi16 clean corner crane mast', [0.1, 1.4, 0.1], [7.2, 6.25, -11.8], MATS.blackMetal, rearReveal).rotation.y = craneArm.rotation.y;
+
+  for (let i = 0; i < 90; i += 1) {
+    const x = 4.0 + hifiNoise(i * 1.31) * 9.8;
+    const y = 3.2 + hifiNoise(i * 1.73) * 5.0;
+    const z = -9.4 - hifiNoise(i * 2.11) * 6.0;
+    const tick = box(`hifi16 clean corner rear practical ${i}`, [0.062, 0.024, 0.024], [x, y, z], i % 3 ? MATS.cyanDim : MATS.amber, rearReveal);
+    tick.rotation.y = THREE.MathUtils.degToRad(-16 + hifiNoise(i * 2.7) * 32);
+  }
+
+  // A few stars in the removed quadrant make it clear this is open exterior space now.
+  for (let i = 0; i < 42; i += 1) {
+    const x = 8.0 + hifiNoise(i * 2.1) * 12.4;
+    const y = 1.8 + hifiNoise(i * 3.2) * 9.2;
+    const star = cylinder(`hifi16 clean top-right exterior star ${i}`, 0.025 + hifiNoise(i * 1.7) * 0.035, 0.025, 0.01, 8, [x, y, -16.0], mat(0xf3f8ff, { emissive: 0xdceeff, emissiveIntensity: 1.2, roughness: 0.2 }), pass);
+    star.rotation.x = Math.PI / 2;
+  }
+
+  const cornerCold = new THREE.PointLight(0xd4eaff, 22.0, 34.0);
+  cornerCold.name = 'hifi16 clean removed corner cold exterior light';
+  cornerCold.position.set(11.2, 5.8, -10.8);
+  scene.add(cornerCold);
+}
+
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-15: widened deep viewport exposes front-to-back facility layers, rear hangar, cranes, towers, rails, and practical lights.';
+  document.getElementById('focus-body').textContent = 'HIFI-16: top-right corner removed; exterior artifact texture cleaned into open space and rear facility visibility.';
 }
 
 function buildScene() {
@@ -3902,6 +4009,7 @@ function buildScene() {
   buildHifi13WideFacilityRevealPass();
   buildHifi14UpperCutawayPulloutPass();
   buildHifi15DeepViewportRevealPass();
+  buildHifi16TopRightCornerCleanoutPass();
   updateReadout();
 }
 
