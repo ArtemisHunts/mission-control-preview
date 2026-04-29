@@ -4564,9 +4564,252 @@ function buildHifi19MassiveShellDepthRecoveryPass() {
   scene.add(farCold);
 }
 
+
+function buildHifi20ShellFirstOpenCavernQualityPass() {
+  const pass = new THREE.Group();
+  pass.name = 'concept-c HIFI-20 shell-first open cavern quality pass';
+  root.add(pass);
+
+  // Michael reset the priority: carve more interior volume, open the entrance, and focus on asteroid shell quality.
+  // Pull back facility/detail systems so the visible win is asteroid geometry and negative cavern volume, not decoration.
+  const suppressTerms = [
+    'hifi18 macro operations deck',
+    'hifi18 central operations pit',
+    'hifi18 operations practical light',
+    'hifi18 open operations warm work light',
+    'hifi18 open operations rear hangar light',
+    'hifi19 foreground operations yard',
+    'hifi19 middle left tiered industrial bay',
+    'hifi19 middle right tiered industrial bay',
+    'hifi19 rear wall operations deck',
+    'hifi19 far hangar approach apron',
+    'hifi19 equipment block',
+    'hifi19 equipment status light',
+    'hifi19 macro operations crane',
+    'hifi19 restrained perspective operations light',
+    'hifi19 recentered operations pit',
+    'hifi19 operations warm depth light',
+    'hifi12 efficient layered interior deck',
+    'hifi12 cheap facility scale light',
+    'hifi11 facility tiny light',
+    'hifi10 tiny scale light',
+    'hifi09 facility',
+    'reference facility',
+    'concept-c HIFI-07 embedded industrial city',
+    'hifi07',
+    'hifi12 central lower circular pit',
+    'hifi12 rear upper hangar tunnel light module',
+    'hifi12 rear tunnel top frame',
+    'hifi12 rear tunnel bottom frame',
+    'hifi12 rear tunnel left frame',
+    'hifi12 rear tunnel right frame'
+  ];
+  root.traverse((node) => {
+    if (!node.name) return;
+    if (suppressTerms.some((term) => node.name.includes(term))) node.visible = false;
+  });
+
+  const shell = new THREE.Group();
+  shell.name = 'hifi20 asteroid shell only enlarged carved entrance';
+  pass.add(shell);
+
+  const plateGeology = (pts, salt = 0) => ([
+    { type: 'band', ax: pts[0][0], ay: pts[0][1], bx: pts[Math.floor(pts.length / 2)][0], by: pts[Math.floor(pts.length / 2)][1], width: 1.35, height: 0.15, terraces: 10, terraceHeight: 0.075, shadow: 0.16, dust: 0.08 },
+    { type: 'fault', ax: pts[1][0], ay: pts[1][1] - salt * 0.2, bx: pts[Math.max(2, pts.length - 3)][0], by: pts[Math.max(2, pts.length - 3)][1] + salt * 0.14, width: 0.42, depth: 0.15, rim: 0.06, shadow: 0.18 },
+    { type: 'basin', x: pts[Math.floor(pts.length / 3)][0], y: pts[Math.floor(pts.length / 3)][1], rx: 2.0, ry: 0.82, angle: salt * 13 - 20, depth: 0.11, rim: 0.05, shadow: 0.14, dust: 0.08 }
+  ]);
+
+  const outerPanels = [
+    {
+      name: 'upper crown pulled high above larger entrance',
+      pts: [[-21.8, 8.4], [-19.7, 12.4], [-14.2, 14.7], [-7.4, 14.15], [-1.0, 12.6], [5.9, 13.35], [13.2, 11.55], [17.6, 7.75], [12.2, 7.2], [5.0, 7.85], [-2.2, 7.42], [-9.8, 8.0], [-16.2, 7.22]],
+      z: 17.75,
+      depth: 3.55,
+      relief: 0.36,
+      warmBias: -0.11,
+      valueZones: [
+        { x: -8.0, y: 12.8, rx: 9.5, ry: 2.1, dust: 0.18 },
+        { x: 9.0, y: 8.0, rx: 5.8, ry: 1.4, shadow: 0.2, cool: 0.1 },
+        { x: -16.0, y: 8.1, rx: 3.4, ry: 1.2, shadow: 0.18 }
+      ]
+    },
+    {
+      name: 'left outer wall moved outward for wider mouth',
+      pts: [[-25.0, 8.2], [-22.2, 6.35], [-20.7, 2.8], [-20.8, -2.2], [-21.8, -5.9], [-24.0, -9.4], [-26.2, -8.6], [-26.8, 0.9]],
+      z: 17.52,
+      depth: 3.45,
+      relief: 0.34,
+      warmBias: -0.12,
+      valueZones: [
+        { x: -19.4, y: 0.5, rx: 2.5, ry: 6.0, shadow: 0.3, cool: 0.16 },
+        { x: -21.0, y: 6.1, rx: 2.3, ry: 1.3, dust: 0.14 }
+      ]
+    },
+    {
+      name: 'lower sill dropped below operations void',
+      pts: [[-22.2, -9.35], [-15.4, -8.12], [-8.0, -7.72], [-1.0, -7.95], [6.8, -7.62], [14.4, -7.98], [21.2, -9.2], [19.5, -13.0], [10.2, -14.1], [0.0, -13.8], [-11.0, -14.2], [-20.0, -12.75]],
+      z: 17.65,
+      depth: 3.45,
+      relief: 0.34,
+      warmBias: -0.09,
+      valueZones: [
+        { x: -0.6, y: -6.4, rx: 12.0, ry: 1.0, shadow: 0.2 },
+        { x: 11.5, y: -6.55, rx: 4.5, ry: 1.0, dust: 0.16 },
+        { x: -12.4, y: -9.7, rx: 4.2, ry: 1.6, cool: 0.12, shadow: 0.14 }
+      ]
+    },
+    {
+      name: 'right wall pulled open instead of closing viewport',
+      pts: [[17.0, 5.3], [21.2, 3.1], [24.0, -0.8], [24.5, -5.6], [21.0, -9.2], [16.7, -7.5], [15.3, -3.0], [15.6, 2.4]],
+      z: 17.38,
+      depth: 3.1,
+      relief: 0.31,
+      warmBias: -0.11,
+      valueZones: [
+        { x: 18.6, y: -2.6, rx: 3.0, ry: 3.4, shadow: 0.28, cool: 0.14 },
+        { x: 15.3, y: 2.2, rx: 2.4, ry: 1.1, dust: 0.12 }
+      ]
+    },
+    {
+      name: 'rear inner ceiling cut wall visible through opened front',
+      pts: [[-10.0, 6.7], [-4.2, 7.0], [2.0, 6.8], [8.0, 6.35], [10.8, 4.9], [6.8, 4.3], [0.0, 4.7], [-6.7, 4.55], [-11.8, 5.25]],
+      z: 13.6,
+      depth: 2.9,
+      relief: 0.28,
+      warmBias: -0.16,
+      valueZones: [
+        { x: 1.0, y: 5.2, rx: 9.0, ry: 1.2, shadow: 0.32, cool: 0.18 }
+      ]
+    },
+    {
+      name: 'rear inner floor cut wall proving facility room',
+      pts: [[-12.0, -4.7], [-6.6, -4.25], [0.2, -4.55], [7.0, -4.2], [12.8, -4.8], [9.2, -2.95], [2.0, -2.72], [-5.8, -2.95], [-11.0, -3.55]],
+      z: 13.8,
+      depth: 2.75,
+      relief: 0.27,
+      warmBias: -0.14,
+      valueZones: [
+        { x: 0.0, y: -3.5, rx: 10.2, ry: 0.9, shadow: 0.28, cool: 0.14 }
+      ]
+    }
+  ];
+
+  outerPanels.forEach(({ name, pts, z, depth, relief, warmBias, valueZones }, index) => {
+    buildHifiRockPanel(`hifi20 ${name}`, pts, {
+      z,
+      depth,
+      grid: index >= 4 ? 0.18 : 0.2,
+      rimInset: 0.16,
+      backShrink: index >= 4 ? 0.06 : 0.09,
+      relief,
+      mediumRelief: 0.13,
+      microRelief: 0.01,
+      strataRelief: 0.11,
+      radialRelief: 0.035,
+      frontWarp: 0.09,
+      warmBias,
+      valueZones,
+      geology: plateGeology(pts, index + 1),
+      parent: shell
+    });
+  });
+
+  // Negative space: not a black cover. Low-opacity cool air and shadow gradients show that the front is genuinely opened up.
+  const voidGroup = new THREE.Group();
+  voidGroup.name = 'hifi20 enlarged empty cavern volume placeholder for future facility';
+  pass.add(voidGroup);
+  const openedVoid = polyMesh('hifi20 opened front entrance empty asteroid interior volume', [
+    [-17.4, 6.2], [-10.0, 6.95], [-1.8, 6.65], [6.8, 6.92], [15.0, 5.45], [16.8, 1.0], [15.2, -4.45], [8.0, -6.65], [-0.6, -6.95], [-9.6, -6.55], [-16.6, -5.1], [-18.6, 0.55]
+  ], mat(0x233241, { roughness: 1, transparent: true, opacity: 0.16, side: THREE.DoubleSide }), -9.6, voidGroup);
+  openedVoid.scale.z = 0.1;
+  const rearCavity = polyMesh('hifi20 far rear cavern shadow with clear usable void', [
+    [-10.2, 5.25], [-3.8, 5.82], [3.8, 5.55], [10.0, 4.8], [11.3, 1.0], [9.4, -3.2], [3.4, -4.28], [-4.4, -4.1], [-10.0, -2.85], [-11.8, 1.1]
+  ], mat(0x05070d, { roughness: 1, transparent: true, opacity: 0.34, side: THREE.DoubleSide }), -14.8, voidGroup);
+  rearCavity.scale.z = 0.08;
+
+  // Thick, chipped mouth bevels define the larger entrance with hard grey plates instead of fuzzy noise.
+  const brightPlate = mat(0xa39b90, { roughness: 0.98, emissive: 0x17100b, emissiveIntensity: 0.08, side: THREE.DoubleSide });
+  const darkPlate = mat(0x2f3033, { roughness: 1, emissive: 0x030304, emissiveIntensity: 0.05, side: THREE.DoubleSide });
+  [
+    [-15.7, 6.25, 5.2, 0.42, -15, brightPlate], [-8.7, 6.62, 6.2, 0.36, 7, brightPlate], [-1.2, 6.38, 6.6, 0.34, -3, brightPlate], [6.7, 6.42, 5.9, 0.34, 8, brightPlate], [12.7, 4.9, 4.8, 0.44, -22, darkPlate],
+    [-15.2, -4.78, 5.7, 0.42, 12, darkPlate], [-7.2, -4.55, 6.4, 0.36, -6, brightPlate], [1.2, -4.82, 6.7, 0.35, 4, brightPlate], [9.8, -4.58, 5.8, 0.38, -8, brightPlate], [14.1, -3.2, 3.6, 0.4, 20, darkPlate]
+  ].forEach(([x, y, w, h, angle, material], index) => {
+    const chip = hifiShard(`hifi20 enlarged entrance hard chipped grey bevel ${index}`, x, y, {
+      z: 18.05,
+      width: w,
+      height: h,
+      depth: 0.56,
+      angle,
+      warmBias: 0.04,
+      roughness: 0.035,
+      material,
+      parent: shell
+    });
+    chip.scale.z = 0.36;
+  });
+
+  // Large authored plates and craters on shell only. Fewer, bigger signals beat noisy gravel.
+  [
+    [-17.6, 10.4, 3.6, 0.28, -18, brightPlate], [-12.8, 12.25, 3.2, 0.22, 8, brightPlate], [-5.0, 12.0, 3.8, 0.24, -6, brightPlate], [4.2, 11.5, 3.4, 0.24, 10, brightPlate], [11.4, 9.2, 3.6, 0.28, -13, darkPlate],
+    [-21.0, 2.5, 2.9, 0.28, 78, darkPlate], [-20.4, -3.9, 3.1, 0.26, -72, darkPlate], [18.4, 0.8, 3.0, 0.26, -68, darkPlate], [18.0, -5.7, 2.8, 0.26, 72, darkPlate],
+    [-14.0, -9.0, 4.0, 0.28, 4, brightPlate], [-5.2, -10.4, 4.3, 0.26, -8, brightPlate], [4.8, -10.2, 4.2, 0.26, 7, brightPlate], [13.0, -9.1, 3.6, 0.28, -6, brightPlate]
+  ].forEach(([x, y, w, h, angle, material], index) => {
+    hifiShard(`hifi20 authored large shell plate fracture ${index}`, x, y, {
+      z: 18.18,
+      width: w,
+      height: h,
+      depth: 0.42,
+      angle,
+      warmBias: -0.04,
+      roughness: 0.04,
+      material,
+      parent: shell
+    });
+  });
+
+  [
+    [-18.2, 10.3, 0.52, 1.5, 0.72, -12], [-9.5, 12.1, 0.46, 1.7, 0.65, 9], [5.8, 10.9, 0.42, 1.55, 0.64, -5],
+    [-21.2, -1.3, 0.48, 0.92, 1.35, 14], [18.6, -3.3, 0.5, 0.95, 1.3, -16], [-12.8, -10.3, 0.5, 1.6, 0.65, 4], [8.8, -10.5, 0.46, 1.55, 0.7, -8]
+  ].forEach(([x, y, radius, scaleX, scaleY, angle], index) => {
+    buildHifiCraterCluster(`hifi20 shell-only crater chip quality cluster ${index}`, x, y, {
+      z: 18.32,
+      radius,
+      scaleX,
+      scaleY,
+      angle,
+      warmBias: -0.06,
+      parent: shell
+    });
+  });
+
+  // Keep only simple rear-space cues: future facility will use this clear volume, but it is not being decorated in this pass.
+  const rearLight = box('hifi20 distant rear opening placeholder only no interior detail', [6.8, 3.4, 0.05], [4.4, 4.0, -16.8], mat(0xcfe1f2, {
+    emissive: 0xc7e4ff,
+    emissiveIntensity: 2.2,
+    transparent: true,
+    opacity: 0.38,
+    roughness: 0.05,
+    side: THREE.DoubleSide
+  }), voidGroup);
+  rearLight.rotation.z = THREE.MathUtils.degToRad(-5);
+
+  const shellKey = new THREE.DirectionalLight(0xdedbd2, 2.5);
+  shellKey.name = 'hifi20 shell quality top grey rock key light';
+  shellKey.position.set(-6.0, 11.0, 10.0);
+  scene.add(shellKey);
+  const rimCold = new THREE.PointLight(0xcfe5ff, 16.0, 44.0);
+  rimCold.name = 'hifi20 opened cavity cold rear space light';
+  rimCold.position.set(6.0, 4.6, -14.8);
+  scene.add(rimCold);
+  const undersideOcc = new THREE.PointLight(0x050608, 7.0, 26.0);
+  undersideOcc.name = 'hifi20 underside occlusion contrast for shell thickness';
+  undersideOcc.position.set(-1.0, -7.4, 5.0);
+  scene.add(undersideOcc);
+}
+
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-19: restored heavy lumpy asteroid shell mass while keeping the large carved operations cavern, rear hangar depth, and tiered work zones.';
+  document.getElementById('focus-body').textContent = 'HIFI-20: shell-first pass opens the front entrance wider, carves a larger empty facility volume, and upgrades asteroid crust plates/fractures before interior detailing.';
 }
 
 function buildScene() {
@@ -4585,6 +4828,7 @@ function buildScene() {
   buildHifi17TrueGeometryCavernRebuildPass();
   buildHifi18OperationsCavernCarveoutPass();
   buildHifi19MassiveShellDepthRecoveryPass();
+  buildHifi20ShellFirstOpenCavernQualityPass();
   updateReadout();
 }
 
