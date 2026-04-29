@@ -469,20 +469,94 @@ function buildHifiSecondaryAsteroidBreakup() {
 
 function buildHifiCommandShaft() {
   const shaft = new THREE.Group();
-  shaft.name = 'concept-c hifi command shaft carved geometry v1';
+  shaft.name = 'concept-c hifi command shaft carved geometry v2';
   root.add(shaft);
 
-  const rings = [
-    { r: 3.15, y: 0.94, z: 0.04, mat: MATS.blackMetal },
-    { r: 2.62, y: 0.64, z: -0.08, mat: MATS.shadow },
-    { r: 2.05, y: 0.34, z: -0.22, mat: MATS.shadow },
-    { r: 1.42, y: 0.02, z: -0.38, mat: MATS.shadow }
-  ];
-  rings.forEach(({ r, y, z, mat }, index) => {
-    const wall = cylinder(`hifi faceted descending command shaft wall ${index}`, r, r * 0.86, 0.36, 14, [0, y, z], mat, shaft);
-    wall.rotation.y = index * 0.08;
+  const shaftBandMat = mat(0x131a28, { roughness: 0.5, metalness: 0.34 });
+  const shaftBraceMat = mat(0x1f2938, { roughness: 0.44, metalness: 0.4 });
+  const shaftHazeMat = mat(0x102341, {
+    roughness: 0.1,
+    transparent: true,
+    opacity: 0.16,
+    emissive: 0x1d5e8d,
+    emissiveIntensity: 0.18
   });
-  const lowerGlow = cylinder('hifi deep cyan glow fading at bottom of command bore', 1.0, 1.35, 0.03, 28, [0, -0.18, -0.42], MATS.cyanDim, shaft);
+  const deepGlowMat = mat(COLORS.cyan, {
+    roughness: 0.08,
+    transparent: true,
+    opacity: 0.14,
+    emissive: COLORS.cyan,
+    emissiveIntensity: 0.42
+  });
+
+  const rings = [
+    { r: 3.18, y: 0.96, z: 0.06, h: 0.32, rot: 0.02, mat: MATS.blackMetal },
+    { r: 2.84, y: 0.72, z: -0.06, h: 0.28, rot: 0.06, mat: shaftBandMat },
+    { r: 2.46, y: 0.46, z: -0.22, h: 0.3, rot: 0.1, mat: MATS.shadow },
+    { r: 2.04, y: 0.16, z: -0.44, h: 0.34, rot: 0.14, mat: MATS.shadow },
+    { r: 1.62, y: -0.16, z: -0.74, h: 0.38, rot: 0.18, mat: MATS.shadow },
+    { r: 1.2, y: -0.5, z: -1.08, h: 0.42, rot: 0.22, mat: MATS.shadow }
+  ];
+  rings.forEach(({ r, y, z, h, rot, mat }, index) => {
+    const wall = cylinder(`hifi faceted descending command shaft wall ${index}`, r, r * 0.84, h, 16, [0, y, z], mat, shaft);
+    wall.rotation.y = rot;
+  });
+
+  [
+    { radius: 2.12, y: 0.18, z: -0.36, mat: MATS.cyanDim },
+    { radius: 1.78, y: -0.08, z: -0.62, mat: MATS.shadow },
+    { radius: 1.46, y: -0.34, z: -0.9, mat: MATS.shadow },
+    { radius: 1.12, y: -0.6, z: -1.2, mat: MATS.cyanDim }
+  ].forEach(({ radius, y, z, mat }, index) => {
+    const band = torus(`hifi lower maintenance ring inside command shaft ${index}`, radius, 0.028, 8, 52, [0, y, z], mat, shaft);
+    band.rotation.x = Math.PI / 2;
+  });
+
+  const leftWall = box('hifi left inner shaft wall tapering into darkness', [0.22, 1.96, 0.92], [-1.66, 0.02, -0.62], MATS.shadow, shaft);
+  leftWall.rotation.z = THREE.MathUtils.degToRad(18);
+  const rightWall = box('hifi right inner shaft wall tapering into darkness', [0.22, 1.96, 0.92], [1.66, 0.02, -0.62], MATS.shadow, shaft);
+  rightWall.rotation.z = THREE.MathUtils.degToRad(-18);
+  const rearWall = box('hifi deep rear command shaft wall', [3.2, 2.3, 0.12], [0, -0.04, -1.74], MATS.shadow, shaft);
+  const rearWallMid = box('hifi mid rear command shaft wall step', [2.54, 1.46, 0.08], [0, 0.16, -1.28], MATS.blackMetal, shaft);
+  const rearWallLow = box('hifi lower rear command shaft wall step', [1.88, 0.94, 0.08], [0, -0.32, -2.12], MATS.blackMetal, shaft);
+  rearWall.rotation.x = THREE.MathUtils.degToRad(-2);
+  rearWallMid.rotation.x = THREE.MathUtils.degToRad(-4);
+  rearWallLow.rotation.x = THREE.MathUtils.degToRad(-6);
+
+  const bridges = [
+    { name: 'upper bridge span crossing command shaft', size: [1.46, 0.06, 0.22], pos: [-0.48, 0.1, -0.46], yaw: 34 },
+    { name: 'mid bridge span crossing command shaft', size: [1.34, 0.06, 0.22], pos: [0.58, -0.12, -0.78], yaw: -28 },
+    { name: 'deep bridge span fading into rear shaft', size: [1.2, 0.05, 0.18], pos: [0.04, -0.38, -1.08], yaw: 8 }
+  ];
+  bridges.forEach(({ name, size, pos, yaw }, index) => {
+    const bridge = box(`hifi ${name}`, size, pos, shaftBraceMat, shaft);
+    bridge.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const rail = box(`hifi ${name} edge light ${index}`, [size[0] * 0.82, 0.018, 0.028], [pos[0], pos[1] + 0.05, pos[2] + 0.02], index === 1 ? MATS.amber : MATS.cyanDim, shaft);
+    rail.rotation.y = bridge.rotation.y;
+  });
+
+  [
+    [-0.98, -0.06, -0.86, 0.24],
+    [1.08, -0.28, -1.18, 0.2],
+    [0.18, -0.48, -1.48, 0.16]
+  ].forEach(([x, y, z, h], index) => {
+    cylinder(`hifi tiny maintenance lift silhouette ${index}`, 0.05, 0.06, h, 8, [x, y, z], MATS.blackMetal, shaft);
+    box(`hifi tiny maintenance light ${index}`, [0.1, 0.018, 0.02], [x, y + h * 0.32, z + 0.03], index === 1 ? MATS.amber : MATS.cyanDim, shaft);
+  });
+
+  [
+    [-1.18, 0.16, -1.26, MATS.cyanDim],
+    [1.16, -0.08, -1.56, MATS.amber],
+    [0, -0.36, -1.9, MATS.cyanDim]
+  ].forEach(([x, y, z, material], index) => {
+    box(`hifi descending shaft depth light ${index}`, [0.08, 0.3, 0.03], [x, y, z], material, shaft);
+  });
+
+  const hazeColumn = cylinder('hifi atmospheric glow column descending through command shaft', 0.28, 0.48, 1.62, 16, [0, -0.22, -0.94], shaftHazeMat, shaft);
+  hazeColumn.rotation.z = THREE.MathUtils.degToRad(4);
+  const deepGlow = cylinder('hifi deepest cyan glow fading far below command core', 0.62, 0.96, 0.03, 24, [0, -0.72, -1.46], deepGlowMat, shaft);
+  deepGlow.rotation.x = Math.PI / 2;
+  const lowerGlow = cylinder('hifi deep cyan glow fading at bottom of command bore', 0.92, 1.28, 0.03, 28, [0, -0.28, -0.78], MATS.cyanDim, shaft);
   lowerGlow.rotation.x = Math.PI / 2;
 }
 
@@ -948,7 +1022,8 @@ function buildCommandPit() {
   cylinder('concept-c raised upper deck lip around sunken command well', 3.7, 3.85, 0.16, 56, [0, 0.98, 0.02], MATS.steel);
   cylinder('concept-c vertical dark wall of sunken command well', 3.02, 3.18, 0.62, 56, [0, 0.72, 0.02], MATS.blackMetal);
   cylinder('concept-c lower recessed command pit floor clearly below deck', 2.08, 2.22, 0.12, 56, [0, 0.43, 0.02], MATS.shadow);
-  cylinder('concept-c deepest black command shaft visible below holo table', 1.48, 1.78, 0.44, 48, [0, 0.23, 0.02], MATS.shadow);
+  cylinder('concept-c inner tapered command throat dropping below pit floor', 1.74, 2.02, 0.36, 48, [0, 0.15, 0.02], MATS.blackMetal);
+  cylinder('concept-c deepest black command shaft visible below holo table', 1.3, 1.72, 0.96, 48, [0, -0.08, 0.02], MATS.shadow);
   const stepRing = torus('concept-c inner step shadow ring proving pit depth', 2.62, 0.045, 8, 72, [0, 0.78, 0.02], MATS.shadow);
   stepRing.rotation.x = Math.PI / 2;
   const amberRing = torus('concept-c amber operations walkway trim', 3.34, 0.035, 10, 80, [0, 1.1, 0.02], MATS.amber);
@@ -968,7 +1043,9 @@ function buildCommandPit() {
   });
   box('concept-c black occlusion slot inside pit front wall', [4.2, 0.1, 0.08], [0, 0.62, 2.18], MATS.shadow);
   box('concept-c black occlusion slot inside pit rear wall', [4.0, 0.1, 0.08], [0, 0.62, -2.1], MATS.shadow);
-  cylinder('concept-c lower pit cyan glow at true bottom', 1.58, 1.72, 0.035, 48, [0, 0.52, 0.02], MATS.cyanDim);
+  cylinder('concept-c lower pit cyan glow at true bottom', 1.08, 1.34, 0.035, 48, [0, -0.36, 0.02], MATS.cyanDim);
+  const shaftBeam = cylinder('concept-c faint command shaft light column', 0.2, 0.34, 1.36, 18, [0, 0.12, 0.02], mat(0x11355a, { transparent: true, opacity: 0.12, emissive: 0x2b8dd8, emissiveIntensity: 0.2, roughness: 0.08 }));
+  shaftBeam.rotation.z = THREE.MathUtils.degToRad(2);
   box('concept-c heavy foreground lip occluding lower pit floor', [5.2, 0.18, 0.42], [0, 1.18, 3.02], MATS.blackMetal);
   box('concept-c amber highlight on foreground pit lip', [4.4, 0.035, 0.045], [0, 1.32, 2.82], MATS.amber);
   const stairTreads = [-0.52, -0.2, 0.12, 0.44].forEach((offset, index) => {
@@ -989,13 +1066,26 @@ function buildCommandPit() {
     box(`concept-c tiny crew visor cue near pit ${index}`, [0.09, 0.025, 0.02], [x, 1.42, z + 0.04], index % 2 ? MATS.amber : MATS.cyan);
   });
 
-  [1.42, 1.78, 2.14, 2.54].forEach((radius, index) => {
-    const lower = torus(`concept-c descending lower wall ring visible inside pit ${index}`, radius, 0.02, 8, 64, [0, 0.42 + index * 0.14, 0.02], index < 2 ? MATS.cyanDim : MATS.shadow);
+  [
+    { radius: 2.42, y: 0.46, mat: MATS.shadow },
+    { radius: 2.08, y: 0.28, mat: MATS.shadow },
+    { radius: 1.72, y: 0.08, mat: MATS.cyanDim },
+    { radius: 1.38, y: -0.12, mat: MATS.shadow },
+    { radius: 1.04, y: -0.3, mat: MATS.cyanDim }
+  ].forEach(({ radius, y, mat }, index) => {
+    const lower = torus(`concept-c descending lower wall ring visible inside pit ${index}`, radius, 0.024, 8, 64, [0, y, 0.02], mat);
     lower.rotation.x = Math.PI / 2;
   });
   [-1.45, -0.72, 0, 0.72, 1.45].forEach((x, index) => {
-    box(`concept-c tiny lower level pit light ${index}`, [0.18, 0.025, 0.025], [x, 0.48 + (index % 2) * 0.12, -1.72], index % 2 ? MATS.amber : MATS.cyanDim);
+    box(`concept-c tiny lower level pit light ${index}`, [0.18, 0.025, 0.025], [x, 0.18 - (index % 2) * 0.14, -1.72 - index * 0.08], index % 2 ? MATS.amber : MATS.cyanDim);
   });
+
+  const lowerBridgeA = box('concept-c lower maintenance bridge crossing command throat', [1.18, 0.05, 0.16], [-0.44, -0.04, -0.42], MATS.darkSteel);
+  lowerBridgeA.rotation.y = THREE.MathUtils.degToRad(28);
+  const lowerBridgeB = box('concept-c deeper maintenance bridge crossing command throat', [0.96, 0.05, 0.14], [0.48, -0.24, -0.74], MATS.darkSteel);
+  lowerBridgeB.rotation.y = THREE.MathUtils.degToRad(-22);
+  box('concept-c lower maintenance bridge cyan rail', [0.84, 0.018, 0.024], [-0.44, 0.0, -0.4], MATS.cyanDim).rotation.y = lowerBridgeA.rotation.y;
+  box('concept-c deeper maintenance bridge amber rail', [0.66, 0.018, 0.024], [0.48, -0.2, -0.72], MATS.amber).rotation.y = lowerBridgeB.rotation.y;
 
   const stations = [
     [-2.45, 1.24, -34, MATS.cyan], [-1.12, 2.16, -14, MATS.amber], [1.12, 2.16, 14, MATS.cyan], [2.45, 1.24, 34, MATS.amber],
