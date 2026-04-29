@@ -125,3 +125,20 @@ The active asteroid target now includes:
 - mouse/keyboard zoom behavior
 - taller asteroid ceiling volume
 - max practical geometry/detail density while keeping the browser stable
+
+
+## Reference-match correction
+Michael supplied `docs/reference/concept-c-asteroid-cavern-target.png` and said the scene does not look at all like it. This is correct and supersedes the prior asteroid-only texture/detail target.
+
+Future Concept C hi-fi work must first rebuild composition toward the reference:
+
+1. dark oval foreground asteroid aperture
+2. one massive hollow asteroid cavern
+3. starfield around/behind the asteroid and through openings
+4. huge right-side hangar/window to space
+5. embedded industrial city inside the hollow
+6. central circular pit/shaft with blue glow and ring depth
+7. cyan left bay, warm amber core, tiny practical scale lights, cranes/bridges/gantries
+8. broad sculpted rock hierarchy before chips/noise
+
+A pass that only improves local asteroid texture while the screenshot still does not resemble the reference composition should be treated as a failure.

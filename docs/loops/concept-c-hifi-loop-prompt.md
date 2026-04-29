@@ -64,14 +64,33 @@ Allowed work only:
 
 If a pass spends meaningful effort on the interior before the asteroid gate clears, treat it as a failed pass even if the screenshot looks cleaner.
 
+
+## Reference lock — Michael supplied target image
+Michael supplied `docs/reference/concept-c-asteroid-cavern-target.png` and said the scene does not look at all like it. He is right. This reference supersedes the prior local asteroid-only optimization target.
+
+The loop must now optimize for reference match at composition scale before more texture/detail work. Required thumbnail read:
+- dark oval foreground asteroid aperture framing the whole shot
+- one enormous hollow asteroid cavern, not separate procedural panels around a room
+- starfield around/behind the asteroid and through openings
+- huge right-side hangar/window opening to space with cold blue exterior light
+- embedded industrial city/facility inside the hollow
+- central circular pit/shaft with blue glow and ring depth
+- cyan left bay, warm amber industrial core, tiny scale lights, cranes/bridges/gantries
+- rock hierarchy: broad dark sculpted crust first, strata/ridges second, chips/craters last
+
+A pass fails if it only improves asteroid material while the screenshot still does not resemble the reference composition.
+
+Read before working: `docs/reference/concept-c-asteroid-cavern-target.md`.
+
 ## Gold-standard target
-High-fidelity Concept C asteroid foundation first:
-- massive asymmetric asteroid body must read as premium before interior work resumes
-- high-density rock geometry, not low-poly slabs
-- believable carved cut faces with bevels, strata, chipped rims, craters, rubble, dust, and mineral variation
-- open star corners preserved
-- cinematic material richness focused on stone: faceted rock, fine fracture hierarchy, dark occlusion, warm/cool rim planes, fog/depth
-- interior facility can remain temporary/scaffolding until asteroid shell passes
+High-fidelity Concept C asteroid cavern reference match first:
+- massive hollow asteroid body must read like the supplied reference at thumbnail scale
+- dark oval foreground rock aperture frames the entire scene
+- embedded industrial facility inside the hollow, not a toy cutaway in front of panels
+- huge right-side hangar/window opening to space
+- visible starfield around/behind the asteroid and through openings
+- central circular pit/shaft with blue glow and real ring depth
+- cinematic material richness focused on broad sculpted dark crust, strata/ridges, chipped rims, craters, rubble, dust, and mineral variation
 
 Gold-standard gate:
 - visual gate average >= 4.5/5
@@ -106,31 +125,42 @@ Gold-standard gate:
 ## Hi-fi priority ladder
 Work down this ladder. Do not resume interior work until the asteroid itself clears gate.
 
-1. AST-01 high-density asteroid mesh foundation
+1. REF-01 reference composition rebuild
+   - create dark oval asteroid aperture/frame matching the supplied target image
+   - hollow cavern must dominate the silhouette
+   - large right-side hangar/window opening to space
+   - central circular pit and embedded industrial city visible inside
+
+2. REF-02 cavern depth and lighting
+   - foreground black rock, mid facility, rear cavern, bright exterior openings
+   - cyan left bay, warm amber core, blue central pit glow
+   - cranes/bridges/gantries/tiny lights for scale
+
+3. AST-01 high-density asteroid mesh foundation
    - replace low-poly mantle prisms with subdivided/displaced custom BufferGeometry
    - use enough vertices/faces to remove the folded-paper read
    - create macro asymmetry and real surface undulation without closing star corners
 
-2. AST-02 surface fracture hierarchy
+4. AST-02 surface fracture hierarchy
    - large breaks, medium fracture networks, small chips/craters/rubble
    - geometry or dense procedural detail, not just accent strips
    - chipped bevel/rim geometry around cut faces
 
-3. AST-03 rock material/value richness
+5. AST-03 rock material/value richness
    - stronger vertex-color strata and mineral variation
    - dust/debris pockets, darker underside occlusion, cool recesses, warm exposed cuts
    - selective rim lighting/post only where it sells asteroid mass
 
-4. AST-04 authored macro geology pass
+6. AST-04 authored macro geology pass
    - large sculpted planes, ravines, impact basins, sediment strata, and worn surfaces must dominate before micro detail
    - if the asteroid reads as procedural noise soup, the pass fails regardless of vertex count
 
-5. AST-05 asteroid-only visual gate
+7. AST-05 reference/asteroid visual gate
    - compare against gold-standard concept art as a standalone asteroid shell
    - do not grade up because the interior is readable
    - if asteroid is still low-poly or noisy/procedural, repeat AST-01/02/03/04
 
-6. Interior work resumes only after asteroid-focused gate >= 4.5/5 with no asteroid category below 4.0.
+8. Interior detail resumes only after reference composition reads correctly at thumbnail scale and asteroid-focused gate >= 4.5/5 with no asteroid category below 4.0.
 
 ## Zoom/view exception
 Michael requested zoom in/out and a taller ceiling. Camera/view controls are allowed even while unrelated HUD/UI polish remains paused. Older asteroid screenshots were 1600x900; HIFI-05 proof should prefer a 3840x2160 full-frame capture when the browser can hold it.
