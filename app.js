@@ -267,6 +267,137 @@ function pointInPolygon(x, y, points) {
   return inside;
 }
 
+function smoothstep(edge0, edge1, value) {
+  const t = THREE.MathUtils.clamp((value - edge0) / ((edge1 - edge0) || 0.00001), 0, 1);
+  return t * t * (3 - 2 * t);
+}
+
+function ellipseMask(x, y, {
+  x: cx,
+  y: cy,
+  rx = 1,
+  ry = 1,
+  angle = 0,
+  softness = 0.28
+}) {
+  const rad = THREE.MathUtils.degToRad(angle);
+  const cos = Math.cos(rad);
+  const sin = Math.sin(rad);
+  const dx = x - cx;
+  const dy = y - cy;
+  const localX = dx * cos + dy * sin;
+  const localY = -dx * sin + dy * cos;
+  const distance = Math.sqrt((localX / rx) ** 2 + (localY / ry) ** 2);
+  return 1 - smoothstep(1 - softness, 1, distance);
+}
+
+function capsuleMaskSample(x, y, {
+  ax,
+  ay,
+  bx,
+  by,
+  width = 1,
+  softness = 0.3
+}) {
+  const abx = bx - ax;
+  const aby = by - ay;
+  const lengthSq = abx * abx + aby * aby || 1;
+  const t = THREE.MathUtils.clamp((((x - ax) * abx) + ((y - ay) * aby)) / lengthSq, 0, 1);
+  const px = ax + abx * t;
+  const py = ay + aby * t;
+  const distance = Math.hypot(x - px, y - py);
+  const mask = 1 - smoothstep(width * (1 - softness), width, distance);
+  return { mask, t, distance, px, py };
+}
+
+function sampleAsteroidMacroGeology(x, y, features = []) {
+  return features.reduce((acc, feature) => {
+    if (!feature) return acc;
+
+    if (feature.type === 'mass') {
+      const mask = ellipseMask(x, y, feature);
+      if (!mask) return acc;
+      const terrace = feature.terraces
+        ? (Math.sin((x * (feature.freqX ?? 0.48)) + (y * (feature.freqY ?? 1.02)) + (feature.phase ?? 0)) * 0.5 + 0.5)
+        : 0;
+      acc.height += mask * ((feature.height ?? 0) + terrace * (feature.terraceHeight ?? 0));
+      acc.warm += mask * (feature.warm ?? 0);
+      acc.cool += mask * (feature.cool ?? 0);
+      acc.dust += mask * (feature.dust ?? 0);
+      acc.shadow += mask * (feature.shadow ?? 0);
+      return acc;
+    }
+
+    if (feature.type === 'basin') {
+      const inner = ellipseMask(x, y, feature);
+      if (!inner) return acc;
+      const rimOuter = ellipseMask(x, y, {
+        ...feature,
+        rx: (feature.rx ?? 1) * (feature.rimScale ?? 1.22),
+        ry: (feature.ry ?? 1) * (feature.rimScale ?? 1.22),
+        softness: Math.min(0.5, (feature.softness ?? 0.28) + 0.08)
+      });
+      const rim = Math.max(0, rimOuter - inner * 0.84);
+      acc.height -= inner * (feature.depth ?? 0);
+      acc.height += rim * (feature.rim ?? 0);
+      acc.warm += rim * (feature.warm ?? 0);
+      acc.cool += inner * (feature.cool ?? 0);
+      acc.dust += rim * (feature.dust ?? 0);
+      acc.shadow += inner * (feature.shadow ?? 0);
+      return acc;
+    }
+
+    if (feature.type === 'band') {
+      const band = capsuleMaskSample(x, y, feature);
+      if (!band.mask) return acc;
+      const ridgeTaper = feature.taper ? Math.max(0, 1 - Math.abs(band.t - 0.5) * 2 * feature.taper) : 1;
+      const terrace = feature.terraces
+        ? (Math.sin((band.t * (feature.terraces ?? 4) * Math.PI * 2) + (feature.phase ?? 0)) * 0.5 + 0.5)
+        : 0;
+      const cross = 1 - THREE.MathUtils.clamp(band.distance / (feature.width || 1), 0, 1);
+      acc.height += band.mask * (feature.height ?? 0) * ridgeTaper;
+      acc.height += band.mask * cross * (feature.terraceHeight ?? 0) * terrace;
+      acc.warm += band.mask * (feature.warm ?? 0);
+      acc.cool += band.mask * (feature.cool ?? 0);
+      acc.dust += band.mask * (feature.dust ?? 0);
+      acc.shadow += band.mask * (feature.shadow ?? 0);
+      return acc;
+    }
+
+    if (feature.type === 'fault') {
+      const band = capsuleMaskSample(x, y, feature);
+      if (!band.mask) return acc;
+      const inner = 1 - smoothstep((feature.width ?? 0.28) * 0.22, feature.width ?? 0.28, band.distance);
+      const shoulder = Math.max(0, band.mask - inner * 0.82);
+      acc.height -= inner * (feature.depth ?? 0);
+      acc.height += shoulder * (feature.rim ?? 0);
+      acc.cool += inner * (feature.cool ?? 0.08);
+      acc.warm += shoulder * (feature.warm ?? 0.04);
+      acc.shadow += inner * (feature.shadow ?? 0.16);
+      return acc;
+    }
+
+    return acc;
+  }, { height: 0, warm: 0, cool: 0, dust: 0, shadow: 0 });
+}
+
+function applyAsteroidValueZones(color, x, y, zones = []) {
+  const dustTone = new THREE.Color(0xc4ae99);
+  const darkTone = new THREE.Color(0x130f15);
+  const warmTone = new THREE.Color(COLORS.rockWarm);
+  const coolTone = new THREE.Color(COLORS.rockOuter);
+
+  zones.forEach((zone) => {
+    if (!zone) return;
+    const mask = ellipseMask(x, y, zone);
+    if (!mask) return;
+    if (zone.warm) color.lerp(warmTone, THREE.MathUtils.clamp(zone.warm * mask, 0, 0.88));
+    if (zone.cool) color.lerp(coolTone, THREE.MathUtils.clamp(zone.cool * mask, 0, 0.88));
+    if (zone.dust) color.lerp(dustTone, THREE.MathUtils.clamp(zone.dust * mask, 0, 0.92));
+    if (zone.shadow) color.lerp(darkTone, THREE.MathUtils.clamp(zone.shadow * mask, 0, 0.92));
+  });
+}
+
 function buildHifiFractureRibbon(name, path, {
   z = 5.05,
   depth = 0.12,
@@ -325,7 +456,14 @@ function buildHifiRockPanel(name, points, {
   rimInset = 0.08,
   backShrink = 0.12,
   relief = 0.28,
+  mediumRelief = 0.18,
+  microRelief = 0.05,
+  strataRelief = 0.06,
+  radialRelief = 0.08,
+  frontWarp = 0.04,
   warmBias = 0,
+  geology = [],
+  valueZones = [],
   parent = root
 } = {}) {
   const geometry = new THREE.BufferGeometry();
@@ -333,6 +471,9 @@ function buildHifiRockPanel(name, points, {
   const colors = [];
   const denseBase = new THREE.Color(COLORS.rockCut);
   const denseCool = new THREE.Color(COLORS.rockOuter);
+  const denseWarm = new THREE.Color(COLORS.rockWarm);
+  const denseDust = new THREE.Color(0xc4ad97);
+  const denseDark = new THREE.Color(0x100d13);
   const center = points.reduce((acc, [x, y]) => {
     acc.x += x;
     acc.y += y;
@@ -342,21 +483,40 @@ function buildHifiRockPanel(name, points, {
   center.y /= points.length;
   const maxRadius = points.reduce((max, [x, y]) => Math.max(max, Math.hypot(x - center.x, y - center.y)), 0.001);
 
-  const push = (x, y, zz, localWarmBias = warmBias, seed = 0) => {
+  const push = (x, y, zz, localWarmBias = warmBias, seed = 0, geologySample) => {
     vertices.push(x, y, zz);
-    const c = hifiColor(x + seed * 0.14, y, zz, localWarmBias);
+    const sampledGeology = geologySample || sampleAsteroidMacroGeology(x, y, geology);
+    const c = hifiColor(x + seed * 0.14, y, zz, localWarmBias + sampledGeology.warm * 0.18 - sampledGeology.cool * 0.08);
     c.lerp(denseBase, 0.24);
     c.lerp(denseCool, 0.08);
+    if (sampledGeology.warm > 0) c.lerp(denseWarm, THREE.MathUtils.clamp(sampledGeology.warm * 0.52, 0, 0.88));
+    if (sampledGeology.cool > 0) c.lerp(denseCool, THREE.MathUtils.clamp(sampledGeology.cool * 0.62, 0, 0.88));
+    if (sampledGeology.dust > 0) c.lerp(denseDust, THREE.MathUtils.clamp(sampledGeology.dust * 0.68, 0, 0.92));
+    if (sampledGeology.shadow > 0) c.lerp(denseDark, THREE.MathUtils.clamp(sampledGeology.shadow * 0.72, 0, 0.94));
+    applyAsteroidValueZones(c, x, y, valueZones);
     colors.push(c.r, c.g, c.b);
   };
 
-  const frontZ = (x, y, seed) => {
-    const macro = (hifiNoise(x * 1.9 + y * 1.6 + seed * 0.33) - 0.5) * relief * 0.5;
-    const medium = (hifiNoise(x * 4.4 - y * 3.1 + seed * 0.77) - 0.5) * relief * 0.18;
-    const micro = (hifiNoise(x * 10.8 + y * 9.4 + seed * 1.21) - 0.5) * relief * 0.05;
+  const frontSurface = (x, y, seed) => {
+    const geologySample = sampleAsteroidMacroGeology(x, y, geology);
     const radial = Math.hypot(x - center.x, y - center.y) / maxRadius;
-    const strata = Math.sin((x * 0.46 + y * 1.18 + seed * 0.12) * 2.7) * relief * 0.06;
-    return z + macro + medium + micro + strata + radial * relief * 0.08;
+    const innerWarpMask = 1 - smoothstep(0.76, 1.02, radial);
+    const warpX = (hifiNoise(x * 1.72 - y * 1.08 + seed * 0.41) - 0.5) * relief * frontWarp * innerWarpMask
+      + Math.sin(y * 0.82 + seed * 0.08) * geologySample.height * 0.22 * innerWarpMask;
+    const warpY = (hifiNoise(x * 0.94 + y * 1.86 - seed * 0.33) - 0.5) * relief * frontWarp * 0.72 * innerWarpMask
+      + Math.cos(x * 0.58 - seed * 0.06) * geologySample.height * 0.14 * innerWarpMask;
+    const sampleX = x + warpX;
+    const sampleY = y + warpY;
+    const macro = (hifiNoise(sampleX * 1.9 + sampleY * 1.6 + seed * 0.33) - 0.5) * relief * 0.5;
+    const medium = (hifiNoise(sampleX * 4.4 - sampleY * 3.1 + seed * 0.77) - 0.5) * relief * mediumRelief;
+    const micro = (hifiNoise(sampleX * 10.8 + sampleY * 9.4 + seed * 1.21) - 0.5) * relief * microRelief;
+    const strata = Math.sin((sampleX * 0.46 + sampleY * 1.18 + seed * 0.12) * 2.7) * relief * strataRelief;
+    return {
+      x: sampleX,
+      y: sampleY,
+      z: z + macro + medium + micro + strata + radial * relief * radialRelief + geologySample.height,
+      geologySample
+    };
   };
 
   const bounds = points.reduce((acc, [x, y]) => ({
@@ -376,10 +536,16 @@ function buildHifiRockPanel(name, points, {
       const triBCenter = [(x + x1 + x) / 3, (y + y1 + y1) / 3];
 
       if (pointInPolygon(triACenter[0], triACenter[1], points)) {
-        triA.forEach(([vx, vy], index) => push(vx, vy, frontZ(vx, vy, index), warmBias, index + x + y));
+        triA.forEach(([vx, vy], index) => {
+          const surface = frontSurface(vx, vy, index);
+          push(surface.x, surface.y, surface.z, warmBias, index + x + y, surface.geologySample);
+        });
       }
       if (pointInPolygon(triBCenter[0], triBCenter[1], points)) {
-        triB.forEach(([vx, vy], index) => push(vx, vy, frontZ(vx, vy, index + 5), warmBias, index + x1 + y1));
+        triB.forEach(([vx, vy], index) => {
+          const surface = frontSurface(vx, vy, index + 5);
+          push(surface.x, surface.y, surface.z, warmBias, index + x1 + y1, surface.geologySample);
+        });
       }
     }
   }
@@ -398,12 +564,14 @@ function buildHifiRockPanel(name, points, {
       const length = Math.hypot(dx, dy) || 1;
       const noise = (hifiNoise(index * 0.19 + t * 4.7 + x * 0.03 + y * 0.05) - 0.5);
       const chipNoise = (hifiNoise(index * 0.73 + x * 0.18 - y * 0.22 + t * 8.4) - 0.5);
-      const strataDrop = Math.sin((x * 0.34 + y * 0.98 + t * 6.6) * 2.1) * 0.03;
+      const strataDrop = Math.sin((x * 0.34 + y * 0.98 + t * 6.6) * 2.1) * Math.max(0.012, strataRelief * 0.48);
       const radialJitter = noise * (0.03 + t * 0.16) + chipNoise * (0.015 + t * 0.04);
+      const geologySample = sampleAsteroidMacroGeology(x, y, geology);
       return {
         x: THREE.MathUtils.lerp(x, center.x, shrink) + (dx / length) * radialJitter,
         y: THREE.MathUtils.lerp(y, center.y, shrink * 0.82) + (dy / length) * radialJitter * 0.88,
-        z: z - depth * t + noise * relief * (0.16 + t * 0.42) + chipNoise * relief * 0.08 + strataDrop
+        z: z - depth * t + noise * relief * (0.12 + t * 0.36) + chipNoise * relief * 0.05 + strataDrop + geologySample.height * (1 - t * 0.58),
+        geologySample
       };
     });
   }
@@ -416,8 +584,8 @@ function buildHifiRockPanel(name, points, {
       const b = current[(i + 1) % current.length];
       const c = next[i];
       const d = next[(i + 1) % current.length];
-      push(a.x, a.y, a.z, warmBias - layer * 0.01, i); push(c.x, c.y, c.z, warmBias - 0.04, i + 1); push(b.x, b.y, b.z, warmBias + 0.02, i + 2);
-      push(b.x, b.y, b.z, warmBias + 0.02, i + 3); push(c.x, c.y, c.z, warmBias - 0.04, i + 4); push(d.x, d.y, d.z, warmBias - 0.06, i + 5);
+      push(a.x, a.y, a.z, warmBias - layer * 0.01, i, a.geologySample); push(c.x, c.y, c.z, warmBias - 0.04, i + 1, c.geologySample); push(b.x, b.y, b.z, warmBias + 0.02, i + 2, b.geologySample);
+      push(b.x, b.y, b.z, warmBias + 0.02, i + 3, b.geologySample); push(c.x, c.y, c.z, warmBias - 0.04, i + 4, c.geologySample); push(d.x, d.y, d.z, warmBias - 0.06, i + 5, d.geologySample);
     }
   }
 
@@ -427,8 +595,8 @@ function buildHifiRockPanel(name, points, {
     const a = backLayer[i];
     const b = backLayer[(i + 1) % backLayer.length];
     push(center.x, center.y, backCenterZ, warmBias - 0.08, i + 8);
-    push(b.x, b.y, b.z - 0.06, warmBias - 0.1, i + 9);
-    push(a.x, a.y, a.z - 0.06, warmBias - 0.08, i + 10);
+    push(b.x, b.y, b.z - 0.06, warmBias - 0.1, i + 9, b.geologySample);
+    push(a.x, a.y, a.z - 0.06, warmBias - 0.08, i + 10, a.geologySample);
   }
 
   for (let layer = 0; layer < rimLayers; layer += 1) {
@@ -445,10 +613,12 @@ function buildHifiRockPanel(name, points, {
       const a1y = THREE.MathUtils.lerp(ay, center.y, rimInset * t1);
       const b1x = THREE.MathUtils.lerp(bx, center.x, rimInset * t1);
       const b1y = THREE.MathUtils.lerp(by, center.y, rimInset * t1);
-      const z0 = frontZ(a0x, a0y, i + layer) + 0.05 - layer * 0.04;
-      const z1 = frontZ(a1x, a1y, i + layer + 3) + 0.02 - layer * 0.04;
-      push(a0x, a0y, z0, warmBias + 0.16, i); push(a1x, a1y, z1, warmBias + 0.2, i + 1); push(b0x, b0y, z0, warmBias + 0.18, i + 2);
-      push(b0x, b0y, z0, warmBias + 0.18, i + 3); push(a1x, a1y, z1, warmBias + 0.2, i + 4); push(b1x, b1y, z1, warmBias + 0.16, i + 5);
+      const surface0 = frontSurface(a0x, a0y, i + layer);
+      const surface1 = frontSurface(a1x, a1y, i + layer + 3);
+      const z0 = surface0.z + 0.05 - layer * 0.04;
+      const z1 = surface1.z + 0.02 - layer * 0.04;
+      push(surface0.x, surface0.y, z0, warmBias + 0.16, i, surface0.geologySample); push(surface1.x, surface1.y, z1, warmBias + 0.2, i + 1, surface1.geologySample); push(b0x, b0y, z0, warmBias + 0.18, i + 2, surface0.geologySample);
+      push(b0x, b0y, z0, warmBias + 0.18, i + 3, surface0.geologySample); push(surface1.x, surface1.y, z1, warmBias + 0.2, i + 4, surface1.geologySample); push(b1x, b1y, z1, warmBias + 0.16, i + 5, surface1.geologySample);
     }
   }
 
@@ -1143,6 +1313,124 @@ function buildUltraHighResolutionAsteroidCeiling() {
   coolCavity.name = 'ultra asteroid cool recess light revealing high resolution surface';
   coolCavity.position.set(8.4, 7.2, 1.6);
   root.add(coolCavity);
+}
+
+function buildAsteroidMacroGeologyPass() {
+  const macro = new THREE.Group();
+  macro.name = 'concept-c AST-06 macro geology overlay pass';
+  root.add(macro);
+
+  const ledges = [
+    {
+      name: 'AST-06 left crown weathered sediment buttress',
+      pts: [[-14.34, 6.12], [-12.78, 7.56], [-9.62, 7.76], [-8.36, 6.92], [-9.88, 5.92], [-13.26, 5.68]],
+      z: 6.08,
+      depth: 2.4,
+      warmBias: 0.1,
+      geology: [
+        { type: 'band', ax: -13.94, ay: 6.84, bx: -9.32, by: 6.92, width: 0.88, height: 0.12, terraces: 4, terraceHeight: 0.08, dust: 0.18, warm: 0.12 },
+        { type: 'basin', x: -11.88, y: 6.96, rx: 1.14, ry: 0.52, angle: -14, depth: 0.12, rim: 0.05, shadow: 0.18, dust: 0.1 },
+        { type: 'fault', ax: -12.44, ay: 7.28, bx: -10.46, by: 6.02, width: 0.24, depth: 0.06, rim: 0.02, shadow: 0.14, warm: 0.05 }
+      ],
+      valueZones: [
+        { x: -11.22, y: 6.74, rx: 2.52, ry: 0.78, angle: -6, dust: 0.22, warm: 0.14 }
+      ]
+    },
+    {
+      name: 'AST-06 central roof broken geology terrace',
+      pts: [[-5.86, 6.56], [-3.42, 7.68], [-0.86, 7.44], [2.02, 7.9], [4.62, 7.28], [6.74, 6.18], [4.18, 5.58], [1.08, 5.76], [-2.22, 5.52], [-4.84, 5.74]],
+      z: 6.02,
+      depth: 2.72,
+      warmBias: 0.08,
+      geology: [
+        { type: 'band', ax: -5.02, ay: 6.66, bx: 5.48, by: 6.76, width: 0.96, height: 0.14, terraces: 5, terraceHeight: 0.1, dust: 0.18, warm: 0.1 },
+        { type: 'basin', x: -1.42, y: 7.02, rx: 1.48, ry: 0.62, angle: 4, depth: 0.14, rim: 0.06, shadow: 0.18, cool: 0.08, dust: 0.08 },
+        { type: 'fault', ax: -0.88, ay: 7.46, bx: 1.96, by: 5.9, width: 0.26, depth: 0.08, rim: 0.03, shadow: 0.16, warm: 0.04 }
+      ],
+      valueZones: [
+        { x: -2.44, y: 6.84, rx: 2.64, ry: 0.84, angle: -4, dust: 0.18, warm: 0.12 },
+        { x: 2.72, y: 6.68, rx: 2.4, ry: 0.82, angle: 6, dust: 0.16, warm: 0.08 }
+      ]
+    },
+    {
+      name: 'AST-06 right wall compression buttress',
+      pts: [[8.56, 6.18], [10.92, 6.78], [12.56, 5.86], [12.08, 3.82], [10.84, 2.22], [9.34, 2.62], [9.82, 4.74]],
+      z: 5.52,
+      depth: 3.0,
+      warmBias: 0.02,
+      geology: [
+        { type: 'band', ax: 9.04, ay: 5.82, bx: 11.72, by: 2.52, width: 0.82, height: 0.13, terraces: 4, terraceHeight: 0.06, dust: 0.1, warm: 0.06 },
+        { type: 'basin', x: 11.26, y: 4.54, rx: 0.92, ry: 1.18, angle: -18, depth: 0.1, rim: 0.04, shadow: 0.16, cool: 0.1 },
+        { type: 'fault', ax: 11.92, ay: 5.74, bx: 10.16, by: 2.06, width: 0.22, depth: 0.07, rim: 0.02, shadow: 0.14, warm: 0.03 }
+      ],
+      valueZones: [
+        { x: 10.18, y: 5.74, rx: 1.86, ry: 0.92, angle: -10, dust: 0.14, warm: 0.08 },
+        { x: 11.72, y: 3.56, rx: 1.04, ry: 1.52, angle: -8, cool: 0.16, shadow: 0.14 }
+      ]
+    },
+    {
+      name: 'AST-06 excavated lower sill sediment bench',
+      pts: [[-10.74, 0.86], [-7.52, 0.96], [-4.42, 0.42], [-1.14, 0.34], [1.82, 0.22], [4.92, 0.14], [7.82, 0.24], [6.86, -0.5], [2.88, -0.74], [-1.06, -0.62], [-4.96, -0.7], [-8.84, -0.4]],
+      z: 5.28,
+      depth: 2.52,
+      warmBias: 0.12,
+      geology: [
+        { type: 'band', ax: -10.22, ay: 0.42, bx: 7.26, by: -0.02, width: 0.72, height: 0.12, terraces: 7, terraceHeight: 0.1, dust: 0.22, warm: 0.12 },
+        { type: 'basin', x: -6.52, y: 0.04, rx: 1.82, ry: 0.44, angle: -6, depth: 0.12, rim: 0.04, shadow: 0.18, dust: 0.12 },
+        { type: 'basin', x: 5.34, y: -0.18, rx: 1.54, ry: 0.4, angle: 6, depth: 0.1, rim: 0.04, shadow: 0.16, dust: 0.1 },
+        { type: 'fault', ax: -7.62, ay: 0.66, bx: -3.54, by: -0.72, width: 0.22, depth: 0.07, rim: 0.02, shadow: 0.14, warm: 0.04 }
+      ],
+      valueZones: [
+        { x: -1.42, y: -0.04, rx: 8.04, ry: 0.76, angle: -2, dust: 0.22, warm: 0.1 }
+      ]
+    }
+  ];
+
+  ledges.forEach(({ name, pts, z, depth, warmBias, geology, valueZones }) => {
+    buildHifiRockPanel(name, pts, {
+      z,
+      depth,
+      parent: macro,
+      warmBias,
+      grid: 0.096,
+      rimInset: 0.18,
+      backShrink: 0.2,
+      relief: 0.24,
+      mediumRelief: 0.05,
+      microRelief: 0.008,
+      strataRelief: 0.12,
+      frontWarp: 0.16,
+      geology,
+      valueZones
+    });
+  });
+
+  const excavationBands = [
+    ['AST-06 broad left crown fracture shelf', [[-13.42, 6.42], [-11.92, 6.2], [-10.12, 6.38], [-8.76, 6.08]], 0.14, 0.06, 6.36, 0.12],
+    ['AST-06 broad central roof sediment seam', [[-4.76, 6.3], [-2.18, 6.18], [0.96, 6.24], [4.18, 6.02]], 0.16, 0.07, 6.24, 0.14],
+    ['AST-06 broad right wall compression seam', [[9.34, 5.62], [10.26, 4.74], [10.98, 3.66], [10.52, 2.42]], 0.12, 0.05, 5.94, 0.04],
+    ['AST-06 broad lower sill mined sediment seam', [[-9.92, 0.2], [-5.82, -0.06], [-1.02, -0.14], [3.74, -0.18], [7.06, -0.12]], 0.14, 0.06, 5.52, 0.18]
+  ];
+  excavationBands.forEach(([name, path, widthStart, widthEnd, z, warmBias]) => {
+    buildHifiFractureRibbon(name, path, {
+      z,
+      depth: 0.24,
+      widthStart,
+      widthEnd,
+      warmBias,
+      parent: macro,
+      opacity: 0.92
+    });
+  });
+
+  const macroWarm = new THREE.PointLight(0xffbe78, 2.3, 19.0);
+  macroWarm.name = 'AST-06 warm geology terrace grazer';
+  macroWarm.position.set(-4.2, 7.2, 7.8);
+  root.add(macroWarm);
+  const macroCool = new THREE.PointLight(0x77acff, 1.9, 20.0);
+  macroCool.name = 'AST-06 cool geology recess separator';
+  macroCool.position.set(9.8, 5.4, 2.8);
+  root.add(macroCool);
 }
 
 function buildHifiCommandShaft() {
@@ -1994,6 +2282,7 @@ function buildScene() {
   buildHifiSecondaryAsteroidBreakup();
   buildUltraHighResolutionAsteroidCeiling();
   buildHifi06AuthoredAsteroidGeology();
+  buildAsteroidMacroGeologyPass();
   buildProductionCavity();
   buildHeroProductionBay();
   buildHifiCommandShaft();
