@@ -3131,7 +3131,7 @@ function buildHifi11AsymmetricAsteroidMassPass() {
   pass.name = 'concept-c HIFI-11 asymmetric foreground asteroid mass pass';
   root.add(pass);
 
-  const foregroundVoid = mat(0x000104, { roughness: 1, transparent: true, opacity: 0.42, side: THREE.DoubleSide });
+  const foregroundVoid = mat(0x000104, { roughness: 1, transparent: true, opacity: 0.18, side: THREE.DoubleSide });
   const hotCut = mat(0xb28a72, { roughness: 0.92, emissive: 0x2a1208, emissiveIntensity: 0.18, side: THREE.DoubleSide });
   const coldDust = mat(0x62718a, { roughness: 0.98, emissive: 0x08162a, emissiveIntensity: 0.08, side: THREE.DoubleSide });
 
@@ -3286,7 +3286,7 @@ function buildHifi12EfficientHighresCutawayAssetPass() {
     metalness: 0.0,
     side: THREE.DoubleSide
   });
-  const darkMask = mat(0x000104, { roughness: 1, transparent: true, opacity: 0.36, side: THREE.DoubleSide });
+  const darkMask = mat(0x000104, { roughness: 1, transparent: true, opacity: 0.16, side: THREE.DoubleSide });
 
   const segments = 256;
   const bands = 14;
@@ -3316,8 +3316,8 @@ function buildHifi12EfficientHighresCutawayAssetPass() {
     const biteTop = Math.exp(-Math.pow(a - Math.PI * 0.47, 2) / 0.12) * 0.08;
     const biteRight = Math.exp(-Math.pow(a, 2) / 0.18) * 0.10;
     const lowerShelf = Math.exp(-Math.pow(a - Math.PI * 1.5, 2) / 0.16) * 0.07;
-    const ix = cx + 0.35 + Math.cos(a) * 15.05 * innerScale + Math.sin(a * 4.2) * 0.72 - biteRight * 1.2;
-    const iy = cy - 0.15 + Math.sin(a) * 7.75 * (innerScale - biteTop + lowerShelf) + Math.cos(a * 2.8) * 0.52 - lowerShelf * 0.62;
+    const ix = cx + 0.3 + Math.cos(a) * 16.85 * innerScale + Math.sin(a * 4.2) * 0.86 - biteRight * 0.95;
+    const iy = cy + 0.05 + Math.sin(a) * 8.65 * (innerScale - biteTop + lowerShelf) + Math.cos(a * 2.8) * 0.62 - lowerShelf * 0.45;
     outerPts.push([ox, oy]);
     innerPts.push([ix, iy]);
   }
@@ -3638,9 +3638,9 @@ function buildHifi14UpperCutawayPulloutPass() {
   const upperVoidMat = mat(0x05070d, {
     roughness: 1,
     emissive: 0x07111c,
-    emissiveIntensity: 0.34,
+    emissiveIntensity: 0.22,
     transparent: true,
-    opacity: 0.86,
+    opacity: 0.42,
     side: THREE.DoubleSide
   });
   const upperVoid = polyMesh('hifi14 pulled-out upper asteroid void mask', [
@@ -3759,9 +3759,135 @@ function buildHifi14UpperCutawayPulloutPass() {
   scene.add(upperWarm);
 }
 
+
+function buildHifi15DeepViewportRevealPass() {
+  const pass = new THREE.Group();
+  pass.name = 'concept-c HIFI-15 deep viewport back-facility reveal pass';
+  root.add(pass);
+
+  // A very light depth wash, not a blocker: lets the rear decks read through the widened mouth.
+  const depthWash = box('hifi15 full-depth interior visibility wash', [26.5, 11.6, 0.05], [-0.6, 2.8, -7.2], mat(0x607587, {
+    emissive: 0x4e7188,
+    emissiveIntensity: 0.38,
+    transparent: true,
+    opacity: 0.13,
+    roughness: 0.1,
+    side: THREE.DoubleSide
+  }), pass);
+  depthWash.rotation.z = THREE.MathUtils.degToRad(-1.5);
+
+  const rear = new THREE.Group();
+  rear.name = 'hifi15 visible rear facility depth stack';
+  pass.add(rear);
+
+  const addLayer = (name, x, y, z, w, d, yaw, material, accent) => {
+    const slab = box(`${name} slab`, [w, 0.13, d], [x, y, z], material, rear);
+    slab.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const edge = box(`${name} continuous readable edge light`, [w * 0.9, 0.032, 0.032], [x, y + 0.14, z + d * 0.52], accent, rear);
+    edge.rotation.y = slab.rotation.y;
+    return slab;
+  };
+
+  // Receding facility layers visible from front to back. This is the missing reference read.
+  addLayer('hifi15 foreground lower service apron', -0.8, -0.25, -4.3, 18.0, 1.05, 0, MATS.darkSteel, MATS.amber);
+  addLayer('hifi15 middle left industrial terrace', -7.8, 2.05, -7.2, 9.6, 0.92, -8, MATS.blackMetal, MATS.cyanDim);
+  addLayer('hifi15 middle right industrial terrace', 6.6, 2.12, -7.5, 10.0, 0.92, 8, MATS.blackMetal, MATS.amber);
+  addLayer('hifi15 rear broad manufacturing deck', -1.0, 4.38, -10.7, 18.2, 0.85, 0, MATS.darkSteel, MATS.cyanDim);
+  addLayer('hifi15 far back upper spine deck', -0.2, 6.68, -14.0, 15.8, 0.62, -2, MATS.blackMetal, MATS.amber);
+  addLayer('hifi15 far back right hangar approach deck', 5.8, 5.35, -12.6, 8.4, 0.8, -7, MATS.darkSteel, MATS.cyanDim);
+
+  // Perspective guide rails / ramps sell that the eye can travel to the back.
+  const rails = [
+    [-8.8, 0.9, -4.7, -3.8, 5.4, -13.1, MATS.cyanDim],
+    [7.8, 0.9, -4.7, 3.5, 5.3, -13.1, MATS.amber],
+    [-3.5, -0.05, -4.1, -0.8, 6.0, -13.7, MATS.cyanDim],
+    [3.2, -0.05, -4.1, 0.9, 6.0, -13.7, MATS.amber]
+  ];
+  rails.forEach(([x1, y1, z1, x2, y2, z2, accent], index) => {
+    const mx = (x1 + x2) * 0.5;
+    const my = (y1 + y2) * 0.5;
+    const mz = (z1 + z2) * 0.5;
+    const len = Math.hypot(x2 - x1, z2 - z1);
+    const rail = box(`hifi15 long perspective rail to rear ${index}`, [len, 0.055, 0.055], [mx, my, mz], accent, rear);
+    rail.rotation.y = Math.atan2(z2 - z1, x2 - x1);
+    rail.rotation.z = THREE.MathUtils.degToRad((y2 - y1) * 2.2);
+  });
+
+  // Big but not dominant rear hangar / back wall, visible all the way through the facility.
+  const hangar = new THREE.Group();
+  hangar.name = 'hifi15 bright far rear hangar readable through viewport';
+  pass.add(hangar);
+  const hangarGlow = box('hifi15 far rear hangar cold luminous backplate', [8.2, 4.5, 0.05], [4.6, 5.05, -15.8], mat(0xdaeaff, {
+    emissive: 0xcfe8ff,
+    emissiveIntensity: 2.85,
+    transparent: true,
+    opacity: 0.72,
+    roughness: 0.05,
+    side: THREE.DoubleSide
+  }), hangar);
+  hangarGlow.rotation.z = THREE.MathUtils.degToRad(-4);
+  box('hifi15 far rear hangar top structural frame', [8.5, 0.22, 0.34], [4.6, 7.38, -15.45], MATS.blackMetal, hangar).rotation.z = hangarGlow.rotation.z;
+  box('hifi15 far rear hangar bottom structural frame', [8.0, 0.18, 0.3], [4.6, 2.75, -15.4], MATS.blackMetal, hangar).rotation.z = hangarGlow.rotation.z;
+  box('hifi15 far rear hangar left structural frame', [0.22, 4.3, 0.3], [0.42, 5.05, -15.42], MATS.blackMetal, hangar).rotation.z = hangarGlow.rotation.z;
+  box('hifi15 far rear hangar right structural frame', [0.22, 4.3, 0.3], [8.8, 5.05, -15.42], MATS.blackMetal, hangar).rotation.z = hangarGlow.rotation.z;
+
+  // More readable macro industrial forms across the now-open view.
+  const towers = [
+    [-10.5, 2.25, -7.4, 0.48, 2.6, MATS.darkSteel, MATS.cyanDim],
+    [-5.5, 3.15, -9.5, 0.42, 2.1, MATS.blackMetal, MATS.amber],
+    [1.2, 2.65, -8.2, 0.5, 2.4, MATS.darkSteel, MATS.amber],
+    [7.6, 3.25, -9.8, 0.44, 2.3, MATS.blackMetal, MATS.cyanDim],
+    [10.6, 4.35, -12.4, 0.38, 2.0, MATS.darkSteel, MATS.cyanDim]
+  ];
+  towers.forEach(([x, y, z, w, h, material, accent], index) => {
+    box(`hifi15 readable rear-depth tower ${index}`, [w, h, w * 1.2], [x, y + h * 0.5, z], material, rear);
+    box(`hifi15 tower practical light ${index}`, [w * 1.4, 0.04, 0.035], [x, y + h * 0.86, z + w * 0.65], accent, rear);
+  });
+
+  const cranes = [
+    [-10.2, 5.5, -8.2, 3.8, 1.5, -10],
+    [-2.6, 6.1, -10.8, 4.6, 1.35, 6],
+    [7.4, 5.9, -10.4, 4.2, 1.45, -8],
+    [2.8, 7.4, -13.6, 3.6, 1.2, 10]
+  ];
+  cranes.forEach(([x, y, z, arm, mast, yaw], index) => {
+    const mastMesh = box(`hifi15 depth crane mast ${index}`, [0.1, mast, 0.1], [x, y - mast * 0.5, z], MATS.blackMetal, rear);
+    const armMesh = box(`hifi15 depth crane arm ${index}`, [arm, 0.07, 0.07], [x + arm * 0.38, y, z], index % 2 ? MATS.cyanDim : MATS.amber, rear);
+    mastMesh.rotation.y = THREE.MathUtils.degToRad(yaw);
+    armMesh.rotation.y = THREE.MathUtils.degToRad(yaw);
+    box(`hifi15 depth crane hook ${index}`, [0.06, 0.42, 0.06], [x + arm * 0.72, y - 0.32, z], MATS.darkSteel, rear).rotation.y = armMesh.rotation.y;
+  });
+
+  // Dense cheap practical lights placed in perspective bands from front to rear.
+  for (let i = 0; i < 340; i += 1) {
+    const depthBand = i % 7;
+    const bandT = depthBand / 6;
+    const width = THREE.MathUtils.lerp(18.0, 8.5, bandT);
+    const centerX = THREE.MathUtils.lerp(-0.8, 3.2, bandT);
+    const x = centerX + (hifiNoise(i * 1.23) - 0.5) * width;
+    const y = THREE.MathUtils.lerp(0.2, 6.7, bandT) + hifiNoise(i * 1.71) * 1.5;
+    const z = THREE.MathUtils.lerp(-4.8, -14.6, bandT) - hifiNoise(i * 2.07) * 0.9;
+    const tick = box(`hifi15 perspective practical light ${i}`, [0.064, 0.024, 0.024], [x, y, z], depthBand % 3 === 1 ? MATS.amber : MATS.cyanDim, rear);
+    tick.rotation.y = THREE.MathUtils.degToRad(-12 + hifiNoise(i * 2.73) * 24);
+  }
+
+  const rearCold = new THREE.PointLight(0xd4e9ff, 30.0, 42.0);
+  rearCold.name = 'hifi15 far rear facility cold depth light';
+  rearCold.position.set(4.8, 5.2, -12.5);
+  scene.add(rearCold);
+  const midWarm = new THREE.PointLight(0xffaa67, 18.0, 32.0);
+  midWarm.name = 'hifi15 mid facility warm readability light';
+  midWarm.position.set(-2.8, 3.0, -6.2);
+  scene.add(midWarm);
+  const pitCool = new THREE.PointLight(0x5feaff, 15.0, 28.0);
+  pitCool.name = 'hifi15 lower pit cyan visibility support';
+  pitCool.position.set(-0.8, -1.0, -4.2);
+  scene.add(pitCool);
+}
+
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-14: upper cutaway pulled out further to reveal more rear facility, hangar light, cranes, and upper deck layers.';
+  document.getElementById('focus-body').textContent = 'HIFI-15: widened deep viewport exposes front-to-back facility layers, rear hangar, cranes, towers, rails, and practical lights.';
 }
 
 function buildScene() {
@@ -3775,6 +3901,7 @@ function buildScene() {
   buildHifi12EfficientHighresCutawayAssetPass();
   buildHifi13WideFacilityRevealPass();
   buildHifi14UpperCutawayPulloutPass();
+  buildHifi15DeepViewportRevealPass();
   updateReadout();
 }
 
