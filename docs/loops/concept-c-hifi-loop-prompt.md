@@ -38,14 +38,36 @@ Every new visual pass must materially increase actual geometric richness or mate
 
 A pass that only rearranges low-poly slabs, boxes, or cylinders should be treated as a failure, even if composition improves.
 
+
+## Asteroid-only directive — added after Michael critique
+Michael explicitly said: do **not** focus on interior elements yet. He wants an ultra high-fidelity asteroid that we can work from.
+
+Until the asteroid shell itself passes the asteroid-focused gold gate, the loop must spend all effort on the asteroid. Pause all work on:
+- command shaft depth
+- production bay
+- interior props
+- collars/braces/conduits around rooms
+- HUD/UI changes
+- live deploy/cache busts
+
+Allowed work only:
+- high-density asteroid mesh generation
+- silhouette and massing of the asteroid body
+- surface hierarchy: macro slabs, medium fracture networks, micro chips/craters/noise
+- cut-face bevels/rims/strata
+- rock material/value richness: vertex color, mineral seams, dust, occlusion, rim lighting
+- lighting/post only if it specifically makes the asteroid read more expensive
+
+If a pass spends meaningful effort on the interior before the asteroid gate clears, treat it as a failed pass even if the screenshot looks cleaner.
+
 ## Gold-standard target
-High-fidelity Concept C asteroid cutaway:
-- massive asymmetric asteroid body first
-- real carved facility integration, not a room framed by rocks
-- deep vertical command shaft, not a shallow table
-- hero production bay integrated into excavated rock
+High-fidelity Concept C asteroid foundation first:
+- massive asymmetric asteroid body must read as premium before interior work resumes
+- high-density rock geometry, not low-poly slabs
+- believable carved cut faces with bevels, strata, chipped rims, craters, rubble, dust, and mineral variation
 - open star corners preserved
-- cinematic material richness: faceted rock, chipped rims, worn metal, emissive tech, grime/contact occlusion, fog/depth
+- cinematic material richness focused on stone: faceted rock, fine fracture hierarchy, dark occlusion, warm/cool rim planes, fog/depth
+- interior facility can remain temporary/scaffolding until asteroid shell passes
 
 Gold-standard gate:
 - visual gate average >= 4.5/5
@@ -78,37 +100,32 @@ Gold-standard gate:
 13. Reply/record concise status only if the environment asks; otherwise leave durable evidence in docs and git.
 
 ## Hi-fi priority ladder
-Work down this ladder. Do not skip to polish if foundations fail.
+Work down this ladder. Do not resume interior work until the asteroid itself clears gate.
 
-1. HIFI-04A poly-density foundation pass
-   - replace the low-poly asteroid mantle approach with subdivided/displaced custom BufferGeometry
-   - increase vertex count and face density enough to remove the broad folded-paper read
-   - add real multi-scale fracture geometry, not just accent strips
-   - create a reusable high-density rock surface/detail generator
+1. AST-01 high-density asteroid mesh foundation
+   - replace low-poly mantle prisms with subdivided/displaced custom BufferGeometry
+   - use enough vertices/faces to remove the folded-paper read
+   - create macro asymmetry and real surface undulation without closing star corners
 
-2. HIFI-04B command shaft high-poly depth pass
-   - stacked descending ring levels with real segment counts
-   - cables, bridge spans, lower silhouettes, lift rails, and small lights fading downward
-   - darker rear shaft wall and atmospheric falloff
+2. AST-02 surface fracture hierarchy
+   - large breaks, medium fracture networks, small chips/craters/rubble
+   - geometry or dense procedural detail, not just accent strips
+   - chipped bevel/rim geometry around cut faces
 
-3. HIFI-05 carved integration kit
-   - bolted collars around room apertures
-   - retaining ribs and braces disappearing into rock
-   - contact AO strips under decks and against walls
-   - conduits/cables drilled through asteroid
-   - dust/debris piles on deck edges
+3. AST-03 rock material/value richness
+   - stronger vertex-color strata and mineral variation
+   - dust/debris pockets, darker underside occlusion, cool recesses, warm exposed cuts
+   - selective rim lighting/post only where it sells asteroid mass
 
-4. HIFI-06 production bay replacement
-   - replace boxy arm/conveyor language with procedural machinery modules
-   - large ship-frame silhouette with ribs and gantry rails
-   - warm task lighting and scale workers/drones
+4. AST-04 asteroid-only visual gate
+   - compare against gold-standard concept art as a standalone asteroid shell
+   - do not grade up because the interior is readable
+   - if asteroid is still low-poly, repeat AST-01/02/03
 
-5. HIFI-07 material/post pass
-   - stronger material hierarchy for rock/metal/glass/emissive
-   - bloom/fog/depth if stable and performant
-   - avoid readability regressions
+5. Interior work resumes only after asteroid-focused gate >= 4.5/5 with no asteroid category below 4.0.
 
 ## Hard rules
+- Do not work on command shaft, production bay, interior props, collars, braces, conduits, or UI until asteroid-only gate clears.
 - Do not touch `main`.
 - Do not deploy live.
 - Do not edit workspace bootstrap files (`MEMORY.md`, `DREAMS.md`, `SOUL.md`, `TOOLS.md`, `AGENTS.md`).

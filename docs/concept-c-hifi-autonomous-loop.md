@@ -99,3 +99,17 @@ The next autonomous pass should prioritize actual geometry density before more c
 5. stop accepting broad 8–16 point prisms as hi-fi assets
 
 Do not re-enable the loop after maintenance unless this correction remains in the active prompt.
+
+
+## Asteroid-only correction
+Michael explicitly redirected the loop: do not focus on interior elements yet. The current job is to create an ultra high-fidelity asteroid foundation that future interior work can sit inside.
+
+Until the asteroid shell itself passes gate, the autonomous loop should ignore command shaft, production bay, collars, conduits, room props, and UI. The next work must be asteroid-only:
+
+1. high-density asteroid mesh generation
+2. surface hierarchy: macro mass, medium fractures, micro chips/craters/rubble
+3. carved cut-face bevels/rims/strata
+4. rock material/value richness and asteroid-specific lighting
+5. asteroid-focused screenshot gate
+
+Interior work resumes only after the asteroid-focused gate reaches avg >= 4.5/5 with no asteroid category below 4.0.
