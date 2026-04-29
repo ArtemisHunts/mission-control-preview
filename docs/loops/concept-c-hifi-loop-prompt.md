@@ -23,6 +23,9 @@ Do not make “progress” by adding random primitive boxes or low-poly slab clu
   - `buildHifiAsteroidShell()`
   - `buildHifiCommandShaft()`
 - HIFI-01 gate verdict: direction approved / fidelity not approved. Overall ~2.9/5.
+- HIFI-05 added zoom controls, taller ceiling volume, and 3840x2160 proof, but Michael correctly said it could be much better.
+- HIFI-06 added authored macro geology over the noisy density pass: sculpted planes, ravines, strata bands, impact basins, mineral veins, and chunkier rock nodules.
+- Current next target: reduce/replace older noisy shell layers behind the HIFI-06 macro geology with cleaner authored crust/mantle/cut-layer systems.
 
 
 ## New poly-density mandate — added after Michael critique
@@ -53,10 +56,11 @@ Until the asteroid shell itself passes the asteroid-focused gold gate, the loop 
 Allowed work only:
 - high-density asteroid mesh generation
 - silhouette and massing of the asteroid body
-- surface hierarchy: macro slabs, medium fracture networks, micro chips/craters/noise
+- surface hierarchy: macro authored planes first, medium fracture networks second, micro chips/craters/noise last
 - cut-face bevels/rims/strata
 - rock material/value richness: vertex color, mineral seams, dust, occlusion, rim lighting
 - lighting/post only if it specifically makes the asteroid read more expensive
+- cleanup/replacement of older noisy shell layers when they fight authored macro geology
 
 If a pass spends meaningful effort on the interior before the asteroid gate clears, treat it as a failed pass even if the screenshot looks cleaner.
 
@@ -117,12 +121,16 @@ Work down this ladder. Do not resume interior work until the asteroid itself cle
    - dust/debris pockets, darker underside occlusion, cool recesses, warm exposed cuts
    - selective rim lighting/post only where it sells asteroid mass
 
-4. AST-04 asteroid-only visual gate
+4. AST-04 authored macro geology pass
+   - large sculpted planes, ravines, impact basins, sediment strata, and worn surfaces must dominate before micro detail
+   - if the asteroid reads as procedural noise soup, the pass fails regardless of vertex count
+
+5. AST-05 asteroid-only visual gate
    - compare against gold-standard concept art as a standalone asteroid shell
    - do not grade up because the interior is readable
-   - if asteroid is still low-poly, repeat AST-01/02/03
+   - if asteroid is still low-poly or noisy/procedural, repeat AST-01/02/03/04
 
-5. Interior work resumes only after asteroid-focused gate >= 4.5/5 with no asteroid category below 4.0.
+6. Interior work resumes only after asteroid-focused gate >= 4.5/5 with no asteroid category below 4.0.
 
 ## Zoom/view exception
 Michael requested zoom in/out and a taller ceiling. Camera/view controls are allowed even while unrelated HUD/UI polish remains paused. Older asteroid screenshots were 1600x900; HIFI-05 proof should prefer a 3840x2160 full-frame capture when the browser can hold it.
