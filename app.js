@@ -3267,9 +3267,249 @@ function buildHifi11AsymmetricAsteroidMassPass() {
   scene.add(exterior);
 }
 
+
+function buildHifi12EfficientHighresCutawayAssetPass() {
+  const pass = new THREE.Group();
+  pass.name = 'concept-c HIFI-12 efficient high-resolution asteroid cutaway asset pass';
+  pass.userData.assetDoctrine = 'dense where silhouette/cut-rim/material relief matters; simple where detail is distant or repeated';
+  root.add(pass);
+
+  const shellMaterial = new THREE.MeshStandardMaterial({
+    vertexColors: true,
+    roughness: 0.98,
+    metalness: 0.0,
+    side: THREE.DoubleSide
+  });
+  const cutMaterial = new THREE.MeshStandardMaterial({
+    vertexColors: true,
+    roughness: 0.92,
+    metalness: 0.0,
+    side: THREE.DoubleSide
+  });
+  const darkMask = mat(0x000104, { roughness: 1, side: THREE.DoubleSide });
+
+  const segments = 256;
+  const bands = 14;
+  const cx = -0.8;
+  const cy = 1.7;
+  const outerPts = [];
+  const innerPts = [];
+
+  const radialNoise = (a, salt) => (
+    Math.sin(a * 3.0 + salt) * 0.055
+    + Math.sin(a * 5.7 + salt * 1.7) * 0.038
+    + (hifiNoise(Math.cos(a) * 8.1 + Math.sin(a) * 7.4 + salt) - 0.5) * 0.08
+  );
+
+  for (let i = 0; i < segments; i += 1) {
+    const a = (Math.PI * 2 * i) / segments;
+    const topWeight = smoothstep(0.0, 1.0, Math.sin(a) * 0.5 + 0.5);
+    const rightWeight = smoothstep(0.0, 1.0, Math.cos(a) * 0.5 + 0.5);
+    const lowerWeight = smoothstep(0.0, 1.0, -Math.sin(a) * 0.5 + 0.5);
+    const outerScale = 1 + radialNoise(a, 12.4) + topWeight * 0.10 + rightWeight * 0.045 - lowerWeight * 0.025;
+    const innerScale = 1 + radialNoise(a, 44.2) * 1.15 - topWeight * 0.055 + lowerWeight * 0.08;
+
+    const ox = cx + Math.cos(a) * 19.2 * outerScale + Math.sin(a * 2.0) * 0.55 + rightWeight * 0.8;
+    const oy = cy + Math.sin(a) * 10.8 * outerScale + topWeight * 1.1 - lowerWeight * 0.55 + Math.cos(a * 3.0) * 0.28;
+
+    // Irregular carved-open front cavity. Intentionally not a clean oval: left lip is deeper, right/top have bites.
+    const biteTop = Math.exp(-Math.pow(a - Math.PI * 0.47, 2) / 0.12) * 0.16;
+    const biteRight = Math.exp(-Math.pow(a, 2) / 0.18) * 0.10;
+    const lowerShelf = Math.exp(-Math.pow(a - Math.PI * 1.5, 2) / 0.16) * 0.12;
+    const ix = cx + 0.4 + Math.cos(a) * 13.0 * innerScale + Math.sin(a * 4.2) * 0.55 - biteRight * 1.6;
+    const iy = cy - 0.35 + Math.sin(a) * 6.55 * (innerScale - biteTop + lowerShelf) + Math.cos(a * 2.8) * 0.42 - lowerShelf * 0.85;
+    outerPts.push([ox, oy]);
+    innerPts.push([ix, iy]);
+  }
+
+  const vertices = [];
+  const colors = [];
+  const push = (x, y, z, color) => {
+    vertices.push(x, y, z);
+    colors.push(color.r, color.g, color.b);
+  };
+  const colorFor = (x, y, t, relief, seed) => {
+    const c = new THREE.Color(0x4f4d4a);
+    const lightTop = THREE.MathUtils.clamp((y + 5.0) / 17.0, 0, 1);
+    const lightRight = THREE.MathUtils.clamp((x + 5.0) / 24.0, 0, 1);
+    const noise = hifiNoise(x * 1.7 - y * 1.1 + seed * 0.07);
+    const strata = Math.sin(x * 0.55 + y * 1.7 + relief * 8.0) * 0.5 + 0.5;
+    c.lerp(new THREE.Color(0x171719), 0.46 - lightTop * 0.16 - lightRight * 0.08);
+    c.lerp(new THREE.Color(0x8f8982), THREE.MathUtils.clamp(lightTop * 0.34 + lightRight * 0.18 + noise * 0.12, 0, 0.58));
+    c.lerp(new THREE.Color(0xb0a69c), THREE.MathUtils.clamp(strata * 0.11 + (1 - t) * 0.08, 0, 0.25));
+    c.multiplyScalar(0.82 + noise * 0.18);
+    return c;
+  };
+
+  const samplePoint = (i, band) => {
+    const j = THREE.MathUtils.clamp(band, 0, bands);
+    const t = j / bands;
+    const [ix, iy] = innerPts[i % segments];
+    const [ox, oy] = outerPts[i % segments];
+    const a = (Math.PI * 2 * i) / segments;
+    const xBase = THREE.MathUtils.lerp(ix, ox, t);
+    const yBase = THREE.MathUtils.lerp(iy, oy, t);
+    const rimRelief = (1 - Math.abs(t - 0.12) / 0.88);
+    const macro = (hifiNoise(i * 0.23 + t * 9.1) - 0.5) * 0.62;
+    const medium = (hifiNoise(i * 0.97 - t * 13.2) - 0.5) * 0.22;
+    const strata = Math.sin(a * 9.0 + t * 13.0) * 0.12;
+    const normalPush = (hifiNoise(i * 0.41 + t * 3.0) - 0.5) * (0.12 + t * 0.18);
+    const x = xBase + Math.cos(a) * normalPush + Math.sin(a * 6.0) * 0.05 * (1 - t);
+    const y = yBase + Math.sin(a) * normalPush + Math.cos(a * 4.0) * 0.06 * (1 - t);
+    const z = 15.05 + macro + medium + strata + rimRelief * 0.38 - t * 0.18;
+    return { x, y, z, color: colorFor(x, y, t, macro + medium, i + j * 17) };
+  };
+
+  // One dense editable mesh for the visible asteroid shell. About 7k tris: high enough for silhouette/material, cheap enough for browser iteration.
+  for (let i = 0; i < segments; i += 1) {
+    const ni = (i + 1) % segments;
+    for (let j = 0; j < bands; j += 1) {
+      const a = samplePoint(i, j);
+      const b = samplePoint(ni, j);
+      const c = samplePoint(i, j + 1);
+      const d = samplePoint(ni, j + 1);
+      push(a.x, a.y, a.z, a.color); push(c.x, c.y, c.z, c.color); push(b.x, b.y, b.z, b.color);
+      push(b.x, b.y, b.z, b.color); push(c.x, c.y, c.z, c.color); push(d.x, d.y, d.z, d.color);
+    }
+  }
+  const shellGeo = new THREE.BufferGeometry();
+  shellGeo.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+  shellGeo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  shellGeo.computeVertexNormals();
+  const shell = new THREE.Mesh(shellGeo, shellMaterial);
+  shell.name = 'hifi12 efficient high-resolution full asteroid body cutaway shell';
+  shell.userData.vertexCount = vertices.length / 3;
+  shell.userData.triangleCount = vertices.length / 9;
+  pass.add(shell);
+
+  // Inner cut wall/rim: concentrated high-res geometry exactly where the carved opening needs thickness.
+  const rimVerts = [];
+  const rimColors = [];
+  const pushRim = (x, y, z, color) => { rimVerts.push(x, y, z); rimColors.push(color.r, color.g, color.b); };
+  const rimLayers = 7;
+  for (let i = 0; i < segments; i += 1) {
+    const ni = (i + 1) % segments;
+    const [ax, ay] = innerPts[i];
+    const [bx, by] = innerPts[ni];
+    const aAng = (Math.PI * 2 * i) / segments;
+    const bAng = (Math.PI * 2 * ni) / segments;
+    for (let l = 0; l < rimLayers; l += 1) {
+      const t0 = l / rimLayers;
+      const t1 = (l + 1) / rimLayers;
+      const make = (x, y, ang, t, salt) => {
+        const cutNoise = (hifiNoise(salt + t * 11.0) - 0.5) * 0.32;
+        const px = x + Math.cos(ang) * (t * 0.78 + cutNoise * 0.12);
+        const py = y + Math.sin(ang) * (t * 0.52 + cutNoise * 0.08);
+        const pz = 15.55 - t * 4.0 + cutNoise + Math.sin(ang * 8.0) * 0.08;
+        const col = new THREE.Color(0x75685f);
+        col.lerp(new THREE.Color(0xc2b1a2), THREE.MathUtils.clamp((1 - t) * 0.22 + (py + 4) / 24 * 0.18, 0, 0.42));
+        col.lerp(new THREE.Color(0x111116), THREE.MathUtils.clamp(t * 0.62, 0, 0.78));
+        return { x: px, y: py, z: pz, color: col };
+      };
+      const a0 = make(ax, ay, aAng, t0, i * 0.73 + l);
+      const a1 = make(ax, ay, aAng, t1, i * 0.73 + l + 8);
+      const b0 = make(bx, by, bAng, t0, i * 0.91 + l + 2);
+      const b1 = make(bx, by, bAng, t1, i * 0.91 + l + 10);
+      pushRim(a0.x, a0.y, a0.z, a0.color); pushRim(a1.x, a1.y, a1.z, a1.color); pushRim(b0.x, b0.y, b0.z, b0.color);
+      pushRim(b0.x, b0.y, b0.z, b0.color); pushRim(a1.x, a1.y, a1.z, a1.color); pushRim(b1.x, b1.y, b1.z, b1.color);
+    }
+  }
+  const rimGeo = new THREE.BufferGeometry();
+  rimGeo.setAttribute('position', new THREE.Float32BufferAttribute(rimVerts, 3));
+  rimGeo.setAttribute('color', new THREE.Float32BufferAttribute(rimColors, 3));
+  rimGeo.computeVertexNormals();
+  const rim = new THREE.Mesh(rimGeo, cutMaterial);
+  rim.name = 'hifi12 high-resolution carved cut rim thickness mesh';
+  rim.userData.vertexCount = rimVerts.length / 3;
+  rim.userData.triangleCount = rimVerts.length / 9;
+  pass.add(rim);
+
+  // Kill the last visible portal language with an irregular rear shadow, then rebuild the correct rear tunnel light.
+  const rearShadow = polyMesh('hifi12 irregular rear cavern darkness behind cutaway', [
+    [-12.0, 7.6], [-6.4, 8.3], [-1.0, 7.4], [4.0, 8.2], [9.8, 6.8], [12.6, 2.5], [11.2, -2.6], [6.0, -5.4], [-0.8, -5.9], [-7.6, -5.1], [-12.5, -1.0]
+  ], darkMask, 9.2, pass);
+  rearShadow.scale.z = 0.22;
+
+  const hangar = new THREE.Group();
+  hangar.name = 'hifi12 rear upper hangar tunnel light module';
+  pass.add(hangar);
+  const tunnelGlow = box('hifi12 rear tunnel cold exterior light', [4.6, 3.0, 0.05], [5.2, 4.0, -14.6], mat(0xc7d8ec, {
+    emissive: 0xb9d3f2,
+    emissiveIntensity: 1.9,
+    transparent: true,
+    opacity: 0.58,
+    roughness: 0.05,
+    side: THREE.DoubleSide
+  }), hangar);
+  tunnelGlow.rotation.z = THREE.MathUtils.degToRad(-2);
+  box('hifi12 rear tunnel top frame', [5.0, 0.22, 0.32], [5.2, 5.55, -14.25], MATS.darkSteel, hangar);
+  box('hifi12 rear tunnel bottom frame', [4.8, 0.18, 0.28], [5.2, 2.48, -14.18], MATS.darkSteel, hangar);
+  box('hifi12 rear tunnel left frame', [0.22, 3.0, 0.28], [2.72, 4.0, -14.18], MATS.darkSteel, hangar);
+  box('hifi12 rear tunnel right frame', [0.22, 3.0, 0.28], [7.68, 4.0, -14.18], MATS.darkSteel, hangar);
+
+  const decks = new THREE.Group();
+  decks.name = 'hifi12 efficient layered interior deck asset proxies';
+  pass.add(decks);
+  const deckRows = [
+    [-6.8, 3.0, -8.8, 9.8, 0.18, 1.0, -4],
+    [3.8, 2.8, -8.4, 10.6, 0.18, 1.0, 4],
+    [-2.2, 0.8, -6.4, 16.8, 0.18, 1.2, 0],
+    [-5.4, -1.4, -5.6, 8.6, 0.16, 0.9, 8],
+    [5.4, -1.3, -5.7, 8.4, 0.16, 0.9, -8]
+  ];
+  deckRows.forEach(([x, y, z, w, h, d, yaw], index) => {
+    const deck = box(`hifi12 layered carved industrial deck ${index}`, [w, h, d], [x, y, z], index % 2 ? MATS.blackMetal : MATS.darkSteel, decks);
+    deck.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const light = box(`hifi12 deck warm/cyan edge light ${index}`, [w * 0.82, 0.035, 0.035], [x, y + 0.16, z + d * 0.52], index % 2 ? MATS.cyanDim : MATS.amber, decks);
+    light.rotation.y = deck.rotation.y;
+  });
+
+  const pit = new THREE.Group();
+  pit.name = 'hifi12 central lower circular pit retained as modular asset';
+  pit.position.set(-0.8, -2.55, -5.8);
+  pass.add(pit);
+  [5.0, 4.1, 3.2, 2.4, 1.7].forEach((radius, tier) => {
+    const ring = torus(`hifi12 lower pit efficient ring ${tier}`, radius, 0.055, 10, 96, [0, -tier * 0.5, 0], tier % 2 ? MATS.cyanDim : MATS.blackMetal, pit);
+    ring.rotation.x = Math.PI / 2;
+  });
+  const pitGlow = cylinder('hifi12 pit compact cyan glow', 1.4, 2.4, 2.8, 48, [0, -1.7, 0], mat(0x0a2c43, {
+    emissive: COLORS.cyan,
+    emissiveIntensity: 0.88,
+    transparent: true,
+    opacity: 0.32,
+    roughness: 0.08
+  }), pit);
+  pitGlow.rotation.z = THREE.MathUtils.degToRad(2);
+
+  const scale = new THREE.Group();
+  scale.name = 'hifi12 cheap repeated scale lights, intentionally low-poly';
+  pass.add(scale);
+  for (let i = 0; i < 190; i += 1) {
+    const zone = i % 5;
+    const x = [-10.5, -4.0, 3.5, 8.0, -1.0][zone] + (hifiNoise(i * 1.31) - 0.5) * [4.8, 5.6, 5.2, 4.0, 11.0][zone];
+    const y = [-0.4, 1.6, 1.8, 2.0, 4.8][zone] + hifiNoise(i * 1.73) * [2.0, 3.5, 3.2, 3.0, 2.4][zone];
+    const z = [-5.8, -8.0, -8.6, -9.2, -12.8][zone] - hifiNoise(i * 2.21) * 2.8;
+    const tick = box(`hifi12 cheap facility scale light ${i}`, [0.06, 0.022, 0.022], [x, y, z], zone === 1 || zone === 4 ? MATS.amber : MATS.cyanDim, scale);
+    tick.rotation.y = THREE.MathUtils.degToRad(-10 + hifiNoise(i * 2.9) * 20);
+  }
+
+  const topSun = new THREE.DirectionalLight(0xd5d0c7, 2.4);
+  topSun.name = 'hifi12 exterior top-right asteroid rim light';
+  topSun.position.set(10.0, 12.5, 8.0);
+  scene.add(topSun);
+  const hangarLight = new THREE.PointLight(0xcfe3ff, 18.0, 30.0);
+  hangarLight.name = 'hifi12 rear hangar cold light';
+  hangarLight.position.set(5.2, 4.1, -11.0);
+  scene.add(hangarLight);
+  const workLight = new THREE.PointLight(0xffa666, 12.0, 25.0);
+  workLight.name = 'hifi12 interior warm work light pool';
+  workLight.position.set(-3.0, 1.8, -5.4);
+  scene.add(workLight);
+}
+
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-11: asymmetric foreground asteroid mass breaks the clean oval, preserving right-space opening, blue shaft, and industrial scale lights.';
+  document.getElementById('focus-body').textContent = 'HIFI-12: efficient high-resolution full asteroid cutaway asset — dense shell/rim geometry where it matters, cheap scale details where it does not.';
 }
 
 function buildScene() {
@@ -3280,6 +3520,7 @@ function buildScene() {
   buildHifi09ReferenceCompositionBoost();
   buildHifi10JaggedRimScaleLightPass();
   buildHifi11AsymmetricAsteroidMassPass();
+  buildHifi12EfficientHighresCutawayAssetPass();
   updateReadout();
 }
 

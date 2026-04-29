@@ -165,6 +165,20 @@ Work down this ladder. Do not resume interior work until the asteroid itself cle
 ## Zoom/view exception
 Michael requested zoom in/out and a taller ceiling. Camera/view controls are allowed even while unrelated HUD/UI polish remains paused. Older asteroid screenshots were 1600x900; HIFI-05 proof should prefer a 3840x2160 full-frame capture when the browser can hold it.
 
+
+
+## Efficient high-resolution asset doctrine — added 2026-04-29
+Michael wants the highest efficient quality we can produce: high-resolution/high-poly where it matters, but not wasteful polygon soup.
+
+Rules for future passes:
+- Spend polygons on silhouette, carved cut rims, asteroid crags, central pit rings, hangar/tunnel frames, and deck edges that affect the thumbnail read.
+- Do not spend polygons on invisible backsides, flat filler panels, tiny lights, or distant props that can stay simple/instanced.
+- Prefer a few dense, named, editable `BufferGeometry` asset systems over hundreds of random primitive shards.
+- Keep macro/mid/micro systems separable so quality can be dialed later: asteroid body, cut rim, interior decks, pit, hangar, scatter lights.
+- Every high-poly asset needs a reason: silhouette fidelity, material relief, scale readability, or future tweakability.
+- Track quality as efficient visual density, not raw vertex count.
+- Use procedural high-res meshes as browser-native GLB stand-ins until we have an external DCC/asset pipeline available.
+
 ## Hard rules
 - Do not work on command shaft, production bay, interior props, collars, braces, conduits, or UI until asteroid-only gate clears.
 - Do not touch `main`.
