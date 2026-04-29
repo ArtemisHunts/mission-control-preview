@@ -3289,7 +3289,7 @@ function buildHifi12EfficientHighresCutawayAssetPass() {
   const darkMask = mat(0x000104, { roughness: 1, transparent: true, opacity: 0.16, side: THREE.DoubleSide });
 
   const segments = 256;
-  const bands = 12;
+  const bands = 10;
   const cx = -0.8;
   const cy = 1.7;
   const outerPts = [];
@@ -3316,8 +3316,8 @@ function buildHifi12EfficientHighresCutawayAssetPass() {
     const biteTop = Math.exp(-Math.pow(a - Math.PI * 0.47, 2) / 0.12) * 0.08;
     const biteRight = Math.exp(-Math.pow(a, 2) / 0.18) * 0.10;
     const lowerShelf = Math.exp(-Math.pow(a - Math.PI * 1.5, 2) / 0.16) * 0.07;
-    const ix = cx + 0.18 + Math.cos(a) * 18.05 * innerScale + Math.sin(a * 4.2) * 0.96 - biteRight * 0.55;
-    const iy = cy + 0.18 + Math.sin(a) * 9.75 * (innerScale - biteTop + lowerShelf) + Math.cos(a * 2.8) * 0.72 - lowerShelf * 0.32;
+    const ix = cx + 0.08 + Math.cos(a) * 19.25 * innerScale + Math.sin(a * 4.2) * 1.05 - biteRight * 0.35;
+    const iy = cy + 0.28 + Math.sin(a) * 10.55 * (innerScale - biteTop + lowerShelf) + Math.cos(a * 2.8) * 0.78 - lowerShelf * 0.22;
     outerPts.push([ox, oy]);
     innerPts.push([ix, iy]);
   }
@@ -3405,7 +3405,7 @@ function buildHifi12EfficientHighresCutawayAssetPass() {
         const cutNoise = (hifiNoise(salt + t * 11.0) - 0.5) * 0.32;
         const px = x + Math.cos(ang) * (t * 0.78 + cutNoise * 0.12);
         const py = y + Math.sin(ang) * (t * 0.52 + cutNoise * 0.08);
-        const pz = 15.55 - t * 2.35 + cutNoise * 0.62 + Math.sin(ang * 8.0) * 0.06;
+        const pz = 15.55 - t * 1.55 + cutNoise * 0.42 + Math.sin(ang * 8.0) * 0.045;
         const col = new THREE.Color(0x75685f);
         col.lerp(new THREE.Color(0xc2b1a2), THREE.MathUtils.clamp((1 - t) * 0.22 + (py + 4) / 24 * 0.18, 0, 0.42));
         col.lerp(new THREE.Color(0x111116), THREE.MathUtils.clamp(t * 0.62, 0, 0.78));
@@ -4150,9 +4150,160 @@ function buildHifi17TrueGeometryCavernRebuildPass() {
   scene.add(rearLight);
 }
 
+
+function buildHifi18OperationsCavernCarveoutPass() {
+  const pass = new THREE.Group();
+  pass.name = 'concept-c HIFI-18 operations cavern carveout and open volume pass';
+  root.add(pass);
+
+  // Kill older interior fillers that make the cavern feel cramped. Keep newer structural/depth layers.
+  const suppressTerms = [
+    'hifi09 dense embedded industrial city overlay',
+    'hifi10 industrial city tiny scale light matrix',
+    'hifi11 amplified city scale pinlights after aperture break',
+    'hifi12 cheap repeated scale lights, intentionally low-poly',
+    'hifi13 widened facility pinlight',
+    'hifi14 upper opened facility pinlight',
+    'hifi15 perspective practical light',
+    'hifi16 clean corner rear practical',
+    'hifi17 open upper-right clean star'
+  ];
+  root.traverse((node) => {
+    if (!node.name) return;
+    if (suppressTerms.some((term) => node.name.includes(term))) node.visible = false;
+  });
+
+  // Establish an actual open operations void: readable air volume, not black occlusion.
+  const volume = new THREE.Group();
+  volume.name = 'hifi18 large open operations cavern volume';
+  pass.add(volume);
+  const air = box('hifi18 clear operations air volume', [27.5, 13.0, 0.05], [-0.7, 1.9, -7.4], mat(0x6d8293, {
+    emissive: 0x496f86,
+    emissiveIntensity: 0.38,
+    transparent: true,
+    opacity: 0.11,
+    roughness: 0.08,
+    side: THREE.DoubleSide
+  }), volume);
+  air.rotation.z = THREE.MathUtils.degToRad(-0.5);
+
+  const backDepth = box('hifi18 visible back wall depth plane not blocker', [18.0, 8.2, 0.05], [1.8, 4.3, -14.6], mat(0x172230, {
+    emissive: 0x1a3550,
+    emissiveIntensity: 0.28,
+    transparent: true,
+    opacity: 0.46,
+    roughness: 0.1,
+    side: THREE.DoubleSide
+  }), volume);
+  backDepth.rotation.z = THREE.MathUtils.degToRad(-4);
+
+  const ops = new THREE.Group();
+  ops.name = 'hifi18 operations complex macro layout';
+  pass.add(ops);
+
+  const addOpsDeck = (name, x, y, z, w, d, yaw, material, accent, posts = 6) => {
+    const slab = box(`${name} open deck`, [w, 0.14, d], [x, y, z], material, ops);
+    slab.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const edge = box(`${name} readable operations edge light`, [w * 0.88, 0.034, 0.034], [x, y + 0.15, z + d * 0.52], accent, ops);
+    edge.rotation.y = slab.rotation.y;
+    for (let i = 0; i < posts; i += 1) {
+      const t = posts === 1 ? 0.5 : i / (posts - 1);
+      const post = box(`${name} slim structural post ${i}`, [0.06, 1.15 + (i % 3) * 0.22, 0.06], [x - w * 0.43 + w * 0.86 * t, y - 0.68, z + (i % 2 ? d * 0.36 : -d * 0.36)], MATS.blackMetal, ops);
+      post.rotation.y = slab.rotation.y;
+    }
+    return slab;
+  };
+
+  // Larger open operations floors with vertical clearance, not cluttered micro blocks.
+  addOpsDeck('hifi18 main operations floor spanning open cavern', -0.8, -0.62, -4.7, 22.5, 1.25, 0, MATS.darkSteel, MATS.amber, 10);
+  addOpsDeck('hifi18 mid command bridge across cavern', -0.8, 1.78, -7.2, 20.5, 1.0, 0, MATS.steel, MATS.cyanDim, 9);
+  addOpsDeck('hifi18 left upper operations balcony', -8.4, 4.35, -9.8, 9.6, 0.85, -8, MATS.blackMetal, MATS.cyanDim, 5);
+  addOpsDeck('hifi18 right upper operations balcony', 7.2, 4.28, -9.8, 9.8, 0.85, 8, MATS.blackMetal, MATS.amber, 5);
+  addOpsDeck('hifi18 rear operations wall deck', 0.2, 6.25, -13.6, 16.0, 0.72, -2, MATS.darkSteel, MATS.cyanDim, 8);
+
+  // Central operations pit: lower, visible, but no longer crowding the entire cavern.
+  const pit = new THREE.Group();
+  pit.name = 'hifi18 spacious central operations pit';
+  pit.position.set(-0.7, -2.05, -4.9);
+  pass.add(pit);
+  [4.6, 3.7, 2.8, 2.0].forEach((radius, tier) => {
+    const ring = torus(`hifi18 operations pit ring ${tier}`, radius, 0.05, 10, 96, [0, -tier * 0.46, 0], tier % 2 ? MATS.cyanDim : MATS.blackMetal, pit);
+    ring.rotation.x = Math.PI / 2;
+  });
+  const pitCore = cylinder('hifi18 operations pit controlled cyan core', 1.1, 1.9, 2.8, 48, [0, -1.55, 0], mat(0x0a2b44, {
+    emissive: COLORS.cyan,
+    emissiveIntensity: 0.92,
+    transparent: true,
+    opacity: 0.36,
+    roughness: 0.08
+  }), pit);
+  pitCore.rotation.z = THREE.MathUtils.degToRad(2);
+
+  // Rear hangar and depth corridor: the far end remains visible through the newly carved-out interior.
+  const hangar = new THREE.Group();
+  hangar.name = 'hifi18 far rear hangar visible through carved operations cavern';
+  pass.add(hangar);
+  const glow = box('hifi18 far rear hangar bright operations endpoint', [9.6, 5.2, 0.05], [4.8, 5.25, -15.4], mat(0xd9ecff, {
+    emissive: 0xd2eaff,
+    emissiveIntensity: 3.0,
+    transparent: true,
+    opacity: 0.72,
+    roughness: 0.05,
+    side: THREE.DoubleSide
+  }), hangar);
+  glow.rotation.z = THREE.MathUtils.degToRad(-5);
+  box('hifi18 rear hangar top frame', [10.0, 0.22, 0.34], [4.8, 7.9, -15.1], MATS.blackMetal, hangar).rotation.z = glow.rotation.z;
+  box('hifi18 rear hangar lower frame', [9.4, 0.18, 0.3], [4.8, 2.6, -15.08], MATS.blackMetal, hangar).rotation.z = glow.rotation.z;
+
+  // Thin shell edge indicators: show wall thickness without closing the cavern back up.
+  const shellEdge = new THREE.Group();
+  shellEdge.name = 'hifi18 thin asteroid wall edge accents';
+  pass.add(shellEdge);
+  const edgeMat = mat(0x8b8178, { roughness: 0.94, emissive: 0x120b08, emissiveIntensity: 0.1, side: THREE.DoubleSide });
+  [
+    [-15.8, 6.4, 4.2, 0.16, -18], [-10.0, 7.2, 4.8, 0.14, 10], [-3.0, 7.6, 4.8, 0.14, -4],
+    [4.8, 7.4, 4.6, 0.14, 8], [12.0, 5.8, 4.4, 0.15, -22], [-12.5, -5.8, 5.0, 0.14, 10],
+    [-3.6, -5.5, 5.2, 0.14, -6], [6.8, -5.4, 5.0, 0.14, 8]
+  ].forEach(([x, y, w, h, angle], index) => {
+    const edge = hifiShard(`hifi18 thin cut wall highlight ${index}`, x, y, {
+      z: 17.0,
+      width: w,
+      height: h,
+      depth: 0.14,
+      angle,
+      warmBias: 0.18,
+      roughness: 0.025,
+      material: edgeMat,
+      parent: shellEdge
+    });
+    edge.scale.z = 0.18;
+  });
+
+  // Operations practical lights: distributed but not cluttered.
+  for (let i = 0; i < 210; i += 1) {
+    const band = i % 6;
+    const width = [21.0, 19.0, 16.0, 13.0, 10.0, 8.0][band];
+    const centerX = [-0.8, -0.6, -0.2, 0.8, 2.2, 4.2][band];
+    const x = centerX + (hifiNoise(i * 1.19) - 0.5) * width;
+    const y = [-0.1, 1.2, 2.6, 4.0, 5.4, 6.4][band] + hifiNoise(i * 1.61) * 1.2;
+    const z = [-4.8, -6.5, -8.6, -10.6, -12.6, -14.4][band] - hifiNoise(i * 2.03) * 0.8;
+    const tick = box(`hifi18 operations practical light ${i}`, [0.062, 0.024, 0.024], [x, y, z], band % 3 === 1 ? MATS.amber : MATS.cyanDim, ops);
+    tick.rotation.y = THREE.MathUtils.degToRad(-12 + hifiNoise(i * 2.71) * 24);
+  }
+
+  const opsWarm = new THREE.PointLight(0xffae6d, 20.0, 36.0);
+  opsWarm.name = 'hifi18 open operations warm work light';
+  opsWarm.position.set(-2.0, 2.0, -5.2);
+  scene.add(opsWarm);
+  const rearCold = new THREE.PointLight(0xd8ecff, 30.0, 44.0);
+  rearCold.name = 'hifi18 open operations rear hangar light';
+  rearCold.position.set(5.0, 5.4, -11.6);
+  scene.add(rearCold);
+}
+
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-17: true generator rebuild widens/tallens the thin-walled cavern, removes upper-right geometry, and replaces fuzzy texture with dense asteroid plates.';
+  document.getElementById('focus-body').textContent = 'HIFI-18: interior cavern carved wider for operations volume, thinner walls, open floors, rear hangar depth, and readable work lights.';
 }
 
 function buildScene() {
@@ -4169,6 +4320,7 @@ function buildScene() {
   buildHifi15DeepViewportRevealPass();
   buildHifi16TopRightCornerCleanoutPass();
   buildHifi17TrueGeometryCavernRebuildPass();
+  buildHifi18OperationsCavernCarveoutPass();
   updateReadout();
 }
 
