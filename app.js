@@ -2962,9 +2962,172 @@ function buildHifi09ReferenceCompositionBoost() {
   scene.add(cityWarm);
 }
 
+
+function buildHifi10JaggedRimScaleLightPass() {
+  const pass = new THREE.Group();
+  pass.name = 'concept-c HIFI-10 jagged asteroid rim, scale lights, and atmosphere pass';
+  root.add(pass);
+
+  const deepRockMat = mat(0x050408, { roughness: 1, metalness: 0, side: THREE.DoubleSide });
+  const cutRockMat = mat(0x8f6d60, { roughness: 0.96, emissive: 0x190d06, emissiveIntensity: 0.16, side: THREE.DoubleSide });
+  const coldHazeMat = mat(0x98c8ff, { emissive: 0x86bfff, emissiveIntensity: 0.9, transparent: true, opacity: 0.16, roughness: 0.06, side: THREE.DoubleSide });
+  const amberHazeMat = mat(0xff9a4b, { emissive: 0xff8a34, emissiveIntensity: 0.58, transparent: true, opacity: 0.13, roughness: 0.08, side: THREE.DoubleSide });
+
+  // Break the too-clean HIFI-09 oval. These are intentional silhouette bites, not random filler.
+  const jaggedBites = [
+    ['upper left inward asteroid bite', -13.8, 11.2, 4.9, 2.1, -18],
+    ['upper center torn roof bite', -5.2, 12.0, 5.8, 2.4, 7],
+    ['upper right hanging broken crown', 7.2, 11.7, 5.6, 2.2, 14],
+    ['right window irregular cheek intrusion', 15.5, 6.9, 2.6, 4.8, -8],
+    ['right lower asteroid tooth', 14.6, -4.4, 3.2, 3.0, 18],
+    ['lower center broken asteroid sill', -1.2, -7.6, 6.8, 2.0, -4],
+    ['lower left torn sill mass', -10.4, -7.0, 5.2, 2.2, 10],
+    ['left vertical ragged wall tooth', -15.2, 4.4, 2.6, 5.2, 5]
+  ];
+  jaggedBites.forEach(([name, x, y, width, height, angle], index) => {
+    const bite = hifiShard(`hifi10 ${name}`, x, y, {
+      z: 12.55 + (index % 3) * 0.04,
+      width,
+      height,
+      depth: 1.05,
+      angle,
+      warmBias: -0.18,
+      roughness: 0.16,
+      material: deepRockMat,
+      parent: pass
+    });
+    bite.scale.z = 0.66;
+    const edge = hifiShard(`hifi10 exposed cut highlight ${name}`, x * 0.985, y * 0.985, {
+      z: 12.62 + (index % 2) * 0.03,
+      width: width * 0.72,
+      height: 0.16,
+      depth: 0.18,
+      angle: angle + (index % 2 ? 7 : -7),
+      warmBias: 0.12,
+      roughness: 0.04,
+      material: cutRockMat,
+      parent: pass
+    });
+    edge.scale.z = 0.35;
+  });
+
+  // Add small silhouette chips along the aperture so it stops reading like a perfect RingGeometry portal.
+  for (let i = 0; i < 54; i += 1) {
+    const a = (Math.PI * 2 * i) / 54 + hifiNoise(i * 4.1) * 0.08;
+    const rx = 14.7 + hifiNoise(i * 7.3) * 2.4;
+    const ry = 10.6 + hifiNoise(i * 9.7) * 1.4;
+    const x = Math.cos(a) * rx;
+    const y = 2.4 + Math.sin(a) * ry;
+    // Leave the middle of the right space window open; chips frame it but do not close it.
+    if (x > 10.2 && y > 0.2 && y < 8.8) continue;
+    const chip = hifiShard(`hifi10 irregular aperture chip ${i}`, x, y, {
+      z: 12.72,
+      width: 0.38 + hifiNoise(i * 1.9) * 0.96,
+      height: 0.16 + hifiNoise(i * 2.3) * 0.52,
+      depth: 0.32,
+      angle: THREE.MathUtils.radToDeg(a) + 90 + hifiNoise(i * 2.9) * 42,
+      warmBias: -0.12,
+      roughness: 0.08,
+      material: i % 5 === 0 ? cutRockMat : deepRockMat,
+      parent: pass
+    });
+    chip.scale.z = 0.4;
+  }
+
+  // Make the reference's right-side opening feel like space, not a flat blue rectangle.
+  const rightWindowBloom = box('hifi10 overexposed right-space bloom plane', [12.6, 10.8, 0.06], [14.9, 4.4, -15.95], coldHazeMat, pass);
+  rightWindowBloom.rotation.z = THREE.MathUtils.degToRad(-5);
+  const farAsteroid = new THREE.Group();
+  farAsteroid.name = 'hifi10 far exterior asteroid silhouettes visible through right window';
+  pass.add(farAsteroid);
+  [
+    [18.4, 6.0, 2.9, 1.1, -12], [12.3, 8.0, 2.1, 0.7, 18], [17.2, 1.0, 2.4, 0.8, 8], [10.8, 2.1, 1.5, 0.55, -18]
+  ].forEach(([x, y, w, h, angle], i) => {
+    const rock = hifiShard(`hifi10 distant exterior asteroid chunk ${i}`, x, y, {
+      z: -15.75,
+      width: w,
+      height: h,
+      depth: 0.22,
+      angle,
+      warmBias: -0.24,
+      roughness: 0.1,
+      material: mat(0x111927, { roughness: 1, emissive: 0x081222, emissiveIntensity: 0.22, side: THREE.DoubleSide }),
+      parent: farAsteroid
+    });
+    rock.scale.z = 0.2;
+  });
+
+  // Multiply tiny readable scale markers: windows, gantries, deck ticks, and maintenance beacons.
+  const scale = new THREE.Group();
+  scale.name = 'hifi10 industrial city tiny scale light matrix';
+  pass.add(scale);
+  const lightRuns = [
+    { name: 'left cyan vertical habitat grid', x0: -12.6, x1: -5.2, y0: 1.9, y1: 6.4, z: -8.9, count: 86, mat: MATS.cyanDim },
+    { name: 'central amber refinery grid', x0: -4.4, x1: 4.8, y0: 1.5, y1: 6.0, z: -8.2, count: 96, mat: MATS.amber },
+    { name: 'right hangar cold deck grid', x0: 6.4, x1: 16.2, y0: 1.4, y1: 5.8, z: -8.8, count: 96, mat: MATS.cyanDim },
+    { name: 'rear skyline amber pinlights', x0: -9.4, x1: 9.2, y0: 5.2, y1: 8.0, z: -13.0, count: 110, mat: MATS.amber }
+  ];
+  lightRuns.forEach((run, runIndex) => {
+    for (let i = 0; i < run.count; i += 1) {
+      const row = Math.floor(i / 14);
+      const col = i % 14;
+      const x = THREE.MathUtils.lerp(run.x0, run.x1, (col + hifiNoise(i * 1.13 + runIndex)) / 14);
+      const y = THREE.MathUtils.lerp(run.y0, run.y1, (row + hifiNoise(i * 1.41 + runIndex)) / Math.ceil(run.count / 14));
+      const z = run.z - hifiNoise(i * 1.73 + runIndex) * 3.4;
+      const tick = box(`hifi10 ${run.name} ${i}`, [0.08, 0.025, 0.025], [x, y, z], run.mat, scale);
+      tick.rotation.y = THREE.MathUtils.degToRad(-12 + hifiNoise(i * 2.17) * 24);
+    }
+  });
+
+  // Deepen the central pit: lower visible rings plus haze column. The old pit read was too shallow.
+  const deepPit = new THREE.Group();
+  deepPit.name = 'hifi10 lower visible shaft rings and blue atmosphere';
+  deepPit.position.set(0, -1.45, -6.2);
+  pass.add(deepPit);
+  [6.0, 5.1, 4.2, 3.35, 2.55, 1.85].forEach((radius, tier) => {
+    const y = -0.55 - tier * 0.62;
+    const ring = torus(`hifi10 lower shaft ring ${tier}`, radius, 0.055, 10, 112, [0, y, 0], tier % 2 ? MATS.cyanDim : MATS.blackMetal, deepPit);
+    ring.rotation.x = Math.PI / 2;
+    if (tier % 2 === 0) {
+      const glow = torus(`hifi10 lower shaft cyan edge ${tier}`, radius * 0.96, 0.03, 8, 96, [0, y + 0.02, 0], MATS.cyanDim, deepPit);
+      glow.rotation.x = Math.PI / 2;
+    }
+  });
+  const pitMist = cylinder('hifi10 broad blue excavated shaft mist', 3.8, 5.8, 7.8, 48, [0, -2.5, 0], mat(0x0b2c50, {
+    emissive: 0x4ddcff,
+    emissiveIntensity: 0.48,
+    transparent: true,
+    opacity: 0.18,
+    roughness: 0.08
+  }), deepPit);
+  pitMist.rotation.z = THREE.MathUtils.degToRad(-2);
+
+  // Add atmosphere planes between foreground rock and city so dark areas keep readable depth.
+  const cyanAtmos = box('hifi10 cyan left cavern atmosphere sheet', [9.8, 5.8, 0.08], [-8.9, 4.0, -7.0], coldHazeMat, pass);
+  cyanAtmos.rotation.y = THREE.MathUtils.degToRad(8);
+  cyanAtmos.rotation.z = THREE.MathUtils.degToRad(4);
+  const amberAtmos = box('hifi10 amber industrial core atmosphere sheet', [10.4, 5.4, 0.08], [0.6, 3.5, -6.6], amberHazeMat, pass);
+  amberAtmos.rotation.y = THREE.MathUtils.degToRad(-6);
+  const rearAtmos = box('hifi10 rear blue-white cavern depth haze', [18.0, 7.2, 0.08], [2.0, 5.1, -13.8], mat(0x77b8ff, { emissive: 0x77b8ff, emissiveIntensity: 0.52, transparent: true, opacity: 0.10, roughness: 0.08, side: THREE.DoubleSide }), pass);
+  rearAtmos.rotation.z = THREE.MathUtils.degToRad(-2);
+
+  const rimKey = new THREE.PointLight(0xffb37a, 14.0, 30.0);
+  rimKey.name = 'hifi10 warm broken cut-face readability light';
+  rimKey.position.set(-7.0, 10.4, 5.2);
+  scene.add(rimKey);
+  const windowKey = new THREE.PointLight(0xd8ebff, 34.0, 48.0);
+  windowKey.name = 'hifi10 right window exterior blast light';
+  windowKey.position.set(17.5, 5.6, -12.4);
+  scene.add(windowKey);
+  const pitKey = new THREE.PointLight(0x55ddff, 42.0, 40.0);
+  pitKey.name = 'hifi10 excavated blue shaft volume light';
+  pitKey.position.set(0, -3.2, -5.8);
+  scene.add(pitKey);
+}
+
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-09 manual pass: continuous oval asteroid aperture, giant right space window, dominant blue chasm, and denser embedded industrial city.';
+  document.getElementById('focus-body').textContent = 'HIFI-10: jagged broken asteroid rim, brighter right-space opening, deeper blue shaft, denser city scale lights, and stronger cyan/amber atmosphere.';
 }
 
 function buildScene() {
@@ -2973,6 +3136,7 @@ function buildScene() {
   buildReferenceApertureShell();
   buildReferenceFacilityMassing();
   buildHifi09ReferenceCompositionBoost();
+  buildHifi10JaggedRimScaleLightPass();
   updateReadout();
 }
 
