@@ -2,13 +2,14 @@
 
 Commit under review: pending
 Branch: `concept-c-hifi`
-Screenshot: `docs/visual-reviews/2026-04-29-concept-c-hifi-10-jagged-rim-scale-light.png`
+Screenshot: `docs/visual-reviews/2026-04-29-concept-c-hifi-10-live-pages.png`
+Side-by-side: `docs/visual-reviews/2026-04-29-concept-c-hifi-10-side-by-side.png`
 References benchmarked: `docs/reference/concept-c-asteroid-cavern-target.png`, `docs/reference/concept-c-asteroid-cavern-target.md`, HIFI-09 side-by-side.
 Game Studio route: game-studio -> web-game-foundations -> three-webgl-game -> web-3d-asset-pipeline -> game-playtest
 Pass type: composition | lighting
 Skill focus: HIFI-10 break the portal-clean oval, increase right-window spectacle, multiply visible city scale lights, and improve readable cyan/amber atmosphere.
 Asset pipeline stance: modular-GLB-planned
-Playtest status: screenshot-blocked
+Playtest status: screenshot-captured
 
 Pre-code Game Studio application:
 - game-studio: Michael asked to keep the loop moving; the useful next pass is a single brutal correction against the HIFI-09 self-critique.
@@ -19,7 +20,7 @@ Pre-code Game Studio application:
 - game-playtest: run module syntax/diff checks, capture current screenshot, and publish side-by-side proof.
 
 North-star question: does HIFI-10 stop reading as a clean sci-fi portal and start reading as a jagged hollow asteroid cavern with a believable industrial city inside?
-North-star verdict: provisional closer; screenshot capture is blocked locally, so visual grade remains unclaimed until remote Pages capture or browser check.
+North-star verdict: not close enough; HIFI-10 adds useful scale-light attempts but still reads as a clean portal/viewport rather than a rugged asteroid cavern.
 
 
 ## What changed
@@ -35,21 +36,24 @@ North-star verdict: provisional closer; screenshot capture is blocked locally, s
 - Smoke checks passed:
   - `node --check --input-type=module < app.js`
   - `git diff --check`
-- Local screenshot capture is blocked right now:
-  - `google-chrome --headless` and direct CDP helper both hang until timeout/SIGKILL even after stale Chrome cleanup.
-  - This appears to be a Chrome/CDP capture/runtime issue, not a JS syntax issue.
-- Because screenshot is blocked, this pass is committed as a useful code movement plus documented blocker, not claimed as visually proven.
+- Local headless Chrome capture failed repeatedly, but live Pages was successfully captured through the managed browser/CDP after deploy.
+- Screenshot captured from live Pages after main updated to `720e2be`:
+  - `docs/visual-reviews/2026-04-29-concept-c-hifi-10-live-pages.png`
+  - `docs/visual-reviews/2026-04-29-concept-c-hifi-10-side-by-side.png`
 
-## Provisional gate scores
-Concept match: ungraded — needs screenshot.
-Container/shell: ungraded — target was jagged broken asteroid rim.
-Station visibility: ungraded — target was 3x visible scale lights.
-Lighting/readability: ungraded — target was stronger cold/warm hierarchy.
-Depth/scale: ungraded — target was lower shaft rings and atmosphere.
-Material richness: ungraded — target was silhouette/cut-face improvement, not final material.
-Performance / readiness: 2/5 provisional — syntax/diff checks pass, but screenshot capture currently blocks proof.
+## Gate scores
+Concept match: 2.4/5 — only the oval aperture/base-inside idea matches; the reference's asteroid mass, asymmetry, cinematic scale, and industrial complexity are still missing.
+Container/shell: 2.2/5 — HIFI-10 tried to jag the rim, but the dominant read is still a clean oval portal/viewport.
+Station visibility: 2.4/5 — additional scale lights exist but the facility still reads sparse and blocky, not like a dense embedded industrial city.
+Lighting/readability: 2.1/5 — still too dark/flat; reference is dark but materially rich and readable.
+Depth/scale: 2.5/5 — central shaft reads a little deeper, but the scene still feels like a small diorama, not a kilometer-scale asteroid excavation.
+Material richness: 2/5 — rock is rougher in spots but still procedural/noisy and not convincingly authored.
+Performance / readiness: 3/5 — Pages loads and browser capture works; headless local capture remains flaky.
 
-Overall visual gate: ungraded / blocked
+Overall visual gate: 2.4/5
+
+## Honest read
+HIFI-10 is operationally shipped, but visually it did not solve the core problem. It may have slightly improved scale-light density and central shaft depth, but the giant clean oval still dominates and keeps the whole thing in “portal/window” territory. Next pass needs to reduce/kill the perfect ring read, not decorate it.
 
 Game Studio checklist:
 - [x] Pre-code skill application recorded before runtime edits.
@@ -57,9 +61,9 @@ Game Studio checklist:
 - [x] Runtime scene path updated around that thesis.
 - [x] `node --check --input-type=module < app.js` passed.
 - [x] `git diff --check` passed.
-- [ ] Screenshot captured.
-- [ ] Honest visual gate recorded from screenshot.
+- [x] Screenshot captured.
+- [x] Honest visual gate recorded from screenshot.
 - [ ] Gold-standard reference gate achieved.
 
 Next visual fix:
-First recover screenshot capture or use deployed Pages/browser capture, then grade HIFI-10 against the reference before adding more geometry.
+Stop reinforcing the RingGeometry oval. Replace/occlude the clean ring with asymmetric high-mass asteroid chunks and carve the interior as one irregular cavern before adding more tiny detail.
