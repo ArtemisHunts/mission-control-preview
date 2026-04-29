@@ -127,18 +127,18 @@ The active asteroid target now includes:
 - max practical geometry/detail density while keeping the browser stable
 
 
-## Reference-match correction
-Michael supplied `docs/reference/concept-c-asteroid-cavern-target.png` and said the scene does not look at all like it. This is correct and supersedes the prior asteroid-only texture/detail target.
+## Reference lock correction — actual target image clarified 2026-04-29
+Michael clarified that the active reference is the replied Discord image `1498762634772615373`, now saved as `docs/reference/concept-c-asteroid-cavern-target.png`. The previous oval/portal-style target is archived at `docs/reference/archive/concept-c-asteroid-cavern-target-previous-wrong.png`.
 
-Future Concept C hi-fi work must first rebuild composition toward the reference:
+This supersedes the recent oval-portal optimization. Future Concept C hi-fi work must optimize for the actual reference:
 
-1. dark oval foreground asteroid aperture
-2. one massive hollow asteroid cavern
-3. starfield around/behind the asteroid and through openings
-4. huge right-side hangar/window to space
-5. embedded industrial city inside the hollow
-6. central circular pit/shaft with blue glow and ring depth
-7. cyan left bay, warm amber core, tiny practical scale lights, cranes/bridges/gantries
-8. broad sculpted rock hierarchy before chips/noise
+1. full asteroid body floating in starfield, not a foreground portal/window
+2. large irregular front cutaway exposing the base interior
+3. thick grey rocky shell with authored crags, bright top/right rim planes, and dark underside mass
+4. layered industrial decks carved into the asteroid
+5. central lower circular pit/shaft with ring levels and small blue/cyan lights
+6. rear/upper hangar or tunnel opening slightly right of center with cold exterior light
+7. cranes, gantries, ramps, platforms, containers, warm work lights, and tiny scale lights
+8. thumbnail read: complete asteroid cutaway base first, facility detail second
 
-A pass that only improves local asteroid texture while the screenshot still does not resemble the reference composition should be treated as a failure.
+A pass fails if it preserves a clean perfect oval aperture/ring as the dominant composition. Stop decorating the oval. Rebuild the asteroid body/cutaway silhouette.

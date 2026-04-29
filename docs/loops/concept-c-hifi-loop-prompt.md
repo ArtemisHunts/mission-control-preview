@@ -65,29 +65,29 @@ Allowed work only:
 If a pass spends meaningful effort on the interior before the asteroid gate clears, treat it as a failed pass even if the screenshot looks cleaner.
 
 
-## Reference lock — Michael supplied target image
-Michael supplied `docs/reference/concept-c-asteroid-cavern-target.png` and said the scene does not look at all like it. He is right. This reference supersedes the prior local asteroid-only optimization target.
+## Reference lock correction — actual target image clarified 2026-04-29
+Michael clarified that the active reference is the replied Discord image `1498762634772615373`, now saved as `docs/reference/concept-c-asteroid-cavern-target.png`. The previous oval/portal-style target is archived at `docs/reference/archive/concept-c-asteroid-cavern-target-previous-wrong.png`.
 
-The loop must now optimize for reference match at composition scale before more texture/detail work. Required thumbnail read:
-- dark oval foreground asteroid aperture framing the whole shot
-- one enormous hollow asteroid cavern, not separate procedural panels around a room
-- starfield around/behind the asteroid and through openings
-- huge right-side hangar/window opening to space with cold blue exterior light
-- embedded industrial city/facility inside the hollow
-- central circular pit/shaft with blue glow and ring depth
-- cyan left bay, warm amber industrial core, tiny scale lights, cranes/bridges/gantries
-- rock hierarchy: broad dark sculpted crust first, strata/ridges second, chips/craters last
+This supersedes the recent oval-portal optimization. Future Concept C hi-fi work must optimize for the actual reference:
 
-A pass fails if it only improves asteroid material while the screenshot still does not resemble the reference composition.
+1. full asteroid body floating in starfield, not a foreground portal/window
+2. large irregular front cutaway exposing the base interior
+3. thick grey rocky shell with authored crags, bright top/right rim planes, and dark underside mass
+4. layered industrial decks carved into the asteroid
+5. central lower circular pit/shaft with ring levels and small blue/cyan lights
+6. rear/upper hangar or tunnel opening slightly right of center with cold exterior light
+7. cranes, gantries, ramps, platforms, containers, warm work lights, and tiny scale lights
+8. thumbnail read: complete asteroid cutaway base first, facility detail second
 
-Read before working: `docs/reference/concept-c-asteroid-cavern-target.md`.
+A pass fails if it preserves a clean perfect oval aperture/ring as the dominant composition. Stop decorating the oval. Rebuild the asteroid body/cutaway silhouette.
+
 
 ## Gold-standard target
 High-fidelity Concept C asteroid cavern reference match first:
 - massive hollow asteroid body must read like the supplied reference at thumbnail scale
-- dark oval foreground rock aperture frames the entire scene
+- full asteroid exterior silhouette frames the carved-open base
 - embedded industrial facility inside the hollow, not a toy cutaway in front of panels
-- huge right-side hangar/window opening to space
+- rear/upper hangar or tunnel opening inside the asteroid
 - visible starfield around/behind the asteroid and through openings
 - central circular pit/shaft with blue glow and real ring depth
 - cinematic material richness focused on broad sculpted dark crust, strata/ridges, chipped rims, craters, rubble, dust, and mineral variation
@@ -126,9 +126,9 @@ Gold-standard gate:
 Work down this ladder. Do not resume interior work until the asteroid itself clears gate.
 
 1. REF-01 reference composition rebuild
-   - create dark oval asteroid aperture/frame matching the supplied target image
+   - create full asteroid body silhouette and irregular carved front cutaway matching the supplied target image
    - hollow cavern must dominate the silhouette
-   - large right-side hangar/window opening to space
+   - rear/upper hangar or tunnel opening inside the asteroid
    - central circular pit and embedded industrial city visible inside
 
 2. REF-02 cavern depth and lighting
@@ -160,7 +160,7 @@ Work down this ladder. Do not resume interior work until the asteroid itself cle
    - do not grade up because the interior is readable
    - if asteroid is still low-poly or noisy/procedural, repeat AST-01/02/03/04
 
-8. Interior detail resumes only after reference composition reads correctly at thumbnail scale and asteroid-focused gate >= 4.5/5 with no asteroid category below 4.0.
+8. Interior detail resumes only after the full asteroid cutaway reads correctly at thumbnail scale and asteroid-focused gate >= 4.5/5 with no asteroid category below 4.0.
 
 ## Zoom/view exception
 Michael requested zoom in/out and a taller ceiling. Camera/view controls are allowed even while unrelated HUD/UI polish remains paused. Older asteroid screenshots were 1600x900; HIFI-05 proof should prefer a 3840x2160 full-frame capture when the browser can hold it.
