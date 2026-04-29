@@ -4946,9 +4946,224 @@ function buildHifi21CohesiveShapeResetPass() {
   scene.add(innerCold);
 }
 
+
+function buildHifi22CupBowlOverhangShapePass() {
+  const pass = new THREE.Group();
+  pass.name = 'concept-c HIFI-22 cup bowl asteroid shell overhang shape pass';
+  root.add(pass);
+
+  // Michael's shape note: it should read like a cup/bowl with a roof overhang, not a doorway/bridge.
+  // Hide HIFI-21's arch-like reset and draw one concave basin shell with a forward roof lip.
+  root.traverse((node) => {
+    if (!node.name) return;
+    if (node.name.includes('hifi21') || node.name.includes('HIFI-21')) node.visible = false;
+  });
+
+  const bowl = new THREE.Group();
+  bowl.name = 'hifi22 single concave cup bowl asteroid shell';
+  pass.add(bowl);
+
+  const addPanel = (name, pts, options = {}) => buildHifiRockPanel(`hifi22 ${name}`, pts, {
+    z: options.z ?? 17.7,
+    depth: options.depth ?? 3.2,
+    grid: options.grid ?? 0.34,
+    rimInset: options.rimInset ?? 0.07,
+    backShrink: options.backShrink ?? 0.04,
+    relief: options.relief ?? 0.16,
+    mediumRelief: 0.028,
+    microRelief: 0.0,
+    strataRelief: 0.038,
+    radialRelief: 0.018,
+    frontWarp: 0.025,
+    warmBias: options.warmBias ?? -0.12,
+    valueZones: options.valueZones ?? [],
+    geology: options.geology ?? [],
+    parent: bowl
+  });
+
+  // Broad cup silhouette: sides and lower mass curve around the void instead of forming straight pillars.
+  const roofOverhang = [
+    [-23.2, 5.9], [-21.4, 10.2], [-16.0, 13.6], [-8.0, 14.7], [0.5, 13.7], [8.6, 12.9], [15.8, 10.3], [21.0, 6.2],
+    [15.2, 4.15], [8.0, 4.65], [1.0, 4.2], [-5.2, 4.72], [-11.4, 4.25], [-17.8, 4.95]
+  ];
+  const leftBowlWall = [
+    [-23.2, 5.9], [-18.0, 4.7], [-14.9, 2.3], [-13.8, -1.4], [-15.0, -4.9], [-18.7, -7.8], [-23.6, -8.8], [-25.8, -5.4], [-25.0, -0.4]
+  ];
+  const rightBowlWall = [
+    [15.2, 4.15], [20.2, 2.2], [23.2, -1.0], [23.4, -5.0], [20.6, -8.5], [15.4, -7.3], [12.6, -4.2], [12.8, -0.3]
+  ];
+  const lowerBowl = [
+    [-23.6, -8.8], [-18.0, -7.15], [-12.0, -5.85], [-5.4, -5.75], [1.0, -6.15], [7.8, -5.55], [14.8, -6.25], [20.6, -8.5],
+    [17.5, -12.0], [8.6, -14.1], [-1.0, -14.6], [-11.0, -13.9], [-19.4, -11.8]
+  ];
+  const rearInsideBowl = [
+    [-12.8, 3.7], [-7.0, 4.55], [-0.4, 4.05], [6.6, 4.35], [11.2, 2.8], [12.0, -1.0], [9.2, -4.15], [2.8, -5.1], [-4.8, -4.72], [-11.0, -3.1], [-13.4, 0.5]
+  ];
+
+  addPanel('forward roof overhang lip from rockface', roofOverhang, {
+    z: 18.35,
+    depth: 4.0,
+    grid: 0.32,
+    relief: 0.18,
+    rimInset: 0.1,
+    valueZones: [
+      { x: -7.0, y: 12.0, rx: 10.0, ry: 2.0, dust: 0.13 },
+      { x: 3.0, y: 4.6, rx: 12.0, ry: 0.9, shadow: 0.32, cool: 0.14 },
+      { x: 13.6, y: 5.1, rx: 4.5, ry: 1.1, shadow: 0.18 }
+    ],
+    geology: [
+      { type: 'band', ax: -18.0, ay: 8.7, bx: 16.0, by: 7.0, width: 1.35, height: 0.1, terraces: 6, terraceHeight: 0.04, shadow: 0.1, dust: 0.05 }
+    ]
+  });
+  addPanel('left curved bowl wall wrapping into cavity', leftBowlWall, {
+    z: 17.9,
+    depth: 3.45,
+    grid: 0.34,
+    relief: 0.16,
+    valueZones: [
+      { x: -15.6, y: -0.8, rx: 2.8, ry: 5.2, shadow: 0.28, cool: 0.14 },
+      { x: -20.4, y: 4.7, rx: 2.2, ry: 1.0, dust: 0.1 }
+    ],
+    geology: [
+      { type: 'fault', ax: -18.4, ay: 4.2, bx: -16.0, by: -6.0, width: 0.42, depth: 0.1, rim: 0.04, shadow: 0.12 }
+    ]
+  });
+  addPanel('right curved bowl wall wrapping into cavity', rightBowlWall, {
+    z: 17.82,
+    depth: 3.25,
+    grid: 0.34,
+    relief: 0.16,
+    valueZones: [
+      { x: 16.0, y: -3.0, rx: 3.0, ry: 3.4, shadow: 0.28, cool: 0.14 }
+    ],
+    geology: [
+      { type: 'fault', ax: 17.0, ay: 3.0, bx: 17.2, by: -7.0, width: 0.38, depth: 0.1, rim: 0.04, shadow: 0.12 }
+    ]
+  });
+  addPanel('rounded lower bowl mass not a flat floor', lowerBowl, {
+    z: 18.05,
+    depth: 3.35,
+    grid: 0.34,
+    relief: 0.17,
+    valueZones: [
+      { x: -1.0, y: -6.2, rx: 12.0, ry: 1.0, shadow: 0.28, cool: 0.08 },
+      { x: -8.0, y: -12.0, rx: 5.5, ry: 1.2, dust: 0.08 },
+      { x: 8.0, y: -12.0, rx: 5.5, ry: 1.2, dust: 0.08 }
+    ],
+    geology: [
+      { type: 'band', ax: -16.0, ay: -8.4, bx: 14.0, by: -7.8, width: 1.2, height: 0.09, terraces: 5, terraceHeight: 0.035, shadow: 0.1, dust: 0.04 }
+    ]
+  });
+  addPanel('recessed rear inner bowl wall proving concavity', rearInsideBowl, {
+    z: 13.0,
+    depth: 2.7,
+    grid: 0.36,
+    relief: 0.13,
+    warmBias: -0.18,
+    valueZones: [
+      { x: 0.0, y: 0.0, rx: 10.0, ry: 5.0, shadow: 0.34, cool: 0.18 }
+    ],
+    geology: [
+      { type: 'band', ax: -10.0, ay: 2.8, bx: 10.0, by: 1.9, width: 1.4, height: 0.08, terraces: 4, terraceHeight: 0.03, shadow: 0.12 }
+    ]
+  });
+
+  // The void is a cup-shaped hollow, not a rectangle: sagged roof, curved sides, raised uneven floor.
+  const voidMat = mat(0x010409, { roughness: 1, transparent: true, opacity: 0.86, side: THREE.DoubleSide });
+  const airMat = mat(0x102637, { roughness: 1, transparent: true, opacity: 0.22, side: THREE.DoubleSide });
+  const cupVoid = polyMesh('hifi22 cup shaped hollow negative space', [
+    [-14.0, 3.95], [-8.0, 4.75], [-1.0, 4.25], [6.2, 4.55], [11.6, 3.2], [12.9, 0.1], [11.1, -3.2], [6.0, -4.65], [0.0, -5.25], [-6.6, -4.72], [-11.6, -3.0], [-14.6, 0.2]
+  ], voidMat, -7.4, bowl);
+  cupVoid.scale.z = 0.12;
+  const rearCupVoid = polyMesh('hifi22 smaller rear hollow inside bowl', [
+    [-8.4, 2.9], [-3.0, 3.55], [3.0, 3.3], [7.4, 2.2], [8.0, -0.7], [6.2, -3.0], [1.4, -3.7], [-4.2, -3.3], [-8.0, -1.9], [-9.0, 0.7]
+  ], airMat, -14.2, bowl);
+  rearCupVoid.scale.z = 0.08;
+
+  // Minimal front lip thickness. Keep broad planes; do not reintroduce clutter.
+  const rimMat = mat(0x8d877c, { roughness: 0.98, side: THREE.DoubleSide });
+  [
+    [-11.0, 4.72, 5.2, 0.24, 8], [-3.4, 4.45, 5.6, 0.22, -4], [4.6, 4.55, 5.4, 0.22, 5], [10.2, 3.35, 3.8, 0.24, -16],
+    [-11.0, -3.95, 4.8, 0.24, 16], [-3.2, -4.92, 5.4, 0.22, -6], [4.6, -4.7, 4.9, 0.22, 7], [10.0, -3.2, 3.6, 0.24, -10]
+  ].forEach(([x, y, w, h, angle], index) => {
+    const rim = hifiShard(`hifi22 broad minimal cup rim plane ${index}`, x, y, {
+      z: 18.52,
+      width: w,
+      height: h,
+      depth: 0.42,
+      angle,
+      warmBias: -0.02,
+      roughness: 0.02,
+      material: rimMat,
+      parent: bowl
+    });
+    rim.scale.z = 0.25;
+  });
+
+  // Final shape correction: overlay one crescent scoop to kill the rectangular slot read.
+  // This is still shape-only: a simple negative-space silhouette, not interior decoration.
+  bowl.traverse((node) => {
+    if (node.name && (node.name.includes('broad minimal cup rim plane') || node.name.includes('cup shaped hollow negative space') || node.name.includes('smaller rear hollow'))) node.visible = false;
+  });
+  addPanel('unified outer cup body overlay tying sides roof and floor together', [
+    [-24.2, 3.8], [-22.2, 8.8], [-16.2, 12.4], [-7.4, 13.8], [1.8, 13.1], [10.2, 11.4], [18.0, 7.4], [23.0, 1.6],
+    [22.2, -5.7], [17.0, -10.2], [8.0, -13.0], [-2.4, -13.5], [-12.4, -12.2], [-20.8, -8.2], [-24.8, -2.2]
+  ], {
+    z: 18.42,
+    depth: 2.7,
+    grid: 0.42,
+    relief: 0.13,
+    rimInset: 0.04,
+    valueZones: [
+      { x: 0.0, y: 9.8, rx: 14.0, ry: 2.2, dust: 0.1 },
+      { x: 0.0, y: -7.0, rx: 14.0, ry: 2.0, shadow: 0.18, cool: 0.08 },
+      { x: -18.0, y: -1.0, rx: 3.0, ry: 5.5, shadow: 0.16 },
+      { x: 18.0, y: -1.0, rx: 3.0, ry: 5.5, shadow: 0.16 }
+    ],
+    geology: [
+      { type: 'band', ax: -18.0, ay: 7.2, bx: 17.0, by: 5.6, width: 1.4, height: 0.08, terraces: 5, terraceHeight: 0.03, shadow: 0.08 },
+      { type: 'band', ax: -16.0, ay: -8.0, bx: 16.0, by: -7.2, width: 1.2, height: 0.07, terraces: 4, terraceHeight: 0.03, shadow: 0.08 }
+    ]
+  });
+
+  const crescentVoid = polyMesh('hifi22 final crescent bowl scoop negative space not rectangular', [
+    [-13.6, 1.35], [-11.4, 3.34], [-7.2, 4.35], [-1.4, 3.62], [5.4, 3.35], [10.4, 1.62], [12.0, -1.02],
+    [9.5, -3.92], [4.2, -5.05], [-2.2, -4.62], [-7.6, -3.88], [-11.8, -2.02]
+  ], mat(0x000207, { roughness: 1, transparent: true, opacity: 0.93, side: THREE.DoubleSide }), 18.72, bowl);
+  crescentVoid.scale.z = 0.05;
+
+  const browMat = mat(0x948d82, { roughness: 0.98, side: THREE.DoubleSide });
+  [
+    [-9.8, 4.28, 5.0, 0.32, 10], [-3.2, 3.82, 5.7, 0.34, -7], [3.8, 3.72, 5.4, 0.32, 6], [9.2, 2.88, 4.0, 0.3, -15],
+    [-9.0, -2.92, 4.4, 0.24, 18], [-1.8, -3.72, 5.2, 0.22, -5], [5.8, -3.2, 4.2, 0.22, 9]
+  ].forEach(([x, y, w, h, angle], index) => {
+    const plane = hifiShard(`hifi22 final curved cup lip plane ${index}`, x, y, {
+      z: 18.95,
+      width: w,
+      height: h,
+      depth: 0.34,
+      angle,
+      warmBias: -0.03,
+      roughness: 0.018,
+      material: browMat,
+      parent: bowl
+    });
+    plane.scale.z = 0.22;
+  });
+
+  const roofKey = new THREE.DirectionalLight(0xdedbd2, 2.5);
+  roofKey.name = 'hifi22 roof overhang top rock light';
+  roofKey.position.set(-5.5, 12.0, 10.5);
+  scene.add(roofKey);
+  const bowlDepthLight = new THREE.PointLight(0x7fa8ca, 8.0, 32.0);
+  bowlDepthLight.name = 'hifi22 quiet bowl interior depth cue';
+  bowlDepthLight.position.set(2.0, 1.0, -12.5);
+  scene.add(bowlDepthLight);
+}
+
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-21: shape reset hides clutter and focuses on one cohesive asteroid silhouette with a clean large carved mouth before any detail work.';
+  document.getElementById('focus-body').textContent = 'HIFI-22: cup/bowl asteroid shape with a concave hollow and forward roof overhang, still shape-only before interior detailing.';
 }
 
 function buildScene() {
@@ -4969,6 +5184,7 @@ function buildScene() {
   buildHifi19MassiveShellDepthRecoveryPass();
   buildHifi20ShellFirstOpenCavernQualityPass();
   buildHifi21CohesiveShapeResetPass();
+  buildHifi22CupBowlOverhangShapePass();
   updateReadout();
 }
 
