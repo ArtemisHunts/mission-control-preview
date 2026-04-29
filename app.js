@@ -2799,7 +2799,7 @@ function buildHifi09ReferenceCompositionBoost() {
   boost.name = 'concept-c HIFI-09 reference composition boost';
   root.add(boost);
 
-  const ovalShadowMat = mat(0x010104, { roughness: 1, transparent: true, opacity: 0.96, side: THREE.DoubleSide });
+  const ovalShadowMat = mat(0x010104, { roughness: 1, transparent: true, opacity: 0.34, side: THREE.DoubleSide });
   const ovalRockMat = new THREE.MeshStandardMaterial({
     vertexColors: true,
     roughness: 0.98,
@@ -2808,8 +2808,8 @@ function buildHifi09ReferenceCompositionBoost() {
     transparent: true,
     opacity: 0.92
   });
-  const rimWarmMat = mat(0xb48c6f, { roughness: 0.9, emissive: 0x231006, emissiveIntensity: 0.18, transparent: true, opacity: 0.42, side: THREE.DoubleSide });
-  const rimCoolMat = mat(0x7fb7ff, { roughness: 0.3, emissive: 0x6aa7ff, emissiveIntensity: 0.55, transparent: true, opacity: 0.28, side: THREE.DoubleSide });
+  const rimWarmMat = mat(0xb48c6f, { roughness: 0.9, emissive: 0x231006, emissiveIntensity: 0.12, transparent: true, opacity: 0.16, side: THREE.DoubleSide });
+  const rimCoolMat = mat(0x7fb7ff, { roughness: 0.3, emissive: 0x6aa7ff, emissiveIntensity: 0.34, transparent: true, opacity: 0.12, side: THREE.DoubleSide });
 
   const addOvalRing = (name, inner, outer, scale, z, material, rotation = 0) => {
     const ring = new THREE.Mesh(new THREE.RingGeometry(inner, outer, 220, 10), material);
@@ -3125,9 +3125,151 @@ function buildHifi10JaggedRimScaleLightPass() {
   scene.add(pitKey);
 }
 
+
+function buildHifi11AsymmetricAsteroidMassPass() {
+  const pass = new THREE.Group();
+  pass.name = 'concept-c HIFI-11 asymmetric foreground asteroid mass pass';
+  root.add(pass);
+
+  const foregroundVoid = mat(0x000104, { roughness: 1, side: THREE.DoubleSide });
+  const hotCut = mat(0xb28a72, { roughness: 0.92, emissive: 0x2a1208, emissiveIntensity: 0.18, side: THREE.DoubleSide });
+  const coldDust = mat(0x62718a, { roughness: 0.98, emissive: 0x08162a, emissiveIntensity: 0.08, side: THREE.DoubleSide });
+
+  // Hard occlusion silhouettes first: these sit in front of the old circular ring and break it into a cave mouth.
+  const masks = [
+    ['upper black asteroid canopy occluding perfect oval', [[-21.5, 15.8], [-18.2, 12.2], [-13.4, 10.4], [-8.8, 11.5], [-4.0, 9.5], [0.8, 10.8], [6.4, 9.7], [11.4, 10.9], [16.6, 9.0], [21.5, 12.4], [21.5, 20.5], [-21.5, 20.5]], 14.15],
+    ['left black asteroid wall occluding oval edge', [[-21.5, 14.8], [-17.6, 12.0], [-14.2, 8.4], [-12.4, 3.0], [-13.0, -2.8], [-15.2, -7.2], [-18.8, -10.8], [-21.5, -13.4]], 14.1],
+    ['lower broken asteroid sill occluding perfect oval', [[-20.8, -10.0], [-15.0, -7.8], [-9.6, -6.2], [-4.6, -7.1], [0.4, -5.9], [5.8, -6.8], [11.6, -5.6], [17.8, -7.2], [21.0, -10.4], [21.5, -18.5], [-21.5, -18.5]], 14.2],
+    ['right broken asteroid cheek leaving jagged window', [[18.8, 10.6], [15.4, 8.2], [14.1, 5.8], [15.7, 3.4], [13.8, 0.8], [15.2, -2.4], [17.8, -5.2], [21.5, -8.4], [21.5, 12.4]], 14.05]
+  ];
+  masks.forEach(([name, points, z]) => {
+    const mesh = polyMesh(`hifi11 ${name}`, points, foregroundVoid, z, pass);
+    mesh.scale.z = 0.4;
+  });
+
+  // Dense rock panels replace the clean ring with real asteroid mass and thickness.
+  const panels = [
+    {
+      name: 'hifi11 asymmetric heavy upper asteroid roof mass',
+      pts: [[-19.8, 15.0], [-16.6, 13.0], [-12.8, 10.8], [-8.4, 11.6], [-4.8, 9.8], [-0.4, 11.0], [4.2, 10.0], [8.2, 11.4], [12.4, 9.8], [16.8, 11.6], [19.8, 14.2], [18.2, 17.6], [10.0, 19.8], [1.8, 20.6], [-7.8, 20.2], [-15.2, 18.4]],
+      z: 13.65,
+      depth: 5.6,
+      warmBias: -0.18,
+      valueZones: [{ x: -6.0, y: 11.5, rx: 8.0, ry: 2.2, shadow: 0.34, cool: 0.12 }, { x: 10.5, y: 10.6, rx: 5.4, ry: 2.2, shadow: 0.26 }]
+    },
+    {
+      name: 'hifi11 left cavern wall collapsing into view',
+      pts: [[-19.8, 13.4], [-16.4, 10.8], [-13.4, 7.2], [-12.2, 2.0], [-13.4, -3.4], [-15.6, -7.4], [-19.0, -10.6], [-20.8, -5.4], [-21.0, 4.0]],
+      z: 13.7,
+      depth: 5.2,
+      warmBias: -0.16,
+      valueZones: [{ x: -14.4, y: 3.0, rx: 2.2, ry: 6.4, shadow: 0.36, cool: 0.18 }, { x: -15.0, y: -4.8, rx: 2.4, ry: 2.0, dust: 0.18 }]
+    },
+    {
+      name: 'hifi11 lower broken foreground asteroid shelf',
+      pts: [[-18.8, -10.2], [-13.8, -8.2], [-8.4, -6.7], [-2.8, -7.6], [1.8, -6.0], [7.0, -7.0], [12.4, -5.8], [17.8, -7.8], [19.4, -11.2], [13.6, -13.6], [5.0, -14.6], [-4.8, -14.4], [-13.4, -13.0]],
+      z: 13.85,
+      depth: 5.0,
+      warmBias: -0.12,
+      valueZones: [{ x: -1.0, y: -6.8, rx: 12.0, ry: 1.6, shadow: 0.32 }, { x: 8.5, y: -6.6, rx: 4.0, ry: 1.2, dust: 0.16 }]
+    },
+    {
+      name: 'hifi11 right jagged asteroid cheek framing space window',
+      pts: [[14.6, 9.8], [18.2, 11.6], [20.4, 8.4], [19.2, 4.6], [16.8, 3.2], [18.8, 1.0], [16.4, -2.2], [18.4, -5.4], [20.2, -8.0], [16.2, -8.6], [13.8, -4.8], [12.8, 0.0], [13.4, 5.0]],
+      z: 13.72,
+      depth: 4.8,
+      warmBias: -0.14,
+      valueZones: [{ x: 16.0, y: 2.2, rx: 2.8, ry: 6.4, shadow: 0.3, cool: 0.2 }, { x: 14.8, y: 6.8, rx: 2.0, ry: 1.2, dust: 0.18 }]
+    }
+  ];
+
+  panels.forEach(({ name, pts, z, depth, warmBias, valueZones }) => {
+    buildHifiRockPanel(name, pts, {
+      z,
+      depth,
+      grid: 0.18,
+      rimInset: 0.18,
+      backShrink: 0.18,
+      relief: 0.42,
+      mediumRelief: 0.14,
+      microRelief: 0.025,
+      strataRelief: 0.12,
+      radialRelief: 0.08,
+      frontWarp: 0.12,
+      warmBias,
+      valueZones,
+      geology: [
+        { type: 'band', ax: pts[0][0], ay: pts[0][1] - 1.0, bx: pts[Math.floor(pts.length / 2)][0], by: pts[Math.floor(pts.length / 2)][1] + 0.5, width: 1.2, height: 0.16, terraces: 9, terraceHeight: 0.08, shadow: 0.14, dust: 0.08 },
+        { type: 'fault', ax: pts[1][0], ay: pts[1][1], bx: pts[Math.max(2, pts.length - 3)][0], by: pts[Math.max(2, pts.length - 3)][1], width: 0.42, depth: 0.14, rim: 0.06, shadow: 0.18 }
+      ],
+      parent: pass
+    });
+  });
+
+  // Add exposed torn cut planes on the new inner rim; warmer and broken, not a continuous ring.
+  const cuts = [
+    [-12.8, 9.6, 3.2, 0.18, -18], [-7.6, 10.2, 2.6, 0.15, 8], [-1.2, 9.4, 3.0, 0.14, -4], [5.2, 9.6, 2.8, 0.16, 12], [12.4, 8.6, 2.6, 0.16, -14],
+    [-13.2, -5.6, 2.8, 0.16, 14], [-6.4, -5.8, 3.4, 0.15, -8], [2.8, -5.2, 3.0, 0.15, 7], [10.4, -4.8, 3.2, 0.16, -10],
+    [-12.6, 3.8, 0.18, 2.8, 4], [13.2, 2.8, 0.18, 3.0, -8]
+  ];
+  cuts.forEach(([x, y, w, h, angle], index) => {
+    hifiShard(`hifi11 broken warm cut face ${index}`, x, y, {
+      z: 14.25,
+      width: w,
+      height: h,
+      depth: 0.28,
+      angle,
+      warmBias: 0.22,
+      roughness: 0.04,
+      material: index % 3 === 0 ? hotCut : coldDust,
+      parent: pass
+    });
+  });
+
+  // Preserve the reference beats inside the now-broken cavern: right exterior blast, deeper pit, and brighter tiny scale cues.
+  const rightBlast = box('hifi11 irregular right space opening blast visible through broken cheek', [8.4, 7.8, 0.05], [15.2, 4.1, -15.2], mat(0xd9e9ff, {
+    emissive: 0xcfe4ff,
+    emissiveIntensity: 3.1,
+    transparent: true,
+    opacity: 0.46,
+    roughness: 0.04,
+    side: THREE.DoubleSide
+  }), pass);
+  rightBlast.rotation.z = THREE.MathUtils.degToRad(-6);
+
+  const scaleLights = new THREE.Group();
+  scaleLights.name = 'hifi11 amplified city scale pinlights after aperture break';
+  pass.add(scaleLights);
+  for (let i = 0; i < 160; i += 1) {
+    const band = i % 4;
+    const x0 = [-11.5, -4.5, 4.8, -8.0][band];
+    const x1 = [-4.8, 4.8, 14.8, 9.0][band];
+    const y0 = [2.0, 1.7, 1.8, 5.5][band];
+    const y1 = [6.4, 6.2, 5.8, 8.0][band];
+    const z = [-8.4, -7.6, -8.4, -12.8][band] - hifiNoise(i * 2.1) * 2.8;
+    const x = THREE.MathUtils.lerp(x0, x1, hifiNoise(i * 1.13));
+    const y = THREE.MathUtils.lerp(y0, y1, hifiNoise(i * 1.47));
+    const tick = box(`hifi11 facility tiny light after mass break ${i}`, [0.07, 0.026, 0.026], [x, y, z], band === 1 ? MATS.amber : MATS.cyanDim, scaleLights);
+    tick.rotation.y = THREE.MathUtils.degToRad(-14 + hifiNoise(i * 1.9) * 28);
+  }
+
+  const shadowTop = new THREE.PointLight(0x0a101a, 8.0, 28.0);
+  shadowTop.name = 'hifi11 dark foreground mass contrast control';
+  shadowTop.position.set(-4.0, 12.0, 10.0);
+  scene.add(shadowTop);
+  const brokenRimWarm = new THREE.PointLight(0xffb07a, 10.0, 28.0);
+  brokenRimWarm.name = 'hifi11 warm broken rim grazing light';
+  brokenRimWarm.position.set(-6.0, 8.4, 8.0);
+  scene.add(brokenRimWarm);
+  const exterior = new THREE.PointLight(0xd8ebff, 42.0, 52.0);
+  exterior.name = 'hifi11 brighter right exterior space light';
+  exterior.position.set(16.4, 5.4, -11.2);
+  scene.add(exterior);
+}
+
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-10: jagged broken asteroid rim, brighter right-space opening, deeper blue shaft, denser city scale lights, and stronger cyan/amber atmosphere.';
+  document.getElementById('focus-body').textContent = 'HIFI-11: asymmetric foreground asteroid mass breaks the clean oval, preserving right-space opening, blue shaft, and industrial scale lights.';
 }
 
 function buildScene() {
@@ -3137,6 +3279,7 @@ function buildScene() {
   buildReferenceFacilityMassing();
   buildHifi09ReferenceCompositionBoost();
   buildHifi10JaggedRimScaleLightPass();
+  buildHifi11AsymmetricAsteroidMassPass();
   updateReadout();
 }
 
