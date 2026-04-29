@@ -127,12 +127,26 @@ function hifiNoise(seed) {
 function hifiColor(x, y, z, warmBias = 0) {
   const vertical = THREE.MathUtils.clamp((y + 1.4) / 8.1, 0, 1);
   const depthCool = THREE.MathUtils.clamp((4.9 - z) / 6.2, 0, 1);
-  const shade = 0.44 + vertical * 0.24 + hifiNoise(x * 13.7 + y * 7.3 + z * 3.1) * 0.36 - depthCool * 0.12 + warmBias;
+  const macroNoise = hifiNoise(x * 0.78 + y * 1.16 + z * 0.38);
+  const microNoise = hifiNoise(x * 8.2 - y * 6.3 + z * 2.7);
+  const strata = Math.sin((x * 0.42 + y * 1.28 + z * 0.36) * 2.4) * 0.5 + 0.5;
+  const exposedWarmth = THREE.MathUtils.clamp((z - 3.9) / 1.8, 0, 1) * (0.08 + strata * 0.14) + Math.max(warmBias, 0) * 0.32;
+  const coolRecess = depthCool * (0.12 + macroNoise * 0.16) + Math.max(-warmBias, 0) * 0.18;
+  const dustLift = THREE.MathUtils.clamp((vertical - 0.28) * 1.2, 0, 1) * (0.08 + macroNoise * 0.1);
+  const shade = 0.34
+    + vertical * 0.16
+    + macroNoise * 0.2
+    + microNoise * 0.1
+    + strata * 0.12
+    - coolRecess
+    + warmBias * 0.14;
   const color = new THREE.Color(COLORS.rockCut);
   const cool = new THREE.Color(COLORS.rockOuter);
   const warm = new THREE.Color(COLORS.rockWarm);
-  color.lerp(cool, THREE.MathUtils.clamp(0.94 - shade + depthCool * 0.44, 0, 1));
-  color.lerp(warm, THREE.MathUtils.clamp((shade - 0.68) * 1.08, 0, 0.82));
+  color.lerp(cool, THREE.MathUtils.clamp(0.9 - shade + coolRecess * 0.62, 0, 1));
+  color.lerp(warm, THREE.MathUtils.clamp((shade - 0.52) * 0.92 + exposedWarmth, 0, 0.92));
+  color.lerp(new THREE.Color(0xc2a691), dustLift);
+  color.multiplyScalar(0.92 + macroNoise * 0.14 - depthCool * 0.06);
   return color;
 }
 
@@ -288,6 +302,7 @@ function buildHifiRockPanel(name, points, {
   }, { x: 0, y: 0 });
   center.x /= points.length;
   center.y /= points.length;
+  const maxRadius = points.reduce((max, [x, y]) => Math.max(max, Math.hypot(x - center.x, y - center.y)), 0.001);
 
   const push = (x, y, zz, localWarmBias = warmBias, seed = 0) => {
     vertices.push(x, y, zz);
@@ -297,9 +312,14 @@ function buildHifiRockPanel(name, points, {
     colors.push(c.r, c.g, c.b);
   };
 
-  const frontZ = (x, y, seed) => z
-    + (hifiNoise(x * 1.9 + y * 1.6 + seed * 0.33) - 0.5) * relief * 0.62
-    + (hifiNoise(x * 4.4 - y * 3.1 + seed * 0.77) - 0.5) * relief * 0.12;
+  const frontZ = (x, y, seed) => {
+    const macro = (hifiNoise(x * 1.9 + y * 1.6 + seed * 0.33) - 0.5) * relief * 0.5;
+    const medium = (hifiNoise(x * 4.4 - y * 3.1 + seed * 0.77) - 0.5) * relief * 0.18;
+    const micro = (hifiNoise(x * 10.8 + y * 9.4 + seed * 1.21) - 0.5) * relief * 0.05;
+    const radial = Math.hypot(x - center.x, y - center.y) / maxRadius;
+    const strata = Math.sin((x * 0.46 + y * 1.18 + seed * 0.12) * 2.7) * relief * 0.06;
+    return z + macro + medium + micro + strata + radial * relief * 0.08;
+  };
 
   const bounds = points.reduce((acc, [x, y]) => ({
     minX: Math.min(acc.minX, x),
@@ -326,9 +346,9 @@ function buildHifiRockPanel(name, points, {
     }
   }
 
-  const outline = resampleHifiContour(points, Math.max(0.22, grid * 0.92));
-  const depthLayers = 8;
-  const rimLayers = 2;
+  const outline = resampleHifiContour(points, Math.max(0.16, grid * 0.66));
+  const depthLayers = Math.max(10, Math.round(depth * 2.6));
+  const rimLayers = Math.max(3, Math.round(rimInset * 24));
   const layerPoints = [];
 
   for (let layer = 0; layer <= depthLayers; layer += 1) {
@@ -339,11 +359,13 @@ function buildHifiRockPanel(name, points, {
       const dy = y - center.y;
       const length = Math.hypot(dx, dy) || 1;
       const noise = (hifiNoise(index * 0.19 + t * 4.7 + x * 0.03 + y * 0.05) - 0.5);
-      const radialJitter = noise * (0.03 + t * 0.16);
+      const chipNoise = (hifiNoise(index * 0.73 + x * 0.18 - y * 0.22 + t * 8.4) - 0.5);
+      const strataDrop = Math.sin((x * 0.34 + y * 0.98 + t * 6.6) * 2.1) * 0.03;
+      const radialJitter = noise * (0.03 + t * 0.16) + chipNoise * (0.015 + t * 0.04);
       return {
         x: THREE.MathUtils.lerp(x, center.x, shrink) + (dx / length) * radialJitter,
         y: THREE.MathUtils.lerp(y, center.y, shrink * 0.82) + (dy / length) * radialJitter * 0.88,
-        z: z - depth * t + noise * relief * (0.18 + t * 0.42)
+        z: z - depth * t + noise * relief * (0.16 + t * 0.42) + chipNoise * relief * 0.08 + strataDrop
       };
     });
   }
@@ -399,6 +421,53 @@ function buildHifiRockPanel(name, points, {
   mesh.name = name;
   parent.add(mesh);
   return mesh;
+}
+
+function buildHifiCraterCluster(name, x, y, {
+  z = 5.04,
+  radius = 0.2,
+  scaleX = 1.3,
+  scaleY = 0.78,
+  angle = 0,
+  warmBias = 0.06,
+  parent = root
+} = {}) {
+  const craterGroup = new THREE.Group();
+  craterGroup.name = name;
+  craterGroup.position.set(x, y, z);
+  craterGroup.rotation.z = THREE.MathUtils.degToRad(angle);
+  parent.add(craterGroup);
+
+  const pit = new THREE.Mesh(new THREE.CircleGeometry(radius, 16), mat(0x050408, { roughness: 1, transparent: true, opacity: 0.76 }));
+  pit.scale.set(scaleX, scaleY, 1);
+  craterGroup.add(pit);
+
+  const dust = new THREE.Mesh(new THREE.CircleGeometry(radius * 1.46, 16), mat(0xb6947f, { roughness: 0.98, transparent: true, opacity: 0.22 }));
+  dust.position.set(radius * 0.2, -radius * 0.08, -0.012);
+  dust.scale.set(scaleX * 1.04, scaleY * 0.98, 1);
+  craterGroup.add(dust);
+
+  const chipCount = 6;
+  for (let i = 0; i < chipCount; i += 1) {
+    const t = i / chipCount;
+    const theta = t * Math.PI * 2 + hifiNoise(x * 1.4 + y * 0.9 + i) * 0.4;
+    const chipRadius = radius * (0.8 + (i % 3) * 0.1);
+    const chipX = Math.cos(theta) * chipRadius * scaleX;
+    const chipY = Math.sin(theta) * chipRadius * scaleY;
+    hifiShard(`${name} rim chip ${i}`, chipX, chipY, {
+      z: 0.05 + (i % 2) * 0.03,
+      width: radius * (1.08 + (i % 2) * 0.18),
+      height: radius * (0.52 + (i % 3) * 0.08),
+      depth: radius * 1.9,
+      skew: 0.04 + (i % 2) * 0.05,
+      warmBias: warmBias + (i % 2) * 0.04,
+      angle: THREE.MathUtils.radToDeg(theta) + 16,
+      roughness: 0.05,
+      parent: craterGroup
+    });
+  }
+
+  return craterGroup;
 }
 
 function hifiShard(name, x, y, {
@@ -467,6 +536,18 @@ function addLights() {
   const topRim = new THREE.PointLight(0xffbc72, 2.6, 16.0);
   topRim.position.set(0, 5.7, 4.4);
   scene.add(topRim);
+  const asteroidCutWarm = new THREE.PointLight(0xffb26d, 2.1, 11.0);
+  asteroidCutWarm.position.set(-5.6, 4.48, 5.55);
+  scene.add(asteroidCutWarm);
+  const asteroidCutWarmRight = new THREE.PointLight(0xffa060, 1.7, 10.5);
+  asteroidCutWarmRight.position.set(6.6, 3.84, 5.2);
+  scene.add(asteroidCutWarmRight);
+  const asteroidRecessCool = new THREE.PointLight(0x78baff, 2.2, 14.0);
+  asteroidRecessCool.position.set(-10.8, 2.6, 2.4);
+  scene.add(asteroidRecessCool);
+  const asteroidUndersideCool = new THREE.PointLight(0x5f8fff, 1.8, 12.0);
+  asteroidUndersideCool.position.set(6.8, -0.18, 2.1);
+  scene.add(asteroidUndersideCool);
 }
 
 function buildStarfield() {
@@ -536,28 +617,28 @@ function addRockSurfaceDetail(parent) {
 
 function buildHifiAsteroidShell() {
   const shell = new THREE.Group();
-  shell.name = 'concept-c hifi procedural asteroid shell mesh v2 dense foundation';
+  shell.name = 'concept-c hifi procedural asteroid shell mesh v3 fracture hierarchy';
   root.add(shell);
 
   buildHifiRockPanel('hifi dense left oppressive asteroid mantle', [
     [-14.8, 3.2], [-13.9, 5.25], [-10.9, 6.95], [-8.7, 6.22], [-7.0, 7.32], [-4.65, 6.24], [-2.7, 6.72],
     [-0.78, 5.2], [-1.86, 4.12], [-4.2, 4.58], [-6.8, 4.04], [-9.9, 4.42], [-10.6, 3.3], [-9.86, 2.18],
     [-10.8, 0.72], [-12.7, 0.22], [-14.28, 1.28]
-  ], { z: 4.58, depth: 6.1, parent: shell, warmBias: 0.02, grid: 0.28, rimInset: 0.11, backShrink: 0.15, relief: 0.42 });
+  ], { z: 4.58, depth: 6.1, parent: shell, warmBias: 0.02, grid: 0.22, rimInset: 0.11, backShrink: 0.15, relief: 0.46 });
 
   buildHifiRockPanel('hifi dense right recessed broken asteroid mantle', [
     [1.55, 5.55], [3.25, 5.08], [5.22, 5.92], [8.75, 5.12], [10.9, 5.72], [11.62, 4.65], [12.96, 3.78],
     [13.55, 2.7], [12.85, 1.64], [10.55, 0.62], [9.28, 1.22], [10.14, 2.48], [9.4, 3.04], [6.42, 4.74], [3.62, 4.04], [1.52, 4.44]
-  ], { z: 4.34, depth: 4.9, parent: shell, warmBias: -0.02, grid: 0.3, rimInset: 0.1, backShrink: 0.13, relief: 0.36 });
+  ], { z: 4.34, depth: 4.9, parent: shell, warmBias: -0.02, grid: 0.24, rimInset: 0.1, backShrink: 0.13, relief: 0.4 });
 
   buildHifiRockPanel('hifi dense sagging lower left asteroid shelf with real thickness', [
     [-10.9, 0.82], [-8.7, 1.14], [-6.52, 0.48], [-4.72, 1.02], [-2.72, 0.2], [-1.35, 0.46],
     [-2.12, -0.58], [-4.7, -1.28], [-7.34, -0.68], [-10.05, -1.08]
-  ], { z: 4.56, depth: 5.5, parent: shell, warmBias: 0.03, grid: 0.3, rimInset: 0.09, backShrink: 0.14, relief: 0.34 });
+  ], { z: 4.56, depth: 5.5, parent: shell, warmBias: 0.03, grid: 0.24, rimInset: 0.09, backShrink: 0.14, relief: 0.38 });
 
   buildHifiRockPanel('hifi dense broken lower right asteroid shelf pulled backward', [
     [1.7, 0.16], [4.18, 0.78], [7.34, 0.2], [9.62, 0.5], [8.12, -0.3], [5.75, -0.92], [3.18, -0.46], [1.0, -0.82]
-  ], { z: 4.16, depth: 4.0, parent: shell, warmBias: -0.01, grid: 0.32, rimInset: 0.08, backShrink: 0.11, relief: 0.28 });
+  ], { z: 4.16, depth: 4.0, parent: shell, warmBias: -0.01, grid: 0.24, rimInset: 0.08, backShrink: 0.11, relief: 0.34 });
 
   buildHifiRockPanel('hifi dense upper left crown breakout bridge', [
     [-12.9, 5.74], [-11.42, 6.52], [-9.54, 6.22], [-10.64, 5.12], [-12.32, 5.08]
@@ -578,10 +659,66 @@ function buildHifiAsteroidShell() {
     depth,
     parent: shell,
     warmBias: 0.18,
-    grid: 0.18,
+    grid: 0.14,
     rimInset: 0.16,
     backShrink: 0.22,
     relief: 0.14 + index * 0.02
+  }));
+
+  const cutRimShelves = [
+    ['hifi top left carved rim shelf', [[-8.84, 4.9], [-7.64, 5.22], [-5.92, 5.06], [-5.34, 4.62], [-6.48, 4.28], [-8.12, 4.34]], 5.18, 0.74, 0.22],
+    ['hifi central roof bevel shelf', [[-2.72, 5.04], [-1.36, 5.34], [0.32, 5.06], [0.92, 4.56], [-0.28, 4.2], [-1.96, 4.34]], 5.22, 0.82, 0.24],
+    ['hifi right roof bite bevel shelf', [[4.24, 4.96], [5.9, 5.24], [7.62, 4.94], [8.08, 4.44], [6.72, 4.08], [4.98, 4.3]], 5.04, 0.74, 0.18],
+    ['hifi left vertical cut rim shelf', [[-10.9, 3.64], [-10.1, 4.02], [-9.48, 3.76], [-9.56, 2.8], [-10.04, 2.28], [-10.78, 2.56]], 5.08, 0.7, 0.14],
+    ['hifi right vertical cut rim shelf', [[9.12, 3.6], [10.26, 3.8], [10.58, 3.18], [10.1, 2.08], [9.34, 1.62], [8.98, 2.58]], 4.92, 0.68, 0.14],
+    ['hifi lower left sill bevel shelf', [[-8.94, 0.88], [-6.8, 0.7], [-4.62, 0.34], [-3.58, 0.04], [-4.42, -0.28], [-6.92, -0.14], [-8.62, 0.18]], 5.02, 0.78, 0.18],
+    ['hifi lower right sill bevel shelf', [[2.04, 0.42], [4.02, 0.56], [6.52, 0.3], [7.62, 0.02], [6.84, -0.28], [4.18, -0.22], [2.46, -0.04]], 4.78, 0.7, 0.12]
+  ];
+  cutRimShelves.forEach(([name, pts, shelfZ, depth, warmBias]) => buildHifiRockPanel(name, pts, {
+    z: shelfZ,
+    depth,
+    parent: shell,
+    warmBias,
+    grid: 0.12,
+    rimInset: 0.18,
+    backShrink: 0.2,
+    relief: 0.2
+  }));
+
+  const strataShelves = [
+    ['hifi top left exposed strata ledge', [[-8.42, 4.66], [-7.16, 4.88], [-5.88, 4.74], [-6.34, 4.38], [-7.72, 4.22]], 4.78, 0.92, -0.02],
+    ['hifi central exposed strata ledge', [[-2.24, 4.84], [-0.9, 5.0], [0.34, 4.72], [-0.16, 4.36], [-1.62, 4.28]], 4.82, 0.96, 0.02],
+    ['hifi right roof exposed strata ledge', [[4.72, 4.76], [6.12, 4.94], [7.14, 4.68], [6.62, 4.3], [5.06, 4.16]], 4.72, 0.88, -0.04],
+    ['hifi lower left layered sill strata', [[-8.36, 0.6], [-6.26, 0.44], [-4.92, 0.1], [-5.92, -0.14], [-7.98, 0.04]], 4.62, 0.98, 0.02],
+    ['hifi lower right layered sill strata', [[2.52, 0.24], [4.28, 0.34], [6.32, 0.14], [5.72, -0.08], [3.36, -0.02]], 4.46, 0.88, -0.06]
+  ];
+  strataShelves.forEach(([name, pts, shelfZ, depth, warmBias]) => buildHifiRockPanel(name, pts, {
+    z: shelfZ,
+    depth,
+    parent: shell,
+    warmBias,
+    grid: 0.11,
+    rimInset: 0.08,
+    backShrink: 0.16,
+    relief: 0.16
+  }));
+
+  const recessShadowShelves = [
+    ['hifi top left shadow recess shelf', [[-8.04, 4.48], [-6.7, 4.62], [-5.82, 4.46], [-6.48, 4.06], [-7.78, 3.96]], 4.38, 1.18],
+    ['hifi central roof shadow recess shelf', [[-1.88, 4.58], [-0.66, 4.74], [0.2, 4.46], [-0.36, 4.08], [-1.62, 4.02]], 4.42, 1.26],
+    ['hifi right roof shadow recess shelf', [[4.96, 4.5], [6.22, 4.7], [6.88, 4.4], [6.18, 4.02], [5.12, 3.94]], 4.28, 1.08],
+    ['hifi lower left sill shadow recess shelf', [[-8.0, 0.28], [-6.02, 0.2], [-5.14, -0.08], [-6.08, -0.34], [-7.86, -0.18]], 4.14, 1.12],
+    ['hifi lower right sill shadow recess shelf', [[2.88, 0.02], [4.48, 0.08], [5.92, -0.06], [5.28, -0.26], [3.42, -0.2]], 3.98, 1.02]
+  ];
+  recessShadowShelves.forEach(([name, pts, shelfZ, depth]) => buildHifiRockPanel(name, pts, {
+    z: shelfZ,
+    depth,
+    parent: shell,
+    warmBias: -0.14,
+    grid: 0.1,
+    rimInset: 0.06,
+    backShrink: 0.18,
+    relief: 0.12
   }));
 
   const fractureRibbons = [
@@ -589,7 +726,12 @@ function buildHifiAsteroidShell() {
     ['hifi upper left secondary strata crack', [[-10.94, 4.76], [-9.88, 4.34], [-8.36, 4.46], [-7.18, 4.08]], 0.09, 0.04, 5.18, -0.16],
     ['hifi upper center roof bite crack ladder', [[-2.2, 4.86], [-1.38, 4.42], [-0.42, 4.62], [0.48, 4.24]], 0.11, 0.05, 5.18, -0.08],
     ['hifi right outer cheek fracture hierarchy', [[9.32, 4.2], [10.22, 3.84], [10.82, 3.12], [10.12, 2.26], [9.44, 1.66]], 0.12, 0.05, 4.9, -0.12],
-    ['hifi lower sill primary broken seam', [[-9.3, 0.52], [-7.62, 0.18], [-5.92, -0.06], [-3.84, -0.14], [-1.52, -0.02], [1.26, -0.08], [4.08, -0.18], [7.24, 0.02]], 0.12, 0.04, 5.14, 0.06]
+    ['hifi lower sill primary broken seam', [[-9.3, 0.52], [-7.62, 0.18], [-5.92, -0.06], [-3.84, -0.14], [-1.52, -0.02], [1.26, -0.08], [4.08, -0.18], [7.24, 0.02]], 0.12, 0.04, 5.14, 0.06],
+    ['hifi top crown tertiary crack fan', [[-7.24, 6.24], [-6.1, 5.92], [-4.88, 5.78], [-3.6, 5.32], [-2.58, 5.4]], 0.08, 0.03, 5.38, -0.04],
+    ['hifi central rim offset crack run', [[-3.14, 4.58], [-2.18, 4.22], [-0.9, 4.26], [0.38, 3.98], [1.4, 4.08]], 0.08, 0.03, 5.06, -0.12],
+    ['hifi right crown split ladder', [[3.88, 5.18], [4.92, 4.88], [6.18, 4.98], [7.22, 4.56]], 0.09, 0.04, 5.08, -0.06],
+    ['hifi left wall underbite crack stack', [[-11.02, 3.52], [-10.66, 2.9], [-10.24, 2.28], [-9.88, 1.76]], 0.08, 0.03, 4.94, -0.16],
+    ['hifi right wall underbite crack stack', [[10.24, 3.42], [10.38, 2.84], [10.08, 2.2], [9.72, 1.62]], 0.08, 0.03, 4.82, -0.16]
   ];
   fractureRibbons.forEach(([name, path, widthStart, widthEnd, fractureZ, warm]) => {
     buildHifiFractureRibbon(name, path, {
@@ -607,12 +749,49 @@ function buildHifiAsteroidShell() {
   ], { z: 5.08, depth: 0.32, parent: shell, warmBias: -0.4, roughness: 0.05 });
   tunnel.material = MATS.shadow;
 
-  const mineralEdges = [
-    [-9.4, 5.8, 2.8, -22], [-5.7, 5.42, 3.6, 12], [-7.8, 0.25, 3.2, -8], [5.6, 4.92, 3.4, 8], [5.4, -0.28, 3.8, -12]
+  const mineralRibbons = [
+    ['hifi selective chipped mineral rim 0', [[-10.42, 5.92], [-9.86, 5.72], [-9.08, 5.78], [-8.34, 5.48]], 0.06, 0.028, 5.28, 0.12],
+    ['hifi selective chipped mineral rim 1', [[-6.52, 5.3], [-5.68, 5.46], [-4.82, 5.26], [-3.98, 5.38]], 0.07, 0.03, 5.22, 0.16],
+    ['hifi selective chipped mineral rim 2', [[-8.8, 0.36], [-7.76, 0.2], [-6.74, 0.12], [-5.8, -0.02]], 0.07, 0.03, 5.14, 0.14],
+    ['hifi selective chipped mineral rim 3', [[4.82, 4.88], [5.68, 5.02], [6.56, 4.84], [7.38, 4.96]], 0.07, 0.03, 5.08, 0.1],
+    ['hifi selective chipped mineral rim 4', [[4.24, -0.06], [5.2, -0.12], [6.24, -0.04], [7.1, -0.14]], 0.07, 0.03, 4.92, 0.08]
   ];
-  mineralEdges.forEach(([x, y, length, angle], index) => {
-    const seam = box(`hifi selective chipped mineral rim ${index}`, [length, 0.035, 0.045], [x, y, 5.15], MATS.rockWarm, shell);
-    seam.rotation.z = THREE.MathUtils.degToRad(angle);
+  mineralRibbons.forEach(([name, path, widthStart, widthEnd, ribbonZ, warmBias]) => {
+    buildHifiFractureRibbon(name, path, {
+      z: ribbonZ,
+      depth: 0.08,
+      widthStart,
+      widthEnd,
+      warmBias,
+      parent: shell,
+      opacity: 1
+    });
+  });
+
+  [
+    ['hifi crater cluster top left outer crust', -11.62, 4.84, 5.18, 0.19, 1.42, 0.82, -18, 0.06],
+    ['hifi crater cluster upper center crust', -4.12, 5.7, 5.26, 0.16, 1.28, 0.78, 8, 0.08],
+    ['hifi crater cluster right crown crust', 7.26, 5.02, 5.08, 0.18, 1.34, 0.8, -14, 0.04],
+    ['hifi crater cluster left lower sill crust', -7.22, 0.22, 5.0, 0.17, 1.38, 0.74, -8, 0.1],
+    ['hifi crater cluster right lower sill crust', 5.18, 0.08, 4.78, 0.16, 1.3, 0.76, 10, 0.02]
+  ].forEach(([name, x, y, craterZ, radius, scaleX, scaleY, angle, warmBias]) => {
+    buildHifiCraterCluster(name, x, y, { z: craterZ, radius, scaleX, scaleY, angle, warmBias, parent: shell });
+  });
+
+  const dustPatches = [
+    [-10.34, 5.52, 0.42, 1.7, 0.92, -18],
+    [-5.18, 5.18, 0.34, 1.6, 0.86, 10],
+    [5.88, 4.78, 0.36, 1.58, 0.82, -8],
+    [-7.22, 0.04, 0.32, 1.74, 0.76, -6],
+    [4.84, -0.08, 0.28, 1.62, 0.78, 12]
+  ];
+  dustPatches.forEach(([x, y, radius, sx, sy, angle], index) => {
+    const dust = new THREE.Mesh(new THREE.CircleGeometry(radius, 18), mat(0xc19b84, { roughness: 1, transparent: true, opacity: 0.14 }));
+    dust.name = `hifi asteroid dust patch ${index}`;
+    dust.position.set(x, y, 5.1 - index * 0.04);
+    dust.scale.set(sx, sy, 1);
+    dust.rotation.z = THREE.MathUtils.degToRad(angle);
+    shell.add(dust);
   });
 }
 
@@ -656,40 +835,52 @@ function buildHifiSecondaryAsteroidBreakup() {
     ['lower left shattered cut face', [[-6.98, 0.02], [-5.42, -0.18], [-4.88, -0.94], [-6.7, -0.82]], 4.9, 0.42, 0.24]
   ];
   fracturePlanes.forEach(([name, pts, z, depth, warmBias], index) => {
-    hifiPrism(`hifi ${name}`, pts, { z, depth, parent: detail, warmBias, roughness: 0.08 + index * 0.02 });
+    buildHifiRockPanel(`hifi ${name}`, pts, {
+      z,
+      depth,
+      parent: detail,
+      warmBias,
+      grid: 0.12,
+      rimInset: 0.12,
+      backShrink: 0.2,
+      relief: 0.12 + index * 0.02
+    });
   });
 
-  const crackMat = mat(0x09070a, { roughness: 1, transparent: true, opacity: 0.8 });
-  const dustMat = mat(0xb89682, { roughness: 0.98, transparent: true, opacity: 0.28 });
   const craterData = [
     [-11.88, 4.82, 0.22, 1.5, 0.8], [-8.96, 5.64, 0.14, 1.4, 0.72], [-6.32, 4.94, 0.18, 1.2, 0.78],
     [2.74, 5.18, 0.14, 1.3, 0.76], [8.48, 4.72, 0.2, 1.45, 0.82], [10.82, 2.22, 0.16, 1.1, 0.85],
     [-8.62, 0.18, 0.18, 1.5, 0.76], [-5.02, -0.18, 0.14, 1.25, 0.72], [5.46, 0.08, 0.16, 1.35, 0.74]
   ];
   craterData.forEach(([x, y, radius, sx, sy], index) => {
-    const crater = new THREE.Mesh(new THREE.CircleGeometry(radius, 12), crackMat);
-    crater.name = `hifi asteroid crater pocket ${index}`;
-    crater.position.set(x, y, 5.12);
-    crater.scale.set(sx, sy, 1);
-    detail.add(crater);
-
-    const dust = new THREE.Mesh(new THREE.CircleGeometry(radius * 1.38, 12), dustMat);
-    dust.name = `hifi asteroid crater dust halo ${index}`;
-    dust.position.set(x + radius * 0.22, y - radius * 0.12, 5.1);
-    dust.scale.set(sx * 1.02, sy * 0.94, 1);
-    detail.add(dust);
+    buildHifiCraterCluster(`hifi asteroid crater pocket ${index}`, x, y, {
+      z: 5.12,
+      radius,
+      scaleX: sx,
+      scaleY: sy,
+      angle: (index % 2 ? -18 : 14) + index * 3,
+      warmBias: 0.04 + (index % 3) * 0.02,
+      parent: detail
+    });
   });
 
   const fractureBands = [
-    ['upper left jagged fracture network', -8.48, 5.04, 4.18, -18, MATS.shadow],
-    ['upper center warm mineral fracture network', -0.42, 4.58, 2.24, 14, MATS.rockWarm],
-    ['left wall vertical strata tear', -11.02, 2.42, 2.02, 78, MATS.shadow],
-    ['right wall vertical strata tear', 10.88, 2.6, 1.86, -74, MATS.shadow],
-    ['lower sill broken seam run', -0.82, 0.14, 9.8, 2, MATS.rockWarm]
+    ['upper left jagged fracture network', [[-10.12, 5.18], [-9.16, 4.96], [-8.18, 5.08], [-7.08, 4.72], [-6.02, 4.82]], 0.08, 0.04, 5.22, -0.18],
+    ['upper center warm mineral fracture network', [[-1.4, 4.82], [-0.7, 4.56], [0.14, 4.72], [0.9, 4.44]], 0.08, 0.04, 5.18, 0.02],
+    ['left wall vertical strata tear', [[-11.1, 2.96], [-10.74, 2.46], [-10.5, 1.86], [-10.14, 1.28]], 0.08, 0.03, 5.0, -0.22],
+    ['right wall vertical strata tear', [[10.82, 3.08], [10.64, 2.48], [10.28, 1.86], [9.92, 1.34]], 0.08, 0.03, 4.84, -0.22],
+    ['lower sill broken seam run', [[-5.1, 0.18], [-2.84, 0.08], [-0.64, 0.02], [1.62, 0.02], [4.14, -0.06]], 0.08, 0.03, 5.04, 0.06]
   ];
-  fractureBands.forEach(([name, x, y, length, angle, material], index) => {
-    const seam = box(`hifi ${name}`, [length, 0.05, 0.05], [x, y, 5.16 - index * 0.02], material, detail);
-    seam.rotation.z = THREE.MathUtils.degToRad(angle);
+  fractureBands.forEach(([name, path, widthStart, widthEnd, z, warmBias]) => {
+    buildHifiFractureRibbon(`hifi ${name}`, path, {
+      z,
+      depth: 0.16,
+      widthStart,
+      widthEnd,
+      warmBias,
+      parent: detail,
+      opacity: 0.94
+    });
   });
 
   const rubblePockets = [
