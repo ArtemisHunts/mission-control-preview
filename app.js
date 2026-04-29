@@ -3131,7 +3131,7 @@ function buildHifi11AsymmetricAsteroidMassPass() {
   pass.name = 'concept-c HIFI-11 asymmetric foreground asteroid mass pass';
   root.add(pass);
 
-  const foregroundVoid = mat(0x000104, { roughness: 1, side: THREE.DoubleSide });
+  const foregroundVoid = mat(0x000104, { roughness: 1, transparent: true, opacity: 0.42, side: THREE.DoubleSide });
   const hotCut = mat(0xb28a72, { roughness: 0.92, emissive: 0x2a1208, emissiveIntensity: 0.18, side: THREE.DoubleSide });
   const coldDust = mat(0x62718a, { roughness: 0.98, emissive: 0x08162a, emissiveIntensity: 0.08, side: THREE.DoubleSide });
 
@@ -3286,7 +3286,7 @@ function buildHifi12EfficientHighresCutawayAssetPass() {
     metalness: 0.0,
     side: THREE.DoubleSide
   });
-  const darkMask = mat(0x000104, { roughness: 1, side: THREE.DoubleSide });
+  const darkMask = mat(0x000104, { roughness: 1, transparent: true, opacity: 0.36, side: THREE.DoubleSide });
 
   const segments = 256;
   const bands = 14;
@@ -3313,11 +3313,11 @@ function buildHifi12EfficientHighresCutawayAssetPass() {
     const oy = cy + Math.sin(a) * 10.8 * outerScale + topWeight * 1.1 - lowerWeight * 0.55 + Math.cos(a * 3.0) * 0.28;
 
     // Irregular carved-open front cavity. Intentionally not a clean oval: left lip is deeper, right/top have bites.
-    const biteTop = Math.exp(-Math.pow(a - Math.PI * 0.47, 2) / 0.12) * 0.16;
+    const biteTop = Math.exp(-Math.pow(a - Math.PI * 0.47, 2) / 0.12) * 0.08;
     const biteRight = Math.exp(-Math.pow(a, 2) / 0.18) * 0.10;
-    const lowerShelf = Math.exp(-Math.pow(a - Math.PI * 1.5, 2) / 0.16) * 0.12;
-    const ix = cx + 0.4 + Math.cos(a) * 13.0 * innerScale + Math.sin(a * 4.2) * 0.55 - biteRight * 1.6;
-    const iy = cy - 0.35 + Math.sin(a) * 6.55 * (innerScale - biteTop + lowerShelf) + Math.cos(a * 2.8) * 0.42 - lowerShelf * 0.85;
+    const lowerShelf = Math.exp(-Math.pow(a - Math.PI * 1.5, 2) / 0.16) * 0.07;
+    const ix = cx + 0.35 + Math.cos(a) * 15.05 * innerScale + Math.sin(a * 4.2) * 0.72 - biteRight * 1.2;
+    const iy = cy - 0.15 + Math.sin(a) * 7.75 * (innerScale - biteTop + lowerShelf) + Math.cos(a * 2.8) * 0.52 - lowerShelf * 0.62;
     outerPts.push([ox, oy]);
     innerPts.push([ix, iy]);
   }
@@ -3507,9 +3507,129 @@ function buildHifi12EfficientHighresCutawayAssetPass() {
   scene.add(workLight);
 }
 
+
+function buildHifi13WideFacilityRevealPass() {
+  const pass = new THREE.Group();
+  pass.name = 'concept-c HIFI-13 widened cutaway facility reveal pass';
+  root.add(pass);
+
+  // Softly erase remaining old occlusion in the center with interior light volumes, not a flat portal.
+  const revealHaze = box('hifi13 wide cutaway interior readability haze', [23.0, 10.2, 0.05], [-0.6, 1.6, -6.1], mat(0x6f8495, {
+    emissive: 0x506b80,
+    emissiveIntensity: 0.34,
+    transparent: true,
+    opacity: 0.16,
+    roughness: 0.12,
+    side: THREE.DoubleSide
+  }), pass);
+  revealHaze.rotation.z = THREE.MathUtils.degToRad(-2);
+
+  const facility = new THREE.Group();
+  facility.name = 'hifi13 widened visible facility macro asset layers';
+  pass.add(facility);
+
+  const addDeck = (name, x, y, z, w, d, yaw, material, accent, posts = 5) => {
+    const deck = box(`${name} deck slab`, [w, 0.16, d], [x, y, z], material, facility);
+    deck.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const edge = box(`${name} readable edge light`, [w * 0.88, 0.035, 0.035], [x, y + 0.16, z + d * 0.52], accent, facility);
+    edge.rotation.y = deck.rotation.y;
+    for (let i = 0; i < posts; i += 1) {
+      const t = posts === 1 ? 0.5 : i / (posts - 1);
+      const px = x - w * 0.42 + w * 0.84 * t;
+      const post = box(`${name} support post ${i}`, [0.08, 1.2 + (i % 2) * 0.5, 0.08], [px, y - 0.68, z + d * (i % 2 ? 0.38 : -0.38)], MATS.blackMetal, facility);
+      post.rotation.y = deck.rotation.y;
+    }
+    return deck;
+  };
+
+  // Macro decks deliberately fill more of the opening. These are readable facility shapes, not micro noise.
+  addDeck('hifi13 upper left refinery terrace', -8.6, 4.45, -9.4, 9.8, 1.15, -7, MATS.darkSteel, MATS.cyanDim, 6);
+  addDeck('hifi13 upper right crane terrace', 6.6, 4.25, -9.8, 10.2, 1.1, 6, MATS.darkSteel, MATS.amber, 6);
+  addDeck('hifi13 central broad operations bridge', -0.6, 2.25, -6.8, 19.0, 1.25, 0, MATS.steel, MATS.amber, 9);
+  addDeck('hifi13 lower left stepped platform', -7.1, 0.15, -5.4, 8.8, 1.05, 9, MATS.blackMetal, MATS.cyanDim, 5);
+  addDeck('hifi13 lower right stepped platform', 6.6, 0.05, -5.6, 8.4, 1.05, -8, MATS.blackMetal, MATS.amber, 5);
+  addDeck('hifi13 rear high service catwalk', -0.2, 6.05, -13.2, 15.4, 0.78, -2, MATS.blackMetal, MATS.cyanDim, 7);
+
+  // Central pit becomes visible through the widened mouth.
+  const pit = new THREE.Group();
+  pit.name = 'hifi13 widened reveal central pit macro read';
+  pit.position.set(-0.8, -1.95, -4.75);
+  pass.add(pit);
+  [5.9, 4.9, 4.0, 3.05, 2.2].forEach((radius, tier) => {
+    const ring = torus(`hifi13 visible pit ring ${tier}`, radius, 0.065, 12, 128, [0, -tier * 0.46, 0], tier % 2 ? MATS.cyanDim : MATS.darkSteel, pit);
+    ring.rotation.x = Math.PI / 2;
+    if (tier < 3) {
+      const tick = torus(`hifi13 visible pit glow edge ${tier}`, radius * 0.96, 0.026, 8, 96, [0, -tier * 0.46 + 0.03, 0], MATS.cyan, pit);
+      tick.rotation.x = Math.PI / 2;
+    }
+  });
+  const pitCore = cylinder('hifi13 brighter visible pit cyan core', 1.6, 2.7, 3.4, 64, [0, -1.8, 0], mat(0x0b324c, {
+    emissive: COLORS.cyan,
+    emissiveIntensity: 1.15,
+    transparent: true,
+    opacity: 0.42,
+    roughness: 0.08
+  }), pit);
+  pitCore.rotation.z = THREE.MathUtils.degToRad(2);
+
+  // Rear hangar/tunnel should be readable but not dominate like the old wrong right portal target.
+  const hangar = new THREE.Group();
+  hangar.name = 'hifi13 readable rear tunnel and landing pad';
+  pass.add(hangar);
+  const glow = box('hifi13 rear tunnel larger cold aperture', [5.8, 3.7, 0.05], [4.8, 4.25, -14.2], mat(0xd3e4f6, {
+    emissive: 0xc9e0ff,
+    emissiveIntensity: 2.2,
+    transparent: true,
+    opacity: 0.64,
+    roughness: 0.05,
+    side: THREE.DoubleSide
+  }), hangar);
+  glow.rotation.z = THREE.MathUtils.degToRad(-3);
+  box('hifi13 rear tunnel landing pad', [6.6, 0.16, 2.4], [4.8, 2.1, -12.1], MATS.darkSteel, hangar).rotation.y = THREE.MathUtils.degToRad(-3);
+  box('hifi13 rear tunnel upper frame', [6.1, 0.22, 0.34], [4.8, 6.16, -13.95], MATS.blackMetal, hangar).rotation.z = THREE.MathUtils.degToRad(-3);
+  box('hifi13 rear tunnel lower frame', [5.8, 0.18, 0.3], [4.8, 2.3, -13.9], MATS.blackMetal, hangar).rotation.z = THREE.MathUtils.degToRad(-3);
+
+  // Cranes/gantries: few readable silhouettes rather than hundreds of small parts.
+  const cranes = [
+    ['left overhead gantry crane', -9.6, 5.65, -8.4, 3.0, 1.6, MATS.amber],
+    ['right overhead gantry crane', 8.6, 5.6, -8.8, 3.4, 1.8, MATS.amber],
+    ['rear service crane', 1.0, 6.95, -12.6, 4.0, 1.4, MATS.cyanDim]
+  ];
+  cranes.forEach(([name, x, y, z, arm, mast, accent], index) => {
+    const mastMesh = box(`hifi13 ${name} mast`, [0.12, mast, 0.12], [x, y - mast * 0.5, z], MATS.blackMetal, facility);
+    const armMesh = box(`hifi13 ${name} arm`, [arm, 0.08, 0.08], [x + arm * 0.42, y, z], accent, facility);
+    armMesh.rotation.y = THREE.MathUtils.degToRad(index % 2 ? -8 : 8);
+    box(`hifi13 ${name} hook`, [0.08, 0.5, 0.08], [x + arm * 0.78, y - 0.32, z], MATS.darkSteel, facility);
+    mastMesh.rotation.y = armMesh.rotation.y;
+  });
+
+  // Cheap readable scale lights distributed in the wider opening.
+  for (let i = 0; i < 260; i += 1) {
+    const zone = i % 6;
+    const x = [-10.4, -5.2, 0.0, 5.4, 9.8, -1.0][zone] + (hifiNoise(i * 1.31) - 0.5) * [4.5, 4.4, 7.0, 4.4, 3.2, 14.0][zone];
+    const y = [2.6, 0.4, 1.7, 0.5, 2.5, 5.5][zone] + hifiNoise(i * 1.73) * [3.2, 2.4, 3.2, 2.3, 2.9, 2.4][zone];
+    const z = [-8.4, -5.7, -7.4, -5.8, -8.6, -12.6][zone] - hifiNoise(i * 2.21) * 2.6;
+    const tick = box(`hifi13 widened facility pinlight ${i}`, [0.07, 0.026, 0.026], [x, y, z], zone === 2 || zone === 5 ? MATS.amber : MATS.cyanDim, facility);
+    tick.rotation.y = THREE.MathUtils.degToRad(-12 + hifiNoise(i * 2.9) * 24);
+  }
+
+  const revealKey = new THREE.PointLight(0xffb06d, 16.0, 30.0);
+  revealKey.name = 'hifi13 wider facility warm readability light';
+  revealKey.position.set(-2.0, 2.8, -4.2);
+  scene.add(revealKey);
+  const pitKey = new THREE.PointLight(0x5ce7ff, 20.0, 28.0);
+  pitKey.name = 'hifi13 widened pit cyan readability light';
+  pitKey.position.set(-0.8, -1.4, -3.8);
+  scene.add(pitKey);
+  const hangarKey = new THREE.PointLight(0xd5e8ff, 22.0, 34.0);
+  hangarKey.name = 'hifi13 rear tunnel readability light';
+  hangarKey.position.set(5.0, 4.5, -10.2);
+  scene.add(hangarKey);
+}
+
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-12: efficient high-resolution full asteroid cutaway asset — dense shell/rim geometry where it matters, cheap scale details where it does not.';
+  document.getElementById('focus-body').textContent = 'HIFI-13: widened asteroid cutaway reveals more facility decks, central pit, rear tunnel, cranes, and readable scale lights.';
 }
 
 function buildScene() {
@@ -3521,6 +3641,7 @@ function buildScene() {
   buildHifi10JaggedRimScaleLightPass();
   buildHifi11AsymmetricAsteroidMassPass();
   buildHifi12EfficientHighresCutawayAssetPass();
+  buildHifi13WideFacilityRevealPass();
   updateReadout();
 }
 
