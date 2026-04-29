@@ -1696,6 +1696,197 @@ function buildBrutalMassDepthPass() {
   box('concept-c diagonal black chasm slice cutting flat lower deck line', [4.2, 0.42, 0.22], [1.0, 0.42, 3.12], MATS.shadow, brutal).rotation.z = THREE.MathUtils.degToRad(-8);
 }
 
+
+function buildSculptedRockPlane(name, points, {
+  z = 6.3,
+  grid = 0.12,
+  relief = 0.22,
+  warmBias = 0.02,
+  parent = root,
+  coolBias = 0.12
+} = {}) {
+  const geometry = new THREE.BufferGeometry();
+  const vertices = [];
+  const colors = [];
+  const center = points.reduce((acc, [x, y]) => {
+    acc.x += x;
+    acc.y += y;
+    return acc;
+  }, { x: 0, y: 0 });
+  center.x /= points.length;
+  center.y /= points.length;
+  const bounds = points.reduce((acc, [x, y]) => ({
+    minX: Math.min(acc.minX, x),
+    maxX: Math.max(acc.maxX, x),
+    minY: Math.min(acc.minY, y),
+    maxY: Math.max(acc.maxY, y)
+  }), { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity });
+
+  const push = (x, y, zz, seed = 0) => {
+    vertices.push(x, y, zz);
+    const strata = Math.sin((x * 0.24 + y * 0.82 + seed * 0.04) * 2.1) * 0.5 + 0.5;
+    const altitude = THREE.MathUtils.clamp((y + 1.2) / 11.4, 0, 1);
+    const c = hifiColor(x * 0.42 + seed * 0.05, y * 0.76, zz, warmBias + strata * 0.1);
+    c.lerp(new THREE.Color(0x171522), coolBias * (1 - strata));
+    c.lerp(new THREE.Color(0xb99a82), THREE.MathUtils.clamp(strata * 0.28 + altitude * 0.12 + warmBias, 0, 0.46));
+    c.multiplyScalar(0.86 + altitude * 0.18);
+    colors.push(c.r, c.g, c.b);
+  };
+
+  const sculptZ = (x, y, seed) => {
+    const broadFold = Math.sin(x * 0.42 + y * 0.18 + seed * 0.03) * relief * 0.46;
+    const shelfTilt = Math.sin(y * 0.7 - x * 0.12) * relief * 0.26;
+    const wornUndulation = Math.sin((x + y) * 1.08 + seed * 0.08) * relief * 0.14;
+    const rareChip = (hifiNoise(x * 1.1 - y * 0.8 + seed * 0.17) - 0.5) * relief * 0.08;
+    return z + broadFold + shelfTilt + wornUndulation + rareChip;
+  };
+
+  for (let x = bounds.minX; x < bounds.maxX; x += grid) {
+    for (let y = bounds.minY; y < bounds.maxY; y += grid) {
+      const x1 = Math.min(x + grid, bounds.maxX);
+      const y1 = Math.min(y + grid, bounds.maxY);
+      const triA = [[x, y], [x1, y], [x1, y1]];
+      const triB = [[x, y], [x1, y1], [x, y1]];
+      const aCenter = [(x + x1 + x1) / 3, (y + y + y1) / 3];
+      const bCenter = [(x + x1 + x) / 3, (y + y1 + y1) / 3];
+      if (pointInPolygon(aCenter[0], aCenter[1], points)) {
+        triA.forEach(([vx, vy], index) => push(vx, vy, sculptZ(vx, vy, index + x), index + x + y));
+      }
+      if (pointInPolygon(bCenter[0], bCenter[1], points)) {
+        triB.forEach(([vx, vy], index) => push(vx, vy, sculptZ(vx, vy, index + y), index + x1 + y1));
+      }
+    }
+  }
+
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  geometry.computeVertexNormals();
+  const mesh = new THREE.Mesh(geometry, MATS.rockDenseHifi);
+  mesh.name = name;
+  parent.add(mesh);
+  return mesh;
+}
+
+function buildHifi06AuthoredAsteroidGeology() {
+  const geo = new THREE.Group();
+  geo.name = 'concept-c HIFI-06 authored macro geology asteroid pass';
+  root.add(geo);
+
+  const sculptedPlanes = [
+    ['hifi06 broad worn left ceiling lithic plane', [[-13.65, 7.0], [-11.7, 8.84], [-8.46, 9.26], [-5.18, 8.46], [-3.12, 6.92], [-5.96, 6.04], [-9.22, 6.3], [-12.0, 5.86]], 6.74, 0.105, 0.2, 0.08, 0.08],
+    ['hifi06 central high sediment roof plate', [[-5.84, 8.82], [-2.52, 10.02], [1.22, 9.74], [4.74, 9.18], [7.32, 7.46], [6.04, 6.14], [2.24, 6.62], [-1.3, 6.16], [-4.58, 6.86]], 6.9, 0.1, 0.18, 0.02, 0.1],
+    ['hifi06 right sloping fault wall face', [[7.0, 7.8], [9.34, 8.46], [12.22, 7.52], [13.78, 5.42], [13.06, 3.18], [11.5, 1.4], [10.18, 2.48], [10.62, 4.34], [8.92, 5.9]], 6.52, 0.105, 0.2, -0.04, 0.18],
+    ['hifi06 left vertical shear wall face', [[-14.02, 6.18], [-12.7, 7.72], [-11.18, 6.28], [-10.72, 4.44], [-11.48, 2.8], [-10.84, 1.34], [-12.16, 0.6], [-13.78, 1.52], [-14.52, 3.82]], 6.56, 0.11, 0.22, -0.02, 0.2],
+    ['hifi06 lower exposed crust shelf smoother geological shelf', [[-10.64, 0.54], [-7.54, 0.9], [-4.32, 0.24], [-1.14, 0.48], [2.64, -0.02], [6.08, 0.16], [8.72, -0.18], [7.72, -0.9], [3.98, -1.06], [-0.18, -0.62], [-4.28, -1.18], [-8.42, -0.72]], 6.34, 0.105, 0.16, 0.12, 0.08],
+    ['hifi06 rear cold cavern plane separating roof depth', [[-7.82, 7.36], [-4.88, 8.02], [-1.32, 7.62], [1.88, 8.0], [5.38, 7.42], [7.28, 6.62], [5.04, 6.08], [1.42, 6.34], [-2.08, 6.02], [-5.9, 6.24]], 4.18, 0.13, 0.1, -0.22, 0.36]
+  ];
+  sculptedPlanes.forEach(([name, pts, z, grid, relief, warmBias, coolBias]) => {
+    buildSculptedRockPlane(name, pts, { z, grid, relief, warmBias, coolBias, parent: geo });
+  });
+
+  const darkCanyonMat = mat(0x030208, { roughness: 1, transparent: true, opacity: 0.72 });
+  const shadowCanyons = [
+    ['hifi06 central roof canyon negative shape', [[-3.4, 8.34], [-1.12, 8.86], [1.46, 8.48], [3.38, 7.7], [2.62, 6.96], [-0.2, 7.24], [-2.64, 6.86]], 7.05],
+    ['hifi06 right fault ravine dark core', [[9.18, 7.08], [10.52, 6.44], [11.94, 5.28], [12.18, 3.62], [11.2, 2.68], [10.62, 4.18], [9.62, 5.48]], 6.68],
+    ['hifi06 left shear ravine dark core', [[-12.64, 6.82], [-11.78, 5.92], [-11.34, 4.66], [-11.94, 3.46], [-11.36, 2.32], [-12.42, 2.82], [-13.12, 4.4]], 6.72],
+    ['hifi06 lower belly chipped shadow separation', [[-8.96, 0.3], [-5.38, -0.16], [-1.72, 0.08], [2.34, -0.22], [6.52, -0.08], [7.98, -0.5], [4.68, -0.74], [0.36, -0.56], [-4.42, -0.88], [-8.22, -0.54]], 6.44]
+  ];
+  shadowCanyons.forEach(([name, pts, z]) => {
+    const mesh = hifiPrism(name, pts, { z, depth: 0.18, parent: geo, warmBias: -0.5, roughness: 0.03 });
+    mesh.material = darkCanyonMat;
+  });
+
+  const strataSets = [
+    [[-12.8, 7.48], [-9.82, 7.02], [-6.84, 7.28], [-4.22, 6.76], [-1.76, 7.08], [1.24, 6.76], [4.66, 6.98], [7.78, 6.38]],
+    [[-12.2, 6.66], [-9.14, 6.16], [-6.14, 6.34], [-3.34, 5.92], [-0.42, 6.18], [2.88, 5.88], [6.2, 6.14], [8.9, 5.54]],
+    [[-11.78, 5.86], [-9.38, 5.32], [-6.92, 5.58], [-4.18, 5.18], [-1.4, 5.36], [1.86, 5.08], [5.24, 5.34], [8.04, 4.86]],
+    [[-10.42, 0.52], [-7.18, 0.2], [-3.82, -0.06], [-0.26, 0.04], [3.14, -0.14], [6.84, -0.3], [9.08, -0.06]],
+    [[-9.86, -0.1], [-6.42, -0.36], [-2.72, -0.54], [1.22, -0.38], [5.1, -0.56], [8.06, -0.5]]
+  ];
+  strataSets.forEach((path, index) => {
+    buildHifiFractureRibbon(`hifi06 readable sediment strata band ${index}`, path, {
+      z: 7.02 - index * 0.12,
+      depth: 0.24,
+      widthStart: index < 3 ? 0.18 : 0.14,
+      widthEnd: 0.08,
+      warmBias: index % 2 ? 0.18 : -0.08,
+      parent: geo,
+      opacity: 0.98
+    });
+  });
+
+  const veinPaths = [
+    [[-10.8, 8.02], [-9.92, 7.38], [-8.7, 7.66], [-7.66, 7.02]],
+    [[-4.62, 8.74], [-3.2, 8.12], [-2.18, 8.32], [-0.94, 7.7], [0.24, 7.92]],
+    [[4.94, 8.34], [6.08, 7.76], [7.3, 7.92], [8.54, 7.14]],
+    [[10.32, 6.22], [11.18, 5.54], [11.02, 4.62], [11.68, 3.84]],
+    [[-12.5, 5.52], [-12.08, 4.62], [-12.42, 3.72], [-11.78, 2.82]]
+  ];
+  veinPaths.forEach((path, index) => {
+    buildHifiFractureRibbon(`hifi06 selective mineral vein ${index}`, path, {
+      z: 7.16 - (index % 3) * 0.1,
+      depth: 0.12,
+      widthStart: 0.052,
+      widthEnd: 0.018,
+      warmBias: 0.28,
+      parent: geo,
+      opacity: 0.86
+    });
+  });
+
+  const basinMat = mat(0x050409, { roughness: 1, transparent: true, opacity: 0.6 });
+  const lipMat = mat(0xc1a087, { roughness: 0.96, transparent: true, opacity: 0.42, emissive: 0x2a1408, emissiveIntensity: 0.08 });
+  const basins = [
+    [-9.96, 7.72, 7.08, 0.74, 2.05, 0.72, -14],
+    [-2.08, 8.64, 7.16, 0.58, 1.56, 0.68, 10],
+    [6.82, 7.92, 6.98, 0.68, 1.8, 0.74, 18],
+    [11.38, 4.86, 6.82, 0.54, 1.24, 0.92, -24],
+    [-12.48, 4.66, 6.82, 0.52, 1.24, 0.88, 24],
+    [-6.94, 0.16, 6.6, 0.48, 1.9, 0.48, -6],
+    [4.92, -0.22, 6.48, 0.42, 1.62, 0.48, 9]
+  ];
+  basins.forEach(([x, y, z, r, sx, sy, angle], index) => {
+    const basin = new THREE.Mesh(new THREE.CircleGeometry(r, 72), basinMat);
+    basin.name = `hifi06 broad non-uniform impact depression ${index}`;
+    basin.position.set(x, y, z);
+    basin.scale.set(sx, sy, 1);
+    basin.rotation.z = THREE.MathUtils.degToRad(angle);
+    geo.add(basin);
+    const rim = new THREE.Mesh(new THREE.RingGeometry(r * 0.86, r * 1.12, 96), lipMat);
+    rim.name = `hifi06 asymmetric raised impact rim ${index}`;
+    rim.position.set(x, y, z + 0.035);
+    rim.scale.set(sx, sy, 1);
+    rim.rotation.z = THREE.MathUtils.degToRad(angle + (index % 2 ? 7 : -9));
+    geo.add(rim);
+  });
+
+  for (let i = 0; i < 44; i += 1) {
+    const leftSide = i % 2 === 0;
+    const x = leftSide ? THREE.MathUtils.lerp(-12.6, -4.4, hifiNoise(i * 0.37)) : THREE.MathUtils.lerp(4.2, 12.2, hifiNoise(i * 0.43));
+    const y = THREE.MathUtils.lerp(4.8, 8.9, hifiNoise(i * 0.57));
+    hifiShard(`hifi06 chunky broken rock nodule not flat shard ${i}`, x, y, {
+      z: 7.1 - (i % 6) * 0.08,
+      width: 0.28 + hifiNoise(i * 1.5) * 0.44,
+      height: 0.16 + hifiNoise(i * 1.7) * 0.2,
+      depth: 0.46 + hifiNoise(i * 1.9) * 0.72,
+      skew: 0.08 + hifiNoise(i * 2.1) * 0.16,
+      warmBias: i % 3 === 0 ? 0.16 : -0.04,
+      angle: -32 + hifiNoise(i * 2.7) * 64,
+      roughness: 0.05,
+      parent: geo
+    });
+  }
+
+  const macroWarm = new THREE.PointLight(0xffb06d, 2.4, 16.0);
+  macroWarm.name = 'hifi06 grazing warm light revealing sediment planes';
+  macroWarm.position.set(-7.2, 7.7, 8.4);
+  root.add(macroWarm);
+  const macroCool = new THREE.PointLight(0x7cb6ff, 2.6, 20.0);
+  macroCool.name = 'hifi06 cool light separating shadow canyons from noisy shell';
+  macroCool.position.set(7.8, 7.2, 4.0);
+  root.add(macroCool);
+}
+
 function buildCommandPit() {
   cylinder('concept-c raised upper deck lip around sunken command well', 3.7, 3.85, 0.16, 56, [0, 0.98, 0.02], MATS.steel);
   cylinder('concept-c vertical dark wall of sunken command well', 3.02, 3.18, 0.62, 56, [0, 0.72, 0.02], MATS.blackMetal);
@@ -1793,7 +1984,7 @@ function buildScaleAndAtmosphere() {
 
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cutaway';
-  document.getElementById('focus-body').textContent = 'Asteroid-first hi-fi pass. Use Full/Wide/Detail/Ceiling or mouse wheel to inspect the taller high-density rock shell.';
+  document.getElementById('focus-body').textContent = 'Asteroid-first HIFI-06 pass: macro geology, readable strata, crater basins, and taller shell. Use Full/Wide/Detail/Ceiling or mouse wheel.';
 }
 
 function buildScene() {
@@ -1802,6 +1993,7 @@ function buildScene() {
   buildHifiAsteroidShell();
   buildHifiSecondaryAsteroidBreakup();
   buildUltraHighResolutionAsteroidCeiling();
+  buildHifi06AuthoredAsteroidGeology();
   buildProductionCavity();
   buildHeroProductionBay();
   buildHifiCommandShaft();

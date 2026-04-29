@@ -611,10 +611,18 @@
       "status": "shipped",
       "type": "asteroid-only hifi asset-pipeline pass",
       "notes": "Added taller max-density asteroid ceiling shell, macro strata/crater basin hierarchy, zoom/view controls, and captured 3840x2160 plus zoom/ceiling proof screenshots."
+    },
+    {
+      "date": "2026-04-28",
+      "label": "concept-c hifi HIFI-06 authored macro geology pass",
+      "durationMs": null,
+      "status": "shipped",
+      "type": "asteroid-only hifi authored-geology pass",
+      "notes": "Added smoother macro geological planes, ravines, strata bands, impact basins, mineral veins, and chunkier rock nodules over HIFI-05 to move beyond noisy triangulation."
     }
   ],
   "stats": {
-    "count": 77,
+    "count": 78,
     "minMs": 90000,
     "maxMs": 1080000,
     "avgMs": 449459,
