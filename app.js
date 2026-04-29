@@ -4807,9 +4807,148 @@ function buildHifi20ShellFirstOpenCavernQualityPass() {
   scene.add(undersideOcc);
 }
 
+
+function buildHifi21CohesiveShapeResetPass() {
+  const pass = new THREE.Group();
+  pass.name = 'concept-c HIFI-21 cohesive asteroid shape reset pass';
+  root.add(pass);
+
+  // Shape-only reset: hide recent detail/clutter stacks and old facility systems. We need the asteroid silhouette + mouth first.
+  const suppressPrefixes = [
+    'concept-c HIFI-07', 'hifi07', 'hifi09', 'hifi10', 'hifi11', 'hifi12', 'hifi13', 'hifi14', 'hifi15', 'hifi16', 'hifi17', 'hifi18', 'hifi19', 'hifi20',
+    'concept-c hifi07', 'reference facility'
+  ];
+  root.traverse((node) => {
+    if (!node.name) return;
+    if (suppressPrefixes.some((term) => node.name.includes(term))) node.visible = false;
+  });
+
+  const shape = new THREE.Group();
+  shape.name = 'hifi21 clean cohesive full asteroid silhouette with single carved mouth';
+  pass.add(shape);
+
+  const broadMat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.98, metalness: 0, side: THREE.DoubleSide });
+  const darkVoidMat = mat(0x02050a, { roughness: 1, transparent: true, opacity: 0.82, side: THREE.DoubleSide });
+  const coolVoidMat = mat(0x10202b, { roughness: 1, transparent: true, opacity: 0.26, side: THREE.DoubleSide });
+
+  const addPanel = (name, pts, options = {}) => buildHifiRockPanel(`hifi21 ${name}`, pts, {
+    z: options.z ?? 17.6,
+    depth: options.depth ?? 3.2,
+    grid: options.grid ?? 0.34,
+    rimInset: options.rimInset ?? 0.08,
+    backShrink: options.backShrink ?? 0.05,
+    relief: options.relief ?? 0.18,
+    mediumRelief: 0.035,
+    microRelief: 0.0,
+    strataRelief: 0.045,
+    radialRelief: 0.025,
+    frontWarp: 0.035,
+    warmBias: options.warmBias ?? -0.11,
+    valueZones: options.valueZones ?? [],
+    geology: options.geology ?? [],
+    parent: shape
+  });
+
+  const top = [[-22.8, 5.7], [-21.4, 10.2], [-16.6, 13.0], [-9.8, 14.3], [-2.0, 13.2], [5.6, 13.8], [13.4, 11.0], [19.6, 6.5], [13.8, 4.35], [6.4, 5.18], [-1.0, 5.72], [-8.8, 4.95], [-16.2, 5.62]];
+  const left = [[-22.9, 5.7], [-18.9, 4.4], [-16.4, 1.1], [-16.3, -3.4], [-18.4, -7.1], [-22.0, -8.6], [-24.4, -5.5], [-24.8, 0.4]];
+  const bottom = [[-21.7, -8.6], [-15.5, -6.65], [-8.0, -6.15], [-0.2, -6.52], [7.6, -6.05], [15.3, -6.8], [20.9, -8.65], [18.0, -11.8], [8.2, -13.0], [-2.0, -12.72], [-12.6, -12.55], [-19.6, -10.8]];
+  const right = [[15.5, 5.0], [20.0, 3.2], [22.6, -0.6], [22.7, -5.2], [20.2, -8.4], [15.4, -6.55], [13.7, -2.55], [14.0, 2.0]];
+
+  addPanel('single upper crown mass no detail clutter', top, {
+    z: 17.9,
+    depth: 3.4,
+    grid: 0.32,
+    relief: 0.2,
+    valueZones: [
+      { x: -7.0, y: 11.4, rx: 10.0, ry: 2.0, dust: 0.14 },
+      { x: 10.0, y: 6.0, rx: 5.0, ry: 1.0, shadow: 0.18, cool: 0.1 }
+    ],
+    geology: [
+      { type: 'band', ax: -18.0, ay: 8.6, bx: 15.0, by: 7.2, width: 1.4, height: 0.11, terraces: 7, terraceHeight: 0.045, shadow: 0.08, dust: 0.05 }
+    ]
+  });
+  addPanel('left cohesive outer lobe defining wide entrance', left, {
+    z: 17.72,
+    depth: 3.25,
+    grid: 0.34,
+    relief: 0.18,
+    valueZones: [
+      { x: -18.0, y: -0.8, rx: 2.4, ry: 6.2, shadow: 0.26, cool: 0.14 }
+    ],
+    geology: [
+      { type: 'fault', ax: -20.0, ay: 4.2, bx: -18.4, by: -6.2, width: 0.52, depth: 0.12, rim: 0.04, shadow: 0.14 }
+    ]
+  });
+  addPanel('lower cohesive sill dropped low to stop blocking mouth', bottom, {
+    z: 17.82,
+    depth: 3.15,
+    grid: 0.34,
+    relief: 0.18,
+    valueZones: [
+      { x: 0.0, y: -6.6, rx: 13.0, ry: 1.0, shadow: 0.24 },
+      { x: -9.0, y: -10.0, rx: 4.0, ry: 1.2, cool: 0.1 }
+    ],
+    geology: [
+      { type: 'band', ax: -16.0, ay: -7.6, bx: 14.0, by: -7.4, width: 1.2, height: 0.1, terraces: 6, terraceHeight: 0.04, shadow: 0.1, dust: 0.04 }
+    ]
+  });
+  addPanel('right cohesive outer cheek leaving open viewport', right, {
+    z: 17.62,
+    depth: 3.0,
+    grid: 0.34,
+    relief: 0.17,
+    valueZones: [
+      { x: 18.2, y: -2.4, rx: 3.0, ry: 3.2, shadow: 0.28, cool: 0.14 }
+    ],
+    geology: [
+      { type: 'fault', ax: 17.4, ay: 3.8, bx: 18.2, by: -7.2, width: 0.45, depth: 0.11, rim: 0.04, shadow: 0.12 }
+    ]
+  });
+
+  // One clean central void defines the target shape. This is intentionally simple: shape read beats surface detail right now.
+  const mouth = polyMesh('hifi21 clean large carved mouth negative space', [
+    [-15.6, 4.85], [-8.4, 5.95], [-0.8, 5.12], [6.8, 5.72], [13.8, 3.85], [15.2, 0.15], [13.0, -4.55], [7.7, -6.12], [-0.4, -5.48], [-8.6, -5.95], [-14.8, -3.72], [-16.6, 0.45]
+  ], darkVoidMat, -7.2, shape);
+  mouth.scale.z = 0.12;
+
+  const rearVoid = polyMesh('hifi21 simple rear depth shape no facility clutter', [
+    [-9.6, 3.85], [-3.6, 4.72], [3.3, 4.28], [9.2, 3.35], [10.0, 0.0], [7.7, -3.42], [2.2, -4.05], [-4.8, -3.55], [-9.8, -2.85], [-11.0, 0.65]
+  ], coolVoidMat, -13.6, shape);
+  rearVoid.scale.z = 0.08;
+
+  // Minimal rim planes only, not clutter. These show mouth thickness and preserve the silhouette.
+  const rimMat = mat(0x8c877d, { roughness: 0.98, side: THREE.DoubleSide });
+  [
+    [-12.4, 5.42, 5.4, 0.28, 5], [-4.6, 5.35, 5.8, 0.26, -3], [3.8, 5.42, 5.8, 0.26, 4], [11.0, 4.55, 4.6, 0.28, -12],
+    [-12.6, -5.0, 5.6, 0.28, 8], [-4.0, -5.35, 6.2, 0.25, -3], [5.0, -5.25, 5.8, 0.25, 3], [12.0, -4.35, 4.6, 0.28, -8]
+  ].forEach(([x, y, w, h, angle], index) => {
+    const rim = hifiShard(`hifi21 minimal cohesive mouth rim plane ${index}`, x, y, {
+      z: 18.16,
+      width: w,
+      height: h,
+      depth: 0.38,
+      angle,
+      warmBias: -0.02,
+      roughness: 0.02,
+      material: rimMat,
+      parent: shape
+    });
+    rim.scale.z = 0.24;
+  });
+
+  const topKey = new THREE.DirectionalLight(0xd8d5cc, 2.35);
+  topKey.name = 'hifi21 simple silhouette top light';
+  topKey.position.set(-5.0, 11.0, 9.0);
+  scene.add(topKey);
+  const innerCold = new THREE.PointLight(0x8db4d8, 8.0, 34.0);
+  innerCold.name = 'hifi21 simple rear void cold depth cue';
+  innerCold.position.set(3.0, 2.0, -12.0);
+  scene.add(innerCold);
+}
+
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-20: shell-first pass opens the front entrance wider, carves a larger empty facility volume, and upgrades asteroid crust plates/fractures before interior detailing.';
+  document.getElementById('focus-body').textContent = 'HIFI-21: shape reset hides clutter and focuses on one cohesive asteroid silhouette with a clean large carved mouth before any detail work.';
 }
 
 function buildScene() {
@@ -4829,6 +4968,7 @@ function buildScene() {
   buildHifi18OperationsCavernCarveoutPass();
   buildHifi19MassiveShellDepthRecoveryPass();
   buildHifi20ShellFirstOpenCavernQualityPass();
+  buildHifi21CohesiveShapeResetPass();
   updateReadout();
 }
 
