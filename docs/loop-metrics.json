@@ -619,10 +619,18 @@
       "status": "shipped",
       "type": "asteroid-only hifi authored-geology pass",
       "notes": "Added smoother macro geological planes, ravines, strata bands, impact basins, mineral veins, and chunkier rock nodules over HIFI-05 to move beyond noisy triangulation."
+    },
+    {
+      "date": "2026-04-29",
+      "label": "concept-c hifi HIFI-09 reference composition boost",
+      "durationMs": null,
+      "status": "shipped",
+      "type": "reference-match composition pass",
+      "notes": "Manual pass with cron paused: added continuous oval aperture overlay, brighter right space window, dominant blue chasm rings, denser city modules/gantries/lights, and direct-CDP screenshot proof."
     }
   ],
   "stats": {
-    "count": 78,
+    "count": 79,
     "minMs": 90000,
     "maxMs": 1080000,
     "avgMs": 449459,

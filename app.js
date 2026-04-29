@@ -48,8 +48,8 @@ controls.target.set(0, 3.8, -3.8);
 
 
 const CAMERA_PRESETS = {
-  full: { label: 'FULL', position: [0.4, 9.6, 46.0], target: [0.2, 2.2, -12.4], fov: 46 },
-  wide: { label: 'WIDE', position: [0.4, 10.8, 52.0], target: [0.2, 2.8, -13.0], fov: 48 },
+  full: { label: 'FULL', position: [0.4, 10.4, 50.0], target: [0.2, 2.45, -12.8], fov: 49 },
+  wide: { label: 'WIDE', position: [0.4, 11.6, 58.0], target: [0.2, 3.0, -13.2], fov: 51 },
   detail: { label: 'DETAIL', position: [0.4, 5.6, 29.0], target: [0.2, 1.2, -10.8], fov: 38 },
   ceiling: { label: 'CEILING', position: [0.4, 12.4, 41.0], target: [0.4, 5.2, -12.8], fov: 42 }
 };
@@ -2793,9 +2793,178 @@ function buildReferenceFacilityMassing() {
   hangarFog.rotation.y = THREE.MathUtils.degToRad(-10);
 }
 
+
+function buildHifi09ReferenceCompositionBoost() {
+  const boost = new THREE.Group();
+  boost.name = 'concept-c HIFI-09 reference composition boost';
+  root.add(boost);
+
+  const ovalShadowMat = mat(0x010104, { roughness: 1, transparent: true, opacity: 0.96, side: THREE.DoubleSide });
+  const ovalRockMat = new THREE.MeshStandardMaterial({
+    vertexColors: true,
+    roughness: 0.98,
+    metalness: 0.0,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.92
+  });
+  const rimWarmMat = mat(0xb48c6f, { roughness: 0.9, emissive: 0x231006, emissiveIntensity: 0.18, transparent: true, opacity: 0.42, side: THREE.DoubleSide });
+  const rimCoolMat = mat(0x7fb7ff, { roughness: 0.3, emissive: 0x6aa7ff, emissiveIntensity: 0.55, transparent: true, opacity: 0.28, side: THREE.DoubleSide });
+
+  const addOvalRing = (name, inner, outer, scale, z, material, rotation = 0) => {
+    const ring = new THREE.Mesh(new THREE.RingGeometry(inner, outer, 220, 10), material);
+    ring.name = name;
+    ring.position.set(0, 2.8, z);
+    ring.scale.set(scale[0], scale[1], 1);
+    ring.rotation.z = THREE.MathUtils.degToRad(rotation);
+    boost.add(ring);
+    return ring;
+  };
+
+  addOvalRing('hifi09 continuous dark oval asteroid aperture silhouette', 0.62, 1.08, [22.8, 17.0], 12.2, ovalShadowMat, -2);
+  addOvalRing('hifi09 inner warm chipped oval rim highlight', 0.625, 0.655, [22.1, 16.2], 12.32, rimWarmMat, -2);
+  addOvalRing('hifi09 cold exterior rim kissing right opening', 0.63, 0.66, [22.6, 16.8], 12.38, rimCoolMat, -2);
+
+  const rimBlocks = [
+    ['top-left thick continuous rock rim', [-15.2, 12.6, 11.8], [7.4, 2.4, 0.5], -12],
+    ['top-center sagging asteroid roof rim', [-4.2, 13.4, 11.9], [9.6, 2.2, 0.5], 2],
+    ['top-right thick continuous rock rim', [10.8, 12.8, 11.8], [8.2, 2.2, 0.5], 12],
+    ['left vertical continuous rock rim', [-17.4, 2.0, 11.7], [2.4, 13.0, 0.5], 5],
+    ['right vertical continuous rock rim', [17.2, 1.8, 11.7], [2.4, 12.0, 0.5], -5],
+    ['lower-left heavy asteroid lip', [-10.2, -8.4, 11.9], [10.8, 2.5, 0.5], 9],
+    ['lower-right heavy asteroid lip', [8.6, -8.6, 11.9], [12.0, 2.5, 0.5], -8]
+  ];
+  rimBlocks.forEach(([name, pos, size, angle], index) => {
+    const block = hifiShard(`hifi09 ${name}`, pos[0], pos[1], {
+      z: pos[2],
+      width: size[0],
+      height: size[1],
+      depth: 0.9,
+      angle,
+      warmBias: index % 2 ? -0.1 : 0.04,
+      roughness: 0.05,
+      parent: boost,
+      material: MATS.shadow
+    });
+    block.scale.z = 0.7;
+  });
+
+  // Make the right-side hangar/window read as the giant cold opening in the reference.
+  const windowMat = mat(0xcfe4ff, { emissive: 0xb6d2ff, emissiveIntensity: 2.8, transparent: true, opacity: 0.82, roughness: 0.05, side: THREE.DoubleSide });
+  const windowCore = box('hifi09 huge right space window cold exterior core', [8.6, 7.8, 0.08], [14.6, 4.4, -17.4], windowMat, boost);
+  windowCore.rotation.z = THREE.MathUtils.degToRad(-4);
+  const windowHaze = box('hifi09 right space window bloom haze', [11.2, 10.0, 0.08], [14.4, 4.7, -17.8], mat(0x9fc7ff, { emissive: 0x9fc7ff, emissiveIntensity: 1.0, transparent: true, opacity: 0.18, roughness: 0.08, side: THREE.DoubleSide }), boost);
+  windowHaze.rotation.z = THREE.MathUtils.degToRad(-4);
+  ['top','bottom'].forEach((part, i) => {
+    const y = i ? -0.05 : 8.95;
+    const frame = box(`hifi09 right window massive ${part} structural frame`, [9.8, 0.42, 0.58], [14.5, y, -16.9], MATS.darkSteel, boost);
+    frame.rotation.z = THREE.MathUtils.degToRad(-4);
+    box(`hifi09 right window ${part} cyan edge`, [8.8, 0.07, 0.08], [14.5, y + (i ? 0.28 : -0.28), -16.5], MATS.cyan, boost).rotation.z = frame.rotation.z;
+  });
+  ['left','right'].forEach((part, i) => {
+    const x = i ? 19.0 : 10.0;
+    const frame = box(`hifi09 right window massive ${part} jamb`, [0.42, 8.4, 0.58], [x, 4.4, -16.9], MATS.darkSteel, boost);
+    frame.rotation.z = THREE.MathUtils.degToRad(-4);
+  });
+  for (let i = 0; i < 34; i += 1) {
+    const x = 11.0 + hifiNoise(i * 1.7) * 7.0;
+    const y = 0.8 + hifiNoise(i * 2.1) * 6.9;
+    const star = cylinder(`hifi09 visible star through right hangar ${i}`, 0.035 + hifiNoise(i * 2.4) * 0.045, 0.035, 0.012, 10, [x, y, -16.25], mat(0xf6fbff, { emissive: 0xdff2ff, emissiveIntensity: 1.5, roughness: 0.2 }), boost);
+    star.rotation.x = Math.PI / 2;
+  }
+  const ship = new THREE.Group();
+  ship.name = 'hifi09 tiny ship silhouette in right exterior opening';
+  ship.position.set(14.6, 3.6, -16.08);
+  ship.rotation.y = THREE.MathUtils.degToRad(-8);
+  boost.add(ship);
+  box('ship dark hull', [1.5, 0.18, 0.24], [0, 0, 0], MATS.blackMetal, ship);
+  box('ship cyan cockpit', [0.28, 0.12, 0.08], [0.56, 0.08, 0.08], MATS.cyanDim, ship);
+  box('ship amber engine', [0.18, 0.1, 0.08], [-0.78, 0, 0.08], MATS.amber, ship);
+
+  // Reassert the central industrial chasm as a deep blue focal point.
+  const pitGroup = new THREE.Group();
+  pitGroup.name = 'hifi09 dominant blue multi-ring central chasm';
+  pitGroup.position.set(0, -0.45, -6.2);
+  boost.add(pitGroup);
+  const pitScales = [8.2, 7.0, 5.9, 4.8, 3.8, 2.8];
+  pitScales.forEach((radius, tier) => {
+    const y = 1.0 - tier * 0.72;
+    const ring = torus(`hifi09 dominant chasm ring ${tier}`, radius, 0.075, 14, 128, [0, y, 0], tier % 2 ? MATS.cyanDim : MATS.amber, pitGroup);
+    ring.rotation.x = Math.PI / 2;
+    const wall = cylinder(`hifi09 dark circular chasm wall ${tier}`, radius * 0.98, radius * 0.88, 0.32, 96, [0, y - 0.22, 0], tier < 2 ? MATS.blackMetal : MATS.shadow, pitGroup);
+    wall.rotation.y = tier * 0.04;
+  });
+  const coreBeam = cylinder('hifi09 tall blue chasm beam', 1.35, 2.45, 6.8, 64, [0, -2.35, 0], mat(0x0c304d, { emissive: COLORS.cyan, emissiveIntensity: 1.5, transparent: true, opacity: 0.42, roughness: 0.08 }), pitGroup);
+  coreBeam.rotation.z = THREE.MathUtils.degToRad(2);
+  const chasmGlow = cylinder('hifi09 bright bottom chasm glow disk', 3.2, 4.2, 0.05, 96, [0, -5.65, 0], MATS.cyan, pitGroup);
+  chasmGlow.rotation.x = Math.PI / 2;
+  for (let i = 0; i < 16; i += 1) {
+    const a = (Math.PI * 2 * i) / 16;
+    const x = Math.cos(a) * 7.2;
+    const z = Math.sin(a) * 7.2;
+    const brace = box(`hifi09 chasm vertical mega brace ${i}`, [0.12, 4.2, 0.12], [x, -0.9, z], MATS.blackMetal, pitGroup);
+    brace.rotation.y = -a;
+    if (i % 2 === 0) box(`hifi09 chasm brace light ${i}`, [0.42, 0.05, 0.05], [x, 0.8, z], MATS.cyanDim, pitGroup).rotation.y = -a;
+  }
+
+  // Add visible city density at thumbnail scale: stacked terraces, gantries, and light grids.
+  const city = new THREE.Group();
+  city.name = 'hifi09 dense embedded industrial city overlay';
+  boost.add(city);
+  const zones = [
+    { prefix: 'left cyan refinery', x0: -12.5, x1: -4.4, z0: -11.5, z1: -5.8, color: MATS.cyanDim, base: MATS.darkSteel },
+    { prefix: 'warm central foundry', x0: -3.8, x1: 5.2, z0: -12.2, z1: -5.2, color: MATS.amber, base: MATS.blackMetal },
+    { prefix: 'right hangar city', x0: 6.0, x1: 15.2, z0: -12.4, z1: -5.6, color: MATS.cyanDim, base: MATS.darkSteel },
+    { prefix: 'rear skyline', x0: -8.8, x1: 8.8, z0: -15.6, z1: -12.6, color: MATS.amber, base: MATS.blackMetal }
+  ];
+  zones.forEach((zone, zoneIndex) => {
+    for (let i = 0; i < 34; i += 1) {
+      const tx = hifiNoise(zoneIndex * 31 + i * 1.1);
+      const tz = hifiNoise(zoneIndex * 47 + i * 1.3);
+      const x = THREE.MathUtils.lerp(zone.x0, zone.x1, tx);
+      const z = THREE.MathUtils.lerp(zone.z0, zone.z1, tz);
+      const h = 0.38 + hifiNoise(zoneIndex * 59 + i * 1.7) * 1.6;
+      const w = 0.32 + hifiNoise(zoneIndex * 61 + i * 1.9) * 0.72;
+      const d = 0.28 + hifiNoise(zoneIndex * 67 + i * 2.1) * 0.8;
+      const y = 0.82 + Math.floor(i % 5) * 0.34 + h * 0.5;
+      const block = box(`hifi09 ${zone.prefix} city module ${i}`, [w, h, d], [x, y, z], zone.base, city);
+      block.rotation.y = THREE.MathUtils.degToRad(-12 + hifiNoise(i * 2.9) * 24);
+      if (i % 2 === 0) {
+        const light = box(`hifi09 ${zone.prefix} module light ${i}`, [w * 0.78, 0.035, 0.035], [x, y + h * 0.35, z + d * 0.5], zone.color, city);
+        light.rotation.y = block.rotation.y;
+      }
+    }
+  });
+  const gantries = [
+    [-10.4, 5.0, -9.2, 8.2, -8, MATS.cyanDim],
+    [-2.2, 5.5, -10.0, 9.0, 8, MATS.amber],
+    [7.8, 5.2, -9.8, 8.4, -14, MATS.cyanDim],
+    [1.0, 6.9, -13.6, 14.8, 0, MATS.amber]
+  ];
+  gantries.forEach(([x, y, z, length, yaw, accent], index) => {
+    const deck = box(`hifi09 high industrial gantry ${index}`, [length, 0.12, 0.34], [x, y, z], MATS.steel, city);
+    deck.rotation.y = THREE.MathUtils.degToRad(yaw);
+    const rail = box(`hifi09 high industrial gantry light ${index}`, [length * 0.88, 0.04, 0.04], [x, y + 0.12, z + 0.2], accent, city);
+    rail.rotation.y = deck.rotation.y;
+  });
+
+  const exteriorCold = new THREE.PointLight(0xcfe5ff, 22.0, 42.0);
+  exteriorCold.name = 'hifi09 huge right window cold light';
+  exteriorCold.position.set(15.8, 5.4, -12.0);
+  scene.add(exteriorCold);
+  const chasmLight = new THREE.PointLight(COLORS.cyan, 36.0, 36.0);
+  chasmLight.name = 'hifi09 dominant central chasm blue light';
+  chasmLight.position.set(0, -2.6, -6.0);
+  scene.add(chasmLight);
+  const cityWarm = new THREE.PointLight(0xffaa62, 18.0, 28.0);
+  cityWarm.name = 'hifi09 warm city density light';
+  cityWarm.position.set(0.8, 4.2, -8.8);
+  scene.add(cityWarm);
+}
+
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-08 REF-02 pass: taller oval cavern frame, deeper blue pit, denser embedded city, brighter cyan left bay, and a larger right hangar to space. Use Full/Wide/Detail/Ceiling or mouse wheel.';
+  document.getElementById('focus-body').textContent = 'HIFI-09 manual pass: continuous oval asteroid aperture, giant right space window, dominant blue chasm, and denser embedded industrial city.';
 }
 
 function buildScene() {
@@ -2803,6 +2972,7 @@ function buildScene() {
   buildReferenceStarfield();
   buildReferenceApertureShell();
   buildReferenceFacilityMassing();
+  buildHifi09ReferenceCompositionBoost();
   updateReadout();
 }
 
