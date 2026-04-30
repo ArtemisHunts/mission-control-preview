@@ -5237,9 +5237,207 @@ function buildHifi23RestoreBowlOpeningPass() {
   scene.add(openingDepth);
 }
 
+
+function buildHifi24SingleMeshAsteroidPipelinePass() {
+  // Pipeline pivot: stop assembling visible shape from panels. This is one high-density displaced ellipsoid shell
+  // with a carved concave bowl aperture. Blender is not available here, so this is the browser-native GLB stand-in.
+  root.traverse((node) => {
+    if (!node.name) return;
+    if (/hifi0[7-9]|hifi1[0-9]|hifi2[0-3]|HIFI-/.test(node.name)) node.visible = false;
+    if (node.name.includes('reference-matched asteroid cavern shell') || node.name.includes('embedded industrial city')) node.visible = false;
+  });
+
+  const pass = new THREE.Group();
+  pass.name = 'concept-c HIFI-24 single mesh asteroid pipeline pivot';
+  root.add(pass);
+
+  const material = new THREE.MeshStandardMaterial({
+    vertexColors: true,
+    roughness: 0.98,
+    metalness: 0.0,
+    side: THREE.DoubleSide,
+    flatShading: false
+  });
+  const cutMaterial = new THREE.MeshStandardMaterial({
+    vertexColors: true,
+    roughness: 1.0,
+    metalness: 0.0,
+    side: THREE.DoubleSide,
+    flatShading: false
+  });
+
+  const cx = 0.0;
+  const cy = 0.2;
+  const cz = -10.4;
+  const rx = 19.2;
+  const ry = 12.7;
+  const rz = 11.2;
+  const uSegments = 216;
+  const vSegments = 108;
+  const opening = { x: -0.8, y: -0.6, rx: 12.6, ry: 7.2 };
+
+  const rockColor = (x, y, z, normalish = 0, shadow = 0) => {
+    const c = new THREE.Color(0x5d5b57);
+    const top = THREE.MathUtils.clamp((y + 8.0) / 20.0, 0, 1);
+    const right = THREE.MathUtils.clamp((x + 7.0) / 26.0, 0, 1);
+    const strata = Math.sin(x * 0.34 + y * 1.25 + z * 0.18) * 0.5 + 0.5;
+    const broad = hifiNoise(x * 0.19 + y * 0.31 - z * 0.12);
+    c.lerp(new THREE.Color(0x17181b), 0.38 - top * 0.14 + shadow * 0.42);
+    c.lerp(new THREE.Color(0x8f8a82), THREE.MathUtils.clamp(top * 0.32 + right * 0.16 + broad * 0.1, 0, 0.52));
+    c.lerp(new THREE.Color(0xb3aa9d), THREE.MathUtils.clamp(strata * 0.14 + normalish * 0.08, 0, 0.24));
+    c.multiplyScalar(0.84 + broad * 0.18);
+    return c;
+  };
+
+  const openingShape = (x, y, frontness) => {
+    const nx = (x - opening.x) / opening.rx;
+    const ny = (y - opening.y) / opening.ry;
+    const angle = Math.atan2(ny, nx);
+    const organic = 1.0
+      + Math.sin(angle * 2.0 - 0.8) * 0.10
+      + Math.sin(angle * 3.0 + 1.4) * 0.08
+      - Math.exp(-Math.pow(angle - Math.PI * 0.52, 2) / 0.16) * 0.12; // roof bite/sag
+    const bowlMetric = Math.sqrt(nx * nx + ny * ny) / organic;
+    return frontness > 0.44 && bowlMetric < 1.0;
+  };
+
+  const displace = (x, y, z, u, v) => {
+    const macro = (hifiNoise(Math.sin(u) * 3.1 + Math.cos(v) * 2.7) - 0.5) * 1.35;
+    const mid = (hifiNoise(x * 0.18 - y * 0.12 + z * 0.11) - 0.5) * 0.72;
+    const strata = Math.sin(y * 0.82 + x * 0.22 + z * 0.08) * 0.22;
+    const craterA = Math.exp(-((x + 10.5) ** 2 / 18 + (y - 5.5) ** 2 / 7 + (z - 0.5) ** 2 / 28)) * -0.72;
+    const craterB = Math.exp(-((x - 8.0) ** 2 / 13 + (y + 6.2) ** 2 / 8 + (z - 0.8) ** 2 / 24)) * -0.58;
+    return macro + mid + strata + craterA + craterB;
+  };
+
+  const positions = [];
+  const colors = [];
+  const push = (p, color) => {
+    positions.push(p.x, p.y, p.z);
+    colors.push(color.r, color.g, color.b);
+  };
+  const sample = (ui, vi) => {
+    const u = -Math.PI + (Math.PI * 2 * ui) / uSegments;
+    const v = -Math.PI / 2 + (Math.PI * vi) / vSegments;
+    const cu = Math.cos(u);
+    const su = Math.sin(u);
+    const cv = Math.cos(v);
+    const sv = Math.sin(v);
+    let x = cx + rx * cv * su;
+    let y = cy + ry * sv;
+    let z = cz + rz * cv * cu;
+    const frontness = cu;
+    const d = displace(x, y, z, u, v);
+    const nx = (x - cx) / rx;
+    const ny = (y - cy) / ry;
+    const nz = (z - cz) / rz;
+    x += nx * d;
+    y += ny * d;
+    z += nz * d;
+    return { x, y, z, u, v, frontness, open: openingShape(x, y, frontness) };
+  };
+
+  for (let ui = 0; ui < uSegments; ui += 1) {
+    for (let vi = 0; vi < vSegments; vi += 1) {
+      const a = sample(ui, vi);
+      const b = sample(ui + 1, vi);
+      const c = sample(ui, vi + 1);
+      const d = sample(ui + 1, vi + 1);
+      if (!(a.open || b.open || c.open)) {
+        push(a, rockColor(a.x, a.y, a.z, Math.abs(a.frontness))); push(c, rockColor(c.x, c.y, c.z, Math.abs(c.frontness))); push(b, rockColor(b.x, b.y, b.z, Math.abs(b.frontness)));
+      }
+      if (!(b.open || c.open || d.open)) {
+        push(b, rockColor(b.x, b.y, b.z, Math.abs(b.frontness))); push(c, rockColor(c.x, c.y, c.z, Math.abs(c.frontness))); push(d, rockColor(d.x, d.y, d.z, Math.abs(d.frontness)));
+      }
+    }
+  }
+
+  const asteroidGeo = new THREE.BufferGeometry();
+  asteroidGeo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  asteroidGeo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  asteroidGeo.computeVertexNormals();
+  const asteroid = new THREE.Mesh(asteroidGeo, material);
+  asteroid.name = 'hifi24 single high-density displaced spherical asteroid shell mesh';
+  asteroid.userData.pipeline = 'single displaced ellipsoid mesh with carved bowl aperture; browser-native fallback for missing Blender/GLB pipeline';
+  asteroid.userData.triangleCount = positions.length / 9;
+  pass.add(asteroid);
+
+  // Concave carved bowl surface inside the missing front area. This is geometry, not a pasted black mask.
+  const bowlPositions = [];
+  const bowlColors = [];
+  const pushBowl = (p, color) => { bowlPositions.push(p.x, p.y, p.z); bowlColors.push(color.r, color.g, color.b); };
+  const bowlPoint = (ai, ri) => {
+    const a = (Math.PI * 2 * ai) / uSegments;
+    const r = ri / 48;
+    const organic = 1.0 + Math.sin(a * 2.0 - 0.8) * 0.10 + Math.sin(a * 3.0 + 1.4) * 0.08 - Math.exp(-Math.pow(a - Math.PI * 0.52, 2) / 0.16) * 0.12;
+    const x = opening.x + Math.cos(a) * opening.rx * r * organic;
+    const y = opening.y + Math.sin(a) * opening.ry * r * organic;
+    const ex = (x - cx) / rx;
+    const ey = (y - cy) / ry;
+    const frontZ = cz + rz * Math.sqrt(Math.max(0.0, 1.0 - ex * ex - ey * ey));
+    const bowlDepth = 9.4 * Math.pow(1 - r, 0.62) + 1.2 * Math.sin(a + 0.5) * (1 - r);
+    const z = frontZ - bowlDepth - 0.35 * hifiNoise(x * 0.3 + y * 0.4 + r * 3.0);
+    return { x, y, z, r, a };
+  };
+  for (let ai = 0; ai < uSegments; ai += 1) {
+    const ni = ai + 1;
+    for (let ri = 0; ri < 48; ri += 1) {
+      const p0 = bowlPoint(ai, ri);
+      const p1 = bowlPoint(ni, ri);
+      const p2 = bowlPoint(ai, ri + 1);
+      const p3 = bowlPoint(ni, ri + 1);
+      const col = (p) => rockColor(p.x, p.y, p.z, 0.1, 0.55 + (1 - p.r) * 0.35);
+      pushBowl(p0, col(p0)); pushBowl(p2, col(p2)); pushBowl(p1, col(p1));
+      pushBowl(p1, col(p1)); pushBowl(p2, col(p2)); pushBowl(p3, col(p3));
+    }
+  }
+  const bowlGeo = new THREE.BufferGeometry();
+  bowlGeo.setAttribute('position', new THREE.Float32BufferAttribute(bowlPositions, 3));
+  bowlGeo.setAttribute('color', new THREE.Float32BufferAttribute(bowlColors, 3));
+  bowlGeo.computeVertexNormals();
+  const bowlMesh = new THREE.Mesh(bowlGeo, cutMaterial);
+  bowlMesh.name = 'hifi24 concave carved bowl interior surface mesh';
+  pass.add(bowlMesh);
+
+  // A sparse rim ring connects the outer shell to the carved bowl and gives the roof a real overhanging lip.
+  const rimPositions = [];
+  const rimColors = [];
+  const pushRim = (p, color) => { rimPositions.push(p.x, p.y, p.z); rimColors.push(color.r, color.g, color.b); };
+  for (let ai = 0; ai < uSegments; ai += 1) {
+    const ni = ai + 1;
+    const a0 = bowlPoint(ai, 48);
+    const a1 = bowlPoint(ni, 48);
+    const b0 = bowlPoint(ai, 43);
+    const b1 = bowlPoint(ni, 43);
+    const roofBoost0 = Math.max(0, Math.sin(a0.a)) * 0.65;
+    const roofBoost1 = Math.max(0, Math.sin(a1.a)) * 0.65;
+    a0.z += roofBoost0; a1.z += roofBoost1;
+    const c0 = rockColor(a0.x, a0.y, a0.z, 0.6, 0.05);
+    const c1 = rockColor(b0.x, b0.y, b0.z, 0.3, 0.35);
+    pushRim(a0, c0); pushRim(b0, c1); pushRim(a1, c0);
+    pushRim(a1, c0); pushRim(b0, c1); pushRim(b1, c1);
+  }
+  const rimGeo = new THREE.BufferGeometry();
+  rimGeo.setAttribute('position', new THREE.Float32BufferAttribute(rimPositions, 3));
+  rimGeo.setAttribute('color', new THREE.Float32BufferAttribute(rimColors, 3));
+  rimGeo.computeVertexNormals();
+  const rim = new THREE.Mesh(rimGeo, cutMaterial);
+  rim.name = 'hifi24 continuous carved rim and roof overhang mesh';
+  pass.add(rim);
+
+  const topLight = new THREE.DirectionalLight(0xe0ded6, 2.8);
+  topLight.name = 'hifi24 single mesh asteroid top key';
+  topLight.position.set(-7.0, 13.0, 9.0);
+  scene.add(topLight);
+  const mouthLight = new THREE.PointLight(0x87b8e6, 7.0, 38.0);
+  mouthLight.name = 'hifi24 deep bowl cold interior cue';
+  mouthLight.position.set(0.8, -0.8, -10.0);
+  scene.add(mouthLight);
+}
+
 function updateReadout() {
   document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-23: restores a clear dark bowl opening inside the cohesive cup shell with a visible roof-lip undercut, still shape-only.';
+  document.getElementById('focus-body').textContent = 'HIFI-24: pipeline pivot to one high-density displaced spherical asteroid mesh with a carved concave bowl aperture; panel stack hidden.';
 }
 
 function buildScene() {
@@ -5262,6 +5460,7 @@ function buildScene() {
   buildHifi21CohesiveShapeResetPass();
   buildHifi22CupBowlOverhangShapePass();
   buildHifi23RestoreBowlOpeningPass();
+  buildHifi24SingleMeshAsteroidPipelinePass();
   updateReadout();
 }
 
