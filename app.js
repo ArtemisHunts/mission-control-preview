@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const COLORS = {
   bg: 0x02050c,
@@ -5435,32 +5436,100 @@ function buildHifi24SingleMeshAsteroidPipelinePass() {
   scene.add(mouthLight);
 }
 
+function loadMeshy19LiveBaseline() {
+  const loader = new GLTFLoader();
+  const live = new THREE.Group();
+  live.name = 'Meshy-19 live baseline asteroid model root';
+  root.add(live);
+
+  const rockMaterial = new THREE.MeshStandardMaterial({
+    color: 0x242220,
+    roughness: 0.97,
+    metalness: 0.0,
+    side: THREE.DoubleSide,
+    flatShading: false
+  });
+
+  loader.load('assets/blender/meshy-19-clean-rock-three-openings-dark-material-pass-v2.glb?v=meshy19-live-baseline-20260503', (gltf) => {
+    const model = gltf.scene;
+    model.name = 'Meshy-19 clean three-opening asteroid baseline GLB';
+    model.position.set(0.0, 2.2, -12.8);
+    model.rotation.set(0.0, -0.18, 0.0);
+    model.scale.setScalar(13.2);
+
+    model.traverse((node) => {
+      if (node.isMesh) {
+        node.frustumCulled = false;
+        node.castShadow = false;
+        node.receiveShadow = true;
+        node.material = rockMaterial;
+      }
+    });
+
+    live.add(model);
+  }, undefined, (error) => {
+    console.warn('Failed to load Meshy-19 live baseline asteroid model', error);
+  });
+
+  const topKey = new THREE.DirectionalLight(0xd8e4ff, 2.8);
+  topKey.name = 'Meshy-19 live baseline cool top key';
+  topKey.position.set(-6.5, 11.5, 7.5);
+  scene.add(topKey);
+
+  const warmRim = new THREE.PointLight(0xffb26d, 3.2, 28.0);
+  warmRim.name = 'Meshy-19 live baseline warm rim read';
+  warmRim.position.set(-7.0, 2.5, -4.8);
+  scene.add(warmRim);
+
+  const mouthCue = new THREE.PointLight(0x73baff, 4.8, 24.0);
+  mouthCue.name = 'Meshy-19 live baseline cold cavern cue';
+  mouthCue.position.set(1.2, 0.8, -7.5);
+  scene.add(mouthCue);
+}
+
+function loadBlenderMaintenanceDrone() {
+  const loader = new GLTFLoader();
+  loader.load('assets/blender/maintenance-drone.glb', (gltf) => {
+    const drone = gltf.scene;
+    drone.name = 'blender authored remote bay maintenance drone GLB';
+    drone.position.set(6.35, 2.18, 0.92);
+    drone.rotation.set(0, -0.72, 0);
+    drone.scale.setScalar(0.92);
+
+    const rotors = [];
+    drone.traverse((node) => {
+      if (node.isMesh) {
+        node.frustumCulled = false;
+        node.receiveShadow = true;
+        if (/rotor blade/i.test(node.name)) rotors.push(node);
+      }
+    });
+
+    const droneGlow = new THREE.PointLight(COLORS.cyan, 1.4, 4.6);
+    droneGlow.name = 'cyan worklight emitted from Blender drone asset';
+    droneGlow.position.set(0, -0.18, -0.42);
+    drone.add(droneGlow);
+
+    const scanCone = cylinder('drone projected repair scan cone', 0.34, 0.08, 0.84, 24, [0, -0.68, -0.16], MATS.cyanDim, drone);
+    scanCone.name = 'transparent cyan maintenance scan cone attached to Blender drone';
+    scanCone.rotation.x = Math.PI / 2;
+
+    root.add(drone);
+    animated.push({ mesh: drone, bob: 0.075, baseY: drone.position.y, phase: 2.6, sway: 0.045, baseRotationY: drone.rotation.y, rotors });
+  }, undefined, (error) => {
+    console.warn('Failed to load Blender maintenance drone asset', error);
+  });
+}
+
 function updateReadout() {
-  document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-24: pipeline pivot to one high-density displaced spherical asteroid mesh with a carved concave bowl aperture; panel stack hidden.';
+  document.getElementById('focus-title').textContent = 'Meshy-19 Asteroid Baseline';
+  document.getElementById('focus-body').textContent = 'Live preview is now using the new Meshy-19 three-opening asteroid baseline GLB. Old procedural/old-model prop testing is paused; this is the new working shell for sparse job-based prop integration.';
 }
 
 function buildScene() {
   addReferenceLights();
   buildReferenceStarfield();
-  buildReferenceApertureShell();
-  buildReferenceFacilityMassing();
-  buildHifi09ReferenceCompositionBoost();
-  buildHifi10JaggedRimScaleLightPass();
-  buildHifi11AsymmetricAsteroidMassPass();
-  buildHifi12EfficientHighresCutawayAssetPass();
-  buildHifi13WideFacilityRevealPass();
-  buildHifi14UpperCutawayPulloutPass();
-  buildHifi15DeepViewportRevealPass();
-  buildHifi16TopRightCornerCleanoutPass();
-  buildHifi17TrueGeometryCavernRebuildPass();
-  buildHifi18OperationsCavernCarveoutPass();
-  buildHifi19MassiveShellDepthRecoveryPass();
-  buildHifi20ShellFirstOpenCavernQualityPass();
-  buildHifi21CohesiveShapeResetPass();
-  buildHifi22CupBowlOverhangShapePass();
-  buildHifi23RestoreBowlOpeningPass();
-  buildHifi24SingleMeshAsteroidPipelinePass();
+  loadMeshy19LiveBaseline();
   updateReadout();
 }
 
@@ -5470,6 +5539,10 @@ function animate() {
   animated.forEach((item) => {
     if (item.spin) item.mesh.rotation.z += item.spin * 0.016;
     if (item.bob) item.mesh.position.y = item.baseY + Math.sin(t * 1.4 + item.phase) * item.bob;
+    if (item.sway) item.mesh.rotation.y = item.baseRotationY + Math.sin(t * 0.86 + item.phase) * item.sway;
+    if (item.rotors) item.rotors.forEach((rotor, index) => {
+      rotor.rotation.y += (index % 2 === 0 ? 1 : -1) * 0.44;
+    });
   });
   controls.update();
   renderer.render(scene, camera);
