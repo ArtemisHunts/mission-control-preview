@@ -2346,47 +2346,9 @@ function buildReferenceStarfield() {
     star.rotation.x = Math.PI / 2;
   });
 
-  const outsideRock = new THREE.Group();
-  outsideRock.name = 'concept-c hifi07 distant exterior asteroid outside right hangar';
-  scene.add(outsideRock);
-  buildHifiRockPanel('hifi07 distant outside asteroid slab', [
-    [14.8, 3.0], [17.8, 5.8], [20.8, 6.2], [23.0, 4.0], [22.2, 0.6], [18.4, -1.8], [15.6, -0.8]
-  ], {
-    z: -28.6,
-    depth: 5.2,
-    grid: 0.18,
-    rimInset: 0.12,
-    backShrink: 0.14,
-    relief: 0.28,
-    mediumRelief: 0.1,
-    microRelief: 0.02,
-    frontWarp: 0.1,
-    warmBias: -0.1,
-    parent: outsideRock,
-    valueZones: [
-      { x: 18.8, y: 2.4, rx: 5.4, ry: 2.8, shadow: 0.28, cool: 0.16 },
-      { x: 20.2, y: 4.8, rx: 3.0, ry: 1.6, dust: 0.18 }
-    ]
-  });
-  buildHifiRockPanel('hifi07 distant left exterior asteroid shoulder', [
-    [-21.6, 4.0], [-18.8, 6.2], [-15.4, 5.6], [-15.0, 2.2], [-16.6, -0.4], [-19.8, -1.0], [-22.0, 1.0]
-  ], {
-    z: -29.2,
-    depth: 4.8,
-    grid: 0.18,
-    rimInset: 0.12,
-    backShrink: 0.14,
-    relief: 0.26,
-    mediumRelief: 0.08,
-    microRelief: 0.02,
-    frontWarp: 0.1,
-    warmBias: -0.12,
-    parent: outsideRock,
-    valueZones: [
-      { x: -18.4, y: 2.2, rx: 4.6, ry: 3.0, shadow: 0.26, cool: 0.14 },
-      { x: -16.8, y: 5.0, rx: 2.0, ry: 1.2, dust: 0.16 }
-    ]
-  });
+  // Meshy-19 public baseline should read as one clean candidate asteroid.
+  // The old HIFI-07 distant exterior shoulder slabs looked like detached heptagon export artifacts,
+  // so they stay out of the live preview.
 }
 
 function buildReferenceApertureShell() {
