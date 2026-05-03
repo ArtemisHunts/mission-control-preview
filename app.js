@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const COLORS = {
   bg: 0x02050c,
@@ -4301,26 +4302,65 @@ function buildHifi18OperationsCavernCarveoutPass() {
   scene.add(rearCold);
 }
 
+function loadMeshy19LiveBaseline() {
+  const loader = new GLTFLoader();
+  const live = new THREE.Group();
+  live.name = 'Meshy-19 live baseline asteroid model root';
+  root.add(live);
+
+  const rockMaterial = new THREE.MeshStandardMaterial({
+    color: 0x242220,
+    roughness: 0.97,
+    metalness: 0.0,
+    side: THREE.DoubleSide,
+    flatShading: false
+  });
+
+  loader.load('assets/blender/meshy-19-clean-rock-three-openings-dark-material-pass-v2.glb?v=meshy19-live-baseline-20260503', (gltf) => {
+    const model = gltf.scene;
+    model.name = 'Meshy-19 clean three-opening asteroid baseline GLB';
+    model.position.set(0.0, 2.2, -12.8);
+    model.rotation.set(0.0, -0.18, 0.0);
+    model.scale.setScalar(13.2);
+
+    model.traverse((node) => {
+      if (node.isMesh) {
+        node.frustumCulled = false;
+        node.receiveShadow = true;
+        node.material = rockMaterial;
+      }
+    });
+
+    live.add(model);
+  }, undefined, (error) => {
+    console.warn('Failed to load Meshy-19 live baseline asteroid model', error);
+  });
+
+  const topKey = new THREE.DirectionalLight(0xd8e4ff, 2.8);
+  topKey.name = 'Meshy-19 live baseline cool top key';
+  topKey.position.set(-6.5, 11.5, 7.5);
+  scene.add(topKey);
+
+  const warmRim = new THREE.PointLight(0xffb26d, 3.2, 28.0);
+  warmRim.name = 'Meshy-19 live baseline warm rim read';
+  warmRim.position.set(-7.0, 2.5, -4.8);
+  scene.add(warmRim);
+
+  const mouthCue = new THREE.PointLight(0x73baff, 4.8, 24.0);
+  mouthCue.name = 'Meshy-19 live baseline cold cavern cue';
+  mouthCue.position.set(1.2, 0.8, -7.5);
+  scene.add(mouthCue);
+}
+
 function updateReadout() {
-  document.getElementById('focus-title').textContent = 'Concept C Asteroid Cavern';
-  document.getElementById('focus-body').textContent = 'HIFI-18: interior cavern carved wider for operations volume, thinner walls, open floors, rear hangar depth, and readable work lights.';
+  document.getElementById('focus-title').textContent = 'Meshy-19 Asteroid Baseline';
+  document.getElementById('focus-body').textContent = 'Live preview is now using the new Meshy-19 three-opening asteroid baseline GLB. Old procedural/old-model prop testing is paused; this is the new working shell for sparse job-based prop integration.';
 }
 
 function buildScene() {
   addReferenceLights();
   buildReferenceStarfield();
-  buildReferenceApertureShell();
-  buildReferenceFacilityMassing();
-  buildHifi09ReferenceCompositionBoost();
-  buildHifi10JaggedRimScaleLightPass();
-  buildHifi11AsymmetricAsteroidMassPass();
-  buildHifi12EfficientHighresCutawayAssetPass();
-  buildHifi13WideFacilityRevealPass();
-  buildHifi14UpperCutawayPulloutPass();
-  buildHifi15DeepViewportRevealPass();
-  buildHifi16TopRightCornerCleanoutPass();
-  buildHifi17TrueGeometryCavernRebuildPass();
-  buildHifi18OperationsCavernCarveoutPass();
+  loadMeshy19LiveBaseline();
   updateReadout();
 }
 
