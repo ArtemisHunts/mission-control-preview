@@ -21,13 +21,18 @@ const COLORS = {
 };
 
 const container = document.getElementById('office-canvas');
-const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.6;
-container.appendChild(renderer.domElement);
+let renderer = null;
+try {
+  renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.6;
+  container.appendChild(renderer.domElement);
+} catch (error) {
+  console.warn('Mission Control 3D renderer unavailable; continuing with command console UI', error);
+}
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(COLORS.bg);
@@ -36,7 +41,7 @@ scene.fog = new THREE.Fog(COLORS.bg, 28, 92);
 const camera = new THREE.PerspectiveCamera(46, window.innerWidth / window.innerHeight, 0.1, 160);
 camera.position.set(0, 8.2, 31.5);
 
-const controls = new OrbitControls(camera, renderer.domElement);
+const controls = new OrbitControls(camera, renderer?.domElement || container);
 controls.enableDamping = true;
 controls.dampingFactor = 0.06;
 controls.enableRotate = false;
@@ -88,6 +93,836 @@ scene.add(root);
 
 const clock = new THREE.Clock();
 const animated = [];
+
+const LEGACY_FACILITY_STATE = {
+  meta: {
+    title: 'Mission Control // Local Preview',
+    sourceLabel: 'legacy scene fallback',
+    updatedAt: null
+  },
+  modes: {
+    overview: {
+      title: 'Meshy-19 Asteroid Baseline',
+      body: 'Live preview is using the Meshy-19 three-opening asteroid baseline GLB. Canonical mission state is unavailable, so this readout is falling back to the legacy scene description.'
+    },
+    command: {
+      title: 'Holo-table Pending State',
+      body: 'Canonical mission state is unavailable. Command console binding is waiting on mission-control-state.json.'
+    },
+    build: {
+      title: 'Build Queue Unavailable',
+      body: 'Facility asset state is unavailable. The scene remains visible, but build progress cannot be inspected yet.'
+    },
+    review: {
+      title: 'Review Queue Unavailable',
+      body: 'Review state is unavailable. Risk gates and approvals require canonical mission state.'
+    },
+    deploy: {
+      title: 'Deploy State Unavailable',
+      body: 'Deployment/event state is unavailable. No live deployment status is inferred from the visual scene.'
+    },
+    observatory: {
+      title: 'Telemetry Unavailable',
+      body: 'Telemetry state is unavailable. Event and agent status readouts require canonical mission state.'
+    }
+  }
+};
+
+let facilityState = LEGACY_FACILITY_STATE;
+let activeFacilityMode = 'overview';
+let activeConsolePanel = 'overview';
+let selectedConsoleGoalId = null;
+
+const CONSOLE_PANELS = [
+  ['overview', 'Overview'],
+  ['map', 'Mission Map'],
+  ['agents', 'Agents'],
+  ['tasks', 'Tasks'],
+  ['review', 'Review'],
+  ['telemetry', 'Telemetry'],
+  ['signals', 'Signals'],
+  ['deploy', 'Deploy'],
+  ['build', 'Buildout']
+];
+
+const LOCAL_BRIDGE_KEY = 'mission-control-local-event-bridge-v1';
+
+function formatStatus(value) {
+  if (!value) return 'unknown';
+  return String(value).replace(/[-_]/g, ' ');
+}
+
+function formatCount(count, singular, plural = singular + 's') {
+  return count === 1 ? `1 ${singular}` : `${count} ${plural}`;
+}
+
+function latestByCreatedAt(items = []) {
+  return items
+    .map((item, index) => ({ item, index }))
+    .sort((a, b) => {
+      const dateDelta = new Date(b.item.createdAt || 0) - new Date(a.item.createdAt || 0);
+      return dateDelta || b.index - a.index;
+    })
+    .map(({ item }) => item);
+}
+
+function readLocalBridgeState() {
+  try {
+    return JSON.parse(window.localStorage.getItem(LOCAL_BRIDGE_KEY) || '{}');
+  } catch (error) {
+    console.warn('Failed to read Mission Control local event bridge state', error);
+    return {};
+  }
+}
+
+function writeLocalBridgeState(localState) {
+  window.localStorage.setItem(LOCAL_BRIDGE_KEY, JSON.stringify({
+    taskPatches: localState.taskPatches || {},
+    agentPatches: localState.agentPatches || {},
+    goalDrafts: localState.goalDrafts || [],
+    taskDrafts: localState.taskDrafts || [],
+    events: localState.events || [],
+    selectedGoalId: localState.selectedGoalId || null,
+    updatedAt: new Date().toISOString()
+  }));
+}
+
+function applyLocalBridgeState(state) {
+  const localState = readLocalBridgeState();
+  const taskPatches = localState.taskPatches || {};
+  const agentPatches = localState.agentPatches || {};
+  const existingGoalIds = new Set((state.goals || []).map((goal) => goal.id));
+  const existingTaskIds = new Set((state.tasks || []).map((task) => task.id));
+
+  (state.tasks || []).forEach((task) => {
+    if (taskPatches[task.id]) Object.assign(task, taskPatches[task.id]);
+  });
+  (state.agents || []).forEach((agent) => {
+    if (agentPatches[agent.id]) Object.assign(agent, agentPatches[agent.id]);
+  });
+  for (const goal of localState.goalDrafts || []) {
+    if (!existingGoalIds.has(goal.id)) state.goals.push(goal);
+  }
+  for (const task of localState.taskDrafts || []) {
+    if (!existingTaskIds.has(task.id)) state.tasks.push(task);
+  }
+  if (Array.isArray(localState.events) && localState.events.length) {
+    state.events = [...(state.events || []), ...localState.events];
+  }
+  state.localBridge = {
+    mode: 'browser-localStorage',
+    persistedEvents: localState.events?.length || 0,
+    localGoalDrafts: localState.goalDrafts?.length || 0,
+    hasLocalPatches: Boolean(Object.keys(taskPatches).length || Object.keys(agentPatches).length),
+    selectedGoalId: localState.selectedGoalId || null,
+    updatedAt: localState.updatedAt || null,
+    isDemo: false
+  };
+  return state;
+}
+
+function normalizeMissionState(state) {
+  const goals = Array.isArray(state?.goals) ? state.goals : [];
+  const goalRuns = Array.isArray(state?.goalRuns) ? state.goalRuns : [];
+  const tasks = Array.isArray(state?.tasks) ? state.tasks : [];
+  const events = latestByCreatedAt(Array.isArray(state?.events) ? state.events : []);
+  const agents = Array.isArray(state?.agents) ? state.agents : [];
+  const reviews = Array.isArray(state?.reviews) ? state.reviews : [];
+  const assets = Array.isArray(state?.facilityAssets) ? state.facilityAssets : [];
+  const visualReviews = Array.isArray(state?.visualReviews) ? state.visualReviews : [];
+  const telemetry = state?.telemetry?.summary || {};
+
+  const activeGoals = goals.filter((goal) => goal.status === 'running' || goal.status === 'active');
+  const activeTasks = tasks.filter((task) => task.status === 'active' || task.status === 'running');
+  const queuedTasks = tasks.filter((task) => task.status === 'queued');
+  const integratedAssets = assets.filter((asset) => asset.status === 'integrated');
+  const currentGoal = activeGoals.find((goal) => goal.id === 'goal-2-state-event-model') || activeGoals[0] || goals[0];
+  const currentRun = goalRuns.find((run) => run.id === currentGoal?.currentRunId) || goalRuns.find((run) => run.goalId === currentGoal?.id);
+  const latestEvent = events[0];
+  const realAgents = agents.filter((agent) => agent.isDemo === false);
+  const demoAgents = agents.filter((agent) => agent.isDemo === true);
+  const selectedGoalId = state?.localBridge?.selectedGoalId || selectedConsoleGoalId;
+  const selectedGoal = goals.find((goal) => goal.id === selectedGoalId);
+
+  return {
+    meta: {
+      title: state?.meta?.title || 'Mission Control',
+      sourceLabel: state?.meta?.sourceOfTruth ? 'canonical state' : 'mission state',
+      updatedAt: state?.meta?.updatedAt || null
+    },
+    raw: state,
+    modes: {
+      overview: {
+        title: selectedGoal?.title || currentGoal?.title || 'Mission Control Overview',
+        body: [
+          selectedGoal?.objective || currentGoal?.objective || 'Canonical Mission Control state loaded.',
+          `${formatCount(activeGoals.length, 'active goal')} · ${formatCount(activeTasks.length, 'active task')} · ${formatCount(queuedTasks.length, 'queued task')}`,
+          latestEvent ? `Latest event: ${latestEvent.message}` : 'No events recorded yet.'
+        ].join(' ')
+      },
+      command: {
+        title: currentRun ? `Run: ${currentRun.id}` : 'Command Run State',
+        body: currentRun
+          ? `Status: ${formatStatus(currentRun.status)}. ${currentRun.summary || 'No run summary recorded.'} Verification: ${currentRun.verificationSummary || 'not recorded yet'}.`
+          : 'No run state is available for the selected goal.'
+      },
+      build: {
+        title: `Facility Buildout · ${formatCount(assets.length, 'asset')}`,
+        body: assets.length
+          ? `${formatCount(integratedAssets.length, 'integrated asset')}. ${assets.slice(0, 2).map((asset) => `${asset.name} is ${formatStatus(asset.status)}`).join(' ')}`
+          : 'No facility assets are recorded in canonical state yet.'
+      },
+      review: {
+        title: `Review Gates · ${formatCount(reviews.length, 'review')}`,
+        body: reviews.length
+          ? reviews.slice(0, 2).map((review) => `${review.title || review.id}: ${formatStatus(review.status)}`).join(' ')
+          : `No reviews are open yet. ${formatCount(visualReviews.length, 'visual review')} recorded for visual QA.`
+      },
+      deploy: {
+        title: 'Event Stream',
+        body: events.length
+          ? events.slice(0, 3).map((event) => `${formatStatus(event.type)}: ${event.message}`).join(' ')
+          : 'No Mission Control events have been recorded yet.'
+      },
+      observatory: {
+        title: 'Telemetry Wall',
+        body: [
+          `${formatCount(agents.length, 'agent')} tracked: ${formatCount(realAgents.length, 'real')} and ${formatCount(demoAgents.length, 'demo')}.`,
+          `Telemetry says ${telemetry.activeGoals ?? activeGoals.length} active goals, ${telemetry.activeTasks ?? activeTasks.length} active tasks, ${telemetry.blockedGoals ?? 0} blocked goals.`
+        ].join(' ')
+      }
+    }
+  };
+}
+
+async function loadMissionState() {
+  try {
+    const response = await fetch('mission-control-state.json', { cache: 'no-store' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const state = applyLocalBridgeState(await response.json());
+    selectedConsoleGoalId = state.localBridge?.selectedGoalId || selectedConsoleGoalId;
+    facilityState = normalizeMissionState(state);
+  } catch (error) {
+    facilityState = LEGACY_FACILITY_STATE;
+    console.warn('Mission Control canonical state unavailable; using legacy scene fallback', error);
+  }
+}
+
+function setFacilityMode(mode) {
+  activeFacilityMode = facilityState.modes[mode] ? mode : 'overview';
+  updateReadout();
+  document.querySelectorAll('[data-mode]').forEach((button) => {
+    button.classList.toggle('active', button.dataset.mode === activeFacilityMode);
+  });
+  if (activeFacilityMode === 'command') openMissionConsole('overview');
+}
+
+function node(tag, className, textValue) {
+  const element = document.createElement(tag);
+  if (className) element.className = className;
+  if (textValue !== undefined) element.textContent = textValue;
+  return element;
+}
+
+function addList(panel, items, emptyText) {
+  const list = node('ul', 'console-list');
+  if (!items.length) {
+    const item = node('li');
+    item.appendChild(node('span', null, emptyText));
+    list.appendChild(item);
+  } else {
+    items.forEach(({ title, meta, actionLabel, onAction }) => {
+      const item = node('li');
+      item.appendChild(node('strong', null, title));
+      if (meta) item.appendChild(node('span', null, meta));
+      if (actionLabel && onAction) {
+        const button = node('button', 'console-mini-action', actionLabel);
+        button.type = 'button';
+        button.addEventListener('click', onAction);
+        item.appendChild(button);
+      }
+      list.appendChild(item);
+    });
+  }
+  panel.appendChild(list);
+}
+
+function addConsolePanel(grid, { title, body, items = [], emptyText = 'No records yet.', wide = false }) {
+  const panel = node('section', wide ? 'console-panel wide' : 'console-panel');
+  panel.appendChild(node('h3', null, title));
+  if (body) panel.appendChild(node('p', null, body));
+  addList(panel, items, emptyText);
+  grid.appendChild(panel);
+}
+
+function goalById(id) {
+  return (facilityState.raw?.goals || []).find((goal) => goal.id === id);
+}
+
+function agentById(id) {
+  return (facilityState.raw?.agents || []).find((agent) => agent.id === id);
+}
+
+function taskById(id) {
+  return (facilityState.raw?.tasks || []).find((task) => task.id === id);
+}
+
+function makeLocalId(prefix, title) {
+  const slug = String(title || prefix)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 36) || prefix;
+  return prefix + '-' + slug + '-' + Date.now().toString(36);
+}
+
+function requiredSkillsForTask(task = {}) {
+  const tags = new Set([...(task.tags || []), task.room, task.goalId].filter(Boolean));
+  const skills = new Set();
+  const add = (...values) => values.forEach((value) => skills.add(value));
+
+  if (tags.has('state') || tags.has('events') || tags.has('goal-6')) add('state', 'events');
+  if (tags.has('console') || tags.has('ui') || tags.has('goal-3')) add('frontend', 'interaction');
+  if (tags.has('review') || tags.has('safety') || tags.has('goal-7')) add('review', 'verification', 'safety');
+  if (tags.has('deploy') || tags.has('deployment-hub')) add('deploy', 'pipelines');
+  if (tags.has('signal-chamber') || tags.has('research')) add('research', 'signals');
+  if (tags.has('mission-map') || tags.has('roadmap')) add('planning', 'dependencies');
+
+  if (!skills.size) add('planning');
+  return [...skills];
+}
+
+function agentAvailability(agent = {}) {
+  if (agent.status === 'idle') return 34;
+  if (agent.status === 'queued' || agent.status === 'staged') return 24;
+  if (agent.status === 'working') return 8;
+  if (agent.status === 'blocked') return -30;
+  return 12;
+}
+
+function scoreAgentForTask(agent, task) {
+  const requiredSkills = requiredSkillsForTask(task);
+  const agentSkills = new Set(agent.skills || []);
+  const skillHits = requiredSkills.filter((skill) => agentSkills.has(skill));
+  const missing = requiredSkills.filter((skill) => !agentSkills.has(skill));
+  const riskMismatch = task.tags?.includes('review') && !agentSkills.has('safety') ? 18 : 0;
+  const demoPenalty = agent.isDemo ? 6 : 0;
+  const score = Math.round(
+    skillHits.length * 28
+    + (agent.trustLevel || 0) * 8
+    + agentAvailability(agent)
+    - (agent.load || 0) * 0.45
+    - missing.length * 7
+    - riskMismatch
+    - demoPenalty
+  );
+
+  return {
+    agent,
+    score,
+    skillHits,
+    missing,
+    requiredSkills
+  };
+}
+
+function recommendationsForTask(task, limit = 3) {
+  const agents = facilityState.raw?.agents || [];
+  return agents
+    .map((agent) => scoreAgentForTask(agent, task))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit);
+}
+
+function eventSourceLabel(event = {}) {
+  if (event.localOnly) return 'local preview';
+  if (event.source) return event.source;
+  if (event.ingestedAt) return 'durable ingestion';
+  return 'canonical';
+}
+
+function selectedGoal() {
+  const goals = facilityState.raw?.goals || [];
+  return goals.find((goal) => goal.id === selectedConsoleGoalId)
+    || goals.find((goal) => goal.id === facilityState.raw?.localBridge?.selectedGoalId)
+    || goals.find((goal) => goal.status === 'running')
+    || goals[0];
+}
+
+function refreshTelemetry() {
+  if (!facilityState.raw?.telemetry) return;
+  const goals = facilityState.raw.goals || [];
+  const tasks = facilityState.raw.tasks || [];
+  const events = latestByCreatedAt(facilityState.raw.events || []);
+  facilityState.raw.telemetry.summary = {
+    activeGoals: goals.filter((goal) => goal.status === 'running' || goal.status === 'active').length,
+    activeTasks: tasks.filter((task) => task.status === 'active' || task.status === 'running').length,
+    queuedTasks: tasks.filter((task) => task.status === 'queued').length,
+    blockedGoals: goals.filter((goal) => goal.status === 'blocked').length,
+    latestEventId: events[0]?.id || null
+  };
+  facilityState.raw.telemetry.updatedAt = new Date().toISOString();
+}
+
+function emitLocalEvent({ type, goalId, taskId, agentId, message }) {
+  if (!facilityState.raw?.events) return;
+  const eventId = `evt-local-${Date.now()}`;
+  const event = {
+    id: eventId,
+    type,
+    goalId,
+    runId: goalById(goalId)?.currentRunId || null,
+    agentId,
+    taskId,
+    message,
+    artifactIds: [],
+    createdAt: new Date().toISOString(),
+    isDemo: false,
+    localOnly: true
+  };
+  facilityState.raw.events.push(event);
+  const localState = readLocalBridgeState();
+  writeLocalBridgeState({
+    ...localState,
+    events: [...(localState.events || []), event]
+  });
+  refreshTelemetry();
+}
+
+function assignTaskLocally(taskId, agentId) {
+  const task = taskById(taskId);
+  const agent = agentById(agentId);
+  if (!task || !agent) return;
+
+  task.assigneeId = agent.id;
+  if (task.status === 'queued') task.status = 'active';
+  task.updatedAt = new Date().toISOString();
+  agent.currentTaskId = task.id;
+  agent.currentGoalId = task.goalId;
+  agent.status = 'working';
+  agent.load = Math.min(100, Math.max(agent.load || 0, 42));
+
+  const localState = readLocalBridgeState();
+  writeLocalBridgeState({
+    ...localState,
+    taskPatches: {
+      ...(localState.taskPatches || {}),
+      [task.id]: {
+        assigneeId: task.assigneeId,
+        status: task.status,
+        updatedAt: task.updatedAt
+      }
+    },
+    agentPatches: {
+      ...(localState.agentPatches || {}),
+      [agent.id]: {
+        currentTaskId: agent.currentTaskId,
+        currentGoalId: agent.currentGoalId,
+        status: agent.status,
+        load: agent.load
+      }
+    }
+  });
+
+  emitLocalEvent({
+    type: 'agent.assigned',
+    goalId: task.goalId,
+    taskId: task.id,
+    agentId: agent.id,
+    message: `Local assignment: ${agent.name} assigned to ${task.title}. This preview action persists in browser-localStorage only.`
+  });
+  facilityState = normalizeMissionState(facilityState.raw);
+  setFacilityMode(activeFacilityMode);
+  renderMissionConsole(activeConsolePanel);
+}
+
+function selectGoalLocally(goalId) {
+  if (!goalById(goalId)) return;
+  selectedConsoleGoalId = goalId;
+  const localState = readLocalBridgeState();
+  writeLocalBridgeState({
+    ...localState,
+    selectedGoalId: goalId
+  });
+  facilityState.raw.localBridge = {
+    ...(facilityState.raw.localBridge || {}),
+    selectedGoalId: goalId
+  };
+  facilityState = normalizeMissionState(facilityState.raw);
+  setFacilityMode(activeFacilityMode);
+  renderMissionConsole(activeConsolePanel);
+}
+
+function createLocalGoalDraft() {
+  const title = window.prompt('Mission goal title');
+  if (!title?.trim()) return;
+  const objective = window.prompt('Objective for this goal') || 'Local Mission Control goal draft.';
+  const now = new Date().toISOString();
+  const goalId = makeLocalId('goal-local', title);
+  const taskId = makeLocalId('task-local-intake', title);
+  const cleanTitle = title.trim();
+  const goal = {
+    id: goalId,
+    title: cleanTitle,
+    objective: objective.trim(),
+    project: 'Mission Control',
+    status: 'running',
+    priority: 2,
+    requester: 'Michael',
+    ownerAgentId: 'artemis',
+    assignedAgentIds: ['artemis'],
+    runtime: 'codex-channel',
+    context: [],
+    constraints: ['Local browser draft. Promote through durable ingestion before treating as canonical backend state.'],
+    successCriteria: ['Goal is clarified, assigned, verified, and recorded with proof.'],
+    verification: ['Promote through scripts/apply-mission-events.mjs or a future live OpenClaw event bridge.'],
+    stopRules: ['Stop before public, paid, destructive, or credential-sensitive actions without approval.'],
+    artifactIds: [],
+    currentRunId: null,
+    createdAt: now,
+    updatedAt: now,
+    isDemo: false,
+    localOnly: true
+  };
+  const task = {
+    id: taskId,
+    goalId,
+    title: 'Clarify and sequence: ' + cleanTitle,
+    description: 'Local intake task created from the Mission Control console.',
+    project: 'Mission Control',
+    priority: 1,
+    status: 'queued',
+    requester: 'Michael',
+    assigneeId: 'artemis',
+    room: 'command-hub',
+    autoAssignable: false,
+    tags: ['local-goal', 'intake'],
+    createdAt: now,
+    updatedAt: now,
+    isDemo: false,
+    localOnly: true
+  };
+
+  const localState = readLocalBridgeState();
+  writeLocalBridgeState({
+    ...localState,
+    goalDrafts: [...(localState.goalDrafts || []), goal],
+    taskDrafts: [...(localState.taskDrafts || []), task],
+    selectedGoalId: goal.id
+  });
+  facilityState.raw.goals.push(goal);
+  facilityState.raw.tasks.push(task);
+  selectedConsoleGoalId = goal.id;
+  emitLocalEvent({
+    type: 'goal.local_drafted',
+    goalId: goal.id,
+    taskId: task.id,
+    agentId: 'artemis',
+    message: 'Local goal draft created: ' + goal.title + '. This preview goal persists in browser-localStorage only.'
+  });
+  facilityState = normalizeMissionState(facilityState.raw);
+  setFacilityMode(activeFacilityMode);
+  renderMissionConsole(activeConsolePanel);
+}
+
+function buildConsolePanel(panelId) {
+  const raw = facilityState.raw || {};
+  const goals = raw.goals || [];
+  const runs = raw.goalRuns || [];
+  const tasks = raw.tasks || [];
+  const agents = raw.agents || [];
+  const events = latestByCreatedAt(raw.events || []);
+  const reviews = raw.reviews || [];
+  const artifacts = raw.artifacts || [];
+  const assets = raw.facilityAssets || [];
+  const telemetry = raw.telemetry?.summary || {};
+  const localBridge = raw.localBridge || {};
+  const activeGoal = selectedGoal();
+
+  if (panelId === 'map') {
+    return [
+      {
+        title: 'Goal Lifecycle',
+        body: 'Mission map is derived from canonical goals and runs.',
+        items: goals.map((goal) => ({
+          title: goal.title,
+          meta: formatStatus(goal.status) + ' · priority ' + goal.priority + ' · ' + (goal.successCriteria?.length || 0) + ' done criteria' + (goal.localOnly ? ' · local preview' : ''),
+          actionLabel: goal.id === activeGoal?.id ? null : 'Select',
+          onAction: goal.id === activeGoal?.id ? null : () => selectGoalLocally(goal.id)
+        })),
+        wide: true
+      },
+      {
+        title: 'Runs',
+        items: runs.map((run) => ({
+          title: run.id,
+          meta: `${formatStatus(run.status)} · ${run.summary || 'No summary'}`
+        })),
+        emptyText: 'No runs recorded.'
+      }
+    ];
+  }
+
+  if (panelId === 'agents') {
+    return [
+      {
+        title: 'Agent Status',
+        body: 'Roster state now includes assignment fit. Demo agents are marked and scored lower than real execution agents.',
+        items: agents.map((agent) => ({
+          title: agent.name + ' · ' + agent.role,
+          meta: formatStatus(agent.status) + ' · trust ' + agent.trustLevel + ' · load ' + agent.load + '% · ' + (agent.currentTaskId ? 'task ' + agent.currentTaskId : 'available') + ' · ' + (agent.isDemo ? 'demo' : 'real')
+        })),
+        wide: true
+      },
+      {
+        title: 'Assignment Fit',
+        body: 'Scores combine skill match, trust, availability, load, demo status, and risk mismatch.',
+        items: tasks.filter((task) => task.status !== 'completed').slice(0, 4).map((task) => {
+          const best = recommendationsForTask(task, 1)[0];
+          return {
+            title: task.title,
+            meta: best ? 'Best fit: ' + best.agent.name + ' · score ' + best.score + ' · matched ' + (best.skillHits.join(', ') || 'none') + ' · missing ' + (best.missing.join(', ') || 'none') : 'No agent candidates.'
+          };
+        }),
+        emptyText: 'No open tasks need assignment.'
+      }
+    ];
+  }
+
+  if (panelId === 'tasks') {
+    return [
+      {
+        title: 'Active / Queued Tasks',
+        items: tasks.map((task) => ({
+          title: task.title,
+          meta: formatStatus(task.status) + ' · ' + (agentById(task.assigneeId)?.name || task.assigneeId || 'unassigned') + ' · ' + (task.isDemo ? 'demo' : 'real') + (task.status === 'completed' ? '' : ' · recommended ' + (recommendationsForTask(task, 1)[0]?.agent.name || 'none'))
+        })),
+        emptyText: 'No tasks recorded.',
+        wide: true
+      },
+      {
+        title: 'Assignment Actions',
+        body: 'Actions persist to browser localStorage and emit a local event. Backend/OpenClaw event ingestion comes later.',
+        items: tasks.filter((task) => task.status !== 'completed' && task.autoAssignable !== false).map((task) => {
+          const best = recommendationsForTask(task, 1)[0];
+          return {
+            title: task.title,
+            meta: best ? 'Recommend ' + best.agent.name + ' · score ' + best.score + ' · required ' + best.requiredSkills.join(', ') : 'No recommendation available.',
+            actionLabel: best ? 'Assign ' + best.agent.name : null,
+            onAction: best ? () => assignTaskLocally(task.id, best.agent.id) : null
+          };
+        }),
+        emptyText: 'No auto-assignable open tasks.',
+        wide: true
+      }
+    ];
+  }
+
+  if (panelId === 'review') {
+    return [
+      {
+        title: 'Review Chamber',
+        body: 'Risky actions stop here until their approval, evidence, and decision state are explicit.',
+        items: reviews.map((review) => ({
+          title: review.title || review.id,
+          meta: `${formatStatus(review.status)} · ${formatStatus(review.decision || 'pending')} · ${formatStatus(review.riskLevel || 'risk unknown')} · approvals ${(review.requiredApprovals || []).join(', ') || 'none'}`
+        })),
+        emptyText: 'No review gates are open yet.'
+      },
+      {
+        title: 'Approval Evidence',
+        items: reviews.map((review) => ({
+          title: review.title || review.id,
+          meta: (review.evidence || []).join(' · ') || review.note || 'No evidence recorded.'
+        })),
+        emptyText: 'No approval evidence recorded.',
+        wide: true
+      },
+      {
+        title: 'Verification Artifacts',
+        items: artifacts.map((artifact) => ({
+          title: artifact.name,
+          meta: `${artifact.kind} · ${artifact.path}`
+        })),
+        emptyText: 'No artifacts recorded.'
+      }
+    ];
+  }
+
+  if (panelId === 'telemetry') {
+    return [
+      {
+        title: 'Telemetry Summary',
+        body: `${telemetry.activeGoals ?? 0} active goals · ${telemetry.activeTasks ?? 0} active tasks · ${telemetry.queuedTasks ?? 0} queued tasks · ${telemetry.blockedGoals ?? 0} blocked goals.`,
+        items: [{ title: 'Latest event', meta: telemetry.latestEventId || 'none' }]
+      },
+      {
+        title: 'Recent Events',
+        items: events.slice(0, 6).map((event) => ({
+          title: formatStatus(event.type),
+          meta: `${event.message} · ${event.createdAt} · ${eventSourceLabel(event)}`
+        })),
+        emptyText: 'No events recorded.'
+      },
+      {
+        title: 'Local Event Bridge',
+        body: 'Preview persistence uses browser localStorage only. It proves reloadable event/task state before a backend bridge exists.',
+        items: [{
+          title: localBridge.mode || 'browser-localStorage',
+          meta: (localBridge.persistedEvents || 0) + ' persisted local events · ' + (localBridge.localGoalDrafts || 0) + ' local goal drafts · patches ' + (localBridge.hasLocalPatches ? 'present' : 'none'),
+          actionLabel: 'Clear local preview state',
+          onAction: clearLocalBridgeState
+        }]
+      },
+      {
+        title: 'Durable Ingestion Boundary',
+        body: 'Backend/runtime events can now be applied through scripts/apply-mission-events.mjs before a live OpenClaw stream exists.',
+        items: [{
+          title: 'Supported events',
+          meta: 'task.recorded, task.assigned, task.status_changed, task.progress_reported, goal.checkpoint, artifact.recorded'
+        }]
+      }
+    ];
+  }
+
+  if (panelId === 'signals') {
+    return [
+      {
+        title: 'Signal Chamber',
+        body: 'Current v1 signal sources are the project docs, local state, and verification artifacts. External feeds are intentionally out of scope for this sub-goal.',
+        items: (activeGoal?.context || []).map((path) => ({ title: path, meta: 'context source' })),
+        emptyText: 'No signal sources attached.',
+        wide: true
+      }
+    ];
+  }
+
+  if (panelId === 'deploy') {
+    return [
+      {
+        title: 'Deployment Hub',
+        body: 'Deploy actions require review. This panel shows event and artifact readiness only.',
+        items: events.slice(0, 5).map((event) => ({
+          title: event.id,
+          meta: `${formatStatus(event.type)} · ${goalById(event.goalId)?.title || event.goalId || 'no goal'} · ${eventSourceLabel(event)}`
+        })),
+        emptyText: 'No deployment events recorded.',
+        wide: true
+      }
+    ];
+  }
+
+  if (panelId === 'build') {
+    return [
+      {
+        title: 'Facility Buildout / Asset Pipeline',
+        items: assets.map((asset) => ({
+          title: asset.name,
+          meta: `${formatStatus(asset.status)} · ${asset.source} · ${asset.paths?.[0] || 'no path'}`
+        })),
+        emptyText: 'No facility assets recorded.',
+        wide: true
+      }
+    ];
+  }
+
+  return [
+    {
+      title: 'Selected Goal',
+      body: activeGoal ? activeGoal.objective : facilityState.modes.overview.body,
+      items: activeGoal ? [{
+        title: activeGoal.title,
+        meta: formatStatus(activeGoal.status) + ' · owner ' + (agentById(activeGoal.ownerAgentId)?.name || activeGoal.ownerAgentId) + (activeGoal.localOnly ? ' · local preview' : '')
+      }] : [],
+      emptyText: 'No goal selected.',
+      wide: true
+    },
+    {
+      title: 'Goal Intake',
+      body: 'Create local browser drafts for new goals. Durable promotion comes through the ingestion boundary or future live bridge.',
+      items: [{
+        title: 'New local goal draft',
+        meta: 'Stored in browser localStorage only until promoted.',
+        actionLabel: 'Create Goal',
+        onAction: createLocalGoalDraft
+      }]
+    },
+    {
+      title: 'Goal Roster',
+      body: facilityState.modes.overview.body,
+      items: goals.map((goal) => ({
+        title: goal.title,
+        meta: formatStatus(goal.status) + ' · owner ' + (agentById(goal.ownerAgentId)?.name || goal.ownerAgentId) + (goal.localOnly ? ' · local preview' : ''),
+        actionLabel: goal.id === activeGoal?.id ? null : 'Select',
+        onAction: goal.id === activeGoal?.id ? null : () => selectGoalLocally(goal.id)
+      })),
+      wide: true
+    },
+    {
+      title: 'Next Task',
+      items: tasks.filter((task) => task.status !== 'completed').slice(0, 4).map((task) => ({
+        title: task.title,
+        meta: task.description + ' Recommended: ' + (recommendationsForTask(task, 1)[0]?.agent.name || 'none') + '.'
+      })),
+      emptyText: 'No incomplete tasks recorded.'
+    },
+    {
+      title: 'Latest Event',
+      items: events.slice(0, 3).map((event) => ({
+        title: event.message,
+        meta: event.createdAt
+      })),
+      emptyText: 'No events recorded.'
+    }
+  ];
+}
+
+function renderMissionConsole(panelId = activeConsolePanel) {
+  activeConsolePanel = panelId;
+  const tabs = document.getElementById('console-tabs');
+  const grid = document.getElementById('console-grid');
+  const title = document.getElementById('console-title');
+  const kicker = document.getElementById('console-kicker');
+  if (!tabs || !grid || !title || !kicker) return;
+
+  tabs.replaceChildren();
+  CONSOLE_PANELS.forEach(([id, label]) => {
+    const button = node('button', id === activeConsolePanel ? 'console-tab active' : 'console-tab', label);
+    button.type = 'button';
+    button.addEventListener('click', () => renderMissionConsole(id));
+    tabs.appendChild(button);
+  });
+
+  title.textContent = facilityState.meta.title || 'Mission Control';
+  kicker.textContent = facilityState.meta.updatedAt
+    ? `${facilityState.meta.sourceLabel} · ${facilityState.meta.updatedAt.slice(0, 10)}`
+    : facilityState.meta.sourceLabel;
+  grid.replaceChildren();
+  buildConsolePanel(activeConsolePanel).forEach((panel) => addConsolePanel(grid, panel));
+}
+
+function openMissionConsole(panelId = 'overview') {
+  const consoleElement = document.getElementById('mission-console');
+  if (!consoleElement) return;
+  renderMissionConsole(panelId);
+  consoleElement.classList.add('open');
+  consoleElement.setAttribute('aria-hidden', 'false');
+}
+
+function closeMissionConsole() {
+  const consoleElement = document.getElementById('mission-console');
+  if (!consoleElement) return;
+  consoleElement.classList.remove('open');
+  consoleElement.setAttribute('aria-hidden', 'true');
+}
+
+function clearLocalBridgeState() {
+  window.localStorage.removeItem(LOCAL_BRIDGE_KEY);
+  loadMissionState().then(() => {
+    setFacilityMode(activeFacilityMode);
+    renderMissionConsole(activeConsolePanel);
+  });
+}
 
 function mat(color, options = {}) {
   return new THREE.MeshStandardMaterial({
@@ -4315,15 +5150,27 @@ function loadMeshy19LiveBaseline() {
 }
 
 function updateReadout() {
-  document.getElementById('focus-title').textContent = 'Meshy-19 Asteroid Baseline';
-  document.getElementById('focus-body').textContent = 'Live preview is now using the new Meshy-19 three-opening asteroid baseline GLB. Old procedural/old-model prop testing is paused; this is the new working shell for sparse job-based prop integration.';
+  const modeState = facilityState.modes[activeFacilityMode] || facilityState.modes.overview;
+  const title = document.getElementById('focus-title');
+  const body = document.getElementById('focus-body');
+  const kicker = document.querySelector('.readout-kicker');
+  if (kicker) {
+    kicker.textContent = facilityState.meta.updatedAt
+      ? `${facilityState.meta.sourceLabel} · ${facilityState.meta.updatedAt.slice(0, 10)}`
+      : facilityState.meta.sourceLabel;
+  }
+  if (title) title.textContent = modeState.title;
+  if (body) body.textContent = modeState.body;
 }
 
-function buildScene() {
+async function buildScene() {
+  await loadMissionState();
   addReferenceLights();
   buildReferenceStarfield();
   loadMeshy19LiveBaseline();
-  updateReadout();
+  setFacilityMode('overview');
+  const consolePanel = new URLSearchParams(window.location.search).get('console');
+  if (consolePanel) openMissionConsole(consolePanel);
 }
 
 function animate() {
@@ -4334,24 +5181,34 @@ function animate() {
     if (item.bob) item.mesh.position.y = item.baseY + Math.sin(t * 1.4 + item.phase) * item.bob;
   });
   controls.update();
-  renderer.render(scene, camera);
+  if (renderer) renderer.render(scene, camera);
 }
 
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  if (renderer) renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
 
 document.querySelectorAll('[data-camera-preset]').forEach((button) => {
   button.addEventListener('click', () => applyCameraPreset(button.dataset.cameraPreset));
 });
+document.querySelectorAll('[data-mode]').forEach((button) => {
+  button.addEventListener('click', () => setFacilityMode(button.dataset.mode));
+});
+const consoleHotspot = document.getElementById('console-hotspot');
+const consoleClose = document.getElementById('console-close');
+const consoleBackdrop = document.getElementById('console-backdrop');
+if (consoleHotspot) consoleHotspot.addEventListener('click', () => openMissionConsole('overview'));
+if (consoleClose) consoleClose.addEventListener('click', closeMissionConsole);
+if (consoleBackdrop) consoleBackdrop.addEventListener('click', closeMissionConsole);
 const zoomInButton = document.getElementById('zoom-in-btn');
 const zoomOutButton = document.getElementById('zoom-out-btn');
 if (zoomInButton) zoomInButton.addEventListener('click', () => nudgeCameraZoom(-3.2));
 if (zoomOutButton) zoomOutButton.addEventListener('click', () => nudgeCameraZoom(3.2));
 window.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closeMissionConsole();
   if (event.key === '+' || event.key === '=') nudgeCameraZoom(-2.4);
   if (event.key === '-' || event.key === '_') nudgeCameraZoom(2.4);
   if (event.key === '0') applyCameraPreset('full');

@@ -1,0 +1,13 @@
+{
+  "events": [
+    {
+      "id": "evt-sample-progress-report",
+      "type": "task.progress_reported",
+      "goalId": "goal-mc-v1",
+      "taskId": "task-goal-6-event-bridge",
+      "agentId": "artemis",
+      "source": "sample",
+      "message": "Sample progress event for validating the durable Mission Control ingestion boundary."
+    }
+  ]
+}

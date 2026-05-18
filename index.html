@@ -46,6 +46,25 @@
     </footer>
   </main>
 
+  <button class="console-hotspot" id="console-hotspot" type="button" aria-label="Open Mission Control command console">
+    <span></span>
+  </button>
+
+  <section class="mission-console" id="mission-console" aria-label="Mission Control command console" aria-hidden="true">
+    <div class="console-backdrop" id="console-backdrop"></div>
+    <div class="console-surface glass-panel" role="dialog" aria-modal="true" aria-labelledby="console-title">
+      <header class="console-header">
+        <div>
+          <span class="console-kicker" id="console-kicker">CANONICAL STATE</span>
+          <h2 id="console-title">Mission Control</h2>
+        </div>
+        <button class="console-close" id="console-close" type="button" aria-label="Close command console">×</button>
+      </header>
+      <nav class="console-tabs" id="console-tabs" aria-label="Mission console panels"></nav>
+      <div class="console-grid" id="console-grid"></div>
+    </div>
+  </section>
+
   <div class="vignette"></div>
 
   <script type="importmap">
@@ -56,6 +75,6 @@
       }
     }
   </script>
-  <script type="module" src="app.js?v=meshy19-live-baseline-no-side-slabs-20260503"></script>
+  <script type="module" src="app.js?v=mission-control-state-console-20260518"></script>
 </body>
 </html>

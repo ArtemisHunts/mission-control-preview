@@ -1,0 +1,1322 @@
+{
+  "meta": {
+    "schemaVersion": 1,
+    "title": "Mission Control v1",
+    "environment": "local-preview",
+    "isDemo": false,
+    "updatedAt": "2026-05-18T20:38:58.451Z",
+    "sourceOfTruth": "mission-control-state.json",
+    "runtimePolicy": "codex-channel"
+  },
+  "agents": [
+    {
+      "id": "artemis",
+      "name": "Artemis",
+      "role": "Orchestrator",
+      "skills": [
+        "orchestration",
+        "planning",
+        "review",
+        "shipping",
+        "assignment"
+      ],
+      "trustLevel": 5,
+      "status": "working",
+      "currentGoalId": "goal-mc-v1",
+      "currentTaskId": null,
+      "load": 72,
+      "runtime": "codex-channel",
+      "location": "command-hub",
+      "isDemo": false
+    },
+    {
+      "id": "forge",
+      "name": "Forge",
+      "role": "Builder",
+      "skills": [
+        "frontend",
+        "threejs",
+        "interaction",
+        "systems"
+      ],
+      "trustLevel": 3,
+      "status": "staged",
+      "currentGoalId": "goal-mc-v1",
+      "currentTaskId": "task-goal-3-holo-console",
+      "load": 34,
+      "runtime": "codex-channel",
+      "location": "fabrication-bay",
+      "isDemo": true
+    },
+    {
+      "id": "sentinel",
+      "name": "Sentinel",
+      "role": "Reviewer",
+      "skills": [
+        "qa",
+        "safety",
+        "verification",
+        "review"
+      ],
+      "trustLevel": 4,
+      "status": "queued",
+      "currentGoalId": "goal-mc-v1",
+      "currentTaskId": "task-goal-7-review-gates",
+      "load": 22,
+      "runtime": "codex-channel",
+      "location": "review-chamber",
+      "isDemo": true
+    },
+    {
+      "id": "quartermaster",
+      "name": "Quartermaster",
+      "role": "Pipeline Operator",
+      "skills": [
+        "events",
+        "artifacts",
+        "deploy",
+        "state"
+      ],
+      "trustLevel": 3,
+      "status": "queued",
+      "currentGoalId": "goal-mc-v1",
+      "currentTaskId": "task-goal-6-event-bridge",
+      "load": 18,
+      "runtime": "codex-channel",
+      "location": "deployment-hub",
+      "isDemo": true
+    },
+    {
+      "id": "prospector",
+      "name": "Prospector",
+      "role": "Research Miner",
+      "skills": [
+        "research",
+        "memory",
+        "requirements",
+        "signals"
+      ],
+      "trustLevel": 3,
+      "status": "idle",
+      "currentGoalId": null,
+      "currentTaskId": null,
+      "load": 8,
+      "runtime": "codex-channel",
+      "location": "signal-chamber",
+      "isDemo": true
+    },
+    {
+      "id": "navigator",
+      "name": "Navigator",
+      "role": "Goal Strategist",
+      "skills": [
+        "roadmap",
+        "dependencies",
+        "assignment",
+        "planning"
+      ],
+      "trustLevel": 3,
+      "status": "idle",
+      "currentGoalId": null,
+      "currentTaskId": null,
+      "load": 10,
+      "runtime": "codex-channel",
+      "location": "mission-map",
+      "isDemo": true
+    }
+  ],
+  "goals": [
+    {
+      "id": "goal-mc-v1",
+      "title": "Deliver Mission Control v1",
+      "objective": "Turn the asteroid facility preview into a Codex-driven autonomous operations system with truthful goals, tasks, events, reviews, artifacts, telemetry, and facility build progress.",
+      "project": "Mission Control",
+      "status": "running",
+      "priority": 1,
+      "requester": "Michael",
+      "ownerAgentId": "artemis",
+      "assignedAgentIds": [
+        "artemis"
+      ],
+      "runtime": "codex-channel",
+      "context": [
+        "docs/goals/mission-control-v1-codex-campaign.md",
+        "docs/goals/mission-control-current-state-audit.md",
+        "docs/goals/codex-runtime-goal-runner-design.md",
+        "docs/goals/mission-control-v1-state-schema.md"
+      ],
+      "constraints": [
+        "No fake autonomy or fake visibility.",
+        "Codex channel runtime owns execution for now.",
+        "External generation and public/deploy actions require review.",
+        "Preserve existing visual work unless a sub-goal explicitly replaces it."
+      ],
+      "successCriteria": [
+        "User can open Mission Control and inspect real goal/task/event state.",
+        "Central command console can create or select a goal.",
+        "Goal execution exposes task movement, artifacts, review state, and verification proof.",
+        "Facility visualization reflects operational state instead of static theater."
+      ],
+      "verification": [
+        "node scripts/validate-mission-state.mjs",
+        "node --check app.js",
+        "Browser smoke test after interactive console work lands"
+      ],
+      "stopRules": [
+        "Stop on secrets/API-key requirements.",
+        "Stop before paid external generation unless approved.",
+        "Stop before deploy/public actions unless approved.",
+        "Stop on architecture ambiguity that would force a broad rewrite."
+      ],
+      "artifactIds": [
+        "artifact-goal-campaign",
+        "artifact-runtime-design",
+        "artifact-state-schema",
+        "artifact-state-adapter",
+        "artifact-holographic-console",
+        "artifact-assignment-logic",
+        "artifact-local-event-bridge-foundation",
+        "artifact-durable-event-ingestion-boundary",
+        "artifact-review-gate-model",
+        "artifact-goal-intake-selection",
+        "artifact-live-filesystem-event-bridge"
+      ],
+      "currentRunId": "run-goal-mc-v1-20260517",
+      "createdAt": "2026-05-16T19:38:00Z",
+      "updatedAt": "2026-05-18T20:38:58.451Z",
+      "isDemo": false
+    },
+    {
+      "id": "goal-2-state-event-model",
+      "title": "Backend State/Event Model",
+      "objective": "Create the local canonical state and event model that the Mission Control UI can read.",
+      "project": "Mission Control",
+      "status": "completed",
+      "priority": 1,
+      "requester": "Michael",
+      "ownerAgentId": "artemis",
+      "assignedAgentIds": [
+        "artemis"
+      ],
+      "runtime": "codex-channel",
+      "context": [
+        "docs/goals/mission-control-v1-state-schema.md"
+      ],
+      "constraints": [
+        "Start local and inspectable.",
+        "Demo rows must be explicitly marked."
+      ],
+      "successCriteria": [
+        "Canonical local state file exists.",
+        "State includes agents, goals, goalRuns, events, tasks, reviews, artifacts, facilityAssets, visualReviews, and telemetry.",
+        "Existing app reads from canonical state with fallback to legacy seed state."
+      ],
+      "verification": [
+        "node scripts/validate-mission-state.mjs",
+        "node --check app.js"
+      ],
+      "stopRules": [
+        "Do not add cloud dependency for v1 state."
+      ],
+      "artifactIds": [
+        "artifact-state-adapter"
+      ],
+      "currentRunId": "run-goal-2-20260517",
+      "createdAt": "2026-05-17T19:58:00Z",
+      "updatedAt": "2026-05-18T19:27:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "goal-3-holographic-command-console",
+      "title": "Holographic Command Console",
+      "objective": "Clicking the central command table opens a real Mission Control interface bound to canonical state.",
+      "project": "Mission Control",
+      "status": "completed",
+      "priority": 1,
+      "requester": "Michael",
+      "ownerAgentId": "artemis",
+      "assignedAgentIds": [
+        "artemis"
+      ],
+      "runtime": "codex-channel",
+      "context": [
+        "docs/goals/mission-control-v1-codex-campaign.md",
+        "mission-control-state.json"
+      ],
+      "constraints": [
+        "Functional panels first.",
+        "No decorative HUD spam.",
+        "Preserve existing scene."
+      ],
+      "successCriteria": [
+        "Central console/table is clickable.",
+        "Overlay opens/closes cleanly.",
+        "Overlay panels render canonical goals, agents, tasks, reviews, telemetry, deployment events, and facility buildout."
+      ],
+      "verification": [
+        "node --check app.js",
+        "headless Chrome desktop screenshot",
+        "headless Chrome mobile screenshot"
+      ],
+      "stopRules": [
+        "Stop before public deploy actions unless approved."
+      ],
+      "artifactIds": [
+        "artifact-holographic-console"
+      ],
+      "currentRunId": "run-goal-3-20260518",
+      "createdAt": "2026-05-18T19:35:00Z",
+      "updatedAt": "2026-05-18T19:36:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "goal-4-agent-assignment-logic",
+      "title": "Agent Roster + Assignment Logic",
+      "objective": "Model agents as operational workers and let the command console recommend and locally assign tasks based on skills, trust, load, availability, and risk fit.",
+      "project": "Mission Control",
+      "status": "completed",
+      "priority": 1,
+      "requester": "Michael",
+      "ownerAgentId": "artemis",
+      "assignedAgentIds": [
+        "artemis"
+      ],
+      "runtime": "codex-channel",
+      "context": [
+        "docs/goals/mission-control-v1-codex-campaign.md",
+        "mission-control-state.json"
+      ],
+      "constraints": [
+        "No fake persistence.",
+        "Local assignment actions must label themselves as browser-session-only.",
+        "Demo agents must remain explicitly marked."
+      ],
+      "successCriteria": [
+        "Agents appear in the command console.",
+        "Tasks/goals can be assigned locally.",
+        "Agent state drives the facility/console UI without pretending persistence."
+      ],
+      "verification": [
+        "node scripts/validate-mission-state.mjs",
+        "node --check app.js",
+        "headless Chrome task/agent console smoke"
+      ],
+      "stopRules": [
+        "Do not wire persistent writes until the event bridge goal lands."
+      ],
+      "artifactIds": [
+        "artifact-assignment-logic"
+      ],
+      "currentRunId": "run-goal-4-20260518",
+      "createdAt": "2026-05-18T20:05:00Z",
+      "updatedAt": "2026-05-18T20:05:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "goal-local-event-bridge-foundation",
+      "title": "Local Event Bridge Foundation",
+      "objective": "Persist local preview assignment events and task/agent patches across browser refreshes without claiming backend/OpenClaw event ingestion.",
+      "project": "Mission Control",
+      "status": "completed",
+      "priority": 1,
+      "requester": "Michael",
+      "ownerAgentId": "artemis",
+      "assignedAgentIds": [
+        "artemis"
+      ],
+      "runtime": "codex-channel",
+      "context": [
+        "mission-control-state.json",
+        "app.js"
+      ],
+      "constraints": [
+        "Label persistence as browser-localStorage only.",
+        "Do not claim real-time backend ingestion.",
+        "Keep canonical JSON as the base state."
+      ],
+      "successCriteria": [
+        "Local assignment events survive refresh.",
+        "Local task/agent patches are merged over canonical state.",
+        "Console exposes local bridge status and reset control."
+      ],
+      "verification": [
+        "node scripts/validate-mission-state.mjs",
+        "node --check app.js",
+        "headless Chrome telemetry DOM check"
+      ],
+      "stopRules": [
+        "Stop before adding backend credentials or public webhook endpoints."
+      ],
+      "artifactIds": [
+        "artifact-local-event-bridge-foundation"
+      ],
+      "currentRunId": "run-local-event-bridge-foundation-20260518",
+      "createdAt": "2026-05-18T20:14:00Z",
+      "updatedAt": "2026-05-18T20:14:00Z",
+      "isDemo": false
+    }
+  ],
+  "goalRuns": [
+    {
+      "id": "run-goal-mc-v1-20260517",
+      "goalId": "goal-mc-v1",
+      "runtime": "codex-channel",
+      "status": "running",
+      "startedAt": "2026-05-17T19:55:00Z",
+      "endedAt": null,
+      "summary": "Mission Control v1 operating-system goals are locally implemented: canonical state, holographic console, assignment scoring/actions, local preview persistence, durable event ingestion, review gates, goal intake/selection, and live filesystem event bridge. Remaining work is broader AAA facility buildout and deployment review.",
+      "verificationSummary": null,
+      "blocker": null,
+      "eventIds": [
+        "evt-20260516-goal0-completed",
+        "evt-20260516-goal1-completed",
+        "evt-20260517-goal2-started",
+        "evt-20260518-goal2-completed",
+        "evt-20260518-goal3-started",
+        "evt-20260518-goal3-completed",
+        "evt-20260518-goal4-started",
+        "evt-20260518-goal4-completed",
+        "evt-20260518-local-event-bridge-started",
+        "evt-20260518-local-event-bridge-completed",
+        "evt-20260518-durable-ingestion-task-recorded",
+        "evt-20260518-durable-ingestion-artifact-recorded",
+        "evt-20260518-durable-ingestion-checkpoint",
+        "evt-20260518-durable-ingestion-verified",
+        "evt-20260518-review-gates-task-recorded",
+        "evt-20260518-review-public-deploy-recorded",
+        "evt-20260518-review-paid-generation-recorded",
+        "evt-20260518-review-secrets-recorded",
+        "evt-20260518-review-gates-artifact-recorded",
+        "evt-20260518-review-gates-checkpoint",
+        "evt-20260518-goal-intake-task-recorded",
+        "evt-20260518-goal-intake-artifact-recorded",
+        "evt-20260518-goal-intake-checkpoint",
+        "evt-20260518-live-bridge-task-normalized",
+        "evt-20260518-live-bridge-task-unassigned",
+        "evt-20260518-live-bridge-watch-smoke",
+        "evt-20260518-live-bridge-artifact-recorded",
+        "evt-20260518-live-bridge-task-completed",
+        "evt-20260518-live-bridge-completed-checkpoint"
+      ],
+      "artifactIds": [
+        "artifact-goal-campaign",
+        "artifact-runtime-design",
+        "artifact-state-schema",
+        "artifact-state-adapter",
+        "artifact-holographic-console",
+        "artifact-assignment-logic",
+        "artifact-local-event-bridge-foundation",
+        "artifact-durable-event-ingestion-boundary",
+        "artifact-review-gate-model",
+        "artifact-goal-intake-selection",
+        "artifact-live-filesystem-event-bridge"
+      ],
+      "isDemo": false
+    },
+    {
+      "id": "run-goal-2-20260517",
+      "goalId": "goal-2-state-event-model",
+      "runtime": "codex-channel",
+      "status": "completed",
+      "startedAt": "2026-05-17T19:58:00Z",
+      "endedAt": "2026-05-18T19:27:00Z",
+      "summary": "Canonical local state model, validator, runtime adapter, and existing dashboard dock/readout binding are in place.",
+      "verificationSummary": "Passed node scripts/validate-mission-state.mjs, node --check app.js, and HTTP checks for index/app/state. Browser localhost navigation was blocked by OpenClaw browser policy, so visual smoke was not run.",
+      "blocker": null,
+      "eventIds": [
+        "evt-20260517-goal2-started",
+        "evt-20260518-goal2-completed"
+      ],
+      "artifactIds": [
+        "artifact-state-adapter"
+      ],
+      "isDemo": false
+    },
+    {
+      "id": "run-goal-3-20260518",
+      "goalId": "goal-3-holographic-command-console",
+      "runtime": "codex-channel",
+      "status": "completed",
+      "startedAt": "2026-05-18T19:35:00Z",
+      "endedAt": "2026-05-18T19:36:00Z",
+      "summary": "Added a clickable central console hotspot, Holo-table dock opening path, holographic overlay shell, state-backed panel tabs, close/backdrop/Escape behavior, and a QA query param for console-open screenshots.",
+      "verificationSummary": "Passed node --check app.js. Headless Chrome rendered the console overlay on desktop and mobile; renderer fallback keeps the state UI available when WebGL context creation fails.",
+      "blocker": null,
+      "eventIds": [
+        "evt-20260518-goal3-started",
+        "evt-20260518-goal3-completed"
+      ],
+      "artifactIds": [
+        "artifact-holographic-console"
+      ],
+      "isDemo": false
+    },
+    {
+      "id": "run-goal-4-20260518",
+      "goalId": "goal-4-agent-assignment-logic",
+      "runtime": "codex-channel",
+      "status": "completed",
+      "startedAt": "2026-05-18T20:00:00Z",
+      "endedAt": "2026-05-18T20:05:00Z",
+      "summary": "Added assignment scoring, recommendation panels, local assign buttons, local event emission, and telemetry refresh for browser-session assignment actions.",
+      "verificationSummary": "Passed node scripts/validate-mission-state.mjs, node --check app.js, headless Chrome task console screenshot, and DOM checks for assignment recommendations/actions plus agent fit scores.",
+      "blocker": null,
+      "eventIds": [
+        "evt-20260518-goal4-started",
+        "evt-20260518-goal4-completed"
+      ],
+      "artifactIds": [
+        "artifact-assignment-logic"
+      ],
+      "isDemo": false
+    },
+    {
+      "id": "run-local-event-bridge-foundation-20260518",
+      "goalId": "goal-local-event-bridge-foundation",
+      "runtime": "codex-channel",
+      "status": "completed",
+      "startedAt": "2026-05-18T20:10:00Z",
+      "endedAt": "2026-05-18T20:14:00Z",
+      "summary": "Added browser-localStorage event bridge foundation for local assignment events and task/agent patches, plus telemetry/reset UI.",
+      "verificationSummary": "Passed node scripts/validate-mission-state.mjs, node --check app.js, and headless Chrome telemetry DOM checks for local bridge status.",
+      "blocker": null,
+      "eventIds": [
+        "evt-20260518-local-event-bridge-started",
+        "evt-20260518-local-event-bridge-completed"
+      ],
+      "artifactIds": [
+        "artifact-local-event-bridge-foundation"
+      ],
+      "isDemo": false
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task-goal-2-state-model",
+      "goalId": "goal-2-state-event-model",
+      "title": "Create canonical local state/event model",
+      "description": "Add mission-control-state.json, validation, and app binding so Mission Control has an inspectable source of truth.",
+      "project": "Mission Control",
+      "priority": 1,
+      "status": "completed",
+      "requester": "Michael",
+      "assigneeId": "artemis",
+      "room": "command-hub",
+      "autoAssignable": false,
+      "tags": [
+        "state",
+        "events",
+        "goal-2"
+      ],
+      "createdAt": "2026-05-17T19:58:00Z",
+      "updatedAt": "2026-05-18T19:27:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "task-goal-3-holo-console",
+      "goalId": "goal-3-holographic-command-console",
+      "title": "Build clickable holographic command console",
+      "description": "Clicking the central command table opens a real overlay bound to canonical state.",
+      "project": "Mission Control",
+      "priority": 1,
+      "status": "completed",
+      "requester": "Michael",
+      "assigneeId": "artemis",
+      "room": "command-hub",
+      "autoAssignable": true,
+      "tags": [
+        "goal-3",
+        "console",
+        "ui"
+      ],
+      "createdAt": "2026-05-17T19:58:00Z",
+      "updatedAt": "2026-05-18T19:36:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "task-goal-4-agent-assignment",
+      "goalId": "goal-4-agent-assignment-logic",
+      "title": "Add agent assignment scoring and local actions",
+      "description": "Score agents against task requirements, show recommendations, and let the console apply local in-memory assignments with an event trail.",
+      "project": "Mission Control",
+      "priority": 1,
+      "status": "completed",
+      "requester": "Michael",
+      "assigneeId": "artemis",
+      "room": "mission-map",
+      "autoAssignable": false,
+      "tags": [
+        "goal-4",
+        "assignment",
+        "agents",
+        "tasks"
+      ],
+      "createdAt": "2026-05-18T20:00:00Z",
+      "updatedAt": "2026-05-18T20:05:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "task-local-event-bridge-foundation",
+      "goalId": "goal-local-event-bridge-foundation",
+      "title": "Persist local assignment events across refresh",
+      "description": "Use browser localStorage to persist preview assignment events and task/agent patches until the backend/OpenClaw event bridge exists.",
+      "project": "Mission Control",
+      "priority": 1,
+      "status": "completed",
+      "requester": "Michael",
+      "assigneeId": "artemis",
+      "room": "deployment-hub",
+      "autoAssignable": false,
+      "tags": [
+        "events",
+        "persistence",
+        "local-preview"
+      ],
+      "createdAt": "2026-05-18T20:10:00Z",
+      "updatedAt": "2026-05-18T20:14:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "task-goal-6-event-bridge",
+      "goalId": "goal-mc-v1",
+      "title": "Wire live OpenClaw event bridge",
+      "description": "Connect a live OpenClaw/Codex event source to the durable ingestion boundary so goal, task, agent, review, and artifact events update canonical state automatically.",
+      "project": "Mission Control",
+      "priority": 2,
+      "status": "completed",
+      "requester": "Michael",
+      "assigneeId": null,
+      "room": "deployment-hub",
+      "autoAssignable": true,
+      "tags": [
+        "goal-6",
+        "events",
+        "telemetry",
+        "openclaw-live-bridge"
+      ],
+      "createdAt": "2026-05-17T19:58:00Z",
+      "updatedAt": "2026-05-18T20:38:58.451Z",
+      "isDemo": false,
+      "eventIds": [
+        "evt-20260518-live-bridge-task-normalized",
+        "evt-20260518-live-bridge-task-unassigned",
+        "evt-20260518-live-bridge-watch-smoke",
+        "evt-20260518-live-bridge-artifact-recorded",
+        "evt-20260518-live-bridge-task-completed"
+      ]
+    },
+    {
+      "id": "task-goal-7-review-gates",
+      "goalId": "goal-mc-v1",
+      "title": "Represent review gates and approval state",
+      "description": "Risky actions enter Review and preserve approval, evidence, and verification proof state.",
+      "project": "Mission Control",
+      "priority": 1,
+      "status": "completed",
+      "requester": "Michael",
+      "assigneeId": "artemis",
+      "room": "review-chamber",
+      "autoAssignable": false,
+      "tags": [
+        "goal-7",
+        "review",
+        "safety",
+        "approval"
+      ],
+      "createdAt": "2026-05-17T19:58:00Z",
+      "updatedAt": "2026-05-18T20:25:20.470Z",
+      "isDemo": false,
+      "eventIds": [
+        "evt-20260518-review-gates-task-recorded",
+        "evt-20260518-review-public-deploy-recorded",
+        "evt-20260518-review-paid-generation-recorded",
+        "evt-20260518-review-secrets-recorded",
+        "evt-20260518-review-gates-artifact-recorded"
+      ]
+    },
+    {
+      "project": "Mission Control",
+      "priority": 1,
+      "requester": "Michael",
+      "autoAssignable": false,
+      "tags": [
+        "goal-6",
+        "events",
+        "ingestion",
+        "backend-boundary"
+      ],
+      "createdAt": "2026-05-18T20:20:00Z",
+      "updatedAt": "2026-05-18T20:20:08.259Z",
+      "isDemo": false,
+      "id": "task-goal-6-durable-event-ingestion",
+      "goalId": "goal-mc-v1",
+      "title": "Add durable Mission Control event ingestion boundary",
+      "description": "Add a validated script and documented boundary for backend/runtime events to update canonical Mission Control state.",
+      "status": "completed",
+      "assigneeId": "artemis",
+      "room": "deployment-hub",
+      "eventIds": [
+        "evt-20260518-durable-ingestion-task-recorded",
+        "evt-20260518-durable-ingestion-artifact-recorded",
+        "evt-20260518-durable-ingestion-verified"
+      ]
+    },
+    {
+      "project": "Mission Control",
+      "priority": 1,
+      "requester": "Michael",
+      "autoAssignable": false,
+      "tags": [
+        "goals",
+        "intake",
+        "selection",
+        "local-preview"
+      ],
+      "createdAt": "2026-05-18T20:32:00Z",
+      "updatedAt": "2026-05-18T20:30:53.388Z",
+      "isDemo": false,
+      "id": "task-goal-intake-selection",
+      "goalId": "goal-mc-v1",
+      "title": "Add local goal intake and selection",
+      "description": "Let the command console select goals and create browser-local goal drafts without pretending to write backend state.",
+      "status": "completed",
+      "assigneeId": "artemis",
+      "room": "command-hub",
+      "eventIds": [
+        "evt-20260518-goal-intake-task-recorded",
+        "evt-20260518-goal-intake-artifact-recorded"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "evt-20260516-goal0-completed",
+      "type": "goal.completed",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": null,
+      "message": "Goal 0 campaign foundation and current-state audit were created.",
+      "artifactIds": [
+        "artifact-goal-campaign"
+      ],
+      "createdAt": "2026-05-16T19:38:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260516-goal1-completed",
+      "type": "goal.completed",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": null,
+      "message": "Goal 1 runtime policy, lifecycle, adapter boundary, and state schema were documented.",
+      "artifactIds": [
+        "artifact-runtime-design",
+        "artifact-state-schema"
+      ],
+      "createdAt": "2026-05-16T19:53:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260517-goal2-started",
+      "type": "goal.started",
+      "goalId": "goal-2-state-event-model",
+      "runId": "run-goal-2-20260517",
+      "agentId": "artemis",
+      "taskId": "task-goal-2-state-model",
+      "message": "Goal 2 started: canonical local state/event model and app binding.",
+      "artifactIds": [],
+      "createdAt": "2026-05-17T19:58:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-goal2-completed",
+      "type": "goal.completed",
+      "goalId": "goal-2-state-event-model",
+      "runId": "run-goal-2-20260517",
+      "agentId": "artemis",
+      "taskId": "task-goal-2-state-model",
+      "message": "Goal 2 completed: app.js now loads mission-control-state.json through a runtime adapter and binds the existing dock/readout UI to canonical goals, runs, tasks, events, assets, reviews, and telemetry.",
+      "artifactIds": [
+        "artifact-state-adapter"
+      ],
+      "createdAt": "2026-05-18T19:27:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-goal3-started",
+      "type": "goal.started",
+      "goalId": "goal-3-holographic-command-console",
+      "runId": "run-goal-3-20260518",
+      "agentId": "artemis",
+      "taskId": "task-goal-3-holo-console",
+      "message": "Goal 3 started: building the clickable holographic command console on top of canonical Mission Control state.",
+      "artifactIds": [],
+      "createdAt": "2026-05-18T19:35:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-goal3-completed",
+      "type": "goal.completed",
+      "goalId": "goal-3-holographic-command-console",
+      "runId": "run-goal-3-20260518",
+      "agentId": "artemis",
+      "taskId": "task-goal-3-holo-console",
+      "message": "Goal 3 completed: central hotspot and Holo-table dock now open a state-backed holographic Mission Control console with functional panels.",
+      "artifactIds": [
+        "artifact-holographic-console"
+      ],
+      "createdAt": "2026-05-18T19:36:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-goal4-started",
+      "type": "goal.started",
+      "goalId": "goal-4-agent-assignment-logic",
+      "runId": "run-goal-4-20260518",
+      "agentId": "artemis",
+      "taskId": "task-goal-4-agent-assignment",
+      "message": "Goal 4 started: adding agent assignment scoring and local console assignment actions.",
+      "artifactIds": [],
+      "createdAt": "2026-05-18T20:00:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-goal4-completed",
+      "type": "goal.completed",
+      "goalId": "goal-4-agent-assignment-logic",
+      "runId": "run-goal-4-20260518",
+      "agentId": "artemis",
+      "taskId": "task-goal-4-agent-assignment",
+      "message": "Goal 4 completed: command console now scores assignment fit, shows recommended assignees, and supports local in-memory assignment actions with event emission.",
+      "artifactIds": [
+        "artifact-assignment-logic"
+      ],
+      "createdAt": "2026-05-18T20:05:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-local-event-bridge-started",
+      "type": "goal.started",
+      "goalId": "goal-local-event-bridge-foundation",
+      "runId": "run-local-event-bridge-foundation-20260518",
+      "agentId": "artemis",
+      "taskId": "task-local-event-bridge-foundation",
+      "message": "Local event bridge foundation started: persist preview assignment events and patches without claiming backend ingestion.",
+      "artifactIds": [],
+      "createdAt": "2026-05-18T20:10:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-local-event-bridge-completed",
+      "type": "goal.completed",
+      "goalId": "goal-local-event-bridge-foundation",
+      "runId": "run-local-event-bridge-foundation-20260518",
+      "agentId": "artemis",
+      "taskId": "task-local-event-bridge-foundation",
+      "message": "Local event bridge foundation completed: browser-localStorage now stores local assignment events and task/agent patches, with console telemetry and reset controls.",
+      "artifactIds": [
+        "artifact-local-event-bridge-foundation"
+      ],
+      "createdAt": "2026-05-18T20:14:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-durable-ingestion-task-recorded",
+      "type": "task.recorded",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": "task-goal-6-durable-event-ingestion",
+      "message": "Durable event ingestion boundary task recorded for Mission Control.",
+      "artifactIds": [],
+      "createdAt": "2026-05-18T20:20:08.259Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:20:08.259Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-durable-ingestion-artifact-recorded",
+      "type": "artifact.recorded",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": "task-goal-6-durable-event-ingestion",
+      "message": "Durable event ingestion boundary artifact recorded.",
+      "artifactIds": [
+        "artifact-durable-event-ingestion-boundary"
+      ],
+      "createdAt": "2026-05-18T20:20:08.259Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:20:08.259Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-durable-ingestion-checkpoint",
+      "type": "goal.checkpoint",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": null,
+      "message": "Mission Control now has a durable local backend/runtime ingestion boundary; live OpenClaw streaming remains the next bridge step.",
+      "artifactIds": [
+        "artifact-durable-event-ingestion-boundary"
+      ],
+      "createdAt": "2026-05-18T20:20:08.259Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:20:08.259Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-durable-ingestion-verified",
+      "type": "task.progress_reported",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": "task-goal-6-durable-event-ingestion",
+      "message": "Durable event ingestion boundary verified with validator, syntax checks, dry-run ingestion, and applied canonical event batch.",
+      "artifactIds": [],
+      "createdAt": "2026-05-18T20:20:42.805Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:20:42.805Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-review-gates-task-recorded",
+      "type": "task.recorded",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": "task-goal-7-review-gates",
+      "reviewId": null,
+      "message": "Review-gate representation task recorded and completed for Mission Control.",
+      "artifactIds": [],
+      "createdAt": "2026-05-18T20:25:20.470Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:25:20.470Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-review-public-deploy-recorded",
+      "type": "review.recorded",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": "task-goal-7-review-gates",
+      "reviewId": "review-public-github-deploy",
+      "message": "Review gate recorded for public GitHub Pages deploy/push actions.",
+      "artifactIds": [],
+      "createdAt": "2026-05-18T20:25:20.470Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:25:20.470Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-review-paid-generation-recorded",
+      "type": "review.recorded",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": "task-goal-7-review-gates",
+      "reviewId": "review-paid-external-generation",
+      "message": "Review gate recorded for paid external generation actions.",
+      "artifactIds": [],
+      "createdAt": "2026-05-18T20:25:20.471Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:25:20.471Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-review-secrets-recorded",
+      "type": "review.recorded",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": "task-goal-7-review-gates",
+      "reviewId": "review-secrets-credential-access",
+      "message": "Review gate recorded for secrets or credential requirements.",
+      "artifactIds": [],
+      "createdAt": "2026-05-18T20:25:20.471Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:25:20.471Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-review-gates-artifact-recorded",
+      "type": "artifact.recorded",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": "task-goal-7-review-gates",
+      "reviewId": null,
+      "message": "Review gate model and UI artifact recorded.",
+      "artifactIds": [
+        "artifact-review-gate-model"
+      ],
+      "createdAt": "2026-05-18T20:25:20.471Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:25:20.471Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-review-gates-checkpoint",
+      "type": "goal.checkpoint",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": null,
+      "reviewId": null,
+      "message": "Review gates now model approval state for public deploys, paid external generation, and credential-sensitive actions.",
+      "artifactIds": [
+        "artifact-review-gate-model"
+      ],
+      "createdAt": "2026-05-18T20:25:20.471Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:25:20.471Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-goal-intake-task-recorded",
+      "type": "task.recorded",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": "task-goal-intake-selection",
+      "reviewId": null,
+      "message": "Goal intake and selection task recorded and completed for Mission Control.",
+      "artifactIds": [],
+      "createdAt": "2026-05-18T20:30:53.388Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:30:53.388Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-goal-intake-artifact-recorded",
+      "type": "artifact.recorded",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": "task-goal-intake-selection",
+      "reviewId": null,
+      "message": "Goal intake and selection UI artifact recorded.",
+      "artifactIds": [
+        "artifact-goal-intake-selection"
+      ],
+      "createdAt": "2026-05-18T20:30:53.389Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:30:53.389Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-goal-intake-checkpoint",
+      "type": "goal.checkpoint",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": null,
+      "reviewId": null,
+      "message": "Command console now supports goal selection and browser-local goal draft creation.",
+      "artifactIds": [
+        "artifact-goal-intake-selection"
+      ],
+      "createdAt": "2026-05-18T20:30:53.389Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:30:53.389Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-live-bridge-task-normalized",
+      "type": "task.recorded",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": "task-goal-6-event-bridge",
+      "reviewId": null,
+      "message": "Live OpenClaw event bridge task normalized as real pending Mission Control work, not demo filler.",
+      "artifactIds": [],
+      "createdAt": "2026-05-18T20:36:54.986Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:36:54.986Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-live-bridge-task-unassigned",
+      "type": "task.recorded",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": "task-goal-6-event-bridge",
+      "reviewId": null,
+      "message": "Live OpenClaw event bridge task left unassigned until the live adapter implementation starts.",
+      "artifactIds": [],
+      "createdAt": "2026-05-18T20:37:20.151Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:37:20.151Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-live-bridge-watch-smoke",
+      "type": "task.progress_reported",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": "task-goal-6-event-bridge",
+      "reviewId": null,
+      "message": "Filesystem inbox live bridge smoke event applied through watcher.",
+      "artifactIds": [],
+      "createdAt": "2026-05-18T20:38:45.622Z",
+      "source": "filesystem-inbox",
+      "ingestedAt": "2026-05-18T20:38:45.622Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-live-bridge-artifact-recorded",
+      "type": "artifact.recorded",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": "task-goal-6-event-bridge",
+      "reviewId": null,
+      "message": "Live filesystem inbox event bridge artifact recorded.",
+      "artifactIds": [
+        "artifact-live-filesystem-event-bridge"
+      ],
+      "createdAt": "2026-05-18T20:38:58.450Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:38:58.450Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-live-bridge-task-completed",
+      "type": "task.status_changed",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": "task-goal-6-event-bridge",
+      "reviewId": null,
+      "message": "Live filesystem inbox bridge completed for v1: event files can now feed the durable ingestion boundary and update canonical state.",
+      "artifactIds": [],
+      "createdAt": "2026-05-18T20:38:58.451Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:38:58.451Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260518-live-bridge-completed-checkpoint",
+      "type": "goal.checkpoint",
+      "goalId": "goal-mc-v1",
+      "runId": "run-goal-mc-v1-20260517",
+      "agentId": "artemis",
+      "taskId": null,
+      "reviewId": null,
+      "message": "Mission Control v1 operating-system loop now has state, console, assignment, event ingestion, review gates, goal intake, and a live local event bridge.",
+      "artifactIds": [
+        "artifact-live-filesystem-event-bridge"
+      ],
+      "createdAt": "2026-05-18T20:38:58.451Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-18T20:38:58.451Z",
+      "isDemo": false
+    }
+  ],
+  "reviews": [
+    {
+      "status": "required",
+      "decision": "pending",
+      "riskLevel": "external-public-action",
+      "requiredApprovals": [
+        "Michael"
+      ],
+      "evidence": [
+        "state validator required",
+        "syntax checks required",
+        "browser smoke required"
+      ],
+      "createdAt": "2026-05-18T20:25:20.470Z",
+      "updatedAt": "2026-05-18T20:25:20.470Z",
+      "isDemo": false,
+      "id": "review-public-github-deploy",
+      "goalId": "goal-mc-v1",
+      "taskId": "task-goal-7-review-gates",
+      "title": "Public GitHub Pages deploy/push",
+      "requestedByAgentId": "artemis",
+      "note": "Do not push or deploy Mission Control until Michael gives an explicit go-ahead."
+    },
+    {
+      "status": "required",
+      "decision": "pending",
+      "riskLevel": "external-paid-action",
+      "requiredApprovals": [
+        "Michael"
+      ],
+      "evidence": [
+        "requested asset scope",
+        "estimated credit/cost cap",
+        "approval message"
+      ],
+      "createdAt": "2026-05-18T20:25:20.471Z",
+      "updatedAt": "2026-05-18T20:25:20.471Z",
+      "isDemo": false,
+      "id": "review-paid-external-generation",
+      "goalId": "goal-mc-v1",
+      "taskId": "task-goal-7-review-gates",
+      "title": "Paid external generation",
+      "requestedByAgentId": "artemis",
+      "note": "Stop before paid generation unless approved."
+    },
+    {
+      "status": "required",
+      "decision": "pending",
+      "riskLevel": "credential-sensitive",
+      "requiredApprovals": [
+        "Michael"
+      ],
+      "evidence": [
+        "specific credential need",
+        "least-privilege scope",
+        "non-public handling path"
+      ],
+      "createdAt": "2026-05-18T20:25:20.471Z",
+      "updatedAt": "2026-05-18T20:25:20.471Z",
+      "isDemo": false,
+      "id": "review-secrets-credential-access",
+      "goalId": "goal-mc-v1",
+      "taskId": "task-goal-7-review-gates",
+      "title": "Secrets or credential access",
+      "requestedByAgentId": "artemis",
+      "note": "Stop on secrets/API-key requirements."
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "artifact-goal-campaign",
+      "kind": "doc",
+      "name": "Mission Control v1 Codex Campaign",
+      "path": "docs/goals/mission-control-v1-codex-campaign.md",
+      "goalId": "goal-mc-v1",
+      "createdAt": "2026-05-16T19:38:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "artifact-runtime-design",
+      "kind": "doc",
+      "name": "Codex Runtime Goal Runner Design",
+      "path": "docs/goals/codex-runtime-goal-runner-design.md",
+      "goalId": "goal-mc-v1",
+      "createdAt": "2026-05-16T19:53:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "artifact-state-schema",
+      "kind": "doc",
+      "name": "Mission Control v1 Minimal State Schema",
+      "path": "docs/goals/mission-control-v1-state-schema.md",
+      "goalId": "goal-mc-v1",
+      "createdAt": "2026-05-16T19:53:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "artifact-state-adapter",
+      "kind": "code",
+      "name": "Mission Control canonical state adapter and dashboard binding",
+      "path": "app.js",
+      "goalId": "goal-2-state-event-model",
+      "createdAt": "2026-05-18T19:27:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "artifact-holographic-console",
+      "kind": "code",
+      "name": "Clickable holographic Mission Control console",
+      "path": "index.html, style.css, app.js",
+      "goalId": "goal-3-holographic-command-console",
+      "createdAt": "2026-05-18T19:36:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "artifact-assignment-logic",
+      "kind": "code",
+      "name": "Agent assignment scoring and local console actions",
+      "path": "app.js, style.css, mission-control-state.json",
+      "goalId": "goal-4-agent-assignment-logic",
+      "createdAt": "2026-05-18T20:05:00Z",
+      "isDemo": false
+    },
+    {
+      "id": "artifact-local-event-bridge-foundation",
+      "kind": "code",
+      "name": "Browser-localStorage local event bridge foundation",
+      "path": "app.js, mission-control-state.json, tasks/todo.md",
+      "goalId": "goal-local-event-bridge-foundation",
+      "createdAt": "2026-05-18T20:14:00Z",
+      "isDemo": false
+    },
+    {
+      "createdAt": "2026-05-18T20:20:08.259Z",
+      "isDemo": false,
+      "id": "artifact-durable-event-ingestion-boundary",
+      "kind": "code",
+      "name": "Durable Mission Control event ingestion boundary",
+      "path": "scripts/apply-mission-events.mjs, docs/goals/mission-control-event-ingestion.md",
+      "goalId": "goal-mc-v1"
+    },
+    {
+      "createdAt": "2026-05-18T20:25:20.471Z",
+      "isDemo": false,
+      "id": "artifact-review-gate-model",
+      "kind": "code",
+      "name": "Mission Control review gate and approval-state model",
+      "path": "mission-control-state.json, app.js, scripts/apply-mission-events.mjs",
+      "goalId": "goal-mc-v1"
+    },
+    {
+      "createdAt": "2026-05-18T20:30:53.389Z",
+      "isDemo": false,
+      "id": "artifact-goal-intake-selection",
+      "kind": "code",
+      "name": "Local Mission Control goal intake and selection",
+      "path": "app.js, mission-control-state.json",
+      "goalId": "goal-mc-v1"
+    },
+    {
+      "createdAt": "2026-05-18T20:38:58.450Z",
+      "isDemo": false,
+      "id": "artifact-live-filesystem-event-bridge",
+      "kind": "code",
+      "name": "Mission Control live filesystem event bridge",
+      "path": "scripts/watch-mission-events.mjs, mission-events/inbox, mission-events/processed, mission-events/failed, docs/goals/mission-control-live-event-bridge.md",
+      "goalId": "goal-mc-v1"
+    }
+  ],
+  "facilityAssets": [
+    {
+      "id": "asset-meshy-19-asteroid-baseline",
+      "name": "Meshy-19 Clean Three-Opening Asteroid Baseline",
+      "category": "asteroid-shell",
+      "source": "meshy-ai",
+      "status": "integrated",
+      "paths": [
+        "assets/blender/meshy-19-clean-rock-three-openings-dark-material-pass-v2.glb"
+      ],
+      "qualityNotes": [
+        "Current live baseline asteroid shell for sparse prop integration.",
+        "Existing asset; no new paid generation in this Goal 2 pass."
+      ],
+      "visualReviewIds": [],
+      "isDemo": false
+    }
+  ],
+  "visualReviews": [],
+  "telemetry": {
+    "summary": {
+      "activeGoals": 1,
+      "activeTasks": 0,
+      "queuedTasks": 0,
+      "blockedGoals": 0,
+      "latestEventId": "evt-20260518-live-bridge-completed-checkpoint"
+    },
+    "updatedAt": "2026-05-18T20:38:58.451Z",
+    "isDemo": false
+  }
+}
