@@ -371,7 +371,7 @@
       "title": "Holo-Table Density + Kanban Tasks",
       "objective": "Run the overlay-specific Mission Control command console loop in #dashboard: dense single-page information, fewer tab hops, goal-lane visibility, and kanban-style task state independent of 3D asset progress.",
       "project": "Mission Control",
-      "status": "running",
+      "status": "completed",
       "priority": 1,
       "requester": "Michael",
       "ownerAgentId": "artemis",
@@ -402,15 +402,18 @@
       "verification": [
         "node scripts/validate-mission-state.mjs",
         "node --check app.js",
-        "desktop/mobile screenshot smoke"
+        "headless Chrome overlay desktop/mobile screenshot smoke",
+        "headless Chrome tasks kanban screenshot/DOM smoke"
       ],
       "stopRules": [
         "Stop before broad visual rewrite that breaks current Pages inspection."
       ],
-      "artifactIds": [],
+      "artifactIds": [
+        "artifact-holo-table-density-kanban-proof"
+      ],
       "currentRunId": "run-goal-5-20260518",
       "createdAt": "2026-05-19T00:26:47.874Z",
-      "updatedAt": "2026-05-19T23:18:00.000Z",
+      "updatedAt": "2026-05-19T23:48:00.000Z",
       "isDemo": false
     },
     {
@@ -519,9 +522,9 @@
       "artifactIds": [],
       "currentRunId": "run-goal-7-20260518",
       "createdAt": "2026-05-19T00:26:47.874Z",
-      "updatedAt": "2026-05-19T22:02:27.945Z",
+      "updatedAt": "2026-05-19T23:48:00.000Z",
       "isDemo": false,
-      "blocker": "Meshy-101 runtime candidate still needs Mission Control browser/in-scene load proof and final baseline acceptance."
+      "blocker": "Meshy-101 runtime proof is complete, but the active candidate still needs one no-spend Blender cleanup pass for interior artifacts and final baseline acceptance before facility population can start."
     }
   ],
   "goalRuns": [
@@ -661,20 +664,24 @@
       "id": "run-goal-5-20260518",
       "goalId": "goal-5-holo-table-density-kanban",
       "runtime": "codex-channel",
-      "status": "running",
+      "status": "completed",
       "startedAt": null,
-      "endedAt": null,
-      "summary": "Overlay lane is split into #dashboard with kanban, dense overview, explicit goal lanes, and an overlay-only inspection mode; final holo-table compression still remains.",
-      "verificationSummary": null,
+      "endedAt": "2026-05-19T23:48:00.000Z",
+      "summary": "Holo-table density and kanban baseline complete: overlay-only mode opens the dense primary surface with operations metrics, goal lanes, task kanban, open work, reviews, assets, roster, and events; the task panel retains the full kanban board.",
+      "verificationSummary": "Passed state validator, app syntax, git diff whitespace check, and headless Chrome overlay smoke with desktop/mobile screenshots plus DOM assertions.",
       "blocker": null,
       "eventIds": [
         "evt-20260519-holo-kanban-task-completed",
         "evt-20260519-holo-kanban-checkpoint",
         "evt-20260519-holo-density-task-active",
         "evt-20260519-holo-density-checkpoint",
-        "evt-20260519-concurrent-lanes-split"
+        "evt-20260519-concurrent-lanes-split",
+        "evt-20260519-holo-density-task-completed",
+        "evt-20260519-holo-density-goal-completed"
       ],
-      "artifactIds": [],
+      "artifactIds": [
+        "artifact-holo-table-density-kanban-proof"
+      ],
       "isDemo": false
     },
     {
@@ -931,7 +938,7 @@
       "description": "Reduce dependence on many tabs by combining core goals, tasks, agents, telemetry, reviews, buildout, signals, and explicit channel lanes on the primary holo-table view.",
       "project": "Mission Control",
       "priority": 1,
-      "status": "active",
+      "status": "completed",
       "requester": "Michael",
       "assigneeId": "artemis",
       "room": "command-hub",
@@ -943,11 +950,13 @@
         "single-page"
       ],
       "createdAt": "2026-05-19T00:26:47.874Z",
-      "updatedAt": "2026-05-19T23:18:00.000Z",
+      "updatedAt": "2026-05-19T23:48:00.000Z",
       "isDemo": false,
       "eventIds": [
         "evt-20260519-holo-density-task-active",
-        "evt-20260519-concurrent-lanes-split"
+        "evt-20260519-concurrent-lanes-split",
+        "evt-20260519-holo-density-task-completed",
+        "evt-20260519-holo-density-goal-completed"
       ]
     },
     {
@@ -1917,6 +1926,38 @@
       "source": "codex-runtime",
       "ingestedAt": "2026-05-19T23:23:00.000Z",
       "isDemo": false
+    },
+    {
+      "id": "evt-20260519-holo-density-task-completed",
+      "type": "task.status_changed",
+      "goalId": "goal-5-holo-table-density-kanban",
+      "runId": "run-goal-5-20260518",
+      "agentId": "artemis",
+      "taskId": "task-holo-table-single-page-density",
+      "message": "Single-page holo-table density pass completed: overview now exposes operations metrics, goal lanes, task kanban, open work, reviews, asset pipeline, command roster, and latest events.",
+      "artifactIds": [
+        "artifact-holo-table-density-kanban-proof"
+      ],
+      "createdAt": "2026-05-19T23:48:00.000Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-19T23:48:00.000Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260519-holo-density-goal-completed",
+      "type": "goal.completed",
+      "goalId": "goal-5-holo-table-density-kanban",
+      "runId": "run-goal-5-20260518",
+      "agentId": "artemis",
+      "taskId": "task-holo-table-single-page-density",
+      "message": "Holo-table density and kanban recovery gap is complete and browser-proven through overlay-only overview and task-board smoke artifacts.",
+      "artifactIds": [
+        "artifact-holo-table-density-kanban-proof"
+      ],
+      "createdAt": "2026-05-19T23:48:00.000Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-19T23:48:00.000Z",
+      "isDemo": false
     }
   ],
   "reviews": [
@@ -2164,6 +2205,15 @@
       "path": "docs/visual-reviews/2026-05-19-meshy-101-runtime-browser-proof.md",
       "createdAt": "2026-05-19T23:23:00.000Z",
       "isDemo": false
+    },
+    {
+      "id": "artifact-holo-table-density-kanban-proof",
+      "kind": "visual-review",
+      "name": "Holo-table density and kanban overlay smoke proof",
+      "path": "docs/visual-reviews/2026-05-19-holo-table-density-overlay-smoke.md, docs/visual-reviews/2026-05-19-holo-table-density-overlay-smoke.json, docs/visual-reviews/2026-05-19-holo-table-density-overlay-desktop.png, docs/visual-reviews/2026-05-19-holo-table-density-overlay-mobile.png, docs/visual-reviews/2026-05-19-holo-table-kanban-overlay-desktop.png",
+      "goalId": "goal-5-holo-table-density-kanban",
+      "createdAt": "2026-05-19T23:48:00.000Z",
+      "isDemo": false
     }
   ],
   "facilityAssets": [
@@ -2349,17 +2399,48 @@
       ],
       "updatedAt": "2026-05-19T23:23:00.000Z",
       "isDemo": false
+    },
+    {
+      "id": "visual-review-holo-table-density-kanban-20260519",
+      "goalId": "goal-5-holo-table-density-kanban",
+      "taskId": "task-holo-table-single-page-density",
+      "title": "Holo-table density and kanban overlay smoke",
+      "status": "completed",
+      "decision": "passed-browser-smoke",
+      "summary": "Overlay-only Mission Control preview now exposes a dense overview with operations metrics, goal lanes, task kanban, open work, reviews, assets, roster, and events; the task panel also renders the full kanban board. Headless Chrome desktop/mobile screenshots and DOM assertions passed.",
+      "assetIds": [],
+      "artifactIds": [
+        "artifact-holo-table-density-kanban-proof"
+      ],
+      "proofPaths": [
+        "docs/visual-reviews/2026-05-19-holo-table-density-overlay-smoke.md",
+        "docs/visual-reviews/2026-05-19-holo-table-density-overlay-smoke.json",
+        "docs/visual-reviews/2026-05-19-holo-table-density-overlay-desktop.png",
+        "docs/visual-reviews/2026-05-19-holo-table-density-overlay-mobile.png",
+        "docs/visual-reviews/2026-05-19-holo-table-kanban-overlay-desktop.png"
+      ],
+      "criteria": [
+        "overlay-only preview opens without 3D runtime dependency",
+        "primary overview includes operations metrics",
+        "primary overview includes channel-owned goal lanes",
+        "primary overview includes task kanban",
+        "task panel renders kanban board",
+        "desktop and mobile screenshots generated",
+        "DOM smoke assertions pass"
+      ],
+      "updatedAt": "2026-05-19T23:48:00.000Z",
+      "isDemo": false
     }
   ],
   "telemetry": {
     "summary": {
-      "activeGoals": 3,
-      "activeTasks": 2,
+      "activeGoals": 2,
+      "activeTasks": 1,
       "queuedTasks": 2,
       "blockedGoals": 1,
-      "latestEventId": "evt-20260519-meshy-101-interior-cleanup-next"
+      "latestEventId": "evt-20260519-holo-density-goal-completed"
     },
-    "updatedAt": "2026-05-19T23:23:00.000Z",
+    "updatedAt": "2026-05-19T23:48:00.000Z",
     "isDemo": false
   }
 }

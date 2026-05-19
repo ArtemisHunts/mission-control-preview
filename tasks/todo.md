@@ -114,7 +114,7 @@ Next checklist:
 - [x] Apply Michael's thinner-wall feedback as a separate Meshy-101 hollow v2 candidate and validate the optimized runtime GLB.
 - [x] Prove the Meshy-101 runtime candidate inside the Mission Control browser scene before final baseline acceptance.
 - [ ] Clean Meshy-101 interior artifacts in Blender before final baseline lock.
-- [ ] Rework the command console into a denser single-page holo-table surface with fewer tabs.
+- [x] Rework the command console into a denser single-page holo-table surface with fewer tabs.
 - [x] Convert the task panel into kanban columns.
 - [x] Split overlay and 3D into separate channel-owned goal lanes.
 - [x] Add overlay-only preview mode so holo-table work is not blocked by 3D runtime loading.
@@ -172,6 +172,8 @@ Next checklist:
 
 - Picked the next holo-table gap immediately after the kanban pass: the overview screen still forced too much tab-hopping to see work, risk, asset, and roster state together.
 - Added an `Operations Snapshot` metric strip plus compact `Open Work`, `Review Pressure`, `Asset Pipeline`, `Command Roster`, and `Latest Events` panels directly to the overview surface.
+- Added the state-backed `Task Kanban` board directly to the overview surface, while keeping the dedicated task-board tab for focused task inspection.
 - Kept the data truthful and state-backed: the new surface reads from canonical goals, tasks, reviews, assets, telemetry, agents, and events without introducing fake backend actions.
-- Kept the broader density task open because the console still has room to compress more goal/review/buildout signal into an even tighter primary surface.
-- Verification: `node scripts/validate-mission-state.mjs`, `node --check app.js`, `git diff --check`.
+- Proof artifacts: `docs/visual-reviews/2026-05-19-holo-table-density-overlay-smoke.md`, matching JSON, desktop/mobile overview screenshots, and the task-board screenshot.
+- Decision: passed browser smoke; the holo-table density + kanban recovery gap is complete. Next gap returns to the Meshy-101 no-spend Blender cleanup before final asteroid baseline lock.
+- Verification: `node scripts/validate-mission-state.mjs`, `node --check app.js`, `git diff --check`, and headless Chrome overlay DOM/screenshot smoke.

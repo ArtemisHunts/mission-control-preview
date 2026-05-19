@@ -1,0 +1,102 @@
+{
+  "id": "holo-table-density-overlay-smoke-20260519",
+  "urls": {
+    "overview": "http://127.0.0.1:4180/?overlay=1&console=overview",
+    "tasks": "http://127.0.0.1:4180/?overlay=1&console=tasks"
+  },
+  "timestamp": "2026-05-19T23:48:00.000Z",
+  "selectedGap": "holo-table density and task kanban",
+  "assertions": [
+    {
+      "page": "overview",
+      "text": "Operations Snapshot",
+      "present": true
+    },
+    {
+      "page": "overview",
+      "text": "Goal Lanes",
+      "present": true
+    },
+    {
+      "page": "overview",
+      "text": "Task Kanban",
+      "present": true
+    },
+    {
+      "page": "overview",
+      "text": "Open Work",
+      "present": true
+    },
+    {
+      "page": "overview",
+      "text": "Review Pressure",
+      "present": true
+    },
+    {
+      "page": "overview",
+      "text": "Asset Pipeline",
+      "present": true
+    },
+    {
+      "page": "overview",
+      "text": "Command Roster",
+      "present": true
+    },
+    {
+      "page": "overview",
+      "text": "Active goals",
+      "present": true
+    },
+    {
+      "page": "overview",
+      "text": "#dashboard",
+      "present": true
+    },
+    {
+      "page": "overview",
+      "text": "#3d-goal",
+      "present": true
+    },
+    {
+      "page": "tasks",
+      "text": "Task Board",
+      "present": true
+    },
+    {
+      "page": "tasks",
+      "text": "Active",
+      "present": true
+    },
+    {
+      "page": "tasks",
+      "text": "Queued",
+      "present": true
+    },
+    {
+      "page": "tasks",
+      "text": "Completed",
+      "present": true
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "docs/visual-reviews/2026-05-19-holo-table-density-overlay-desktop.png",
+      "bytes": 348093,
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "path": "docs/visual-reviews/2026-05-19-holo-table-density-overlay-mobile.png",
+      "bytes": 109658,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/visual-reviews/2026-05-19-holo-table-kanban-overlay-desktop.png",
+      "bytes": 283468,
+      "width": 1440,
+      "height": 1000
+    }
+  ],
+  "decision": "passed"
+}
