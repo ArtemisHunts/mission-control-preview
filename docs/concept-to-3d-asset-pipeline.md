@@ -1,6 +1,6 @@
 # Mission Control — Concept-to-3D Asset Pipeline
 
-_Last updated: 2026-04-26_
+_Last updated: 2026-05-18_
 
 This pipeline is for quickly turning concept art into usable in-scene assets without losing the larger art direction. It is a velocity tool, not a replacement for composition, scale, or taste.
 
@@ -16,7 +16,9 @@ Use concept-to-3D for contained assets:
 - ship silhouettes and small hangar dressing
 - signage, terminals, sensor dishes, fabrication rigs
 
-Do **not** use it as the primary method for the whole asteroid facility. The main environment still needs deliberate camera, blockout, massing, traversal, and depth design.
+Do **not** use it as the primary method for the whole asteroid facility unless the current lane is explicitly the asteroid baseline quality gate. The main environment still needs deliberate camera, blockout, massing, traversal, and depth design.
+
+Current Mission Control priority: establish a high-fidelity asteroid baseline before adding more facility props. Michael flagged the current model as low-resolution, so the asteroid shell is now a first-class asset gate rather than background dressing.
 
 ## 2. Pipeline
 
@@ -25,12 +27,15 @@ Do **not** use it as the primary method for the whole asteroid facility. The mai
    - Prefer three-quarter views, strong silhouette, simple material zones, and no noisy background.
 
 2. **Image to 3D mesh**
-   - Candidate tools: TRELLIS/TRELLIS.2, Hunyuan3D, Tripo, Meshy, or equivalent.
+   - Candidate tools: TRELLIS/TRELLIS.2, Hunyuan3D, Tripo, Meshy, Modly, or equivalent.
    - Treat TRELLIS-style PBR output as a strong candidate for props and hard-surface dressing, pending license/runtime verification.
-   - Goal is a rough-to-usable GLB/blockout that still gets inspected in-engine, not blindly accepted final art.
+   - Modly watch item, 2026-05-02: `github.com/lightningpixel/modly` claims local desktop image→3D on GPU with extension support for Hunyuan3D Mini, TripoSG, and Trellis2/GGUF. Evaluate in a sandbox before trusting/installing; if it works on the local RTX 4070 Laptop GPU, use it to save Meshy credits for texturing/hard-surface finishing.
+   - Goal is a rough-to-usable mesh/blockout that becomes Blender input, not blindly accepted final art.
 
-3. **Cleanup**
-   - Use Blender/Meshy/Tripo cleanup to fix scale, pivots, normals, mesh names, and obvious topology junk.
+3. **Blender production pass**
+   - Blender is the default DCC for art creation, kitbashing, model cleanup, source-file edits, simple rig/animation fixes, collision proxy creation, and GLB/glTF export.
+   - Keep `.blend` as the editable production source for any asset that is hand-authored or materially changed.
+   - Fix scale, pivots/origins, transforms, normals, UVs, mesh names, hierarchy, and obvious topology junk.
    - Reduce material count.
    - Apply transforms.
    - Export `.glb`/`.gltf`.
@@ -54,12 +59,22 @@ Before an asset stays in the scene, it must pass these gates:
 - **Purpose:** the asset tells the user what that area does.
 - **Budget:** low enough for browser delivery; no gratuitous dense meshes or many materials.
 - **Integration:** matches the project palette and lighting; no pasted-in marketplace feel.
+- **Source control:** edited assets retain a `.blend` production source, while runtime bundles only receive optimized GLB/glTF.
+
+For the asteroid baseline specifically, also require:
+
+- **Hero fidelity:** reads as dense fractured asteroid rock at the main camera distance, not a faceted placeholder.
+- **Facility volume:** contains a believable cutaway/hollow interior where the facility can be embedded.
+- **Production source:** high-poly/source asset stays editable in Blender; runtime GLB can be optimized later.
+- **Comparison proof:** accepted only after side-by-side review against the current `meshy-19` baseline and strongest local shell candidates.
+- **Spend discipline:** paid Meshy generation requires explicit approval if the current Meshy lane cap is reached.
 
 ## 4. Browser constraints
 
 TRELLIS/TRELLIS.2-style output may include attractive PBR textures and dense detail. That is useful, but browser performance still wins. Before importing to the app, run every generated model through a web-readiness pass:
 
 - export or convert to `.glb`/`.gltf`
+- pass through Blender for source cleanup unless the asset is already verified and untouched
 - inspect triangle count, material count, texture sizes, normals, UVs, pivots, and mesh hierarchy
 - decimate/merge where needed
 - compress with Meshopt/Draco and KTX2/Basis when useful
@@ -98,7 +113,7 @@ Recommended TRELLIS-style proof tests:
 2. **Cargo/tool kit** — cheap scene richness and scale cues.
 3. **Hangar/service props** — pipes, ducts, sensor boxes, repair arms, compact machinery.
 
-Do not start with hero characters or the full asteroid shell. Those need controlled topology/composition.
+Do not start with hero characters. The full asteroid shell is only first when the active goal is the baseline quality gate, as it is now.
 
 ## 6. Loop integration rule
 
