@@ -107,6 +107,8 @@ Next checklist:
 - [x] Confirm Meshy spend approval before launching any new high-fidelity paid asteroid generation; the previous lane cap was reopened to the 4000 credits/month account limit in current state.
 - [x] Record the approved high-fidelity Meshy asteroid candidates and compare them against the current baseline with contact-sheet proof.
 - [x] Record the asteroid baseline audit/proof and promote the strongest candidate only as a cleanup candidate, not a final accepted baseline.
+- [x] Clean the Meshy-101 open-front candidate in Blender and export a normalized runtime GLB candidate.
+- [ ] Prove the Meshy-101 runtime candidate inside the Mission Control browser scene before final baseline acceptance.
 - [ ] Rework the command console into a denser single-page holo-table surface with fewer tabs.
 - [ ] Convert the task panel into kanban columns.
 - [ ] Inventory existing Meshy facility-library assets by role and pick the first population pass.
@@ -127,3 +129,12 @@ Next checklist:
 - Audited four candidates: current `meshy-19`, local `core-clean-v6`, Meshy high-fidelity v1, and Meshy open-front v2.
 - Decision: keep `meshy-19` as live placeholder, promote `meshy-101-open-front-v2` as the cleanup candidate, and keep facility population blocked until Blender cleanup/export accepts a source and runtime GLB.
 - Verification: Blender 5.1.1 GLB import/metrics audit, node scripts/validate-mission-state.mjs, node --check app.js.
+
+## Review - 2026-05-19 Meshy-101 Cleanup Export Proof
+
+- Finished the interrupted Meshy-101 cleanup/export lane instead of skipping ahead to holo-table work.
+- Fixed `scripts/create-meshy-101-open-front-cleanup-proof-v1.py` so the metrics JSON writes a real newline and parses with `jq`.
+- Regenerated the Blender source, runtime GLB, proof render, and metrics report for `meshy-101-open-front-v2`.
+- Runtime candidate output: `assets/blender/meshy-101-open-front-clean-runtime-v1.glb`, 6.56 MB, 136,620 uploaded vertices, 273,500 triangles, one mesh, one opaque material, no textures, no required extensions.
+- Decision: cleanup/export gate passed; final baseline acceptance is still blocked on Mission Control browser/in-scene runtime load proof.
+- Verification: Blender 5.1.1 generation run, `jq` metrics parse, `python3 -m py_compile`, `npx --yes @gltf-transform/cli inspect`, node state validator, app/script syntax checks, and diff checks.

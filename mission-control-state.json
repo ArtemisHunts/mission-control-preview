@@ -4,7 +4,7 @@
     "title": "Mission Control v1",
     "environment": "local-preview",
     "isDemo": false,
-    "updatedAt": "2026-05-19T19:04:16.847Z",
+    "updatedAt": "2026-05-19T22:02:27.945Z",
     "sourceOfTruth": "mission-control-state.json",
     "runtimePolicy": "codex-channel"
   },
@@ -449,11 +449,12 @@
       ],
       "artifactIds": [
         "artifact-meshy-high-fidelity-asteroid-submitter",
-        "artifact-asteroid-baseline-audit-proof"
+        "artifact-asteroid-baseline-audit-proof",
+        "artifact-meshy-101-cleanup-export-proof"
       ],
       "currentRunId": "run-goal-6-20260518",
       "createdAt": "2026-05-19T00:26:47.874Z",
-      "updatedAt": "2026-05-19T19:04:16.847Z",
+      "updatedAt": "2026-05-19T22:02:27.945Z",
       "isDemo": false,
       "eventIds": [
         "evt-20260519-meshy-4000-cap-approved",
@@ -461,7 +462,10 @@
         "evt-20260519-meshy-submit-script-recorded",
         "evt-20260519-asteroid-audit-proof-recorded",
         "evt-20260519-asteroid-audit-completed",
-        "evt-20260519-asteroid-cleanup-candidate-selected"
+        "evt-20260519-asteroid-cleanup-candidate-selected",
+        "evt-20260519-meshy-101-cleanup-export-recorded",
+        "evt-20260519-meshy-101-cleanup-export-completed",
+        "evt-20260519-meshy-101-runtime-proof-next"
       ]
     },
     {
@@ -504,9 +508,9 @@
       "artifactIds": [],
       "currentRunId": "run-goal-7-20260518",
       "createdAt": "2026-05-19T00:26:47.874Z",
-      "updatedAt": "2026-05-19T19:04:16.847Z",
+      "updatedAt": "2026-05-19T22:02:27.945Z",
       "isDemo": false,
-      "blocker": "Asteroid baseline cleanup/export proof is not accepted yet."
+      "blocker": "Meshy-101 runtime candidate still needs Mission Control browser/in-scene load proof and final baseline acceptance."
     }
   ],
   "goalRuns": [
@@ -663,8 +667,8 @@
       "status": "running",
       "startedAt": "2026-05-19T00:26:47.874Z",
       "endedAt": null,
-      "summary": "Asteroid baseline audit proof completed; meshy-101-open-front-v2 is the active cleanup candidate, while meshy-19 remains only the live placeholder.",
-      "verificationSummary": "Blender 5.1.1 imported all four candidate GLBs for metrics; state validator and app syntax checks are required after this update.",
+      "summary": "Meshy-101 cleanup/export proof passed and produced a runtime candidate; browser/in-scene proof is the next gate before baseline acceptance.",
+      "verificationSummary": "Blender generation, JSON parse, Python compile, glTF-transform inspect, state validator, and JS syntax checks.",
       "blocker": null,
       "eventIds": [
         "evt-20260519-asteroid-baseline-task-active",
@@ -674,11 +678,15 @@
         "evt-20260519-meshy-submit-script-recorded",
         "evt-20260519-asteroid-audit-proof-recorded",
         "evt-20260519-asteroid-audit-completed",
-        "evt-20260519-asteroid-cleanup-candidate-selected"
+        "evt-20260519-asteroid-cleanup-candidate-selected",
+        "evt-20260519-meshy-101-cleanup-export-recorded",
+        "evt-20260519-meshy-101-cleanup-export-completed",
+        "evt-20260519-meshy-101-runtime-proof-next"
       ],
       "artifactIds": [
         "artifact-meshy-high-fidelity-asteroid-submitter",
-        "artifact-asteroid-baseline-audit-proof"
+        "artifact-asteroid-baseline-audit-proof",
+        "artifact-meshy-101-cleanup-export-proof"
       ],
       "isDemo": false
     },
@@ -1003,7 +1011,7 @@
       "description": "Keep high-poly/source asset editable, then produce an optimized runtime GLB after the baseline passes visual review.",
       "project": "Mission Control",
       "priority": 2,
-      "status": "active",
+      "status": "completed",
       "requester": "Michael",
       "assigneeId": "artemis",
       "room": "facility-core",
@@ -1014,13 +1022,15 @@
         "asset-pipeline"
       ],
       "createdAt": "2026-05-19T00:26:47.874Z",
-      "updatedAt": "2026-05-19T19:04:16.847Z",
+      "updatedAt": "2026-05-19T22:02:27.945Z",
       "isDemo": false,
       "artifactIds": [
-        "artifact-asteroid-baseline-audit-proof"
+        "artifact-asteroid-baseline-audit-proof",
+        "artifact-meshy-101-cleanup-export-proof"
       ],
       "eventIds": [
-        "evt-20260519-asteroid-cleanup-candidate-selected"
+        "evt-20260519-meshy-101-cleanup-export-recorded",
+        "evt-20260519-meshy-101-cleanup-export-completed"
       ]
     },
     {
@@ -1063,6 +1073,34 @@
       ],
       "createdAt": "2026-05-19T00:26:47.874Z",
       "updatedAt": "2026-05-19T00:26:47.874Z",
+      "isDemo": false
+    },
+    {
+      "id": "task-asteroid-browser-runtime-proof",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "title": "Prove Meshy-101 runtime candidate in Mission Control scene",
+      "description": "Load the cleaned Meshy-101 runtime GLB through the browser scene path, capture desktop/mobile proof, and decide whether it becomes the accepted asteroid baseline.",
+      "project": "Mission Control",
+      "priority": 1,
+      "status": "active",
+      "requester": "Michael",
+      "assigneeId": "artemis",
+      "room": "fabrication-bay",
+      "autoAssignable": false,
+      "tags": [
+        "asteroid",
+        "runtime",
+        "browser-smoke",
+        "visual-review"
+      ],
+      "artifactIds": [
+        "artifact-meshy-101-cleanup-export-proof"
+      ],
+      "eventIds": [
+        "evt-20260519-meshy-101-runtime-proof-next"
+      ],
+      "createdAt": "2026-05-19T22:02:27.945Z",
+      "updatedAt": "2026-05-19T22:02:27.945Z",
       "isDemo": false
     }
   ],
@@ -1634,6 +1672,48 @@
       ],
       "createdAt": "2026-05-19T19:04:16.847Z",
       "isDemo": false
+    },
+    {
+      "id": "evt-20260519-meshy-101-cleanup-export-recorded",
+      "type": "artifact.recorded",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "runId": "run-goal-6-20260518",
+      "agentId": "artemis",
+      "taskId": "task-asteroid-baseline-cleanup-export",
+      "message": "Meshy-101 cleanup/export proof recorded with Blender source, runtime GLB, render proof, and metrics JSON.",
+      "artifactIds": [
+        "artifact-meshy-101-cleanup-export-proof"
+      ],
+      "createdAt": "2026-05-19T22:02:27.945Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260519-meshy-101-cleanup-export-completed",
+      "type": "task.status_changed",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "runId": "run-goal-6-20260518",
+      "agentId": "artemis",
+      "taskId": "task-asteroid-baseline-cleanup-export",
+      "message": "Meshy-101 cleanup/export gate passed; candidate is runtime-ready but not final accepted baseline.",
+      "artifactIds": [
+        "artifact-meshy-101-cleanup-export-proof"
+      ],
+      "createdAt": "2026-05-19T22:02:27.945Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260519-meshy-101-runtime-proof-next",
+      "type": "task.recorded",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "runId": "run-goal-6-20260518",
+      "agentId": "artemis",
+      "taskId": "task-asteroid-browser-runtime-proof",
+      "message": "Next asteroid gate is browser/in-scene runtime proof for the cleaned Meshy-101 GLB before baseline acceptance.",
+      "artifactIds": [
+        "artifact-meshy-101-cleanup-export-proof"
+      ],
+      "createdAt": "2026-05-19T22:02:27.945Z",
+      "isDemo": false
     }
   ],
   "reviews": [
@@ -1853,6 +1933,15 @@
       "goalId": "goal-6-high-fidelity-asteroid-baseline",
       "createdAt": "2026-05-19T19:04:16.847Z",
       "isDemo": false
+    },
+    {
+      "id": "artifact-meshy-101-cleanup-export-proof",
+      "kind": "asset-proof",
+      "name": "Meshy-101 open-front asteroid cleanup/export proof",
+      "path": "scripts/create-meshy-101-open-front-cleanup-proof-v1.py, assets/blender/meshy-101-open-front-cleanup-proof-v1.blend, assets/blender/meshy-101-open-front-clean-runtime-v1.glb, docs/visual-reviews/2026-05-19-meshy-101-open-front-cleanup-proof-v1.png, docs/visual-reviews/2026-05-19-meshy-101-open-front-cleanup-proof-v1.md, docs/visual-reviews/2026-05-19-meshy-101-open-front-cleanup-proof-v1.json",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "createdAt": "2026-05-19T22:02:27.945Z",
+      "isDemo": false
     }
   ],
   "facilityAssets": [
@@ -1880,18 +1969,22 @@
       "name": "Meshy-101 Open-Front Hollow Asteroid Cleanup Candidate",
       "category": "asteroid-shell",
       "source": "meshy-ai",
-      "status": "cleanup-candidate",
+      "status": "runtime-candidate",
       "paths": [
         "assets/meshy/api/101-open-front-hollow-asteroid-baseline-v2.meshy.glb",
-        "assets/meshy/api/101-open-front-hollow-asteroid-baseline-v2.thumbnail.png"
+        "assets/blender/meshy-101-open-front-cleanup-proof-v1.blend",
+        "assets/blender/meshy-101-open-front-clean-runtime-v1.glb",
+        "docs/visual-reviews/2026-05-19-meshy-101-open-front-cleanup-proof-v1.png"
       ],
       "qualityNotes": [
-        "Strongest high-fidelity candidate from the 2026-05-19 audit proof.",
-        "Not accepted as final runtime baseline yet; requires Blender material, scale, origin, decimation, and in-scene hero proof.",
-        "Facility population remains blocked until this cleanup/export pass is accepted."
+        "Cleanup/export gate passed on 2026-05-19.",
+        "Runtime GLB is 6.56 MB with one mesh, one opaque material, no textures, no required extensions, 136,620 uploaded vertices, and 273,500 triangles.",
+        "Not final accepted baseline yet; Mission Control browser/in-scene runtime load proof is still required.",
+        "Facility population remains blocked until final baseline acceptance."
       ],
       "visualReviewIds": [
-        "visual-review-asteroid-baseline-audit-20260519"
+        "visual-review-asteroid-baseline-audit-20260519",
+        "visual-review-meshy-101-cleanup-export-20260519"
       ],
       "isDemo": false
     }
@@ -1944,6 +2037,36 @@
       ],
       "updatedAt": "2026-05-19T19:04:16.847Z",
       "isDemo": false
+    },
+    {
+      "id": "visual-review-meshy-101-cleanup-export-20260519",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "taskId": "task-asteroid-baseline-cleanup-export",
+      "title": "Meshy-101 cleanup/export proof",
+      "status": "completed",
+      "decision": "runtime-candidate-not-final-accepted",
+      "summary": "Meshy-101 open-front asteroid passed Blender cleanup/export and glTF inspection as a runtime candidate. Final baseline acceptance remains blocked on Mission Control browser/in-scene load proof.",
+      "assetIds": [
+        "asset-meshy-101-open-front-asteroid-cleanup-candidate"
+      ],
+      "artifactIds": [
+        "artifact-meshy-101-cleanup-export-proof"
+      ],
+      "proofPaths": [
+        "docs/visual-reviews/2026-05-19-meshy-101-open-front-cleanup-proof-v1.md",
+        "docs/visual-reviews/2026-05-19-meshy-101-open-front-cleanup-proof-v1.json",
+        "docs/visual-reviews/2026-05-19-meshy-101-open-front-cleanup-proof-v1.png"
+      ],
+      "criteria": [
+        "Blender source saved",
+        "normalized runtime GLB exported",
+        "render proof generated",
+        "metrics JSON parses",
+        "glTF runtime inspection passes",
+        "browser/in-scene proof still pending"
+      ],
+      "updatedAt": "2026-05-19T22:02:27.945Z",
+      "isDemo": false
     }
   ],
   "telemetry": {
@@ -1952,9 +2075,9 @@
       "activeTasks": 1,
       "queuedTasks": 4,
       "blockedGoals": 1,
-      "latestEventId": "evt-20260519-asteroid-cleanup-candidate-selected"
+      "latestEventId": "evt-20260519-meshy-101-runtime-proof-next"
     },
-    "updatedAt": "2026-05-19T19:04:16.847Z",
+    "updatedAt": "2026-05-19T22:02:27.945Z",
     "isDemo": false
   }
 }

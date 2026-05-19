@@ -1,0 +1,58 @@
+{
+  "source": "assets/meshy/api/101-open-front-hollow-asteroid-baseline-v2.meshy.glb",
+  "sourceSizeBytes": 25560888,
+  "runtimeGlb": "assets/blender/meshy-101-open-front-clean-runtime-v1.glb",
+  "runtimeSizeBytes": 6562104,
+  "blend": "assets/blender/meshy-101-open-front-cleanup-proof-v1.blend",
+  "render": "docs/visual-reviews/2026-05-19-meshy-101-open-front-cleanup-proof-v1.png",
+  "decimateRatio": 0.22,
+  "targetWidth": 17.0,
+  "rawStats": {
+    "name": "meshy_101_open_front_v2_raw_source",
+    "vertices": 709987,
+    "edges": 2130033,
+    "polygons": 1420022,
+    "triangles": 1420022,
+    "materials": 0,
+    "bounds": [
+      1.8981,
+      1.8586,
+      1.5149
+    ],
+    "min": [
+      -0.95,
+      -0.9295,
+      -0.7583
+    ],
+    "max": [
+      0.9481,
+      0.9291,
+      0.7567
+    ]
+  },
+  "runtimeStats": {
+    "name": "meshy_101_open_front_clean_runtime_v1",
+    "vertices": 136620,
+    "edges": 410150,
+    "polygons": 273500,
+    "triangles": 273500,
+    "materials": 1,
+    "bounds": [
+      17.0019,
+      16.6467,
+      13.5671
+    ],
+    "min": [
+      -8.5003,
+      -8.3237,
+      0.0006
+    ],
+    "max": [
+      8.5015,
+      8.323,
+      13.5677
+    ]
+  },
+  "triangleReduction": 0.8074,
+  "sizeReduction": 0.7433
+}
