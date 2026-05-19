@@ -102,8 +102,8 @@ const LEGACY_FACILITY_STATE = {
   },
   modes: {
     overview: {
-      title: 'Meshy-19 Asteroid Baseline',
-      body: 'Live preview is using the Meshy-19 three-opening asteroid baseline GLB. Canonical mission state is unavailable, so this readout is falling back to the legacy scene description.'
+      title: 'Meshy-101 Asteroid Runtime Candidate',
+      body: 'Live preview is using the Meshy-101 open-front asteroid runtime GLB. Canonical mission state is unavailable, so this readout is falling back to the legacy scene description.'
     },
     command: {
       title: 'Holo-table Pending State',
@@ -347,11 +347,80 @@ function addList(panel, items, emptyText) {
   panel.appendChild(list);
 }
 
-function addConsolePanel(grid, { title, body, items = [], emptyText = 'No records yet.', wide = false }) {
+function taskStatusLane(task = {}) {
+  const status = String(task.status || '').toLowerCase();
+  if (status === 'completed') return 'completed';
+  if (status === 'blocked') return 'blocked';
+  if (status === 'active' || status === 'running') return 'active';
+  return 'queued';
+}
+
+function taskLaneLabel(lane) {
+  return {
+    active: 'Active',
+    queued: 'Queued',
+    blocked: 'Blocked',
+    completed: 'Completed'
+  }[lane] || formatStatus(lane);
+}
+
+function taskCardMeta(task) {
+  const goal = goalById(task.goalId);
+  const assignee = agentById(task.assigneeId)?.name || task.assigneeId || 'unassigned';
+  const recommendation = task.status === 'completed'
+    ? null
+    : recommendationsForTask(task, 1)[0]?.agent.name || null;
+  return [
+    goal?.title || null,
+    assignee,
+    task.isDemo ? 'demo' : 'real',
+    recommendation ? 'next ' + recommendation : null
+  ].filter(Boolean).join(' · ');
+}
+
+function addTaskKanban(panel, tasks) {
+  const board = node('div', 'task-kanban-board');
+  const lanes = ['active', 'queued', 'blocked', 'completed'];
+
+  lanes.forEach((lane) => {
+    const laneTasks = tasks.filter((task) => taskStatusLane(task) === lane);
+    if (!laneTasks.length && lane === 'blocked') return;
+
+    const laneNode = node('section', `task-kanban-lane task-kanban-lane-${lane}`);
+    const header = node('header', 'task-kanban-header');
+    header.appendChild(node('strong', null, taskLaneLabel(lane)));
+    header.appendChild(node('span', 'task-kanban-count', String(laneTasks.length)));
+    laneNode.appendChild(header);
+
+    const list = node('div', 'task-kanban-list');
+    if (!laneTasks.length) {
+      list.appendChild(node('div', 'task-kanban-empty', 'No tasks in this lane.'));
+    } else {
+      laneTasks.forEach((task) => {
+        const card = node('article', 'task-kanban-card');
+        card.appendChild(node('strong', null, task.title));
+        if (task.description) card.appendChild(node('p', null, task.description));
+        card.appendChild(node('span', 'task-kanban-meta', taskCardMeta(task)));
+        list.appendChild(card);
+      });
+    }
+
+    laneNode.appendChild(list);
+    board.appendChild(laneNode);
+  });
+
+  panel.appendChild(board);
+}
+
+function addConsolePanel(grid, { title, body, items = [], emptyText = 'No records yet.', wide = false, renderContent = null }) {
   const panel = node('section', wide ? 'console-panel wide' : 'console-panel');
   panel.appendChild(node('h3', null, title));
   if (body) panel.appendChild(node('p', null, body));
-  addList(panel, items, emptyText);
+  if (typeof renderContent === 'function') {
+    renderContent(panel);
+  } else {
+    addList(panel, items, emptyText);
+  }
   grid.appendChild(panel);
 }
 
@@ -692,13 +761,19 @@ function buildConsolePanel(panelId) {
   if (panelId === 'tasks') {
     return [
       {
-        title: 'Active / Queued Tasks',
-        items: tasks.map((task) => ({
-          title: task.title,
-          meta: formatStatus(task.status) + ' · ' + (agentById(task.assigneeId)?.name || task.assigneeId || 'unassigned') + ' · ' + (task.isDemo ? 'demo' : 'real') + (task.status === 'completed' ? '' : ' · recommended ' + (recommendationsForTask(task, 1)[0]?.agent.name || 'none'))
-        })),
-        emptyText: 'No tasks recorded.',
-        wide: true
+        title: 'Task Board',
+        body: 'Kanban view keeps open work, blockers, and recent completions on one surface instead of burying task state in a long flat list.',
+        wide: true,
+        renderContent: (panel) => addTaskKanban(panel, tasks)
+      },
+      {
+        title: 'Task Flow Snapshot',
+        items: ['active', 'queued', 'completed']
+          .map((lane) => ({
+            title: taskLaneLabel(lane),
+            meta: `${tasks.filter((task) => taskStatusLane(task) === lane).length} task${tasks.filter((task) => taskStatusLane(task) === lane).length === 1 ? '' : 's'}`
+          })),
+        emptyText: 'No tasks recorded.'
       },
       {
         title: 'Assignment Actions',
@@ -5099,26 +5174,28 @@ function buildHifi18OperationsCavernCarveoutPass() {
   scene.add(rearCold);
 }
 
-function loadMeshy19LiveBaseline() {
+function loadMeshy101LiveBaseline() {
   const loader = new GLTFLoader();
   const live = new THREE.Group();
-  live.name = 'Meshy-19 live baseline asteroid model root';
+  live.name = 'Meshy-101 live baseline asteroid model root';
   root.add(live);
 
   const rockMaterial = new THREE.MeshStandardMaterial({
-    color: 0x242220,
-    roughness: 0.97,
+    color: 0x6f685f,
+    roughness: 0.86,
     metalness: 0.0,
+    emissive: 0x120f0c,
+    emissiveIntensity: 0.18,
     side: THREE.DoubleSide,
     flatShading: false
   });
 
-  loader.load('assets/blender/meshy-19-clean-rock-three-openings-dark-material-pass-v2.glb?v=meshy19-live-baseline-20260503', (gltf) => {
+  loader.load('assets/blender/meshy-101-open-front-clean-runtime-v1.glb?v=meshy101-live-baseline-20260519', (gltf) => {
     const model = gltf.scene;
-    model.name = 'Meshy-19 clean three-opening asteroid baseline GLB';
-    model.position.set(0.0, 2.2, -12.8);
-    model.rotation.set(0.0, -0.18, 0.0);
-    model.scale.setScalar(13.2);
+    model.name = 'Meshy-101 open-front asteroid runtime GLB';
+    model.position.set(0.0, -5.6, -12.8);
+    model.rotation.set(0.0, -0.14, 0.0);
+    model.scale.setScalar(1.28);
 
     model.traverse((node) => {
       if (node.isMesh) {
@@ -5130,21 +5207,21 @@ function loadMeshy19LiveBaseline() {
 
     live.add(model);
   }, undefined, (error) => {
-    console.warn('Failed to load Meshy-19 live baseline asteroid model', error);
+    console.warn('Failed to load Meshy-101 live baseline asteroid model', error);
   });
 
-  const topKey = new THREE.DirectionalLight(0xd8e4ff, 2.8);
-  topKey.name = 'Meshy-19 live baseline cool top key';
+  const topKey = new THREE.DirectionalLight(0xd8e4ff, 5.8);
+  topKey.name = 'Meshy-101 live baseline cool top key';
   topKey.position.set(-6.5, 11.5, 7.5);
   scene.add(topKey);
 
-  const warmRim = new THREE.PointLight(0xffb26d, 3.2, 28.0);
-  warmRim.name = 'Meshy-19 live baseline warm rim read';
+  const warmRim = new THREE.PointLight(0xffb26d, 12.0, 32.0);
+  warmRim.name = 'Meshy-101 live baseline warm rim read';
   warmRim.position.set(-7.0, 2.5, -4.8);
   scene.add(warmRim);
 
-  const mouthCue = new THREE.PointLight(0x73baff, 4.8, 24.0);
-  mouthCue.name = 'Meshy-19 live baseline cold cavern cue';
+  const mouthCue = new THREE.PointLight(0x73baff, 18.0, 30.0);
+  mouthCue.name = 'Meshy-101 live baseline cold cavern cue';
   mouthCue.position.set(1.2, 0.8, -7.5);
   scene.add(mouthCue);
 }
@@ -5167,7 +5244,7 @@ async function buildScene() {
   await loadMissionState();
   addReferenceLights();
   buildReferenceStarfield();
-  loadMeshy19LiveBaseline();
+  loadMeshy101LiveBaseline();
   setFacilityMode('overview');
   const consolePanel = new URLSearchParams(window.location.search).get('console');
   if (consolePanel) openMissionConsole(consolePanel);
