@@ -96,10 +96,13 @@ Next checklist:
 - Active direction has pivoted to the holo-table + 3D asset campaign:
   - make the holo-table closer to the shared holographic reference
   - keep more operational information on one page with fewer tab hops
-  - present tasks kanban-style
+  - tighten the overview surface now that kanban task state is live
   - audit or replace the asteroid baseline before adding more facility dressing
   - populate the accepted asteroid baseline with the existing Meshy asset/library pieces
-- 3D pipeline updates should be posted in <#1477048876669075578>.
+- Concurrent lane split is now explicit:
+  - overlay / holo-table loop stays in #dashboard as `goal-5-holo-table-density-kanban`
+  - 3D asteroid/runtime loop continues in <#1477048876669075578> as `goal-6-high-fidelity-asteroid-baseline`
+  - overlay inspection can use `?overlay=1&console=overview` without loading the heavy 3D candidate
 
 ## Active Plan - Holo-Table + 3D Asset Campaign
 
@@ -108,11 +111,29 @@ Next checklist:
 - [x] Record the approved high-fidelity Meshy asteroid candidates and compare them against the current baseline with contact-sheet proof.
 - [x] Record the asteroid baseline audit/proof and promote the strongest candidate only as a cleanup candidate, not a final accepted baseline.
 - [x] Clean the Meshy-101 open-front candidate in Blender and export a normalized runtime GLB candidate.
-- [ ] Prove the Meshy-101 runtime candidate inside the Mission Control browser scene before final baseline acceptance.
+- [x] Apply Michael's thinner-wall feedback as a separate Meshy-101 hollow v2 candidate and validate the optimized runtime GLB.
+- [x] Prove the Meshy-101 runtime candidate inside the Mission Control browser scene before final baseline acceptance.
+- [ ] Clean Meshy-101 interior artifacts in Blender before final baseline lock.
 - [ ] Rework the command console into a denser single-page holo-table surface with fewer tabs.
-- [ ] Convert the task panel into kanban columns.
+- [x] Convert the task panel into kanban columns.
+- [x] Split overlay and 3D into separate channel-owned goal lanes.
+- [x] Add overlay-only preview mode so holo-table work is not blocked by 3D runtime loading.
 - [ ] Inventory existing Meshy facility-library assets by role and pick the first population pass.
 - [ ] Install the strongest library assets into the accepted asteroid baseline and produce a visual review board.
+
+## Review - 2026-05-19 Concurrent Overlay / 3D Lane Split
+
+- Recorded `docs/goals/mission-control-concurrent-lanes.md` as the durable contract for the two loops.
+- Routed `goal-5-holo-table-density-kanban` to #dashboard and `goal-6-high-fidelity-asteroid-baseline` to <#1477048876669075578> in canonical state.
+- Added `?overlay=1&console=overview` mode so the overlay opens directly and skips the heavy 3D runtime candidate.
+- Added a state-backed Goal Lanes panel to the overlay overview so channel ownership is visible inside Mission Control itself.
+
+## Review - 2026-05-19 Meshy-101 Browser Runtime Proof
+
+- A parallel 3D worker proved `meshy-101-open-front-hollow-runtime-v2.optimized.glb` in the browser scene with SwiftShader WebGL.
+- Proof artifacts: `docs/visual-reviews/2026-05-19-meshy-101-runtime-browser-proof.md`, `docs/visual-reviews/2026-05-19-meshy-101-runtime-browser-detail-swiftshader-proof.png`, and matching JSON.
+- Decision: runtime path works and Meshy-101 v2 remains the active local candidate, but it is not final-baseline accepted yet.
+- Next 3D gate: one no-spend Blender cleanup pass for flat/blocky interior floor and wall artifacts, then repeat browser proof.
 
 ## Review - 2026-05-18 Live Filesystem Event Bridge
 
@@ -138,3 +159,19 @@ Next checklist:
 - Runtime candidate output: `assets/blender/meshy-101-open-front-clean-runtime-v1.glb`, 6.56 MB, 136,620 uploaded vertices, 273,500 triangles, one mesh, one opaque material, no textures, no required extensions.
 - Decision: cleanup/export gate passed; final baseline acceptance is still blocked on Mission Control browser/in-scene runtime load proof.
 - Verification: Blender 5.1.1 generation run, `jq` metrics parse, `python3 -m py_compile`, `npx --yes @gltf-transform/cli inspect`, node state validator, app/script syntax checks, and diff checks.
+
+## Review - 2026-05-19 Holo-Table Kanban Task Pass
+
+- Picked the next highest-value holo-table gap after the asteroid proof work: the command console still rendered tasks as a long flat list instead of the planned kanban surface.
+- Extended the console panel renderer so task panels can render custom content instead of only generic lists.
+- Replaced the flat task roster with a state-backed kanban board that groups tasks into active, queued, blocked, and completed lanes, while keeping assignment actions separate.
+- Added a compact task-flow snapshot and lane styling in `style.css` so the open-work state is visible in one scan without pretending any backend automation that does not exist.
+- Verification: `node scripts/validate-mission-state.mjs`, `node --check app.js`, `git diff --check`.
+
+## Review - 2026-05-19 Holo-Table Overview Density Pass
+
+- Picked the next holo-table gap immediately after the kanban pass: the overview screen still forced too much tab-hopping to see work, risk, asset, and roster state together.
+- Added an `Operations Snapshot` metric strip plus compact `Open Work`, `Review Pressure`, `Asset Pipeline`, `Command Roster`, and `Latest Events` panels directly to the overview surface.
+- Kept the data truthful and state-backed: the new surface reads from canonical goals, tasks, reviews, assets, telemetry, agents, and events without introducing fake backend actions.
+- Kept the broader density task open because the console still has room to compress more goal/review/buildout signal into an even tighter primary surface.
+- Verification: `node scripts/validate-mission-state.mjs`, `node --check app.js`, `git diff --check`.

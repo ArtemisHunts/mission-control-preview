@@ -21,6 +21,13 @@ const COLORS = {
 };
 
 const container = document.getElementById('office-canvas');
+const queryParams = new URLSearchParams(window.location.search);
+const overlayFocusMode = queryParams.get('overlay') === '1' || queryParams.get('mode') === 'overlay';
+
+if (overlayFocusMode) {
+  document.body.classList.add('overlay-focus');
+}
+
 let renderer = null;
 try {
   renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: true });
@@ -154,6 +161,13 @@ function formatStatus(value) {
 
 function formatCount(count, singular, plural = singular + 's') {
   return count === 1 ? `1 ${singular}` : `${count} ${plural}`;
+}
+
+function channelLabel(goal = {}) {
+  if (goal.channelLabel) return goal.channelLabel;
+  if (goal.channelId === '1477048686851784858') return '#dashboard';
+  if (goal.channelId === '1477048876669075578') return '#3d-goal';
+  return goal.channelId ? '#' + goal.channelId : 'unrouted';
 }
 
 function latestByCreatedAt(items = []) {
@@ -410,6 +424,30 @@ function addTaskKanban(panel, tasks) {
   });
 
   panel.appendChild(board);
+}
+
+function addMetricStrip(panel, metrics) {
+  const strip = node('div', 'console-metric-strip');
+  metrics.forEach(({ label, value, tone }) => {
+    const card = node('article', `console-metric-card${tone ? ' tone-' + tone : ''}`);
+    card.appendChild(node('span', 'console-metric-label', label));
+    card.appendChild(node('strong', 'console-metric-value', String(value)));
+    strip.appendChild(card);
+  });
+  panel.appendChild(strip);
+}
+
+function addGoalLaneRail(panel, goals) {
+  const rail = node('div', 'goal-lane-rail');
+  goals.forEach((goal) => {
+    const card = node('article', 'goal-lane-card');
+    card.appendChild(node('span', 'goal-lane-channel', channelLabel(goal)));
+    card.appendChild(node('strong', null, goal.title));
+    card.appendChild(node('p', null, goal.objective || 'No objective recorded.'));
+    card.appendChild(node('span', 'goal-lane-meta', `${formatStatus(goal.status)} · ${goal.id}`));
+    rail.appendChild(card);
+  });
+  panel.appendChild(rail);
 }
 
 function addConsolePanel(grid, { title, body, items = [], emptyText = 'No records yet.', wide = false, renderContent = null }) {
@@ -707,6 +745,21 @@ function buildConsolePanel(panelId) {
   const telemetry = raw.telemetry?.summary || {};
   const localBridge = raw.localBridge || {};
   const activeGoal = selectedGoal();
+  const openTasks = tasks
+    .filter((task) => task.status !== 'completed')
+    .sort((a, b) => {
+      const order = { active: 0, running: 0, queued: 1, blocked: 2, completed: 3 };
+      return (order[a.status] ?? 9) - (order[b.status] ?? 9);
+    });
+  const pendingReviews = reviews.filter((review) => review.decision !== 'approved' || review.status !== 'completed');
+  const attentionAssets = assets.filter((asset) => !['accepted', 'live', 'completed'].includes(asset.status));
+  const workingAgents = agents
+    .filter((agent) => agent.status === 'working' || agent.currentTaskId)
+    .sort((a, b) => (b.load || 0) - (a.load || 0));
+  const laneGoals = goals.filter((goal) => goal.channelId || [
+    'goal-5-holo-table-density-kanban',
+    'goal-6-high-fidelity-asteroid-baseline'
+  ].includes(goal.id));
 
   if (panelId === 'map') {
     return [
@@ -715,7 +768,7 @@ function buildConsolePanel(panelId) {
         body: 'Mission map is derived from canonical goals and runs.',
         items: goals.map((goal) => ({
           title: goal.title,
-          meta: formatStatus(goal.status) + ' · priority ' + goal.priority + ' · ' + (goal.successCriteria?.length || 0) + ' done criteria' + (goal.localOnly ? ' · local preview' : ''),
+          meta: formatStatus(goal.status) + ' · ' + channelLabel(goal) + ' · priority ' + goal.priority + ' · ' + (goal.successCriteria?.length || 0) + ' done criteria' + (goal.localOnly ? ' · local preview' : ''),
           actionLabel: goal.id === activeGoal?.id ? null : 'Select',
           onAction: goal.id === activeGoal?.id ? null : () => selectGoalLocally(goal.id)
         })),
@@ -913,6 +966,63 @@ function buildConsolePanel(panelId) {
       wide: true
     },
     {
+      title: 'Operations Snapshot',
+      body: 'Primary surface compresses goal, work, risk, asset, and roster state so the command layer can scan the system without hopping tabs.',
+      wide: true,
+      renderContent: (panel) => addMetricStrip(panel, [
+        { label: 'Active goals', value: telemetry.activeGoals ?? goals.filter((goal) => goal.status === 'running' || goal.status === 'active').length, tone: 'cyan' },
+        { label: 'Active tasks', value: telemetry.activeTasks ?? tasks.filter((task) => task.status === 'active' || task.status === 'running').length, tone: 'gold' },
+        { label: 'Queued tasks', value: telemetry.queuedTasks ?? tasks.filter((task) => task.status === 'queued').length },
+        { label: 'Open reviews', value: pendingReviews.length, tone: pendingReviews.length ? 'coral' : 'green' },
+        { label: 'Assets in flight', value: attentionAssets.length, tone: attentionAssets.length ? 'violet' : 'green' },
+        { label: 'Working agents', value: workingAgents.length, tone: 'cyan' }
+      ])
+    },
+    {
+      title: 'Goal Lanes',
+      body: 'Overlay and 3D work now have separate channel ownership, so the holo-table can keep moving while the asteroid baseline is proven elsewhere.',
+      wide: true,
+      renderContent: (panel) => addGoalLaneRail(panel, laneGoals)
+    },
+    {
+      title: 'Task Kanban',
+      body: 'Primary overview keeps active, queued, blocked, and completed work visible without leaving the command surface.',
+      wide: true,
+      renderContent: (panel) => addTaskKanban(panel, tasks)
+    },
+    {
+      title: 'Open Work',
+      items: openTasks.slice(0, 5).map((task) => ({
+        title: task.title,
+        meta: `${formatStatus(task.status)} · ${taskCardMeta(task)}`
+      })),
+      emptyText: 'No incomplete tasks recorded.'
+    },
+    {
+      title: 'Review Pressure',
+      items: pendingReviews.slice(0, 4).map((review) => ({
+        title: review.title || review.id,
+        meta: `${formatStatus(review.status)} · ${formatStatus(review.decision || 'pending')} · ${formatStatus(review.riskLevel || 'unknown risk')}`
+      })),
+      emptyText: 'No open review gates.'
+    },
+    {
+      title: 'Asset Pipeline',
+      items: attentionAssets.slice(0, 4).map((asset) => ({
+        title: asset.name,
+        meta: `${formatStatus(asset.status)} · ${asset.source} · ${(asset.paths || [])[0] || 'no path'}`
+      })),
+      emptyText: 'No facility assets in flight.'
+    },
+    {
+      title: 'Command Roster',
+      items: workingAgents.slice(0, 4).map((agent) => ({
+        title: `${agent.name} · ${agent.role}`,
+        meta: `${formatStatus(agent.status)} · load ${agent.load || 0}% · ${agent.currentTaskId ? 'task ' + agent.currentTaskId : 'no task'}`
+      })),
+      emptyText: 'No agents currently carrying active work.'
+    },
+    {
       title: 'Goal Intake',
       body: 'Create local browser drafts for new goals. Durable promotion comes through the ingestion boundary or future live bridge.',
       items: [{
@@ -927,25 +1037,17 @@ function buildConsolePanel(panelId) {
       body: facilityState.modes.overview.body,
       items: goals.map((goal) => ({
         title: goal.title,
-        meta: formatStatus(goal.status) + ' · owner ' + (agentById(goal.ownerAgentId)?.name || goal.ownerAgentId) + (goal.localOnly ? ' · local preview' : ''),
+        meta: formatStatus(goal.status) + ' · ' + channelLabel(goal) + ' · owner ' + (agentById(goal.ownerAgentId)?.name || goal.ownerAgentId) + (goal.localOnly ? ' · local preview' : ''),
         actionLabel: goal.id === activeGoal?.id ? null : 'Select',
         onAction: goal.id === activeGoal?.id ? null : () => selectGoalLocally(goal.id)
       })),
       wide: true
     },
     {
-      title: 'Next Task',
-      items: tasks.filter((task) => task.status !== 'completed').slice(0, 4).map((task) => ({
-        title: task.title,
-        meta: task.description + ' Recommended: ' + (recommendationsForTask(task, 1)[0]?.agent.name || 'none') + '.'
-      })),
-      emptyText: 'No incomplete tasks recorded.'
-    },
-    {
-      title: 'Latest Event',
-      items: events.slice(0, 3).map((event) => ({
+      title: 'Latest Events',
+      items: events.slice(0, 4).map((event) => ({
         title: event.message,
-        meta: event.createdAt
+        meta: `${event.createdAt} · ${eventSourceLabel(event)}`
       })),
       emptyText: 'No events recorded.'
     }
@@ -5190,9 +5292,9 @@ function loadMeshy101LiveBaseline() {
     flatShading: false
   });
 
-  loader.load('assets/blender/meshy-101-open-front-clean-runtime-v1.glb?v=meshy101-live-baseline-20260519', (gltf) => {
+  loader.load('assets/blender/meshy-101-open-front-hollow-runtime-v2.optimized.glb?v=meshy101-hollow-v2-20260519', (gltf) => {
     const model = gltf.scene;
-    model.name = 'Meshy-101 open-front asteroid runtime GLB';
+    model.name = 'Meshy-101 open-front hollow v2 asteroid runtime GLB';
     model.position.set(0.0, -5.6, -12.8);
     model.rotation.set(0.0, -0.14, 0.0);
     model.scale.setScalar(1.28);
@@ -5244,10 +5346,10 @@ async function buildScene() {
   await loadMissionState();
   addReferenceLights();
   buildReferenceStarfield();
-  loadMeshy101LiveBaseline();
-  setFacilityMode('overview');
-  const consolePanel = new URLSearchParams(window.location.search).get('console');
-  if (consolePanel) openMissionConsole(consolePanel);
+  if (!overlayFocusMode) loadMeshy101LiveBaseline();
+  setFacilityMode(overlayFocusMode ? 'command' : 'overview');
+  const consolePanel = queryParams.get('console');
+  if (consolePanel || overlayFocusMode) openMissionConsole(consolePanel || 'overview');
 }
 
 function animate() {

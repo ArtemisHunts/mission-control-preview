@@ -32,6 +32,14 @@ body::before {
   pointer-events: none;
 }
 
+body.overlay-focus::before {
+  background:
+    linear-gradient(90deg, rgba(89, 241, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(rgba(89, 241, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(135deg, #02050c 0%, #09111f 54%, #03050d 100%);
+  background-size: 54px 54px, 54px 54px, auto;
+}
+
 #office-canvas {
   position: fixed;
   inset: 0;
@@ -184,6 +192,17 @@ body::before {
   opacity: 0;
   transition: transform 200ms ease, opacity 200ms ease;
 }
+
+.overlay-focus .environment-shell,
+.overlay-focus .console-hotspot,
+.overlay-focus .vignette {
+  display: none;
+}
+
+.overlay-focus .console-surface {
+  width: min(1280px, calc(100vw - 24px));
+  max-height: calc(100vh - 24px);
+}
 .mission-console.open .console-surface {
   transform: translate(-50%, -50%) scale(1);
   opacity: 1;
@@ -332,6 +351,176 @@ body::before {
   background: var(--cyan);
 }
 
+.task-kanban-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.task-kanban-lane {
+  display: grid;
+  gap: 8px;
+  min-height: 220px;
+  padding: 10px;
+  border: 1px solid rgba(89, 241, 255, 0.12);
+  border-radius: 8px;
+  background: rgba(5, 10, 20, 0.74);
+}
+
+.task-kanban-lane-active {
+  border-color: rgba(89, 241, 255, 0.22);
+  box-shadow: inset 0 0 0 1px rgba(89, 241, 255, 0.06);
+}
+
+.task-kanban-lane-queued {
+  border-color: rgba(230, 169, 58, 0.18);
+}
+
+.task-kanban-lane-blocked {
+  border-color: rgba(255, 111, 97, 0.2);
+}
+
+.task-kanban-lane-completed {
+  border-color: rgba(116, 217, 154, 0.18);
+}
+
+.task-kanban-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.task-kanban-header strong {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.task-kanban-count {
+  min-width: 24px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(89, 241, 255, 0.12);
+  color: rgba(246, 248, 255, 0.74);
+  font-size: 10px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.task-kanban-list {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.task-kanban-card,
+.task-kanban-empty {
+  padding: 9px 10px;
+  border: 1px solid rgba(89, 241, 255, 0.1);
+  border-radius: 6px;
+  background: rgba(8, 15, 28, 0.72);
+}
+
+.task-kanban-card strong {
+  display: block;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.task-kanban-card p {
+  margin-top: 5px;
+  font-size: 11px;
+  color: rgba(221, 231, 255, 0.58);
+}
+
+.task-kanban-meta,
+.task-kanban-empty {
+  display: block;
+  margin-top: 6px;
+  color: rgba(221, 231, 255, 0.54);
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.console-metric-strip {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.console-metric-card {
+  display: grid;
+  gap: 5px;
+  padding: 10px 11px;
+  border: 1px solid rgba(89, 241, 255, 0.12);
+  border-radius: 8px;
+  background: rgba(8, 15, 28, 0.7);
+}
+
+.console-metric-card.tone-cyan { border-color: rgba(89, 241, 255, 0.22); }
+.console-metric-card.tone-gold { border-color: rgba(230, 169, 58, 0.22); }
+.console-metric-card.tone-coral { border-color: rgba(255, 111, 97, 0.22); }
+.console-metric-card.tone-green { border-color: rgba(116, 217, 154, 0.22); }
+.console-metric-card.tone-violet { border-color: rgba(157, 124, 255, 0.22); }
+
+.console-metric-label {
+  color: rgba(221, 231, 255, 0.58);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.console-metric-value {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.goal-lane-rail {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.goal-lane-card {
+  display: grid;
+  gap: 8px;
+  min-height: 150px;
+  padding: 12px;
+  border: 1px solid rgba(89, 241, 255, 0.16);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(8, 15, 28, 0.78), rgba(3, 5, 13, 0.7));
+}
+
+.goal-lane-card strong {
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.goal-lane-card p {
+  margin: 0;
+  color: rgba(221, 231, 255, 0.62);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.goal-lane-channel,
+.goal-lane-meta {
+  color: rgba(89, 241, 255, 0.72);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.goal-lane-meta {
+  color: rgba(221, 231, 255, 0.54);
+}
+
 
 .zoom-panel {
   position: fixed;
@@ -410,6 +599,9 @@ body::before {
     grid-template-columns: 1fr;
     max-height: calc(100vh - 142px);
   }
+  .console-metric-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .goal-lane-rail { grid-template-columns: 1fr; }
+  .task-kanban-board { grid-template-columns: 1fr; }
   .console-panel.wide { grid-column: auto; }
   .zoom-panel { top: auto; bottom: 88px; right: 12px; left: 12px; width: auto; }
   .bottom-dock {

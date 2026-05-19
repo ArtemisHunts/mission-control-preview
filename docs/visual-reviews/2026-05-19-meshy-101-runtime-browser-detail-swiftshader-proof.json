@@ -1,0 +1,45 @@
+{
+  "url": "http://127.0.0.1:4177/",
+  "screenshot": "docs/visual-reviews/2026-05-19-meshy-101-runtime-browser-detail-swiftshader-proof.png",
+  "evaluated": {
+    "title": "Mission Control // Environment Prototype",
+    "canvas": {
+      "width": 1600,
+      "height": 913,
+      "clientWidth": 1600,
+      "clientHeight": 913
+    },
+    "webgl": true,
+    "readout": "DETAIL · 40m",
+    "focusTitle": "Deliver Mission Control v1",
+    "focusBody": "Turn Mission Control into a Codex-driven operations system with a dense holographic holo-table UI and a production-quality 3D asteroid facility pipeline. 3 active goals · 2 active tasks · 2 queued tasks Latest event: Mission Control development split into concurrent lanes: overlay work remains in #dashboard with overlay-only preview mode, while 3D asteroid/runtime proof continues in channel 1477048876669075578.",
+    "buttons": [
+      {
+        "preset": "full",
+        "active": false
+      },
+      {
+        "preset": "wide",
+        "active": false
+      },
+      {
+        "preset": "detail",
+        "active": true
+      },
+      {
+        "preset": "ceiling",
+        "active": false
+      }
+    ]
+  },
+  "glbEvents": [
+    {
+      "url": "http://127.0.0.1:4177/assets/blender/meshy-101-open-front-hollow-runtime-v2.optimized.glb?v=meshy101-hollow-v2-20260519",
+      "status": 200,
+      "mimeType": "model/gltf-binary",
+      "encodedDataLength": 198
+    }
+  ],
+  "consoleEvents": [],
+  "errors": []
+}
