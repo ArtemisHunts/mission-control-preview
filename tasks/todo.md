@@ -255,6 +255,14 @@ Next checklist:
 - Exact unblock: poll the existing task until `SUCCEEDED`, then download GLB/thumbnail and run Blender inspection; if it fails, record the Meshy error before any fresh retry.
 - Facility population remains blocked.
 
+## Review - 2026-05-20 Meshy-103 No-Floor Preview Proof
+
+- Picked one Goal 6 gap: resolve the existing Meshy-103 pending task and inspect the resulting candidate without launching another paid task.
+- Meshy task `019e4481-7623-77e2-844d-ce0c79190abd` reached `SUCCEEDED`; downloaded `assets/meshy/api/103-no-floor-thin-wall-hollow-asteroid-v1.meshy.glb` and thumbnail.
+- Parameterized the Blender inspection script and generated `assets/blender/meshy-103-no-floor-preview-inspection.blend` plus `docs/visual-reviews/2026-05-20-meshy-103-no-floor-preview-proof.*`.
+- Decision: failed visual acceptance. It reduces the smooth floor/slab problem, but reads too much like a regular tube/ring with thick blocky walls and panel-like geology.
+- Facility population remains blocked; next candidate needs asymmetrical broken C-shaped shell language while preserving the no-floor constraint.
+
 ## Review - 2026-05-19 Clean Meshy-101 Local Rollback Proof
 
 - Picked the highest-risk 3D gap after the Meshy-first correction: local Mission Control still referenced the rejected hollow v2 runtime path even though state/live direction had rolled back to clean Meshy-101.

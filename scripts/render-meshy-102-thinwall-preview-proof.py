@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 import json
 import math
+import os
 from pathlib import Path
 
 import bpy
 from mathutils import Vector
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE_GLB = ROOT / 'assets' / 'meshy' / 'api' / '102-thinwall-open-front-hollow-asteroid-v3.meshy.glb'
-OUT_BLEND = ROOT / 'assets' / 'blender' / 'meshy-102-thinwall-preview-inspection.blend'
-OUT_RENDER = ROOT / 'docs' / 'visual-reviews' / '2026-05-20-meshy-102-thinwall-preview-proof.png'
-OUT_METRICS = ROOT / 'docs' / 'visual-reviews' / '2026-05-20-meshy-102-thinwall-preview-proof.json'
+SLUG = os.environ.get('MESHY_PROOF_SLUG', '102-thinwall-open-front-hollow-asteroid-v3')
+PROOF_NAME = os.environ.get('MESHY_PROOF_NAME', 'meshy-102-thinwall-preview')
+PROOF_DATE = os.environ.get('MESHY_PROOF_DATE', '2026-05-20')
+SOURCE_GLB = ROOT / 'assets' / 'meshy' / 'api' / f'{SLUG}.meshy.glb'
+OUT_BLEND = ROOT / 'assets' / 'blender' / f'{PROOF_NAME}-inspection.blend'
+OUT_RENDER = ROOT / 'docs' / 'visual-reviews' / f'{PROOF_DATE}-{PROOF_NAME}-proof.png'
+OUT_METRICS = ROOT / 'docs' / 'visual-reviews' / f'{PROOF_DATE}-{PROOF_NAME}-proof.json'
 
 
 def clear_scene():

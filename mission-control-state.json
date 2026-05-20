@@ -4,7 +4,7 @@
     "title": "Mission Control v1",
     "environment": "local-preview",
     "isDemo": false,
-    "updatedAt": "2026-05-20T08:34:00.000Z",
+    "updatedAt": "2026-05-20T10:05:00.000Z",
     "sourceOfTruth": "mission-control-state.json",
     "runtimePolicy": "codex-channel"
   },
@@ -478,11 +478,12 @@
         "artifact-meshy-101-next-form-brief",
         "artifact-meshy-101-next-form-submission-pack",
         "artifact-meshy-102-thinwall-preview-proof",
-        "artifact-meshy-103-no-floor-pending-proof"
+        "artifact-meshy-103-no-floor-pending-proof",
+        "artifact-meshy-103-no-floor-preview-proof"
       ],
       "currentRunId": "run-goal-6-20260518",
       "createdAt": "2026-05-19T00:26:47.874Z",
-      "updatedAt": "2026-05-20T08:34:00.000Z",
+      "updatedAt": "2026-05-20T10:05:00.000Z",
       "isDemo": false,
       "eventIds": [
         "evt-20260519-meshy-4000-cap-approved",
@@ -504,7 +505,9 @@
         "evt-20260520-meshy-102-thinwall-preview-generated",
         "evt-20260520-meshy-102-thinwall-preview-rejected",
         "evt-20260520-meshy-103-no-floor-submitted",
-        "evt-20260520-meshy-103-no-floor-pending-blocker"
+        "evt-20260520-meshy-103-no-floor-pending-blocker",
+        "evt-20260520-meshy-103-no-floor-succeeded",
+        "evt-20260520-meshy-103-no-floor-preview-rejected"
       ]
     },
     {
@@ -724,8 +727,8 @@
       "status": "running",
       "startedAt": "2026-05-19T00:26:47.874Z",
       "endedAt": null,
-      "summary": "Submitted Meshy-103 as a targeted no-floor thin-wall hollow retry, but Meshy is still holding the task in PENDING with no GLB/thumbnail URL, so Goal 6 is blocked on external task completion before Blender inspection.",
-      "verificationSummary": "Create spec dry-run, Python compile, Meshy task JSON, current runtime browser smoke, state validator, and diff checks passed; Blender inspection is blocked until Meshy returns a GLB.",
+      "summary": "Meshy-103 completed and was inspected in Blender, but it failed visual acceptance because it reduced the floor-slab issue by becoming too tube/ring-like with thick blocky walls and panel-like geology.",
+      "verificationSummary": "Meshy task JSON succeeded, GLB/thumbnail downloaded, Blender imported and rendered inspection proof, visual review failed acceptance, current runtime smoke and validators passed.",
       "blocker": null,
       "eventIds": [
         "evt-20260519-asteroid-baseline-task-active",
@@ -754,7 +757,9 @@
         "evt-20260520-meshy-102-thinwall-preview-generated",
         "evt-20260520-meshy-102-thinwall-preview-rejected",
         "evt-20260520-meshy-103-no-floor-submitted",
-        "evt-20260520-meshy-103-no-floor-pending-blocker"
+        "evt-20260520-meshy-103-no-floor-pending-blocker",
+        "evt-20260520-meshy-103-no-floor-succeeded",
+        "evt-20260520-meshy-103-no-floor-preview-rejected"
       ],
       "artifactIds": [
         "artifact-meshy-high-fidelity-asteroid-submitter",
@@ -766,7 +771,8 @@
         "artifact-meshy-101-next-form-brief",
         "artifact-meshy-101-next-form-submission-pack",
         "artifact-meshy-102-thinwall-preview-proof",
-        "artifact-meshy-103-no-floor-pending-proof"
+        "artifact-meshy-103-no-floor-pending-proof",
+        "artifact-meshy-103-no-floor-preview-proof"
       ],
       "isDemo": false
     },
@@ -1300,7 +1306,7 @@
         "runtime"
       ],
       "createdAt": "2026-05-20T01:12:00.000Z",
-      "updatedAt": "2026-05-20T08:34:00.000Z",
+      "updatedAt": "2026-05-20T10:05:00.000Z",
       "isDemo": false,
       "eventIds": [
         "evt-20260519-meshy-101-clean-baseline-local-rollback-proof",
@@ -1312,12 +1318,15 @@
         "evt-20260520-meshy-102-thinwall-preview-generated",
         "evt-20260520-meshy-102-thinwall-preview-rejected",
         "evt-20260520-meshy-103-no-floor-submitted",
-        "evt-20260520-meshy-103-no-floor-pending-blocker"
+        "evt-20260520-meshy-103-no-floor-pending-blocker",
+        "evt-20260520-meshy-103-no-floor-succeeded",
+        "evt-20260520-meshy-103-no-floor-preview-rejected"
       ],
-      "blocker": "Meshy-103 task 019e4481-7623-77e2-844d-ce0c79190abd remains PENDING with no model_urls/thumbnail_url; exact unblock is SUCCEEDED with GLB URL, then download and Blender-inspect before any acceptance or facility population.",
+      "blocker": "Meshy-103 succeeded but failed visual acceptance; next unblock is a Meshy form pass or refinement that avoids tube/ring symmetry, keeps no-floor constraint, and produces an asymmetrical broken C-shaped thin rock shell for Blender inspection.",
       "artifactIds": [
         "artifact-meshy-102-thinwall-preview-proof",
-        "artifact-meshy-103-no-floor-pending-proof"
+        "artifact-meshy-103-no-floor-pending-proof",
+        "artifact-meshy-103-no-floor-preview-proof"
       ]
     }
   ],
@@ -2413,6 +2422,40 @@
       "source": "codex-runtime",
       "ingestedAt": "2026-05-20T08:34:00.000Z",
       "isDemo": false
+    },
+    {
+      "id": "evt-20260520-meshy-103-no-floor-succeeded",
+      "type": "artifact.recorded",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "runId": "run-goal-6-20260518",
+      "agentId": "artemis",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "reviewId": null,
+      "message": "Meshy-103 no-floor thin-wall hollow task 019e4481-7623-77e2-844d-ce0c79190abd succeeded; GLB and thumbnail were downloaded for Blender inspection.",
+      "artifactIds": [
+        "artifact-meshy-103-no-floor-preview-proof"
+      ],
+      "createdAt": "2026-05-20T10:05:00.000Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-20T10:05:00.000Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260520-meshy-103-no-floor-preview-rejected",
+      "type": "goal.checkpoint",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "runId": "run-goal-6-20260518",
+      "agentId": "artemis",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "reviewId": null,
+      "message": "Meshy-103 failed Goal 6 visual acceptance: it reduces the smooth floor/slab problem but reads as a regular tube/ring with thick blocky walls and panel-like geology. Do not normalize/export as accepted baseline or populate facility assets.",
+      "artifactIds": [
+        "artifact-meshy-103-no-floor-preview-proof"
+      ],
+      "createdAt": "2026-05-20T10:05:00.000Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-20T10:05:00.000Z",
+      "isDemo": false
     }
   ],
   "reviews": [
@@ -2767,6 +2810,16 @@
       "path": "scripts/submit-meshy-103-no-floor-hollow-v1.py, assets/meshy/api/103-no-floor-thin-wall-hollow-asteroid-v1.create-spec.json, assets/meshy/api/103-no-floor-thin-wall-hollow-asteroid-v1.create-response.json, assets/meshy/api/103-no-floor-thin-wall-hollow-asteroid-v1.task.json, docs/visual-reviews/2026-05-20-meshy-103-no-floor-pending-proof.md, docs/visual-reviews/2026-05-20-meshy-103-runtime-smoke-detail.png",
       "createdAt": "2026-05-20T08:34:00.000Z",
       "isDemo": false
+    },
+    {
+      "id": "artifact-meshy-103-no-floor-preview-proof",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "kind": "asset-proof",
+      "name": "Meshy-103 no-floor preview proof",
+      "path": "assets/meshy/api/103-no-floor-thin-wall-hollow-asteroid-v1.meshy.glb, assets/meshy/api/103-no-floor-thin-wall-hollow-asteroid-v1.thumbnail.png, assets/meshy/api/103-no-floor-thin-wall-hollow-asteroid-v1.task.json, assets/blender/meshy-103-no-floor-preview-inspection.blend, docs/visual-reviews/2026-05-20-meshy-103-no-floor-preview-proof.md, docs/visual-reviews/2026-05-20-meshy-103-no-floor-preview-proof.png, docs/visual-reviews/2026-05-20-meshy-103-no-floor-preview-proof.json, docs/visual-reviews/2026-05-20-meshy-103-resolved-runtime-smoke-detail.png",
+      "createdAt": "2026-05-20T10:05:00.000Z",
+      "isDemo": false
     }
   ],
   "facilityAssets": [
@@ -3099,6 +3152,37 @@
       ],
       "updatedAt": "2026-05-20T08:34:00.000Z",
       "isDemo": false
+    },
+    {
+      "id": "visual-review-meshy-103-no-floor-preview-20260520",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "title": "Meshy-103 no-floor preview proof",
+      "status": "completed",
+      "decision": "failed-visual-acceptance",
+      "summary": "Meshy-103 reduced the prior smooth floor/slab read, but fails baseline acceptance because the shell reads as a regular tube/ring with thick blocky walls and artificial panel-like geology.",
+      "assetIds": [],
+      "artifactIds": [
+        "artifact-meshy-103-no-floor-preview-proof"
+      ],
+      "proofPaths": [
+        "assets/meshy/api/103-no-floor-thin-wall-hollow-asteroid-v1.thumbnail.png",
+        "docs/visual-reviews/2026-05-20-meshy-103-no-floor-preview-proof.md",
+        "docs/visual-reviews/2026-05-20-meshy-103-no-floor-preview-proof.png",
+        "docs/visual-reviews/2026-05-20-meshy-103-no-floor-preview-proof.json",
+        "docs/visual-reviews/2026-05-20-meshy-103-resolved-runtime-smoke-detail.png"
+      ],
+      "criteria": [
+        "Meshy task succeeded without creating a new paid task in this loop",
+        "GLB and thumbnail downloaded locally",
+        "Blender imported GLB and produced inspection render/metrics",
+        "No-floor constraint improved versus Meshy-102",
+        "Tube/ring symmetry and thick blocky walls fail acceptance",
+        "Protected current runtime GLB still passes browser smoke",
+        "Facility population remains blocked"
+      ],
+      "updatedAt": "2026-05-20T10:05:00.000Z",
+      "isDemo": false
     }
   ],
   "telemetry": {
@@ -3107,9 +3191,9 @@
       "activeTasks": 1,
       "queuedTasks": 2,
       "blockedGoals": 1,
-      "latestEventId": "evt-20260520-meshy-103-no-floor-pending-blocker"
+      "latestEventId": "evt-20260520-meshy-103-no-floor-preview-rejected"
     },
-    "updatedAt": "2026-05-20T08:34:00.000Z",
+    "updatedAt": "2026-05-20T10:05:00.000Z",
     "isDemo": false
   }
 }

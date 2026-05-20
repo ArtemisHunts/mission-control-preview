@@ -1,0 +1,53 @@
+{
+  "source": "assets/meshy/api/103-no-floor-thin-wall-hollow-asteroid-v1.meshy.glb",
+  "blend": "assets/blender/meshy-103-no-floor-preview-inspection.blend",
+  "render": "docs/visual-reviews/2026-05-20-meshy-103-no-floor-preview-proof.png",
+  "rawStats": {
+    "source": "assets/meshy/api/103-no-floor-thin-wall-hollow-asteroid-v1.meshy.glb",
+    "sourceSizeBytes": 26499740,
+    "meshObjects": 1,
+    "vertices": 736081,
+    "polygons": 1472166,
+    "triangles": 1472166,
+    "materials": 0,
+    "bounds": [
+      1.8984,
+      1.8326,
+      1.8566
+    ],
+    "min": [
+      -0.9502,
+      -0.9155,
+      -0.9305
+    ],
+    "max": [
+      0.9482,
+      0.9171,
+      0.9261
+    ]
+  },
+  "inspectionStats": {
+    "source": "assets/meshy/api/103-no-floor-thin-wall-hollow-asteroid-v1.meshy.glb",
+    "sourceSizeBytes": 26499740,
+    "meshObjects": 1,
+    "vertices": 736081,
+    "polygons": 1472166,
+    "triangles": 1472166,
+    "materials": 0,
+    "bounds": [
+      16.0,
+      15.4452,
+      15.6475
+    ],
+    "min": [
+      -8.0071,
+      -7.7165,
+      -6.9119
+    ],
+    "max": [
+      7.9929,
+      7.7288,
+      8.7356
+    ]
+  }
+}
