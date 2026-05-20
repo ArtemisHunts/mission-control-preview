@@ -62,6 +62,28 @@ Only move a candidate into Blender if it passes this visual bar first:
 
 If the candidate fails any of those, keep the verdict honest and stop there.
 
+## Ready-to-run submission path
+
+The brief now has a concrete no-spend launch path attached to it:
+
+- Guarded submit script: `scripts/submit-meshy-101-thinwall-hollow-v3.py`
+- Current create spec: `assets/meshy/api/102-thinwall-open-front-hollow-asteroid-v3.create-spec.json`
+
+Dry-run only:
+
+```bash
+cd ~/clawd/mission-control-preview
+python3 scripts/submit-meshy-101-thinwall-hollow-v3.py
+```
+
+Actual Meshy submission remains explicit:
+
+```bash
+cd ~/clawd/mission-control-preview
+source ~/.config/meshy/api.env
+python3 scripts/submit-meshy-101-thinwall-hollow-v3.py --submit
+```
+
 ## Output handoff once a candidate passes
 
 After visual acceptance, then:

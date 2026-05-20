@@ -232,6 +232,8 @@ Next checklist:
 - Converted the active Goal 6 brief into an operational next-step pack instead of leaving it as prose only.
 - Added `scripts/submit-meshy-101-thinwall-hollow-v3.py` with an explicit no-spend default: dry-run writes the create spec, while real Meshy submission requires `--submit`.
 - Materialized `assets/meshy/api/102-thinwall-open-front-hollow-asteroid-v3.create-spec.json` and recorded the pack in `docs/visual-reviews/2026-05-19-meshy-101-next-form-submission-pack.md`.
+- Fed the same explicit dry-run/submit path back into `docs/goals/meshy-101-next-meshy-form-brief.md` so the active brief itself now points straight at the real script/spec instead of making the operator hunt through later proof notes.
+- Captured a fresh Goal 6 runtime-health screenshot at `docs/visual-reviews/2026-05-20-goal-6-meshy-next-form-browser-smoke-detail.png` and recorded the proof note in `docs/visual-reviews/2026-05-20-goal-6-meshy-next-form-browser-smoke.md`.
 - Kept the scope honest: this prepares the next paid/refine move without claiming that a new candidate already exists.
 - Verification: dry-run script output, Python compile check, `node scripts/validate-mission-state.mjs`, `node --check app.js`, and `git diff --check`.
 
