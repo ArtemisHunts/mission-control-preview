@@ -16,6 +16,11 @@ The installed OpenClaw skill copies live at workspace level:
 - `../skills/game-playtest/`
 - plus supporting Phaser/R3F/sprite skills for other projects.
 
+Meshy-specific generation skills are installed for asteroid and prop generation work:
+
+- `~/.agents/skills/meshy-3d-agent/`
+- `~/.agents/skills/meshy-3d-generation/`
+
 Shared references live at:
 
 - `../skills/_game-studio-references/`
@@ -34,6 +39,7 @@ game-studio
   -> web-game-foundations
   -> three-webgl-game
   -> web-3d-asset-pipeline
+  -> meshy-3d-agent / meshy-3d-generation, when generating or refining Meshy assets
   -> game-ui-frontend, only when HUD/labels/DOM overlays change
   -> game-playtest
 ```
@@ -43,6 +49,8 @@ Why this route:
 - Mission Control is a plain Three.js/WebGL environment with direct render-loop control.
 - The work is increasingly a 3D environment/asset problem, not just primitive geometry placement.
 - Visual proof is mandatory because subjective scene changes can look better in code and worse on screen.
+- Asteroid form changes should start in Meshy prompt/refine space, then move to Blender only for cleanup, normalization, export, and proofing.
+- The Meshy asteroid loop is documented in `docs/workflows/meshy-asteroid-production-loop.md`.
 
 ## Required pre-pass classification
 
