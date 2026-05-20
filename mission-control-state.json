@@ -4,7 +4,7 @@
     "title": "Mission Control v1",
     "environment": "local-preview",
     "isDemo": false,
-    "updatedAt": "2026-05-20T01:12:00.000Z",
+    "updatedAt": "2026-05-20T02:42:00.000Z",
     "sourceOfTruth": "mission-control-state.json",
     "runtimePolicy": "codex-channel"
   },
@@ -460,7 +460,7 @@
       "verification": [
         "node scripts/validate-mission-state.mjs",
         "node --check app.js",
-        "headless Chrome screenshot/static smoke",
+        "headless Chrome DOM/screenshot smoke at ?camera=detail",
         "clean runtime GLB HTTP 200 check"
       ],
       "stopRules": [
@@ -473,11 +473,12 @@
         "artifact-meshy-101-cleanup-export-proof",
         "artifact-meshy-101-runtime-browser-proof",
         "artifact-meshy-101-interior-cleanup-brief",
-        "artifact-meshy-101-clean-baseline-local-rollback-proof"
+        "artifact-meshy-101-clean-baseline-local-rollback-proof",
+        "artifact-meshy-101-camera-url-proof"
       ],
       "currentRunId": "run-goal-6-20260518",
       "createdAt": "2026-05-19T00:26:47.874Z",
-      "updatedAt": "2026-05-20T01:12:00.000Z",
+      "updatedAt": "2026-05-20T02:42:00.000Z",
       "isDemo": false,
       "eventIds": [
         "evt-20260519-meshy-4000-cap-approved",
@@ -493,7 +494,9 @@
         "evt-20260519-meshy-101-runtime-browser-proof-completed",
         "evt-20260519-meshy-101-interior-cleanup-next",
         "evt-20260519-meshy-101-clean-baseline-local-rollback-proof",
-        "evt-20260519-meshy-101-meshy-first-task-active"
+        "evt-20260519-meshy-101-meshy-first-task-active",
+        "evt-20260519-meshy-101-camera-url-proof-recorded",
+        "evt-20260519-meshy-101-camera-url-checkpoint"
       ]
     },
     {
@@ -713,7 +716,7 @@
       "status": "running",
       "startedAt": "2026-05-19T00:26:47.874Z",
       "endedAt": null,
-      "summary": "Meshy-101 hollow v2 still needs one no-spend Blender cleanup pass before baseline lock, and that pass now has a single execution brief instead of being spread across proof notes.",
+      "summary": "Meshy-101 still needs the no-spend Blender cleanup pass, but the next browser rerun is now more deterministic because the proof path can lock the detail camera from the URL.",
       "verificationSummary": "Headless Chrome SwiftShader WebGL proof captured; GLB request returned HTTP 200 model/gltf-binary; no console errors in successful pass.",
       "blocker": null,
       "eventIds": [
@@ -733,14 +736,17 @@
         "evt-20260519-meshy-101-runtime-browser-proof-completed",
         "evt-20260519-meshy-101-interior-cleanup-next",
         "evt-20260519-meshy-101-cleanup-brief-recorded",
-        "evt-20260519-meshy-101-cleanup-brief-checkpoint"
+        "evt-20260519-meshy-101-cleanup-brief-checkpoint",
+        "evt-20260519-meshy-101-camera-url-proof-recorded",
+        "evt-20260519-meshy-101-camera-url-checkpoint"
       ],
       "artifactIds": [
         "artifact-meshy-high-fidelity-asteroid-submitter",
         "artifact-asteroid-baseline-audit-proof",
         "artifact-meshy-101-cleanup-export-proof",
         "artifact-meshy-101-runtime-browser-proof",
-        "artifact-meshy-101-interior-cleanup-brief"
+        "artifact-meshy-101-interior-cleanup-brief",
+        "artifact-meshy-101-camera-url-proof"
       ],
       "isDemo": false
     },
@@ -1274,11 +1280,13 @@
         "runtime"
       ],
       "createdAt": "2026-05-20T01:12:00.000Z",
-      "updatedAt": "2026-05-20T01:12:00.000Z",
+      "updatedAt": "2026-05-20T02:42:00.000Z",
       "isDemo": false,
       "eventIds": [
         "evt-20260519-meshy-101-clean-baseline-local-rollback-proof",
-        "evt-20260519-meshy-101-meshy-first-task-active"
+        "evt-20260519-meshy-101-meshy-first-task-active",
+        "evt-20260519-meshy-101-camera-url-proof-recorded",
+        "evt-20260519-meshy-101-camera-url-checkpoint"
       ]
     }
   ],
@@ -2210,6 +2218,38 @@
       "source": "codex-runtime",
       "ingestedAt": "2026-05-20T01:12:00.000Z",
       "isDemo": false
+    },
+    {
+      "id": "evt-20260519-meshy-101-camera-url-proof-recorded",
+      "type": "artifact.recorded",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "runId": "run-goal-6-20260518",
+      "agentId": "artemis",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "message": "Recorded deterministic camera URL support so Meshy-101 browser proof reruns can force detail framing with ?camera=detail.",
+      "artifactIds": [
+        "artifact-meshy-101-camera-url-proof"
+      ],
+      "createdAt": "2026-05-20T02:42:00.000Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-20T02:42:00.000Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260519-meshy-101-camera-url-checkpoint",
+      "type": "goal.checkpoint",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "runId": "run-goal-6-20260518",
+      "agentId": "artemis",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "message": "Removed a manual proof step from Goal 6: the runtime scene now accepts camera presets from the URL, so the next Meshy-first candidate rerun can open directly in detail framing.",
+      "artifactIds": [
+        "artifact-meshy-101-camera-url-proof"
+      ],
+      "createdAt": "2026-05-20T02:42:00.000Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-20T02:42:00.000Z",
+      "isDemo": false
     }
   ],
   "reviews": [
@@ -2514,6 +2554,16 @@
       "goalId": "goal-6-high-fidelity-asteroid-baseline",
       "createdAt": "2026-05-20T01:12:00.000Z",
       "isDemo": false
+    },
+    {
+      "createdAt": "2026-05-20T02:42:00.000Z",
+      "isDemo": false,
+      "id": "artifact-meshy-101-camera-url-proof",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "kind": "tooling-proof",
+      "name": "Meshy-101 deterministic camera URL proof",
+      "path": "docs/visual-reviews/2026-05-19-meshy-101-camera-url-proof.md, docs/visual-reviews/2026-05-19-meshy-101-camera-url-proof.json, docs/visual-reviews/2026-05-19-meshy-101-camera-url-proof.png"
     }
   ],
   "facilityAssets": [
@@ -2759,6 +2809,35 @@
       ],
       "updatedAt": "2026-05-20T01:12:00.000Z",
       "isDemo": false
+    },
+    {
+      "id": "visual-review-meshy-101-camera-url-proof-20260519",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "title": "Meshy-101 deterministic camera URL proof",
+      "status": "completed",
+      "decision": "proof-repeatability-improved-not-baseline-accepted",
+      "summary": "Mission Control runtime now accepts camera presets from the URL. ?camera=detail opens directly in the detail framing, creates a WebGL canvas, shows DETAIL · 40m in DOM smoke, and requests the protected clean Meshy-101 rollback GLB with HTTP 200.",
+      "assetIds": [
+        "asset-meshy-101-open-front-asteroid-cleanup-candidate"
+      ],
+      "artifactIds": [
+        "artifact-meshy-101-camera-url-proof"
+      ],
+      "proofPaths": [
+        "docs/visual-reviews/2026-05-19-meshy-101-camera-url-proof.md",
+        "docs/visual-reviews/2026-05-19-meshy-101-camera-url-proof.json",
+        "docs/visual-reviews/2026-05-19-meshy-101-camera-url-proof.png"
+      ],
+      "criteria": [
+        "camera query parameter is parsed",
+        "valid camera preset is applied on load",
+        "detail preset readout appears in DOM",
+        "WebGL canvas is created",
+        "clean Meshy-101 rollback GLB responds HTTP 200"
+      ],
+      "updatedAt": "2026-05-20T02:42:00.000Z",
+      "isDemo": false
     }
   ],
   "telemetry": {
@@ -2767,9 +2846,9 @@
       "activeTasks": 1,
       "queuedTasks": 2,
       "blockedGoals": 1,
-      "latestEventId": "evt-20260519-meshy-101-meshy-first-task-active"
+      "latestEventId": "evt-20260519-meshy-101-camera-url-checkpoint"
     },
-    "updatedAt": "2026-05-20T01:12:00.000Z",
+    "updatedAt": "2026-05-20T02:42:00.000Z",
     "isDemo": false
   }
 }

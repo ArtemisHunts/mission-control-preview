@@ -6,7 +6,8 @@
 
 ## Runtime Path Inspected
 
-- Live runtime loader reference: `app.js` points at `assets/blender/meshy-101-open-front-hollow-runtime-v2.optimized.glb?v=meshy101-hollow-v2-20260519`.
+- Historical runtime loader reference at capture time: `app.js` pointed at `assets/blender/meshy-101-open-front-hollow-runtime-v2.optimized.glb?v=meshy101-hollow-v2-20260519`.
+- Current local/live direction after hollow v2 rejection: keep the clean Meshy-101 rollback runtime as the protected preview baseline until the next Meshy-first thin-wall form candidate is visually viable.
 - Candidate source: `assets/meshy/api/101-open-front-hollow-asteroid-baseline-v2.meshy.glb`.
 - Clean runtime artifact: `assets/blender/meshy-101-open-front-hollow-runtime-v2.optimized.glb`.
 
@@ -29,6 +30,7 @@ Observed proof:
 - Canvas created: `1600 x 913`.
 - WebGL context: true.
 - Active camera proof: `DETAIL · 40m`.
+- Runtime reruns can now force the same framing directly with `?camera=detail` instead of relying on manual camera changes.
 - Runtime GLB request: HTTP 200, `model/gltf-binary`.
 - Runtime console errors: none in the successful SwiftShader pass.
 - Screenshot: `docs/visual-reviews/2026-05-19-meshy-101-runtime-browser-detail-swiftshader-proof.png`.
@@ -50,7 +52,11 @@ It should **not** be accepted as the final asteroid baseline yet. The browser pr
 
 ## Recommended Next Gate
 
-Keep the same runtime path for now, but run one no-spend Blender cleanup pass focused only on:
+Superseded after visual rejection of hollow v2. Keep the clean Meshy-101 rollback preview protected, generate/refine the next thin-wall hollow form through Meshy first, then use Blender only for normalization/export/proof after a viable form exists. The deterministic proof URL remains:
+
+- `http://127.0.0.1:4177/?camera=detail`
+
+When a viable form exists, the browser proof should still check:
 
 - reducing the flat interior wall/floor slabs,
 - darkening and normalizing the rock material response,

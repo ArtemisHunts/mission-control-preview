@@ -202,6 +202,15 @@ Next checklist:
 - Decision: useful progress, but `task-meshy-101-interior-cleanup` remains active until the Blender/export/browser repeat pass is actually completed.
 - Verification: direct readback of the brief plus existing task/goal state confirms the new brief matches the current blocker and next-gate language.
 
+## Review - 2026-05-19 Meshy-101 Deterministic Camera URL Support
+
+- Tightened the runtime-proof loop itself instead of adding another manual checklist: `app.js` now accepts `?camera=detail|full|wide|ceiling` and applies the preset on load.
+- Updated the existing runtime-proof note and historical cleanup brief so the next browser rerun can use `http://127.0.0.1:4177/?camera=detail` as a deterministic framing path.
+- Added proof artifacts: `docs/visual-reviews/2026-05-19-meshy-101-camera-url-proof.md`, matching JSON, and screenshot.
+- Kept the change honest: this does not prove a new asteroid form or accept the baseline; it only removes one avoidable manual camera step from the next Meshy-first candidate proof rerun.
+- Decision: useful tooling progress. Goal 6 still remains blocked on a visually viable Meshy thin-wall hollow candidate plus Blender normalization/export/browser proof.
+- Verification: `node --check app.js`, `node scripts/validate-mission-state.mjs`, `git diff --check`, clean GLB HTTP 200 check, PNG/file check, and headless Chrome DOM proof showing `DETAIL · 40m` at `?camera=detail`.
+
 ## Review - 2026-05-19 Meshy-First 3D Direction Correction
 
 - The hollow v2 visual pass failed; Michael explicitly rejected the live image and correctly challenged whether Blender should be used for form-language changes.

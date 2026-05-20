@@ -23,6 +23,7 @@ const COLORS = {
 const container = document.getElementById('office-canvas');
 const queryParams = new URLSearchParams(window.location.search);
 const overlayFocusMode = queryParams.get('overlay') === '1' || queryParams.get('mode') === 'overlay';
+const requestedCameraPreset = (queryParams.get('camera') || '').toLowerCase();
 
 if (overlayFocusMode) {
   document.body.classList.add('overlay-focus');
@@ -5666,5 +5667,5 @@ window.addEventListener('keydown', (event) => {
 });
 
 buildScene();
-applyCameraPreset('full');
+applyCameraPreset(CAMERA_PRESETS[requestedCameraPreset] ? requestedCameraPreset : 'full');
 animate();

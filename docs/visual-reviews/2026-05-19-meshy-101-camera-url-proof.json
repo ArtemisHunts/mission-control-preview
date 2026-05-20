@@ -1,0 +1,45 @@
+{
+  "id": "meshy-101-camera-url-proof-20260519",
+  "url": "http://127.0.0.1:4183/?camera=detail",
+  "timestamp": "2026-05-20T02:42:00.000Z",
+  "selectedGap": "deterministic camera URL support for repeatable Goal 6 browser proof",
+  "assertions": [
+    {
+      "name": "app camera query param",
+      "present": true
+    },
+    {
+      "name": "app applies requested preset",
+      "present": true
+    },
+    {
+      "name": "dom detail readout",
+      "present": true
+    },
+    {
+      "name": "dom canvas created",
+      "present": true
+    },
+    {
+      "name": "dom mission title",
+      "present": true
+    }
+  ],
+  "cleanGlbHead": [
+    "HTTP/1.0 200 OK\r",
+    "Server: SimpleHTTP/0.6 Python/3.13.7\r",
+    "Date: Wed, 20 May 2026 02:37:42 GMT\r",
+    "Content-type: model/gltf-binary\r",
+    "Content-Length: 6562104\r",
+    "Last-Modified: Tue, 19 May 2026 22:00:28 GMT\r",
+    "\r"
+  ],
+  "screenshot": {
+    "path": "docs/visual-reviews/2026-05-19-meshy-101-camera-url-proof.png",
+    "bytes": 601291,
+    "width": 1600,
+    "height": 1000
+  },
+  "domPath": "tmp/2026-05-19-meshy-101-camera-url-dom.html",
+  "decision": "passed"
+}

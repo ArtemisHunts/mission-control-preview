@@ -2,6 +2,10 @@
 
 _Prepared: 2026-05-19_
 
+## Current status
+
+Historical context only after Michael's Meshy-first correction. Do not start this Blender cleanup as the next form-language step. Use Meshy prompt/refine for the next thin-wall hollow asteroid candidate first, then return to this cleanup/export/proof flow only after a visually viable Meshy form exists.
+
 ## Why this pass exists
 
 The current Meshy-101 hollow v2 candidate is already browser-runtime proven, but it still fails final baseline acceptance because the interior cut surfaces read too flat, too blocky, and too boolean-heavy once the asteroid is seen at Mission Control scene scale.
@@ -58,9 +62,10 @@ node scripts/validate-mission-state.mjs
 node --check app.js
 ```
 
-If a new runtime GLB is exported, also rerun the same browser-scene proof path used in:
+If a new runtime GLB is exported after Meshy form acceptance, also rerun the same browser-scene proof path used in:
 
 - `docs/visual-reviews/2026-05-19-meshy-101-runtime-browser-proof.md`
+- Recommended deterministic URL for the rerun: `http://127.0.0.1:4177/?camera=detail`
 
 ## Decision rule
 
