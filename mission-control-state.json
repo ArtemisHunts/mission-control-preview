@@ -4,7 +4,7 @@
     "title": "Mission Control v1",
     "environment": "local-preview",
     "isDemo": false,
-    "updatedAt": "2026-05-20T02:42:00.000Z",
+    "updatedAt": "2026-05-20T03:32:12.623Z",
     "sourceOfTruth": "mission-control-state.json",
     "runtimePolicy": "codex-channel"
   },
@@ -474,11 +474,13 @@
         "artifact-meshy-101-runtime-browser-proof",
         "artifact-meshy-101-interior-cleanup-brief",
         "artifact-meshy-101-clean-baseline-local-rollback-proof",
-        "artifact-meshy-101-camera-url-proof"
+        "artifact-meshy-101-camera-url-proof",
+        "artifact-meshy-101-next-form-brief",
+        "artifact-meshy-101-next-form-submission-pack"
       ],
       "currentRunId": "run-goal-6-20260518",
       "createdAt": "2026-05-19T00:26:47.874Z",
-      "updatedAt": "2026-05-20T02:42:00.000Z",
+      "updatedAt": "2026-05-20T03:32:12.623Z",
       "isDemo": false,
       "eventIds": [
         "evt-20260519-meshy-4000-cap-approved",
@@ -716,7 +718,7 @@
       "status": "running",
       "startedAt": "2026-05-19T00:26:47.874Z",
       "endedAt": null,
-      "summary": "Meshy-101 still needs the no-spend Blender cleanup pass, but the next browser rerun is now more deterministic because the proof path can lock the detail camera from the URL.",
+      "summary": "Goal 6 still needs the next Meshy thin-wall hollow candidate, but the next paid/refine move is now ready-to-run: the prompt, create spec, and guarded submit path are packaged without spending credits yet.",
       "verificationSummary": "Headless Chrome SwiftShader WebGL proof captured; GLB request returned HTTP 200 model/gltf-binary; no console errors in successful pass.",
       "blocker": null,
       "eventIds": [
@@ -738,7 +740,11 @@
         "evt-20260519-meshy-101-cleanup-brief-recorded",
         "evt-20260519-meshy-101-cleanup-brief-checkpoint",
         "evt-20260519-meshy-101-camera-url-proof-recorded",
-        "evt-20260519-meshy-101-camera-url-checkpoint"
+        "evt-20260519-meshy-101-camera-url-checkpoint",
+        "evt-20260519-meshy-101-next-form-brief-recorded",
+        "evt-20260519-meshy-101-next-form-brief-checkpoint",
+        "evt-20260519-meshy-101-next-form-submission-pack-recorded",
+        "evt-20260519-meshy-101-next-form-submission-pack-checkpoint"
       ],
       "artifactIds": [
         "artifact-meshy-high-fidelity-asteroid-submitter",
@@ -746,7 +752,9 @@
         "artifact-meshy-101-cleanup-export-proof",
         "artifact-meshy-101-runtime-browser-proof",
         "artifact-meshy-101-interior-cleanup-brief",
-        "artifact-meshy-101-camera-url-proof"
+        "artifact-meshy-101-camera-url-proof",
+        "artifact-meshy-101-next-form-brief",
+        "artifact-meshy-101-next-form-submission-pack"
       ],
       "isDemo": false
     },
@@ -1286,7 +1294,9 @@
         "evt-20260519-meshy-101-clean-baseline-local-rollback-proof",
         "evt-20260519-meshy-101-meshy-first-task-active",
         "evt-20260519-meshy-101-camera-url-proof-recorded",
-        "evt-20260519-meshy-101-camera-url-checkpoint"
+        "evt-20260519-meshy-101-camera-url-checkpoint",
+        "evt-20260519-meshy-101-next-form-brief-recorded",
+        "evt-20260519-meshy-101-next-form-submission-pack-recorded"
       ]
     }
   ],
@@ -2250,6 +2260,70 @@
       "source": "codex-runtime",
       "ingestedAt": "2026-05-20T02:42:00.000Z",
       "isDemo": false
+    },
+    {
+      "id": "evt-20260519-meshy-101-next-form-brief-recorded",
+      "type": "artifact.recorded",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "runId": "run-goal-6-20260518",
+      "agentId": "artemis",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "reviewId": null,
+      "message": "Recorded a single active brief for the next Meshy thin-wall hollow pass so Goal 6 no longer points at the historical Blender cleanup as the next step.",
+      "artifactIds": [
+        "artifact-meshy-101-next-form-brief"
+      ],
+      "createdAt": "2026-05-20T03:03:08.260Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-20T03:03:08.260Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260519-meshy-101-next-form-brief-checkpoint",
+      "type": "goal.checkpoint",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "runId": "run-goal-6-20260518",
+      "agentId": "artemis",
+      "taskId": null,
+      "reviewId": null,
+      "message": "Tightened the active Goal 6 blocker into one concrete Meshy-first execution brief: thinner shell, deeper cavity, less slab/boolean read, no Blender until a visually viable candidate exists.",
+      "artifactIds": [],
+      "createdAt": "2026-05-20T03:03:08.261Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-20T03:03:08.261Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260519-meshy-101-next-form-submission-pack-recorded",
+      "type": "artifact.recorded",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "runId": "run-goal-6-20260518",
+      "agentId": "artemis",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "reviewId": null,
+      "message": "Recorded a no-spend Meshy submission pack for the next thin-wall hollow pass, including a guarded submit script and materialized create spec.",
+      "artifactIds": [
+        "artifact-meshy-101-next-form-submission-pack"
+      ],
+      "createdAt": "2026-05-20T03:32:12.622Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-20T03:32:12.622Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260519-meshy-101-next-form-submission-pack-checkpoint",
+      "type": "goal.checkpoint",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "runId": "run-goal-6-20260518",
+      "agentId": "artemis",
+      "taskId": null,
+      "reviewId": null,
+      "message": "Prepared the next Meshy pass for one-command execution while keeping spend explicit: dry-run writes the spec, real generation requires --submit, and Blender stays out until the new candidate clears visual review.",
+      "artifactIds": [],
+      "createdAt": "2026-05-20T03:32:12.623Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-20T03:32:12.623Z",
+      "isDemo": false
     }
   ],
   "reviews": [
@@ -2564,6 +2638,26 @@
       "kind": "tooling-proof",
       "name": "Meshy-101 deterministic camera URL proof",
       "path": "docs/visual-reviews/2026-05-19-meshy-101-camera-url-proof.md, docs/visual-reviews/2026-05-19-meshy-101-camera-url-proof.json, docs/visual-reviews/2026-05-19-meshy-101-camera-url-proof.png"
+    },
+    {
+      "createdAt": "2026-05-20T03:03:08.260Z",
+      "isDemo": false,
+      "id": "artifact-meshy-101-next-form-brief",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "kind": "execution-brief",
+      "name": "Meshy-101 next Meshy form brief",
+      "path": "docs/goals/meshy-101-next-meshy-form-brief.md"
+    },
+    {
+      "createdAt": "2026-05-20T03:32:12.622Z",
+      "isDemo": false,
+      "id": "artifact-meshy-101-next-form-submission-pack",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "kind": "submission-pack",
+      "name": "Meshy-101 next form submission pack",
+      "path": "docs/visual-reviews/2026-05-19-meshy-101-next-form-submission-pack.md"
     }
   ],
   "facilityAssets": [
@@ -2846,9 +2940,9 @@
       "activeTasks": 1,
       "queuedTasks": 2,
       "blockedGoals": 1,
-      "latestEventId": "evt-20260519-meshy-101-camera-url-checkpoint"
+      "latestEventId": "evt-20260519-meshy-101-next-form-submission-pack-checkpoint"
     },
-    "updatedAt": "2026-05-20T02:42:00.000Z",
+    "updatedAt": "2026-05-20T03:32:12.623Z",
     "isDemo": false
   }
 }

@@ -219,6 +219,22 @@ Next checklist:
 - Facility population remains blocked until a visually accepted asteroid baseline passes local review and browser proof.
 - Verification: live Pages `app.js` returns 200 and references the clean runtime GLB; clean runtime GLB returns 200.
 
+## Review - 2026-05-19 Meshy-101 Next Form Brief
+
+- Picked the active Goal 6 blocker directly from current state: the next task is no longer Blender cleanup, it is a Meshy-first thin-wall hollow form iteration.
+- Added `docs/goals/meshy-101-next-meshy-form-brief.md` so the next paid/refine pass has one explicit target instead of being scattered across rejection notes and historical cleanup docs.
+- Locked the brief to the real acceptance bar: thinner shell walls, deeper interior volume, less slab/boolean reading, preserved open-front silhouette, and no Blender work until a visually viable Meshy result exists.
+- Kept the artifact honest: this is a direction/quality brief only. It does not claim that a new candidate was generated or accepted.
+- Verification: direct readback of current goal/task state plus doc write; canonical state still requires the actual Meshy candidate, then Blender normalization/export/browser proof.
+
+## Review - 2026-05-19 Meshy-101 Next Form Submission Pack
+
+- Converted the active Goal 6 brief into an operational next-step pack instead of leaving it as prose only.
+- Added `scripts/submit-meshy-101-thinwall-hollow-v3.py` with an explicit no-spend default: dry-run writes the create spec, while real Meshy submission requires `--submit`.
+- Materialized `assets/meshy/api/102-thinwall-open-front-hollow-asteroid-v3.create-spec.json` and recorded the pack in `docs/visual-reviews/2026-05-19-meshy-101-next-form-submission-pack.md`.
+- Kept the scope honest: this prepares the next paid/refine move without claiming that a new candidate already exists.
+- Verification: dry-run script output, Python compile check, `node scripts/validate-mission-state.mjs`, `node --check app.js`, and `git diff --check`.
+
 ## Review - 2026-05-19 Clean Meshy-101 Local Rollback Proof
 
 - Picked the highest-risk 3D gap after the Meshy-first correction: local Mission Control still referenced the rejected hollow v2 runtime path even though state/live direction had rolled back to clean Meshy-101.

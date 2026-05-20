@@ -1,0 +1,13 @@
+{
+  "mode": "preview",
+  "prompt": "High-fidelity hollow asteroid base for a sci-fi command facility, open-front cutaway shell, thin rock walls, deep irregular interior cavity, fractured geological layering, asymmetrical broken rock shelves, believable stone mass, strong macro silhouette, clear interior volume for embedded structures, rugged natural asteroid exterior, production-quality hard-surface plus geology blend, no flat slab floor, no boolean-looking cut planes, no toy-like symmetry, no buildings, no ships, no characters",
+  "ai_model": "meshy-6",
+  "model_type": "standard",
+  "should_remesh": false,
+  "target_formats": [
+    "glb"
+  ],
+  "auto_size": false,
+  "name": "Mission Control thin-wall open-front hollow asteroid v3",
+  "purpose": "Meshy-first retry after hollow v2 rejection: thinner shell walls, deeper irregular cavity, less slab/boolean floor read, preserved open-front asteroid silhouette."
+}
