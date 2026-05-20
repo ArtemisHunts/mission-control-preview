@@ -4,7 +4,7 @@
     "title": "Mission Control v1",
     "environment": "local-preview",
     "isDemo": false,
-    "updatedAt": "2026-05-19T23:23:00.000Z",
+    "updatedAt": "2026-05-20T01:12:00.000Z",
     "sourceOfTruth": "mission-control-state.json",
     "runtimePolicy": "codex-channel"
   },
@@ -368,8 +368,8 @@
     },
     {
       "id": "goal-5-holo-table-density-kanban",
-      "title": "Holo-Table Density + Kanban Tasks",
-      "objective": "Run the overlay-specific Mission Control command console loop in #dashboard: dense single-page information, fewer tab hops, goal-lane visibility, and kanban-style task state independent of 3D asset progress.",
+      "title": "Holo-Table Reference Match + Ops Surface",
+      "objective": "Transform the #dashboard overlay from a functional panel dashboard into a concept-art-matched holographic command table: one dense table-driven overview with state-backed goal, task, agent, review, telemetry, artifact, and event visibility.",
       "project": "Mission Control",
       "status": "completed",
       "priority": 1,
@@ -383,6 +383,7 @@
       "channelLabel": "#dashboard",
       "context": [
         "docs/goals/mission-control-holo-table-3d-asset-campaign.md",
+        "docs/goals/mission-control-goal-5-reference-match-contract.md",
         "docs/goals/mission-control-concurrent-lanes.md",
         "mission-control-state.json",
         "app.js",
@@ -392,12 +393,16 @@
         "Keep UI state-backed.",
         "No fake backend actions.",
         "Avoid tab sprawl; default to one dense operational surface.",
+        "Match the concept-art command-table composition before treating the overlay as product-complete.",
+        "Tabs are drill-downs; the overview must carry the primary product read.",
         "Overlay work must remain inspectable through ?overlay=1&console=overview without waiting on the heavy 3D scene."
       ],
       "successCriteria": [
-        "Primary console exposes goals, agents, telemetry, review, buildout, and task kanban on one page.",
+        "Overview composition is anchored by a central holographic command table instead of a generic panel grid.",
+        "Primary console exposes goals, agents, telemetry, review, buildout, artifacts, events, and task flow on one page.",
         "Tasks render in kanban columns.",
-        "Reference-inspired holographic styling improves without hiding operational data."
+        "Reference-inspired holographic styling improves without hiding operational data.",
+        "Desktop/mobile screenshot proof shows the overlay is readable, non-overlapping, and directionally matched to the concept-art layout."
       ],
       "verification": [
         "node scripts/validate-mission-state.mjs",
@@ -409,11 +414,14 @@
         "Stop before broad visual rewrite that breaks current Pages inspection."
       ],
       "artifactIds": [
-        "artifact-holo-table-density-kanban-proof"
+        "artifact-holo-table-density-kanban-proof",
+        "artifact-goal-5-reference-match-contract",
+        "artifact-goal-5-reference-match-overview-proof",
+        "artifact-goal-5-visual-language-pass-proof"
       ],
       "currentRunId": "run-goal-5-20260518",
       "createdAt": "2026-05-19T00:26:47.874Z",
-      "updatedAt": "2026-05-19T23:48:00.000Z",
+      "updatedAt": "2026-05-20T00:13:08.320Z",
       "isDemo": false
     },
     {
@@ -441,7 +449,8 @@
       "constraints": [
         "Audit existing local high-poly/source candidates before spending.",
         "Michael approved reopening the Mission Control Meshy lane up to the 4000 credits/month account limit on 2026-05-18.",
-        "3D progress updates go to channel 1477048876669075578."
+        "3D progress updates go to channel 1477048876669075578.",
+        "After Michael rejected hollow v2, use Meshy prompt/refine for the next form-language iteration before Blender normalization/export/proof."
       ],
       "successCriteria": [
         "Current baseline is audited against strongest existing candidates.",
@@ -449,9 +458,10 @@
         "Accepted baseline has Blender source and optimized GLB path."
       ],
       "verification": [
-        "Blender/GLB metrics audit",
-        "visual review board",
-        "node scripts/validate-mission-state.mjs"
+        "node scripts/validate-mission-state.mjs",
+        "node --check app.js",
+        "headless Chrome screenshot/static smoke",
+        "clean runtime GLB HTTP 200 check"
       ],
       "stopRules": [
         "Stop before paid Meshy generation without explicit budget approval.",
@@ -461,11 +471,13 @@
         "artifact-meshy-high-fidelity-asteroid-submitter",
         "artifact-asteroid-baseline-audit-proof",
         "artifact-meshy-101-cleanup-export-proof",
-        "artifact-meshy-101-runtime-browser-proof"
+        "artifact-meshy-101-runtime-browser-proof",
+        "artifact-meshy-101-interior-cleanup-brief",
+        "artifact-meshy-101-clean-baseline-local-rollback-proof"
       ],
       "currentRunId": "run-goal-6-20260518",
       "createdAt": "2026-05-19T00:26:47.874Z",
-      "updatedAt": "2026-05-19T23:23:00.000Z",
+      "updatedAt": "2026-05-20T01:12:00.000Z",
       "isDemo": false,
       "eventIds": [
         "evt-20260519-meshy-4000-cap-approved",
@@ -479,7 +491,9 @@
         "evt-20260519-meshy-101-runtime-proof-next",
         "evt-20260519-meshy-101-runtime-browser-proof-recorded",
         "evt-20260519-meshy-101-runtime-browser-proof-completed",
-        "evt-20260519-meshy-101-interior-cleanup-next"
+        "evt-20260519-meshy-101-interior-cleanup-next",
+        "evt-20260519-meshy-101-clean-baseline-local-rollback-proof",
+        "evt-20260519-meshy-101-meshy-first-task-active"
       ]
     },
     {
@@ -522,9 +536,9 @@
       "artifactIds": [],
       "currentRunId": "run-goal-7-20260518",
       "createdAt": "2026-05-19T00:26:47.874Z",
-      "updatedAt": "2026-05-19T23:48:00.000Z",
+      "updatedAt": "2026-05-20T01:12:00.000Z",
       "isDemo": false,
-      "blocker": "Meshy-101 runtime proof is complete, but the active candidate still needs one no-spend Blender cleanup pass for interior artifacts and final baseline acceptance before facility population can start."
+      "blocker": "Facility population remains blocked until a Meshy-first thin-wall hollow asteroid form is visually accepted, normalized/exported in Blender, and browser-proven as the final baseline."
     }
   ],
   "goalRuns": [
@@ -666,9 +680,9 @@
       "runtime": "codex-channel",
       "status": "completed",
       "startedAt": null,
-      "endedAt": "2026-05-19T23:48:00.000Z",
-      "summary": "Holo-table density and kanban baseline complete: overlay-only mode opens the dense primary surface with operations metrics, goal lanes, task kanban, open work, reviews, assets, roster, and events; the task panel retains the full kanban board.",
-      "verificationSummary": "Passed state validator, app syntax, git diff whitespace check, and headless Chrome overlay smoke with desktop/mobile screenshots plus DOM assertions.",
+      "endedAt": null,
+      "summary": "Goal 5 reference-match overlay pass is browser-proven: composition, density, kanban, visual-language depth, and drill-down responsiveness now pass desktop/mobile overlay inspection.",
+      "verificationSummary": "Previous density baseline passed state validator, app syntax, git diff whitespace check, and headless Chrome overlay smoke. The reopened reference-match pass still needs fresh desktop/mobile proof.",
       "blocker": null,
       "eventIds": [
         "evt-20260519-holo-kanban-task-completed",
@@ -677,10 +691,18 @@
         "evt-20260519-holo-density-checkpoint",
         "evt-20260519-concurrent-lanes-split",
         "evt-20260519-holo-density-task-completed",
-        "evt-20260519-holo-density-goal-completed"
+        "evt-20260519-holo-density-goal-completed",
+        "evt-20260519-goal-5-reference-match-approved",
+        "evt-20260519-goal-5-reference-match-overview-proof",
+        "evt-20260519-goal-5-visual-language-proof",
+        "evt-20260519-goal-5-visual-language-task-completed",
+        "evt-20260519-goal-5-visual-language-complete"
       ],
       "artifactIds": [
-        "artifact-holo-table-density-kanban-proof"
+        "artifact-holo-table-density-kanban-proof",
+        "artifact-goal-5-reference-match-contract",
+        "artifact-goal-5-reference-match-overview-proof",
+        "artifact-goal-5-visual-language-pass-proof"
       ],
       "isDemo": false
     },
@@ -691,7 +713,7 @@
       "status": "running",
       "startedAt": "2026-05-19T00:26:47.874Z",
       "endedAt": null,
-      "summary": "Meshy-101 hollow v2 is browser-runtime proven and remains the active local candidate, but final baseline acceptance is blocked on one no-spend Blender cleanup pass for interior cut artifacts.",
+      "summary": "Meshy-101 hollow v2 still needs one no-spend Blender cleanup pass before baseline lock, and that pass now has a single execution brief instead of being spread across proof notes.",
       "verificationSummary": "Headless Chrome SwiftShader WebGL proof captured; GLB request returned HTTP 200 model/gltf-binary; no console errors in successful pass.",
       "blocker": null,
       "eventIds": [
@@ -709,13 +731,16 @@
         "evt-20260519-concurrent-lanes-split",
         "evt-20260519-meshy-101-runtime-browser-proof-recorded",
         "evt-20260519-meshy-101-runtime-browser-proof-completed",
-        "evt-20260519-meshy-101-interior-cleanup-next"
+        "evt-20260519-meshy-101-interior-cleanup-next",
+        "evt-20260519-meshy-101-cleanup-brief-recorded",
+        "evt-20260519-meshy-101-cleanup-brief-checkpoint"
       ],
       "artifactIds": [
         "artifact-meshy-high-fidelity-asteroid-submitter",
         "artifact-asteroid-baseline-audit-proof",
         "artifact-meshy-101-cleanup-export-proof",
-        "artifact-meshy-101-runtime-browser-proof"
+        "artifact-meshy-101-runtime-browser-proof",
+        "artifact-meshy-101-interior-cleanup-brief"
       ],
       "isDemo": false
     },
@@ -984,6 +1009,61 @@
       ]
     },
     {
+      "id": "task-holo-table-reference-match-overview",
+      "goalId": "goal-5-holo-table-density-kanban",
+      "title": "Rebuild overview around concept-art command table composition",
+      "description": "Replace the dashboard-card overview with a central holographic command-table layout: top status band, left execution queue, right agent/review pressure, bottom evidence/events/telemetry band, and drill-down tabs as secondary paths.",
+      "project": "Mission Control",
+      "priority": 1,
+      "status": "completed",
+      "requester": "Michael",
+      "assigneeId": "artemis",
+      "room": "command-hub",
+      "autoAssignable": false,
+      "tags": [
+        "holo-table",
+        "ui",
+        "reference-match",
+        "concept-art",
+        "overview"
+      ],
+      "createdAt": "2026-05-19T23:50:00.000Z",
+      "updatedAt": "2026-05-19T23:55:00.000Z",
+      "isDemo": false,
+      "eventIds": [
+        "evt-20260519-goal-5-reference-match-approved",
+        "evt-20260519-goal-5-reference-match-overview-proof"
+      ]
+    },
+    {
+      "id": "task-holo-table-reference-visual-language",
+      "goalId": "goal-5-holo-table-density-kanban",
+      "title": "Tighten holo-table visual language against concept art",
+      "description": "Improve the first command-table composition with stronger secondary text contrast, more polished holographic depth, tighter density, and detail drill-down behavior while preserving state-backed data.",
+      "project": "Mission Control",
+      "priority": 1,
+      "status": "completed",
+      "requester": "Michael",
+      "assigneeId": "artemis",
+      "room": "command-hub",
+      "autoAssignable": false,
+      "tags": [
+        "holo-table",
+        "ui",
+        "reference-match",
+        "visual-language",
+        "detail-drawers"
+      ],
+      "createdAt": "2026-05-19T23:55:00.000Z",
+      "updatedAt": "2026-05-20T00:13:08.320Z",
+      "isDemo": false,
+      "eventIds": [
+        "evt-20260519-goal-5-reference-match-overview-proof",
+        "evt-20260519-goal-5-visual-language-proof",
+        "evt-20260519-goal-5-visual-language-task-completed"
+      ]
+    },
+    {
       "id": "task-asteroid-baseline-audit",
       "goalId": "goal-6-high-fidelity-asteroid-baseline",
       "title": "Audit current asteroid baseline against high-fidelity candidates",
@@ -1149,11 +1229,11 @@
     {
       "id": "task-meshy-101-interior-cleanup",
       "goalId": "goal-6-high-fidelity-asteroid-baseline",
-      "title": "Clean Meshy-101 interior artifacts before baseline lock",
-      "description": "Run one no-spend Blender cleanup pass to reduce flat interior wall/floor slabs, normalize material response, preserve the open-front silhouette, re-export the optimized GLB, and repeat browser runtime proof.",
+      "title": "Historical Meshy-101 Blender cleanup brief",
+      "description": "Superseded by Michael correction: Blender is not the next form-language tool. Keep this brief as cleanup context after a visually viable Meshy thin-wall hollow candidate exists.",
       "project": "Mission Control",
       "priority": 1,
-      "status": "active",
+      "status": "blocked",
       "requester": "Michael",
       "assigneeId": "artemis",
       "room": "fabrication-bay",
@@ -1166,10 +1246,39 @@
         "visual-review"
       ],
       "createdAt": "2026-05-19T23:23:00.000Z",
-      "updatedAt": "2026-05-19T23:23:00.000Z",
+      "updatedAt": "2026-05-20T01:12:00.000Z",
       "isDemo": false,
       "eventIds": [
-        "evt-20260519-meshy-101-interior-cleanup-next"
+        "evt-20260519-meshy-101-interior-cleanup-next",
+        "evt-20260519-meshy-101-cleanup-brief-recorded"
+      ],
+      "blocker": "Use Meshy prompt/refine for the next thin-wall hollow asteroid form first; return to Blender only for normalization/export/proof after form acceptance."
+    },
+    {
+      "id": "task-meshy-101-next-meshy-form-refine",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "title": "Generate/refine next Meshy thin-wall hollow asteroid candidate",
+      "description": "Use the approved Meshy lane only for the next form-language iteration: thin wall, open-front hollow asteroid, more interior volume, less boolean-slab artifacting. After a visually viable candidate exists, normalize/export/prove in Blender and browser.",
+      "project": "Mission Control",
+      "priority": 1,
+      "status": "active",
+      "requester": "Michael",
+      "assigneeId": "artemis",
+      "room": "fabrication-bay",
+      "autoAssignable": false,
+      "tags": [
+        "asteroid",
+        "meshy",
+        "thin-wall",
+        "form-iteration",
+        "runtime"
+      ],
+      "createdAt": "2026-05-20T01:12:00.000Z",
+      "updatedAt": "2026-05-20T01:12:00.000Z",
+      "isDemo": false,
+      "eventIds": [
+        "evt-20260519-meshy-101-clean-baseline-local-rollback-proof",
+        "evt-20260519-meshy-101-meshy-first-task-active"
       ]
     }
   ],
@@ -1958,6 +2067,149 @@
       "source": "codex-runtime",
       "ingestedAt": "2026-05-19T23:48:00.000Z",
       "isDemo": false
+    },
+    {
+      "id": "evt-20260519-goal-5-reference-match-approved",
+      "type": "goal.checkpoint",
+      "goalId": "goal-5-holo-table-density-kanban",
+      "runId": "run-goal-5-20260518",
+      "agentId": "artemis",
+      "taskId": "task-holo-table-reference-match-overview",
+      "message": "Michael approved the updated Goal 5 structure: treat the concept-art holographic command-table composition as the product target, reopen Goal 5, and begin the reference-match overview pass.",
+      "artifactIds": [
+        "artifact-goal-5-reference-match-contract"
+      ],
+      "createdAt": "2026-05-19T23:50:00.000Z",
+      "source": "discord-approval",
+      "ingestedAt": "2026-05-19T23:50:00.000Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260519-goal-5-reference-match-overview-proof",
+      "type": "artifact.recorded",
+      "goalId": "goal-5-holo-table-density-kanban",
+      "runId": "run-goal-5-20260518",
+      "agentId": "artemis",
+      "taskId": "task-holo-table-reference-match-overview",
+      "message": "First Goal 5 reference-match overview pass implemented and browser-proven: the overlay now uses a central command-table composition with surrounding execution, review, agent, event, and evidence bands.",
+      "artifactIds": [
+        "artifact-goal-5-reference-match-overview-proof"
+      ],
+      "createdAt": "2026-05-19T23:55:00.000Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-19T23:55:00.000Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260519-goal-5-visual-language-proof",
+      "type": "artifact.recorded",
+      "goalId": "goal-5-holo-table-density-kanban",
+      "runId": "run-goal-5-20260518",
+      "agentId": "artemis",
+      "taskId": "task-holo-table-reference-visual-language",
+      "reviewId": null,
+      "message": "Goal 5 visual-language pass is captured with fresh desktop/mobile overlay proof plus DOM smoke after the responsive reflow/drill-down pass.",
+      "artifactIds": [
+        "artifact-goal-5-visual-language-pass-proof"
+      ],
+      "createdAt": "2026-05-20T00:13:08.319Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-20T00:13:08.319Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260519-goal-5-visual-language-task-completed",
+      "type": "task.status_changed",
+      "goalId": "goal-5-holo-table-density-kanban",
+      "runId": "run-goal-5-20260518",
+      "agentId": "artemis",
+      "taskId": "task-holo-table-reference-visual-language",
+      "reviewId": null,
+      "message": "Goal 5 visual-language pass completed: the command table now carries clearer depth, stronger contrast, visible drill-down actions, and a mobile-safe responsive stack.",
+      "artifactIds": [],
+      "createdAt": "2026-05-20T00:13:08.320Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-20T00:13:08.320Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260519-goal-5-visual-language-complete",
+      "type": "goal.checkpoint",
+      "goalId": "goal-5-holo-table-density-kanban",
+      "runId": "run-goal-5-20260518",
+      "agentId": "artemis",
+      "taskId": null,
+      "reviewId": null,
+      "message": "Goal 5 can stand down for now; the overlay lane is browser-proven and the next highest-value Mission Control gap returns to Meshy-101 cleanup before final asteroid baseline lock.",
+      "artifactIds": [],
+      "createdAt": "2026-05-20T00:13:08.320Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-20T00:13:08.320Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260519-meshy-101-cleanup-brief-recorded",
+      "type": "artifact.recorded",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "runId": "run-goal-6-20260518",
+      "agentId": "artemis",
+      "taskId": "task-meshy-101-interior-cleanup",
+      "reviewId": null,
+      "message": "Recorded a single execution brief for the Meshy-101 interior cleanup lane so the next Blender pass has exact scope, guardrails, output names, and acceptance criteria.",
+      "artifactIds": [
+        "artifact-meshy-101-interior-cleanup-brief"
+      ],
+      "createdAt": "2026-05-20T00:31:14.597Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-20T00:31:14.597Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260519-meshy-101-cleanup-brief-checkpoint",
+      "type": "goal.checkpoint",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "runId": "run-goal-6-20260518",
+      "agentId": "artemis",
+      "taskId": null,
+      "reviewId": null,
+      "message": "Prepared the Meshy-101 interior cleanup brief; next real 3D work is still the Blender cleanup/export/browser-repeat pass, not a new concept or paid generation lane.",
+      "artifactIds": [],
+      "createdAt": "2026-05-20T00:31:14.597Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-20T00:31:14.597Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260519-meshy-101-clean-baseline-local-rollback-proof",
+      "type": "artifact.recorded",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "runId": "run-goal-6-20260518",
+      "agentId": "artemis",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "message": "Local Mission Control runtime has been realigned to the clean Meshy-101 rollback baseline; app.js no longer loads the rejected hollow v2 runtime path.",
+      "artifactIds": [
+        "artifact-meshy-101-clean-baseline-local-rollback-proof"
+      ],
+      "createdAt": "2026-05-20T01:12:00.000Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-20T01:12:00.000Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260519-meshy-101-meshy-first-task-active",
+      "type": "task.status_changed",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "runId": "run-goal-6-20260518",
+      "agentId": "artemis",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "message": "Next asteroid baseline task is now Meshy-first thin-wall hollow form refinement; the older Blender cleanup brief is blocked as historical context until a viable Meshy form exists.",
+      "artifactIds": [
+        "artifact-meshy-101-clean-baseline-local-rollback-proof"
+      ],
+      "createdAt": "2026-05-20T01:12:00.000Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-20T01:12:00.000Z",
+      "isDemo": false
     }
   ],
   "reviews": [
@@ -2214,6 +2466,54 @@
       "goalId": "goal-5-holo-table-density-kanban",
       "createdAt": "2026-05-19T23:48:00.000Z",
       "isDemo": false
+    },
+    {
+      "id": "artifact-goal-5-reference-match-contract",
+      "kind": "doc",
+      "name": "Goal 5 holo-table reference-match contract",
+      "path": "docs/goals/mission-control-goal-5-reference-match-contract.md",
+      "goalId": "goal-5-holo-table-density-kanban",
+      "createdAt": "2026-05-19T23:50:00.000Z",
+      "isDemo": false
+    },
+    {
+      "id": "artifact-goal-5-reference-match-overview-proof",
+      "kind": "visual-review",
+      "name": "Goal 5 reference-match command-table overview proof",
+      "path": "docs/visual-reviews/2026-05-19-goal-5-reference-match-overview-proof.md, docs/visual-reviews/2026-05-19-goal-5-reference-match-overview-desktop.png, docs/visual-reviews/2026-05-19-goal-5-reference-match-overview-mobile.png",
+      "goalId": "goal-5-holo-table-density-kanban",
+      "taskId": "task-holo-table-reference-match-overview",
+      "createdAt": "2026-05-19T23:55:00.000Z",
+      "isDemo": false
+    },
+    {
+      "createdAt": "2026-05-20T00:13:08.319Z",
+      "isDemo": false,
+      "id": "artifact-goal-5-visual-language-pass-proof",
+      "goalId": "goal-5-holo-table-density-kanban",
+      "taskId": "task-holo-table-reference-visual-language",
+      "kind": "visual-review",
+      "name": "Goal 5 visual-language pass proof",
+      "path": "docs/visual-reviews/2026-05-19-goal-5-visual-language-pass-proof.md, docs/visual-reviews/2026-05-19-goal-5-visual-language-pass-desktop.png, docs/visual-reviews/2026-05-19-goal-5-visual-language-pass-mobile.png, tmp/goal-5-visual-language-dom.html"
+    },
+    {
+      "createdAt": "2026-05-20T00:31:14.597Z",
+      "isDemo": false,
+      "id": "artifact-meshy-101-interior-cleanup-brief",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "taskId": "task-meshy-101-interior-cleanup",
+      "kind": "execution-brief",
+      "name": "Meshy-101 interior cleanup brief",
+      "path": "docs/goals/meshy-101-interior-cleanup-brief.md"
+    },
+    {
+      "id": "artifact-meshy-101-clean-baseline-local-rollback-proof",
+      "kind": "visual-review",
+      "name": "Meshy-101 clean baseline local rollback proof",
+      "path": "docs/visual-reviews/2026-05-19-meshy-101-clean-baseline-local-rollback-proof.md, docs/visual-reviews/2026-05-19-meshy-101-clean-baseline-local-rollback-proof.json, docs/visual-reviews/2026-05-19-meshy-101-clean-baseline-local-rollback-proof.png",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "createdAt": "2026-05-20T01:12:00.000Z",
+      "isDemo": false
     }
   ],
   "facilityAssets": [
@@ -2430,6 +2730,35 @@
       ],
       "updatedAt": "2026-05-19T23:48:00.000Z",
       "isDemo": false
+    },
+    {
+      "id": "visual-review-meshy-101-clean-baseline-rollback-20260519",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "title": "Meshy-101 clean baseline local rollback proof",
+      "status": "completed",
+      "decision": "local-runtime-realigned-not-baseline-accepted",
+      "summary": "Local Mission Control runtime was still loading the visually rejected Meshy-101 hollow v2 path. It now loads the clean Meshy-101 rollback baseline, and browser/static smoke confirms the clean GLB path returns HTTP 200. This does not accept the final asteroid baseline.",
+      "assetIds": [
+        "asset-meshy-101-open-front-asteroid-cleanup-candidate"
+      ],
+      "artifactIds": [
+        "artifact-meshy-101-clean-baseline-local-rollback-proof"
+      ],
+      "proofPaths": [
+        "docs/visual-reviews/2026-05-19-meshy-101-clean-baseline-local-rollback-proof.md",
+        "docs/visual-reviews/2026-05-19-meshy-101-clean-baseline-local-rollback-proof.json",
+        "docs/visual-reviews/2026-05-19-meshy-101-clean-baseline-local-rollback-proof.png"
+      ],
+      "criteria": [
+        "local app references clean Meshy-101 rollback GLB",
+        "local app no longer references rejected hollow v2 GLB",
+        "clean GLB path responds HTTP 200 as model/gltf-binary",
+        "browser screenshot smoke completes",
+        "facility population remains blocked"
+      ],
+      "updatedAt": "2026-05-20T01:12:00.000Z",
+      "isDemo": false
     }
   ],
   "telemetry": {
@@ -2438,9 +2767,9 @@
       "activeTasks": 1,
       "queuedTasks": 2,
       "blockedGoals": 1,
-      "latestEventId": "evt-20260519-holo-density-goal-completed"
+      "latestEventId": "evt-20260519-meshy-101-meshy-first-task-active"
     },
-    "updatedAt": "2026-05-19T23:48:00.000Z",
+    "updatedAt": "2026-05-20T01:12:00.000Z",
     "isDemo": false
   }
 }

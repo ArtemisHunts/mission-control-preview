@@ -1,0 +1,24 @@
+{
+  "id": "meshy-101-clean-baseline-local-rollback-proof-20260519",
+  "url": "http://127.0.0.1:4181/",
+  "timestamp": "2026-05-20T01:12:00.000Z",
+  "selectedGap": "local runtime source-of-truth drift after rejected Meshy-101 hollow v2",
+  "appReferencesCleanBaseline": true,
+  "appReferencesRejectedHollowV2": false,
+  "cleanGlbHead": [
+    "HTTP/1.0 200 OK\r",
+    "Server: SimpleHTTP/0.6 Python/3.13.7\r",
+    "Date: Wed, 20 May 2026 01:02:48 GMT\r",
+    "Content-type: model/gltf-binary\r",
+    "Content-Length: 6562104\r",
+    "Last-Modified: Tue, 19 May 2026 22:00:28 GMT\r",
+    "\r"
+  ],
+  "screenshot": {
+    "path": "docs/visual-reviews/2026-05-19-meshy-101-clean-baseline-local-rollback-proof.png",
+    "bytes": 112672,
+    "width": 1600,
+    "height": 1000
+  },
+  "decision": "passed"
+}

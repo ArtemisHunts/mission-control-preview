@@ -106,6 +106,10 @@ Next checklist:
 
 ## Active Plan - Holo-Table + 3D Asset Campaign
 
+- [x] Record Michael's approved Goal 5 reference-match contract: concept-art command table layout is the product target, not the earlier dashboard-ish density baseline.
+- [x] Rebuild the overview around the command-table composition: top status band, left execution queue, right agent/review pressure, bottom evidence/events/telemetry band.
+- [x] Add fresh desktop/mobile screenshot proof for ?overlay=1&console=overview and compare it against the reference-match contract.
+- [x] Tighten the next visual-language pass: secondary text contrast, holographic depth, density tuning, and detail drill-down behavior.
 - [x] Audit current asteroid candidates and decide whether any existing high-poly/source asset can beat `meshy-19`.
 - [x] Confirm Meshy spend approval before launching any new high-fidelity paid asteroid generation; the previous lane cap was reopened to the 4000 credits/month account limit in current state.
 - [x] Record the approved high-fidelity Meshy asteroid candidates and compare them against the current baseline with contact-sheet proof.
@@ -113,7 +117,8 @@ Next checklist:
 - [x] Clean the Meshy-101 open-front candidate in Blender and export a normalized runtime GLB candidate.
 - [x] Apply Michael's thinner-wall feedback as a separate Meshy-101 hollow v2 candidate and validate the optimized runtime GLB.
 - [x] Prove the Meshy-101 runtime candidate inside the Mission Control browser scene before final baseline acceptance.
-- [ ] Clean Meshy-101 interior artifacts in Blender before final baseline lock.
+- [x] Realign local preview/runtime proof state to the clean Meshy-101 rollback after hollow v2 visual rejection.
+- [ ] Generate/refine the next Meshy thin-wall hollow candidate, then use Blender only for normalization/export/proof after the form already works.
 - [x] Rework the command console into a denser single-page holo-table surface with fewer tabs.
 - [x] Convert the task panel into kanban columns.
 - [x] Split overlay and 3D into separate channel-owned goal lanes.
@@ -133,7 +138,8 @@ Next checklist:
 - A parallel 3D worker proved `meshy-101-open-front-hollow-runtime-v2.optimized.glb` in the browser scene with SwiftShader WebGL.
 - Proof artifacts: `docs/visual-reviews/2026-05-19-meshy-101-runtime-browser-proof.md`, `docs/visual-reviews/2026-05-19-meshy-101-runtime-browser-detail-swiftshader-proof.png`, and matching JSON.
 - Decision: runtime path works and Meshy-101 v2 remains the active local candidate, but it is not final-baseline accepted yet.
-- Next 3D gate: one no-spend Blender cleanup pass for flat/blocky interior floor and wall artifacts, then repeat browser proof.
+- Next 3D gate: superseded after visual rejection of the hollow v2 pass. Protect clean Meshy-101 as the live baseline; use Meshy prompt/refine for the next thin-wall hollow form candidate, then bring only visually viable candidates into Blender for normalization/export/proof.
+- Added `docs/goals/meshy-101-interior-cleanup-brief.md`, but treat it as historical cleanup context rather than the active path after Michael's Meshy-first correction.
 
 ## Review - 2026-05-18 Live Filesystem Event Bridge
 
@@ -177,3 +183,38 @@ Next checklist:
 - Proof artifacts: `docs/visual-reviews/2026-05-19-holo-table-density-overlay-smoke.md`, matching JSON, desktop/mobile overview screenshots, and the task-board screenshot.
 - Decision: passed browser smoke; the holo-table density + kanban recovery gap is complete. Next gap returns to the Meshy-101 no-spend Blender cleanup before final asteroid baseline lock.
 - Verification: `node scripts/validate-mission-state.mjs`, `node --check app.js`, `git diff --check`, and headless Chrome overlay DOM/screenshot smoke.
+
+## Review - 2026-05-19 Goal 5 Visual-Language Pass
+
+- Tightened the central holo-table surface instead of adding more flat cards: added layered detail cards, stronger row contrast, clearer lane selection, and explicit drill-down actions tied to real console panels.
+- Reworked the overview interactions so the primary surface can jump straight into `Mission Map`, `Agents`, `Telemetry`, `Task Board`, `Review Queue`, `Buildout`, and `Signals` without abandoning the table-first composition.
+- Fixed the mobile framing failure from the first screenshot pass by reordering the mobile stack around the command table and removing the clipped centered-modal layout that pushed the hero surface off-screen.
+- Kept the data truthful and state-backed: the pass improved rendering, interaction, and responsive layout only; it did not invent backend automation or synthetic state.
+- Proof artifacts: `docs/visual-reviews/2026-05-19-goal-5-visual-language-pass-proof.md`, desktop/mobile screenshots, and `tmp/goal-5-visual-language-dom.html`.
+- Decision: pass. Goal 5's reference-match overlay lane is now browser-proven and can hand focus back to the Meshy-101 cleanup/final-baseline path.
+- Verification: `node scripts/validate-mission-state.mjs`, `node --check app.js`, `git diff --check`, headless Chrome desktop/mobile screenshots, and DOM smoke for `Mission Map`, `Open Task Board`, `Open Review`, and `Telemetry`.
+
+## Review - 2026-05-19 Meshy-101 Interior Cleanup Brief
+
+- Picked the next active 3D lane after Goal 5 closed: the baseline is still blocked on one no-spend Blender cleanup pass, but the exact edit target was spread across multiple proof notes.
+- Added `docs/goals/meshy-101-interior-cleanup-brief.md` as a single execution brief with exact scope, no-spend guardrails, do-not-do list, suggested output names, verification floor, and acceptance rule.
+- Kept the artifact honest: this does not claim the cleanup itself is done; it simply makes the next 3D pass faster and less error-prone by turning the blocker into an explicit checklist.
+- Decision: useful progress, but `task-meshy-101-interior-cleanup` remains active until the Blender/export/browser repeat pass is actually completed.
+- Verification: direct readback of the brief plus existing task/goal state confirms the new brief matches the current blocker and next-gate language.
+
+## Review - 2026-05-19 Meshy-First 3D Direction Correction
+
+- The hollow v2 visual pass failed; Michael explicitly rejected the live image and correctly challenged whether Blender should be used for form-language changes.
+- Live preview was rolled back to the clean Meshy-101 baseline on GitHub Pages via `b2d6a65`; live `app.js` now references `assets/blender/meshy-101-open-front-clean-runtime-v1.glb?v=meshy101-clean-v1-rollback-20260519`.
+- Updated the active 3D path: Blender remains for cleanup, scale, pivots, decimation, material sanity, runtime export, and proofing; Meshy prompt/refine should drive the next thin-wall hollow asteroid form iteration.
+- Facility population remains blocked until a visually accepted asteroid baseline passes local review and browser proof.
+- Verification: live Pages `app.js` returns 200 and references the clean runtime GLB; clean runtime GLB returns 200.
+
+## Review - 2026-05-19 Clean Meshy-101 Local Rollback Proof
+
+- Picked the highest-risk 3D gap after the Meshy-first correction: local Mission Control still referenced the rejected hollow v2 runtime path even though state/live direction had rolled back to clean Meshy-101.
+- Updated local `app.js` to load `assets/blender/meshy-101-open-front-clean-runtime-v1.glb?v=meshy101-clean-v1-rollback-20260519`.
+- Added proof artifacts: `docs/visual-reviews/2026-05-19-meshy-101-clean-baseline-local-rollback-proof.md`, matching JSON, and browser screenshot.
+- Updated canonical state so the old Blender cleanup task is blocked as historical context and the active next task is Meshy-first thin-wall hollow form refinement.
+- Decision: passed local rollback proof; this is not final asteroid acceptance and does not unblock facility population.
+- Verification: `node scripts/validate-mission-state.mjs`, `node --check app.js`, clean GLB HTTP 200 check, and headless Chrome screenshot smoke.

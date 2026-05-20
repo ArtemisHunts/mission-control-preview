@@ -450,6 +450,253 @@ function addGoalLaneRail(panel, goals) {
   panel.appendChild(rail);
 }
 
+function addHoloStatusPill(container, label, value, tone = '') {
+  const pill = node('article', 'holo-status-pill' + (tone ? ' tone-' + tone : ''));
+  pill.appendChild(node('span', null, label));
+  pill.appendChild(node('strong', null, String(value)));
+  container.appendChild(pill);
+}
+
+function addHoloRows(container, titleOrConfig, items, emptyText) {
+  const config = typeof titleOrConfig === 'object'
+    ? titleOrConfig
+    : { title: titleOrConfig, items, emptyText };
+  const block = node('section', 'holo-data-block');
+  const header = node('div', 'holo-data-header');
+  header.appendChild(node('h4', null, config.title));
+  if (config.actionLabel && typeof config.onAction === 'function') {
+    const action = node('button', 'holo-data-action', config.actionLabel);
+    action.type = 'button';
+    action.addEventListener('click', config.onAction);
+    header.appendChild(action);
+  }
+  block.appendChild(header);
+  const list = node('div', 'holo-data-list');
+  const rows = (config.items || []).length ? config.items : [{ title: config.emptyText || 'No records.', meta: 'No canonical records.' }];
+  rows.forEach(({ title: rowTitle, meta, kicker, tone = '', onAction }) => {
+    const row = node('article', 'holo-data-row' + (tone ? ' tone-' + tone : '') + (onAction ? ' interactive' : ''));
+    if (kicker) row.appendChild(node('span', 'holo-row-kicker', kicker));
+    row.appendChild(node('strong', null, rowTitle));
+    if (meta) row.appendChild(node('span', null, meta));
+    if (typeof onAction === 'function') {
+      row.tabIndex = 0;
+      row.setAttribute('role', 'button');
+      row.addEventListener('click', onAction);
+      row.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onAction();
+        }
+      });
+    }
+    list.appendChild(row);
+  });
+  block.appendChild(list);
+  container.appendChild(block);
+}
+
+function addHoloCoreDetails(container, details) {
+  const strip = node('div', 'holo-detail-strip');
+  details.forEach(({ label, value, tone = '', actionLabel, onAction }) => {
+    const card = node('article', 'holo-detail-card' + (tone ? ' tone-' + tone : ''));
+    card.appendChild(node('span', null, label));
+    card.appendChild(node('strong', null, value));
+    if (actionLabel && typeof onAction === 'function') {
+      const action = node('button', 'holo-detail-action', actionLabel);
+      action.type = 'button';
+      action.addEventListener('click', onAction);
+      card.appendChild(action);
+    }
+    strip.appendChild(card);
+  });
+  container.appendChild(strip);
+}
+
+function addHoloDrilldownStrip(container, actions) {
+  const strip = node('div', 'holo-drilldown-strip');
+  actions.forEach(({ label, panelId, tone = '' }) => {
+    const button = node('button', 'holo-drilldown-button' + (tone ? ' tone-' + tone : ''), label);
+    button.type = 'button';
+    button.addEventListener('click', () => renderMissionConsole(panelId));
+    strip.appendChild(button);
+  });
+  container.appendChild(strip);
+}
+
+function addHoloCommandOverview(panel, data) {
+  const {
+    activeGoal,
+    goals,
+    runs,
+    tasks,
+    openTasks,
+    pendingReviews,
+    attentionAssets,
+    workingAgents,
+    events,
+    artifacts,
+    telemetry,
+    laneGoals
+  } = data;
+
+  const activeTasks = tasks.filter((task) => task.status === 'active' || task.status === 'running');
+  const activeRun = runs.find((run) => run.id === activeGoal?.currentRunId) || runs.find((run) => run.goalId === activeGoal?.id && run.status === 'running');
+  const latestEvent = events[0] || null;
+  const layout = node('div', 'holo-command-layout');
+  const topRail = node('div', 'holo-top-rail');
+  addHoloStatusPill(topRail, 'Goal lanes', laneGoals.length, 'cyan');
+  addHoloStatusPill(topRail, 'Active tasks', telemetry.activeTasks ?? activeTasks.length, 'gold');
+  addHoloStatusPill(topRail, 'Review pressure', pendingReviews.length, pendingReviews.length ? 'coral' : 'green');
+  addHoloStatusPill(topRail, 'Assets in flight', attentionAssets.length, 'violet');
+  addHoloStatusPill(topRail, 'Agents working', workingAgents.length, 'cyan');
+  layout.appendChild(topRail);
+
+  const stage = node('div', 'holo-table-stage');
+  const leftBand = node('aside', 'holo-band holo-band-left');
+
+  const center = node('section', 'holo-table-core');
+  center.appendChild(node('span', 'holo-core-kicker', 'Active Command Table'));
+  center.appendChild(node('h3', null, activeGoal?.title || 'Mission Control'));
+  center.appendChild(node('p', null, activeGoal?.objective || facilityState.modes.overview.body));
+  addHoloCoreDetails(center, [
+    {
+      label: 'Current run',
+      value: activeRun?.summary || 'No run summary recorded.',
+      tone: 'cyan',
+      actionLabel: 'Mission Map',
+      onAction: () => renderMissionConsole('map')
+    },
+    {
+      label: 'Routing',
+      value: `${channelLabel(activeGoal)} · owner ${agentById(activeGoal?.ownerAgentId)?.name || activeGoal?.ownerAgentId || 'unknown'}`,
+      tone: 'gold',
+      actionLabel: 'Agents',
+      onAction: () => renderMissionConsole('agents')
+    },
+    {
+      label: 'Latest signal',
+      value: latestEvent?.message || 'No events recorded.',
+      tone: 'violet',
+      actionLabel: 'Telemetry',
+      onAction: () => renderMissionConsole('telemetry')
+    }
+  ]);
+
+  const rings = node('div', 'holo-table-rings');
+  [
+    ['Goals', goals.filter((goal) => goal.status === 'running' || goal.status === 'active').length],
+    ['Tasks', activeTasks.length],
+    ['Reviews', pendingReviews.length],
+    ['Events', events.length]
+  ].forEach(([label, value]) => {
+    const cell = node('div', 'holo-ring-cell');
+    cell.appendChild(node('strong', null, String(value)));
+    cell.appendChild(node('span', null, label));
+    rings.appendChild(cell);
+  });
+  center.appendChild(rings);
+
+  const laneRail = node('div', 'holo-lane-strip');
+  laneGoals.slice(0, 2).forEach((goal) => {
+    const lane = node('button', 'holo-lane-chip' + (goal.id === activeGoal?.id ? ' active' : ''));
+    lane.type = 'button';
+    lane.appendChild(node('span', null, channelLabel(goal)));
+    lane.appendChild(node('strong', null, goal.title));
+    lane.addEventListener('click', () => selectGoalLocally(goal.id));
+    laneRail.appendChild(lane);
+  });
+  center.appendChild(laneRail);
+  addHoloDrilldownStrip(center, [
+    { label: 'Task Board', panelId: 'tasks', tone: 'cyan' },
+    { label: 'Review Queue', panelId: 'review', tone: 'coral' },
+    { label: 'Buildout', panelId: 'build', tone: 'violet' },
+    { label: 'Signals', panelId: 'signals', tone: 'gold' }
+  ]);
+
+  const rightBand = node('aside', 'holo-band holo-band-right');
+  addHoloRows(leftBand, {
+    title: 'Execution Queue',
+    actionLabel: 'Open Task Board',
+    onAction: () => renderMissionConsole('tasks'),
+    items: openTasks.slice(0, 5).map((task) => ({
+      title: task.title,
+      kicker: goalById(task.goalId)?.title || 'Unrouted goal',
+      meta: formatStatus(task.status) + ' - ' + taskCardMeta(task),
+      tone: task.status === 'blocked' ? 'coral' : task.status === 'queued' ? 'gold' : 'cyan',
+      onAction: () => renderMissionConsole('tasks')
+    })),
+    emptyText: 'No open tasks.'
+  });
+
+  addHoloRows(rightBand, {
+    title: 'Agent / Review Pressure',
+    actionLabel: 'Open Review',
+    onAction: () => renderMissionConsole('review'),
+    items: [
+      ...workingAgents.slice(0, 3).map((agent) => ({
+        title: agent.name + ' - ' + agent.role,
+        kicker: agent.currentTaskId ? 'Task ' + agent.currentTaskId : 'Active roster',
+        meta: formatStatus(agent.status) + ' - load ' + (agent.load || 0) + '%',
+        tone: 'cyan',
+        onAction: () => renderMissionConsole('agents')
+      })),
+      ...pendingReviews.slice(0, 3).map((review) => ({
+        title: review.title || review.id,
+        kicker: formatStatus(review.decision || 'pending'),
+        meta: formatStatus(review.status) + ' - ' + formatStatus(review.riskLevel || 'risk unknown'),
+        tone: review.decision === 'approved' ? 'green' : 'coral',
+        onAction: () => renderMissionConsole('review')
+      }))
+    ].slice(0, 6),
+    emptyText: 'No agent or review pressure.'
+  });
+
+  stage.appendChild(leftBand);
+  stage.appendChild(center);
+  stage.appendChild(rightBand);
+  layout.appendChild(stage);
+
+  const bottomRail = node('div', 'holo-bottom-rail');
+  addHoloRows(bottomRail, {
+    title: 'Latest Events',
+    actionLabel: 'Open Telemetry',
+    onAction: () => renderMissionConsole('telemetry'),
+    items: events.slice(0, 4).map((event) => ({
+      title: event.message,
+      kicker: formatStatus(event.type),
+      meta: event.createdAt + ' - ' + eventSourceLabel(event),
+      tone: 'cyan',
+      onAction: () => renderMissionConsole('telemetry')
+    })),
+    emptyText: 'No events recorded.'
+  });
+  addHoloRows(bottomRail, {
+    title: 'Evidence / Assets',
+    actionLabel: 'Open Buildout',
+    onAction: () => renderMissionConsole('build'),
+    items: [
+    ...attentionAssets.slice(0, 2).map((asset) => ({
+      title: asset.name,
+      kicker: formatStatus(asset.status),
+      meta: formatStatus(asset.status) + ' - ' + asset.source,
+      tone: 'violet',
+      onAction: () => renderMissionConsole('build')
+    })),
+    ...artifacts.slice(-2).reverse().map((artifact) => ({
+      title: artifact.name,
+      kicker: artifact.kind,
+      meta: artifact.kind + ' - ' + artifact.path,
+      tone: 'gold',
+      onAction: () => renderMissionConsole('build')
+    }))
+  ].slice(0, 4),
+    emptyText: 'No evidence recorded.'
+  });
+  layout.appendChild(bottomRail);
+
+  panel.appendChild(layout);
+}
+
 function addConsolePanel(grid, { title, body, items = [], emptyText = 'No records yet.', wide = false, renderContent = null }) {
   const panel = node('section', wide ? 'console-panel wide' : 'console-panel');
   panel.appendChild(node('h3', null, title));
@@ -760,6 +1007,30 @@ function buildConsolePanel(panelId) {
     'goal-5-holo-table-density-kanban',
     'goal-6-high-fidelity-asteroid-baseline'
   ].includes(goal.id));
+
+  if (panelId === 'overview') {
+    return [
+      {
+        title: 'Command Table Overview',
+        body: 'Reference-match pass: one table-driven command surface where mission state radiates from the central holo-table instead of splitting across dashboard cards.',
+        wide: true,
+        renderContent: (panel) => addHoloCommandOverview(panel, {
+          activeGoal,
+          goals,
+          runs,
+          tasks,
+          openTasks,
+          pendingReviews,
+          attentionAssets,
+          workingAgents,
+          events,
+          artifacts,
+          telemetry,
+          laneGoals
+        })
+      }
+    ];
+  }
 
   if (panelId === 'map') {
     return [
