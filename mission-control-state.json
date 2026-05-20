@@ -4,7 +4,7 @@
     "title": "Mission Control v1",
     "environment": "local-preview",
     "isDemo": false,
-    "updatedAt": "2026-05-20T03:32:12.623Z",
+    "updatedAt": "2026-05-20T07:12:00.000Z",
     "sourceOfTruth": "mission-control-state.json",
     "runtimePolicy": "codex-channel"
   },
@@ -476,11 +476,12 @@
         "artifact-meshy-101-clean-baseline-local-rollback-proof",
         "artifact-meshy-101-camera-url-proof",
         "artifact-meshy-101-next-form-brief",
-        "artifact-meshy-101-next-form-submission-pack"
+        "artifact-meshy-101-next-form-submission-pack",
+        "artifact-meshy-102-thinwall-preview-proof"
       ],
       "currentRunId": "run-goal-6-20260518",
       "createdAt": "2026-05-19T00:26:47.874Z",
-      "updatedAt": "2026-05-20T03:32:12.623Z",
+      "updatedAt": "2026-05-20T07:12:00.000Z",
       "isDemo": false,
       "eventIds": [
         "evt-20260519-meshy-4000-cap-approved",
@@ -498,7 +499,9 @@
         "evt-20260519-meshy-101-clean-baseline-local-rollback-proof",
         "evt-20260519-meshy-101-meshy-first-task-active",
         "evt-20260519-meshy-101-camera-url-proof-recorded",
-        "evt-20260519-meshy-101-camera-url-checkpoint"
+        "evt-20260519-meshy-101-camera-url-checkpoint",
+        "evt-20260520-meshy-102-thinwall-preview-generated",
+        "evt-20260520-meshy-102-thinwall-preview-rejected"
       ]
     },
     {
@@ -718,8 +721,8 @@
       "status": "running",
       "startedAt": "2026-05-19T00:26:47.874Z",
       "endedAt": null,
-      "summary": "Goal 6 still needs the next Meshy thin-wall hollow candidate, but the next paid/refine move is now ready-to-run: the prompt, create spec, and guarded submit path are packaged without spending credits yet.",
-      "verificationSummary": "Headless Chrome SwiftShader WebGL proof captured; GLB request returned HTTP 200 model/gltf-binary; no console errors in successful pass.",
+      "summary": "Generated Meshy-102 thin-wall hollow candidate under the approved Meshy lane, but visual inspection failed it for thick walls, weak fractured layering, and a dominant smooth interior slab/floor read.",
+      "verificationSummary": "Meshy task succeeded and downloaded GLB/thumbnail; Blender imported the GLB and rendered proof; visual review failed acceptance; state validator and syntax checks passed.",
       "blocker": null,
       "eventIds": [
         "evt-20260519-asteroid-baseline-task-active",
@@ -744,7 +747,9 @@
         "evt-20260519-meshy-101-next-form-brief-recorded",
         "evt-20260519-meshy-101-next-form-brief-checkpoint",
         "evt-20260519-meshy-101-next-form-submission-pack-recorded",
-        "evt-20260519-meshy-101-next-form-submission-pack-checkpoint"
+        "evt-20260519-meshy-101-next-form-submission-pack-checkpoint",
+        "evt-20260520-meshy-102-thinwall-preview-generated",
+        "evt-20260520-meshy-102-thinwall-preview-rejected"
       ],
       "artifactIds": [
         "artifact-meshy-high-fidelity-asteroid-submitter",
@@ -754,7 +759,8 @@
         "artifact-meshy-101-interior-cleanup-brief",
         "artifact-meshy-101-camera-url-proof",
         "artifact-meshy-101-next-form-brief",
-        "artifact-meshy-101-next-form-submission-pack"
+        "artifact-meshy-101-next-form-submission-pack",
+        "artifact-meshy-102-thinwall-preview-proof"
       ],
       "isDemo": false
     },
@@ -1288,7 +1294,7 @@
         "runtime"
       ],
       "createdAt": "2026-05-20T01:12:00.000Z",
-      "updatedAt": "2026-05-20T02:42:00.000Z",
+      "updatedAt": "2026-05-20T07:12:00.000Z",
       "isDemo": false,
       "eventIds": [
         "evt-20260519-meshy-101-clean-baseline-local-rollback-proof",
@@ -1296,7 +1302,13 @@
         "evt-20260519-meshy-101-camera-url-proof-recorded",
         "evt-20260519-meshy-101-camera-url-checkpoint",
         "evt-20260519-meshy-101-next-form-brief-recorded",
-        "evt-20260519-meshy-101-next-form-submission-pack-recorded"
+        "evt-20260519-meshy-101-next-form-submission-pack-recorded",
+        "evt-20260520-meshy-102-thinwall-preview-generated",
+        "evt-20260520-meshy-102-thinwall-preview-rejected"
+      ],
+      "blocker": "Meshy-102 generated successfully but failed visual acceptance; next unblock is another Meshy prompt/refine pass that removes smooth interior floor slabs and improves thin fractured rock wall treatment.",
+      "artifactIds": [
+        "artifact-meshy-102-thinwall-preview-proof"
       ]
     }
   ],
@@ -2324,6 +2336,40 @@
       "source": "codex-runtime",
       "ingestedAt": "2026-05-20T03:32:12.623Z",
       "isDemo": false
+    },
+    {
+      "id": "evt-20260520-meshy-102-thinwall-preview-generated",
+      "type": "artifact.recorded",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "runId": "run-goal-6-20260518",
+      "agentId": "artemis",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "reviewId": null,
+      "message": "Generated Meshy-102 thin-wall hollow asteroid preview task 019e442e-be27-7c3a-acce-874c957f8727 under the approved Meshy lane; task succeeded, consumed 20 credits, and downloaded GLB plus thumbnail.",
+      "artifactIds": [
+        "artifact-meshy-102-thinwall-preview-proof"
+      ],
+      "createdAt": "2026-05-20T07:12:00.000Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-20T07:12:00.000Z",
+      "isDemo": false
+    },
+    {
+      "id": "evt-20260520-meshy-102-thinwall-preview-rejected",
+      "type": "goal.checkpoint",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "runId": "run-goal-6-20260518",
+      "agentId": "artemis",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "reviewId": null,
+      "message": "Meshy-102 failed Goal 6 visual acceptance: usable macro silhouette, but walls remain too thick and the interior still reads as a smooth slab/floor instead of layered fractured geology. Do not move to Blender normalization/export or facility population.",
+      "artifactIds": [
+        "artifact-meshy-102-thinwall-preview-proof"
+      ],
+      "createdAt": "2026-05-20T07:12:00.000Z",
+      "source": "codex-runtime",
+      "ingestedAt": "2026-05-20T07:12:00.000Z",
+      "isDemo": false
     }
   ],
   "reviews": [
@@ -2658,6 +2704,16 @@
       "kind": "submission-pack",
       "name": "Meshy-101 next form submission pack",
       "path": "docs/visual-reviews/2026-05-19-meshy-101-next-form-submission-pack.md"
+    },
+    {
+      "id": "artifact-meshy-102-thinwall-preview-proof",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "kind": "asset-proof",
+      "name": "Meshy-102 thin-wall hollow preview proof",
+      "path": "assets/meshy/api/102-thinwall-open-front-hollow-asteroid-v3.meshy.glb, assets/meshy/api/102-thinwall-open-front-hollow-asteroid-v3.thumbnail.png, assets/meshy/api/102-thinwall-open-front-hollow-asteroid-v3.task.json, assets/blender/meshy-102-thinwall-preview-inspection.blend, docs/visual-reviews/2026-05-20-meshy-102-thinwall-preview-proof.md, docs/visual-reviews/2026-05-20-meshy-102-thinwall-preview-proof.png, docs/visual-reviews/2026-05-20-meshy-102-thinwall-preview-proof.json",
+      "createdAt": "2026-05-20T07:12:00.000Z",
+      "isDemo": false
     }
   ],
   "facilityAssets": [
@@ -2932,6 +2988,34 @@
       ],
       "updatedAt": "2026-05-20T02:42:00.000Z",
       "isDemo": false
+    },
+    {
+      "id": "visual-review-meshy-102-thinwall-preview-20260520",
+      "goalId": "goal-6-high-fidelity-asteroid-baseline",
+      "taskId": "task-meshy-101-next-meshy-form-refine",
+      "title": "Meshy-102 thin-wall hollow preview proof",
+      "status": "completed",
+      "decision": "failed-visual-acceptance",
+      "summary": "Generated candidate has a usable asteroid silhouette, but fails baseline acceptance because the shell still reads thick and the interior is dominated by smooth slab/floor artifacting instead of fractured layered rock.",
+      "assetIds": [],
+      "artifactIds": [
+        "artifact-meshy-102-thinwall-preview-proof"
+      ],
+      "proofPaths": [
+        "assets/meshy/api/102-thinwall-open-front-hollow-asteroid-v3.thumbnail.png",
+        "docs/visual-reviews/2026-05-20-meshy-102-thinwall-preview-proof.md",
+        "docs/visual-reviews/2026-05-20-meshy-102-thinwall-preview-proof.png",
+        "docs/visual-reviews/2026-05-20-meshy-102-thinwall-preview-proof.json"
+      ],
+      "criteria": [
+        "Meshy task succeeded under approved spend lane",
+        "GLB and thumbnail downloaded locally",
+        "Blender imported GLB and produced inspection render/metrics",
+        "Open-front hollow shell idea is present but wall thickness and interior slab artifacts fail the acceptance bar",
+        "Facility population remains blocked"
+      ],
+      "updatedAt": "2026-05-20T07:12:00.000Z",
+      "isDemo": false
     }
   ],
   "telemetry": {
@@ -2940,9 +3024,9 @@
       "activeTasks": 1,
       "queuedTasks": 2,
       "blockedGoals": 1,
-      "latestEventId": "evt-20260519-meshy-101-next-form-submission-pack-checkpoint"
+      "latestEventId": "evt-20260520-meshy-102-thinwall-preview-rejected"
     },
-    "updatedAt": "2026-05-20T03:32:12.623Z",
+    "updatedAt": "2026-05-20T07:12:00.000Z",
     "isDemo": false
   }
 }

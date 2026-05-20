@@ -1,0 +1,53 @@
+{
+  "source": "assets/meshy/api/102-thinwall-open-front-hollow-asteroid-v3.meshy.glb",
+  "blend": "assets/blender/meshy-102-thinwall-preview-inspection.blend",
+  "render": "docs/visual-reviews/2026-05-20-meshy-102-thinwall-preview-proof.png",
+  "rawStats": {
+    "source": "assets/meshy/api/102-thinwall-open-front-hollow-asteroid-v3.meshy.glb",
+    "sourceSizeBytes": 16582568,
+    "meshObjects": 1,
+    "vertices": 460604,
+    "polygons": 921212,
+    "triangles": 921212,
+    "materials": 0,
+    "bounds": [
+      1.8088,
+      1.8976,
+      1.1658
+    ],
+    "min": [
+      -0.9051,
+      -0.9486,
+      -0.5843
+    ],
+    "max": [
+      0.9037,
+      0.949,
+      0.5815
+    ]
+  },
+  "inspectionStats": {
+    "source": "assets/meshy/api/102-thinwall-open-front-hollow-asteroid-v3.meshy.glb",
+    "sourceSizeBytes": 16582568,
+    "meshObjects": 1,
+    "vertices": 460604,
+    "polygons": 921212,
+    "triangles": 921212,
+    "materials": 0,
+    "bounds": [
+      15.2508,
+      16.0,
+      9.8298
+    ],
+    "min": [
+      -7.6307,
+      -7.9986,
+      -4.3422
+    ],
+    "max": [
+      7.62,
+      8.0014,
+      5.4876
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "019e442e-be27-7c3a-acce-874c957f8727",
+  "type": "text-to-3d-preview",
+  "mode": "preview",
+  "name": "",
+  "model_type": "standard",
+  "seed": 4285383002,
+  "art_style": "realistic",
+  "texture_richness": "",
+  "prompt": "High-fidelity hollow asteroid base for a sci-fi command facility, open-front cutaway shell, thin rock walls, deep irregular interior cavity, fractured geological layering, asymmetrical broken rock shelves, believable stone mass, strong macro silhouette, clear interior volume for embedded structures, rugged natural asteroid exterior, production-quality hard-surface plus geology blend, no flat slab floor, no boolean-looking cut planes, no toy-like symmetry, no buildings, no ships, no characters",
+  "negative_prompt": "",
+  "texture_prompt": "",
+  "texture_image_url": "",
+  "status": "SUCCEEDED",
+  "created_at": 1779260376252,
+  "progress": 100,
+  "started_at": 1779260376307,
+  "finished_at": 1779260460191,
+  "task_error": null,
+  "model_urls": {
+    "glb": "https://assets.meshy.ai/cd35f41d-0d44-472b-972e-41d7f265a42b/tasks/019e442e-be27-7c3a-acce-874c957f8727/output/model.glb?Expires=4932835200&Signature=pVDg2IoTp~WuQNrCakbag2XwWcCu5leZxEbAbqAe2GBWlWOLOvORGUkLc59fG-b-qZIxrOI3V~IUQmuHZnwcKadDqbazbffG6pMfn0Z8BxJ4Y1rE~hpKgkVQ6ZsZ~S6L41qvRebVtsU7ez-B1202YrUGXg6DcqYBgtpV3MmkgLq5k42JrMf9MkF41fgGTsoSRMrtC9kAL8FxlMGcHQmSBPlnjQDcSeTV29UgfZiCQopXMy49N~spK1Apmcb8sgAwuuRNgH2T9LYOUViMvYrTdJK9tLYTqdOycr65hx63lVJPK~I~-OeqCyn1rxhq2KtzDxkwXMwntx-IGEGlOaUkKQ__&Key-Pair-Id=K1VGYTHIYLM9UM"
+  },
+  "thumbnail_url": "https://assets.meshy.ai/cd35f41d-0d44-472b-972e-41d7f265a42b/tasks/019e442e-be27-7c3a-acce-874c957f8727/output/preview.png?Expires=4932835200&Signature=ZghflZKsdPpxkP4aSUXpG4lEKX8q7Q8lrZGwTOOVhrH6Pb0W48jGfwd1Gqfxr~8Z3BlYDGaNCq6dSnZeXPs6HazFOfGjPW1F8zxjeX5HiflAVwudSiOilDQRI0gInj-BxHM0av2TQ29fhh80TtmQYPRBZ0UGYBzm62WqUNj6sv-RnaHWEvsWjN3lz2Kp0GHq9T~sFVuEmbKc2mIYPmhuMWSqfB1C0Zla36UGsuLAK6mXFnTJSeKvnlA7aecIwVWQhRC-x6K2ZRk-gISP2PwGX7~TFgadE8NcFX04iAJSrej9KYSEyf7XeFXYgiYu1yf86eaaYXd~8hQ4OQHfuGYW4g__&Key-Pair-Id=K1VGYTHIYLM9UM",
+  "video_url": "",
+  "texture_urls": [],
+  "consumed_credits": 20
+}

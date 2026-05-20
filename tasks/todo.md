@@ -237,6 +237,15 @@ Next checklist:
 - Kept the scope honest: this prepares the next paid/refine move without claiming that a new candidate already exists.
 - Verification: dry-run script output, Python compile check, `node scripts/validate-mission-state.mjs`, `node --check app.js`, and `git diff --check`.
 
+## Review - 2026-05-20 Meshy-102 Thin-Wall Preview
+
+- Picked the active Goal 6 blocker: generate/refine the next Meshy thin-wall hollow asteroid candidate before doing any Blender normalization/export or facility population.
+- Used the approved Meshy lane to submit `102-thinwall-open-front-hollow-asteroid-v3`; task `019e442e-be27-7c3a-acce-874c957f8727` succeeded and consumed `20` credits.
+- Downloaded source artifacts: `assets/meshy/api/102-thinwall-open-front-hollow-asteroid-v3.meshy.glb`, thumbnail, create response, and task JSON.
+- Added Blender inspection/proof only: `scripts/render-meshy-102-thinwall-preview-proof.py`, `assets/blender/meshy-102-thinwall-preview-inspection.blend`, and `docs/visual-reviews/2026-05-20-meshy-102-thinwall-preview-proof.*`.
+- Decision: failed visual acceptance. The silhouette is usable, but the walls still read too thick and the interior is dominated by a smooth slab/floor instead of fractured layered rock.
+- Facility population remains blocked. Next unblock is another Meshy prompt/refine pass that suppresses smooth floor slabs and pushes thinner broken rock walls.
+
 ## Review - 2026-05-19 Clean Meshy-101 Local Rollback Proof
 
 - Picked the highest-risk 3D gap after the Meshy-first correction: local Mission Control still referenced the rejected hollow v2 runtime path even though state/live direction had rolled back to clean Meshy-101.
