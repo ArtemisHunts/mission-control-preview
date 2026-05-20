@@ -246,6 +246,15 @@ Next checklist:
 - Decision: failed visual acceptance. The silhouette is usable, but the walls still read too thick and the interior is dominated by a smooth slab/floor instead of fractured layered rock.
 - Facility population remains blocked. Next unblock is another Meshy prompt/refine pass that suppresses smooth floor slabs and pushes thinner broken rock walls.
 
+## Review - 2026-05-20 Meshy-103 No-Floor Retry Pending
+
+- Picked one Goal 6 gap: retry the asteroid form prompt specifically against Meshy-102's smooth interior floor/slab failure.
+- Added `scripts/submit-meshy-103-no-floor-hollow-v1.py` and materialized `assets/meshy/api/103-no-floor-thin-wall-hollow-asteroid-v1.create-spec.json`.
+- Submitted the approved Meshy task `019e4481-7623-77e2-844d-ce0c79190abd`; Meshy reports `20` consumed credits.
+- Blocker: task remains `PENDING` with `0` progress and no `model_urls` / `thumbnail_url`, so there is no GLB to inspect in Blender yet.
+- Exact unblock: poll the existing task until `SUCCEEDED`, then download GLB/thumbnail and run Blender inspection; if it fails, record the Meshy error before any fresh retry.
+- Facility population remains blocked.
+
 ## Review - 2026-05-19 Clean Meshy-101 Local Rollback Proof
 
 - Picked the highest-risk 3D gap after the Meshy-first correction: local Mission Control still referenced the rejected hollow v2 runtime path even though state/live direction had rolled back to clean Meshy-101.

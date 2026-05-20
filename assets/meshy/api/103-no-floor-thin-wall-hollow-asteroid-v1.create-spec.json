@@ -1,0 +1,13 @@
+{
+  "mode": "preview",
+  "prompt": "Production-quality hollow asteroid shell for a sci-fi command facility, natural open-front fractured asteroid mouth, very thin broken rock walls around a deep empty irregular cavity, jagged layered stone strata, torn basalt cross-section, asymmetrical eroded rim, rough geological shelves attached to the side walls, strong macro asteroid silhouette, clear open interior volume for future facility insertion, dark rugged rock material, high fidelity sculptural geology. Critical constraints: no flat floor, no smooth interior platform, no pale interior slab, no boolean cut plane, no architectural deck, no buildings, no ships, no characters, no symmetrical bowl, no toy look.",
+  "ai_model": "meshy-6",
+  "model_type": "standard",
+  "should_remesh": false,
+  "target_formats": [
+    "glb"
+  ],
+  "auto_size": false,
+  "name": "Mission Control no-floor thin-wall hollow asteroid v1",
+  "purpose": "Targeted Meshy retry after Meshy-102 failed: remove smooth interior slab/floor, make the object read as a thin broken asteroid shell with fractured layered rock walls."
+}
