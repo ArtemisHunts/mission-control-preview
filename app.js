@@ -5292,9 +5292,9 @@ function loadMeshy101LiveBaseline() {
     flatShading: false
   });
 
-  loader.load('assets/blender/meshy-101-open-front-hollow-runtime-v2.optimized.glb?v=meshy101-hollow-v2-20260519', (gltf) => {
+  loader.load('assets/blender/meshy-101-open-front-clean-runtime-v1.glb?v=meshy101-clean-v1-rollback-20260519', (gltf) => {
     const model = gltf.scene;
-    model.name = 'Meshy-101 open-front hollow v2 asteroid runtime GLB';
+    model.name = 'Meshy-101 open-front clean v1 asteroid runtime GLB';
     model.position.set(0.0, -5.6, -12.8);
     model.rotation.set(0.0, -0.14, 0.0);
     model.scale.setScalar(1.28);
