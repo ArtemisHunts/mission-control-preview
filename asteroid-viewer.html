@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mission Control // Asteroid Viewer</title>
+  <meta name="description" content="Interactive Mission Control asteroid GLB review viewer." />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #03050b;
+      --panel: rgba(6, 10, 17, 0.72);
+      --line: rgba(228, 172, 80, 0.28);
+      --text: #f5f7fb;
+      --muted: rgba(226, 234, 247, 0.62);
+      --gold: #e4ac50;
+      --cyan: #5ee5ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(94, 229, 255, 0.07), transparent 34%),
+        linear-gradient(135deg, #02040a 0%, #071321 55%, #02040a 100%);
+      pointer-events: none;
+    }
+
+    #viewer {
+      position: fixed;
+      inset: 0;
+    }
+
+    .hud {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .readout {
+      position: absolute;
+      left: clamp(16px, 2vw, 30px);
+      top: clamp(16px, 2vw, 30px);
+      width: min(390px, calc(100vw - 32px));
+      padding: 14px 16px;
+      border-left: 2px solid var(--gold);
+      background: linear-gradient(90deg, rgba(3, 5, 11, 0.72), rgba(3, 5, 11, 0.18));
+    }
+
+    .kicker,
+    .metric span {
+      display: block;
+      color: var(--gold);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 6px 0 8px;
+      font-size: clamp(20px, 2vw, 30px);
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .controls {
+      position: absolute;
+      right: clamp(16px, 2vw, 30px);
+      top: clamp(16px, 2vw, 30px);
+      width: min(360px, calc(100vw - 32px));
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: 0 20px 70px rgba(0, 0, 0, 0.26);
+      backdrop-filter: blur(9px);
+      pointer-events: auto;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+      margin-top: 9px;
+    }
+
+    button {
+      appearance: none;
+      min-height: 36px;
+      border: 1px solid rgba(94, 229, 255, 0.18);
+      border-radius: 6px;
+      background: rgba(8, 15, 25, 0.88);
+      color: rgba(245, 247, 251, 0.76);
+      cursor: pointer;
+      font: inherit;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: 160ms ease;
+    }
+
+    button:hover,
+    button.active {
+      border-color: rgba(94, 229, 255, 0.62);
+      background: var(--cyan);
+      color: #06111d;
+      box-shadow: 0 0 28px rgba(94, 229, 255, 0.22);
+    }
+
+    .metrics {
+      position: absolute;
+      left: clamp(16px, 2vw, 30px);
+      bottom: clamp(16px, 2vw, 30px);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(92px, 1fr));
+      gap: 8px;
+      width: min(430px, calc(100vw - 32px));
+    }
+
+    .metric {
+      min-width: 0;
+      padding: 10px 11px;
+      border: 1px solid rgba(228, 172, 80, 0.2);
+      border-radius: 8px;
+      background: rgba(6, 10, 17, 0.58);
+      backdrop-filter: blur(8px);
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 15px;
+      line-height: 1.2;
+    }
+
+    .hint {
+      position: absolute;
+      right: clamp(16px, 2vw, 30px);
+      bottom: clamp(16px, 2vw, 30px);
+      width: min(360px, calc(100vw - 32px));
+      color: rgba(226, 234, 247, 0.7);
+      font-size: 12px;
+      line-height: 1.5;
+      text-align: right;
+    }
+
+    .loader {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      color: rgba(245, 247, 251, 0.72);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .loaded .loader { display: none; }
+
+    @media (max-width: 760px) {
+      .controls {
+        left: 16px;
+        right: 16px;
+        top: auto;
+        bottom: 16px;
+        width: auto;
+      }
+
+      .readout {
+        right: 16px;
+        width: auto;
+      }
+
+      .button-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .readout p {
+        max-width: 300px;
+        font-size: 12px;
+      }
+
+      .metrics,
+      .hint {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="viewer" aria-label="Interactive asteroid model viewer"></div>
+  <div class="loader" id="loader">Loading asteroid GLB</div>
+
+  <main class="hud" aria-label="Asteroid viewer controls">
+    <section class="readout" aria-label="Current model">
+      <span class="kicker">Mission Control Asset Review</span>
+      <h1>Meshy-109 Clean Asteroid</h1>
+      <p>Latest image-to-3D pass from the picked crescent reference. This page is a direct GLB viewer for checking rear mass, shell depth, and silhouette by hand.</p>
+    </section>
+
+    <section class="controls" aria-label="Camera controls">
+      <span class="kicker">Camera</span>
+      <div class="button-grid">
+        <button type="button" data-view="front" class="active">Front</button>
+        <button type="button" data-view="side">Side</button>
+        <button type="button" data-view="top">Top</button>
+        <button type="button" data-view="rear">Rear</button>
+        <button type="button" data-action="reset">Reset</button>
+        <button type="button" data-action="spin">Spin</button>
+      </div>
+    </section>
+
+    <section class="metrics" aria-label="Model metrics">
+      <div class="metric"><span>Geometry</span><strong id="mesh-count">1 mesh</strong></div>
+      <div class="metric"><span>Vertices</span><strong id="vertex-count">401,689</strong></div>
+      <div class="metric"><span>Faces</span><strong id="face-count">803,374</strong></div>
+    </section>
+
+    <div class="hint">Drag to rotate. Scroll or pinch to zoom. Right-drag pans if you need to inspect the rim up close.</div>
+  </main>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+    const MODEL_URL = 'assets/blender/meshy-109-picked-crescent-clean-asteroid-v1.glb?v=20260520';
+    const container = document.getElementById('viewer');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x03050b);
+    scene.fog = new THREE.Fog(0x03050b, 9, 34);
+
+    const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.01, 120);
+    camera.position.set(0, 0.2, 5.4);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.45;
+    container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.065;
+    controls.enableRotate = true;
+    controls.enableZoom = true;
+    controls.enablePan = true;
+    controls.rotateSpeed = 0.62;
+    controls.zoomSpeed = 0.72;
+    controls.panSpeed = 0.52;
+
+    scene.add(new THREE.HemisphereLight(0xe6edf6, 0x25221f, 1.85));
+
+    const key = new THREE.DirectionalLight(0xf0f6ff, 4.8);
+    key.position.set(-3.6, 5.4, 6.2);
+    scene.add(key);
+
+    const rim = new THREE.DirectionalLight(0xd9e4ef, 2.2);
+    rim.position.set(5.2, 1.8, -5.2);
+    scene.add(rim);
+
+    const fill = new THREE.PointLight(0xf4f0e6, 5.0, 18.0);
+    fill.position.set(-2.0, -1.0, 3.0);
+    scene.add(fill);
+
+    const stars = new THREE.BufferGeometry();
+    const starPositions = [];
+    for (let i = 0; i < 1200; i += 1) {
+      starPositions.push(
+        (Math.random() - 0.5) * 80,
+        (Math.random() - 0.5) * 48,
+        -18 - Math.random() * 46
+      );
+    }
+    stars.setAttribute('position', new THREE.Float32BufferAttribute(starPositions, 3));
+    scene.add(new THREE.Points(stars, new THREE.PointsMaterial({ color: 0x8ca7c4, size: 0.025, transparent: true, opacity: 0.42 })));
+
+    const modelRoot = new THREE.Group();
+    scene.add(modelRoot);
+
+    const clay = new THREE.MeshStandardMaterial({
+      color: 0x8f8a82,
+      roughness: 0.9,
+      metalness: 0.0,
+      emissive: 0x15110d,
+      emissiveIntensity: 0.08,
+      side: THREE.DoubleSide
+    });
+
+    let spin = false;
+    let cameraDistance = 5.2;
+
+    function countGeometry(root) {
+      let meshes = 0;
+      let vertices = 0;
+      let faces = 0;
+      root.traverse((node) => {
+        if (!node.isMesh) return;
+        meshes += 1;
+        vertices += node.geometry?.attributes?.position?.count || 0;
+        faces += node.geometry?.index ? node.geometry.index.count / 3 : (node.geometry?.attributes?.position?.count || 0) / 3;
+      });
+      document.getElementById('mesh-count').textContent = meshes.toLocaleString() + (meshes === 1 ? ' mesh' : ' meshes');
+      document.getElementById('vertex-count').textContent = Math.round(vertices).toLocaleString();
+      document.getElementById('face-count').textContent = Math.round(faces).toLocaleString();
+    }
+
+    function frameModel(root) {
+      const box = new THREE.Box3().setFromObject(root);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+      root.position.sub(center);
+      const maxDim = Math.max(size.x, size.y, size.z) || 1;
+      root.scale.setScalar(2.85 / maxDim);
+      cameraDistance = 5.2;
+      setView('front');
+    }
+
+    function setActiveView(name) {
+      document.querySelectorAll('[data-view]').forEach((button) => {
+        button.classList.toggle('active', button.dataset.view === name);
+      });
+    }
+
+    function setView(name) {
+      const views = {
+        front: [0, 0.18, cameraDistance],
+        side: [cameraDistance, 0.12, 0],
+        top: [0.01, cameraDistance, 0.01],
+        rear: [0, 0.18, -cameraDistance]
+      };
+      const position = views[name] || views.front;
+      camera.position.set(...position);
+      controls.target.set(0, 0, 0);
+      controls.update();
+      setActiveView(name);
+    }
+
+    new GLTFLoader().load(MODEL_URL, (gltf) => {
+      const model = gltf.scene;
+      model.name = 'Meshy-109 picked crescent clean asteroid';
+      model.traverse((node) => {
+        if (!node.isMesh) return;
+        if (node.geometry) node.geometry.computeVertexNormals();
+        node.material = clay;
+        node.frustumCulled = false;
+      });
+      modelRoot.add(model);
+      countGeometry(model);
+      frameModel(model);
+      document.body.classList.add('loaded');
+    }, undefined, (error) => {
+      console.error('Failed to load asteroid GLB', error);
+      document.getElementById('loader').textContent = 'Failed to load asteroid GLB';
+    });
+
+    document.querySelectorAll('[data-view]').forEach((button) => {
+      button.addEventListener('click', () => setView(button.dataset.view));
+    });
+
+    document.querySelector('[data-action="reset"]').addEventListener('click', () => {
+      spin = false;
+      document.querySelector('[data-action="spin"]').classList.remove('active');
+      setView('front');
+    });
+
+    document.querySelector('[data-action="spin"]').addEventListener('click', (event) => {
+      spin = !spin;
+      event.currentTarget.classList.toggle('active', spin);
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+      if (spin) modelRoot.rotation.y += 0.006;
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
