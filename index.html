@@ -7,17 +7,72 @@
   <meta name="description" content="ArtemisHunts Mission Control — a browser-native 3D asteroid-base environment prototype." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div id="office-canvas" aria-label="3D asteroid-base Mission Control environment"></div>
 
   <main class="environment-shell" aria-label="Environment navigation">
+    <aside class="concept-panel concept-panel-left" aria-label="Asteroid base concept brief">
+      <div class="concept-panel-rule"></div>
+      <span class="concept-eyebrow">ASTEROID BASE</span>
+      <strong class="concept-title">Operations Floor</strong>
+      <p id="focus-body">Deep inside the asteroid, mission control connects every system, crew, and operation.</p>
+      <p class="concept-copy">Clarity. Flow. Purpose. Built for humans, designed for the long mission.</p>
+      <div class="concept-blueprint" aria-hidden="true">
+        <i></i><i></i><i></i><i></i>
+        <span></span>
+      </div>
+      <div class="concept-palette" aria-label="Material and light palette">
+        <span>Material & Light Palette</span>
+        <b class="swatch swatch-blue"></b>
+        <b class="swatch swatch-gold"></b>
+        <b class="swatch swatch-rust"></b>
+        <b class="swatch swatch-steel"></b>
+        <b class="swatch swatch-silver"></b>
+      </div>
+    </aside>
+
     <div class="room-readout" id="room-readout">
-      <span class="readout-kicker">ASTEROID BASE</span>
+      <span class="readout-kicker">01 · OPERATIONS HUB</span>
       <strong id="focus-title">Environment Overview</strong>
-      <span id="focus-body">WASD / arrow keys pan the fixed facility view. Click the floor to traverse; click rooms or use the dock to focus a bay.</span>
+      <span>Strategic overview & mission planning</span>
+    </div>
+
+    <aside class="concept-panel concept-panel-right" aria-label="Concept scene modules">
+      <article>
+        <span>02</span>
+        <strong>Sunken Command Room</strong>
+        <small>Tactical control & real-time coordination</small>
+      </article>
+      <article>
+        <span>03</span>
+        <strong>Asteroid Hangar</strong>
+        <small>Vehicle ops & maintenance</small>
+      </article>
+      <article>
+        <span>06</span>
+        <strong>Workstation Clusters</strong>
+        <small>Focused workspace & crew touchpoints</small>
+      </article>
+    </aside>
+
+    <div class="concept-operations-hub" aria-hidden="true">
+      <div class="concept-ceiling-ring"></div>
+      <div class="concept-monitor concept-monitor-left"><i></i><i></i><i></i></div>
+      <div class="concept-monitor concept-monitor-right"><i></i><i></i><i></i></div>
+      <div class="concept-holo-globe"><i></i><i></i><i></i></div>
+      <div class="concept-table-ring">
+        <i></i><i></i><i></i>
+        <span class="concept-orbit-dot dot-a"></span>
+        <span class="concept-orbit-dot dot-b"></span>
+        <span class="concept-orbit-dot dot-c"></span>
+      </div>
+      <span class="concept-crew crew-a"></span>
+      <span class="concept-crew crew-b"></span>
+      <span class="concept-crew crew-c"></span>
+      <span class="concept-crew crew-d"></span>
     </div>
 
 

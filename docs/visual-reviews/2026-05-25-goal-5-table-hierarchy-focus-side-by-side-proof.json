@@ -1,0 +1,31 @@
+{
+  "id": "visual-review-goal-5-table-hierarchy-focus-side-by-side-proof-20260525",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-table-hierarchy-focus-side-by-side-proof",
+  "artifactId": "artifact-goal-5-table-hierarchy-focus-side-by-side-proof",
+  "createdAt": "2026-05-25T21:09:00.000Z",
+  "verdict": "partial-match-improved",
+  "referenceComplete": false,
+  "decision": "table-hierarchy-focus-side-by-side-proof-improved-not-reference-complete",
+  "selectedGap": "table hierarchy focus side-by-side proof",
+  "comparisonMarkers": [
+    "Goal 5 Table Hierarchy Focus Side-by-Side Proof",
+    "reference-scale-table-hierarchy-focus-pass",
+    "table priority",
+    "motif carried",
+    "work below rim",
+    "proof stack",
+    "Partial-match-improved"
+  ],
+  "proofPaths": {
+    "markdown": "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-focus-side-by-side-proof.md",
+    "json": "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-focus-side-by-side-proof.json",
+    "html": "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-focus-side-by-side-proof.html",
+    "boardScreenshot": "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-focus-side-by-side-proof-board.png",
+    "desktopScreenshot": "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-focus-side-by-side-proof-current-desktop.png",
+    "mobileScreenshot": "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-focus-side-by-side-proof-current-mobile.png",
+    "overlayDom": "tmp/goal-5-table-hierarchy-focus-side-by-side-overview-dom.html",
+    "boardDom": "tmp/goal-5-table-hierarchy-focus-side-by-side-board-dom.html"
+  },
+  "nextStep": "Use this table hierarchy focus board to decide whether table hierarchy, peripheral density, or motif contrast needs the next Goal 5 pass."
+}

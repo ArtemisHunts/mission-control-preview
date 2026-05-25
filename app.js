@@ -7450,9 +7450,15 @@ function updateReadout() {
   const body = document.getElementById('focus-body');
   const kicker = document.querySelector('.readout-kicker');
   if (kicker) {
-    kicker.textContent = facilityState.meta.updatedAt
-      ? `${facilityState.meta.sourceLabel} · ${facilityState.meta.updatedAt.slice(0, 10)}`
-      : facilityState.meta.sourceLabel;
+    const sceneNumbers = {
+      overview: '01 · OPERATIONS HUB',
+      command: '02 · SUNKEN COMMAND ROOM',
+      build: '03 · ASTEROID HANGAR',
+      review: '04 · LOGISTICS LANES',
+      deploy: '05 · OBSERVATION GALLERIES',
+      observatory: '06 · WORKSTATION CLUSTERS'
+    };
+    kicker.textContent = sceneNumbers[activeFacilityMode] || '01 · OPERATIONS HUB';
   }
   if (title) title.textContent = modeState.title;
   if (body) body.textContent = modeState.body;

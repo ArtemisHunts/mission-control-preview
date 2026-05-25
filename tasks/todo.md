@@ -1,5 +1,15 @@
 # Mission Control Master Goal Todo
 
+## Review - 2026-05-25 Goal 5 Table Hierarchy Focus Side-by-Side Proof
+
+- Picked exactly one coherent Goal 5 gap from the latest state/todo notes: fresh side-by-side proof after the table hierarchy focus pass.
+- Produced a refreshed side-by-side board comparing the holographic command-table reference moodboard, current table-hierarchy-focused overlay overview, current mobile hierarchy stack, and all five canonical reference-zone verdicts.
+- Updated canonical state for task-goal-5-table-hierarchy-focus-side-by-side-proof, artifact-goal-5-table-hierarchy-focus-side-by-side-proof, visual-review-goal-5-table-hierarchy-focus-side-by-side-proof-20260525, and the matching Goal 5 events.
+- Kept the verdict honest: proof recorded, not reference-complete; all zones remain partial-match-improved.
+- Proof artifacts: docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-focus-side-by-side-proof.md, docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-focus-side-by-side-proof.json, docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-focus-side-by-side-proof.html, docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-focus-side-by-side-proof-board.png, docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-focus-side-by-side-proof-current-desktop.png, docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-focus-side-by-side-proof-current-mobile.png, tmp/goal-5-table-hierarchy-focus-side-by-side-overview-dom.html, and tmp/goal-5-table-hierarchy-focus-side-by-side-board-dom.html.
+- Verification passed: state validator, node --check app.js, git diff --check, overlay/board DOM marker smoke, state-link smoke, proof JSON smoke, and screenshot nonblank/dimension sanity.
+- Next Goal 5 step: Use this table hierarchy focus board to decide whether table hierarchy, peripheral density, or motif contrast needs the next Goal 5 pass.
+
 ## Review - 2026-05-25 Goal 5 Table Hierarchy Focus Pass
 
 - Picked exactly one coherent Goal 5 gap from canonical state: tighten table hierarchy around the motif-tightened Command Table Core.
