@@ -1996,6 +1996,100 @@ function createCommandLensPanel(panelId, data = {}) {
   };
 }
 
+function addCommandCenterConceptBoard(shell, data = {}) {
+  const {
+    activeGoal,
+    openTasks = [],
+    pendingReviews = [],
+    events = [],
+    artifacts = [],
+    workingAgents = [],
+    telemetry = {},
+    referenceMatch
+  } = data;
+  const latestArtifact = latestByCreatedAt(activeGoal?.id
+    ? artifacts.filter((artifact) => artifact.goalId === activeGoal.id)
+    : artifacts)[0] || null;
+  const latestEvent = (activeGoal?.id
+    ? events.filter((event) => event.goalId === activeGoal.id)
+    : events)[0] || null;
+  const selectedOpenTasks = activeGoal?.id
+    ? openTasks.filter((task) => task.goalId === activeGoal.id)
+    : openTasks;
+  const zoneVerdicts = referenceMatch?.zones || [];
+
+  const board = node('section', 'command-overlay-board');
+
+  const brief = node('aside', 'command-overlay-brief');
+  brief.appendChild(node('span', 'command-overlay-eyebrow', 'Asteroid Base'));
+  brief.appendChild(node('strong', 'command-overlay-title', 'Operations Floor'));
+  brief.appendChild(node('p', null, 'Command Center is the clicked overlay: a sunken control-room surface for agents, gates, live work, and proof.'));
+  const blueprint = node('div', 'command-overlay-blueprint');
+  blueprint.setAttribute('aria-hidden', 'true');
+  for (let index = 0; index < 5; index += 1) blueprint.appendChild(node('i'));
+  brief.appendChild(blueprint);
+  const palette = node('div', 'command-overlay-palette');
+  palette.appendChild(node('span', null, 'Material / Light'));
+  ['blue', 'gold', 'rust', 'steel', 'silver'].forEach((tone) => palette.appendChild(node('b', 'swatch swatch-' + tone)));
+  brief.appendChild(palette);
+  board.appendChild(brief);
+
+  const pit = node('div', 'command-overlay-pit');
+  pit.appendChild(node('span', 'command-overlay-scene-number', '02'));
+  pit.appendChild(node('strong', 'command-overlay-scene-title', 'Sunken Command Room'));
+  const room = node('div', 'command-overlay-room');
+  room.setAttribute('aria-hidden', 'true');
+  room.appendChild(node('i', 'command-overlay-ceiling'));
+  const screens = node('div', 'command-overlay-screens');
+  for (let index = 0; index < 6; index += 1) screens.appendChild(node('span'));
+  room.appendChild(screens);
+  const globe = node('div', 'command-overlay-globe');
+  globe.appendChild(node('i'));
+  globe.appendChild(node('i'));
+  room.appendChild(globe);
+  const table = node('div', 'command-overlay-table');
+  ['agents', 'tasks', 'reviews', 'proof'].forEach((label) => {
+    const chip = node('span');
+    chip.textContent = label;
+    table.appendChild(chip);
+  });
+  room.appendChild(table);
+  pit.appendChild(room);
+  const pitMetrics = node('div', 'command-overlay-metrics');
+  [
+    ['Agents', workingAgents.length || telemetry.activeAgents || 0],
+    ['Tasks', telemetry.activeTasks ?? selectedOpenTasks.length],
+    ['Gates', pendingReviews.length],
+    ['Proof', artifacts.length]
+  ].forEach(([label, value]) => {
+    const metric = node('article');
+    metric.appendChild(node('span', null, label));
+    metric.appendChild(node('strong', null, String(value)));
+    pitMetrics.appendChild(metric);
+  });
+  pit.appendChild(pitMetrics);
+  board.appendChild(pit);
+
+  const scenes = node('aside', 'command-overlay-scenes');
+  [
+    ['03', 'Asteroid Hangar', selectedOpenTasks[0]?.title || activeGoal?.title || 'Goal 5 lane focus'],
+    ['06', 'Workstation Clusters', latestEvent?.message || 'Live project signals'],
+    ['08', 'Proof Wall', latestArtifact?.name || 'No proof artifact selected'],
+    ['09', 'Reference Verdict', zoneVerdicts[0]?.status || referenceMatch?.verdict || 'pending']
+  ].forEach(([number, title, detail]) => {
+    const scene = node('article');
+    scene.appendChild(node('span', null, number));
+    const copy = node('div');
+    copy.appendChild(node('strong', null, title));
+    copy.appendChild(node('small', null, detail));
+    scene.appendChild(copy);
+    scenes.appendChild(scene);
+  });
+  board.appendChild(scenes);
+
+  shell.appendChild(board);
+}
+
 function addHoloCommandOverview(panel, data) {
   const {
     activeGoal,
@@ -2062,7 +2156,17 @@ function addHoloCommandOverview(panel, data) {
     }
   ];
   const nextTask = queueItems[0];
-  const shell = node('div', 'command-center-shell');
+  const shell = node('div', 'command-center-shell command-center-overlay-shell');
+  addCommandCenterConceptBoard(shell, {
+    activeGoal,
+    openTasks,
+    pendingReviews,
+    events,
+    artifacts,
+    workingAgents,
+    telemetry,
+    referenceMatch
+  });
 
   const hero = node('section', 'command-center-hero');
   const heroCopy = node('div', 'command-center-hero-copy');
@@ -7496,7 +7600,10 @@ document.querySelectorAll('[data-camera-preset]').forEach((button) => {
   button.addEventListener('click', () => applyCameraPreset(button.dataset.cameraPreset));
 });
 document.querySelectorAll('[data-mode]').forEach((button) => {
-  button.addEventListener('click', () => setFacilityMode(button.dataset.mode));
+  button.addEventListener('click', () => {
+    setFacilityMode(button.dataset.mode);
+    if (button.dataset.mode === 'command') openMissionConsole('overview');
+  });
 });
 const consoleHotspot = document.getElementById('console-hotspot');
 const consoleClose = document.getElementById('console-close');
