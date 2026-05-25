@@ -1,0 +1,64 @@
+{
+  "id": "visual-review-goal-5-proof-band-clamp-side-by-side-proof-20260522",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-proof-band-clamp-side-by-side-proof",
+  "artifactId": "artifact-goal-5-proof-band-clamp-side-by-side-proof",
+  "createdAt": "2026-05-22T23:51:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match proof only.",
+  "decision": "side-by-side-proof-recorded-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-22-goal-5-proof-band-clamp-side-by-side-proof.md",
+    "docs/visual-reviews/2026-05-22-goal-5-proof-band-clamp-side-by-side-proof.json",
+    "docs/visual-reviews/2026-05-22-goal-5-proof-band-clamp-side-by-side-proof.html",
+    "docs/visual-reviews/2026-05-22-goal-5-proof-band-clamp-side-by-side-board.png",
+    "docs/visual-reviews/2026-05-22-goal-5-proof-band-clamp-side-by-side-current-desktop.png",
+    "docs/visual-reviews/2026-05-22-goal-5-proof-band-clamp-side-by-side-current-mobile.png",
+    "tmp/goal-5-proof-band-clamp-side-by-side-overview-dom.html",
+    "tmp/goal-5-proof-band-clamp-side-by-side-board-dom.html"
+  ],
+  "uiMarkers": [
+    "Command Table Core",
+    "reference-scale-proof-band-clamp",
+    "core bind",
+    "rail join",
+    "orbit verdict",
+    "partial-match-improved"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The table core now includes a clamp that binds the proof orbit bridge toward the lower proof/status rail."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "Queue/proof state and the canonical orbit verdict now sit in a connector strip between the bridge and rail."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "Clamp geometry improves the table-bound instrument motif, but full reference composition is not complete."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "The clamp reuses existing selected Goal 5 state and introduces no fake backend actions."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop/mobile overlay captures, overview DOM, board DOM, and this side-by-side board are recorded after the clamp integration pass."
+    }
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "browser screenshot/DOM smoke for ?overlay=1&console=overview",
+    "browser screenshot/DOM smoke for side-by-side board",
+    "PNG sanity for board/mobile/desktop captures"
+  ],
+  "nextGoal5Step": "Use this board to choose whether the lower proof band needs another focused integration pass or whether another reference-zone gap is now weaker."
+}

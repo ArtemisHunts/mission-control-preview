@@ -1,0 +1,81 @@
+{
+  "candidate": "meshy-108-hifi-cshell-detail-v1",
+  "sourceReason": "High-fidelity fracture/detail/material pass on Meshy-107 topology/runtime candidate.",
+  "blend": "assets/blender/meshy-108-hifi-cshell-detail-v1.blend",
+  "glb": "assets/blender/meshy-108-hifi-cshell-detail-v1.glb",
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-hifi-cshell-detail-v1/2026-05-20-meshy-108-hifi-cshell-detail-top.png",
+    "front": "docs/visual-reviews/meshy-108-hifi-cshell-detail-v1/2026-05-20-meshy-108-hifi-cshell-detail-front.png",
+    "side": "docs/visual-reviews/meshy-108-hifi-cshell-detail-v1/2026-05-20-meshy-108-hifi-cshell-detail-side.png",
+    "oblique": "docs/visual-reviews/meshy-108-hifi-cshell-detail-v1/2026-05-20-meshy-108-hifi-cshell-detail-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-hifi-cshell-detail-v1/2026-05-20-meshy-108-hifi-cshell-detail-detail.png"
+  },
+  "blenderInspection": {
+    "meshObjectCount": 193,
+    "vertexCount": 13372,
+    "polygonCount": 14212,
+    "boundsMin": [
+      -3.8818,
+      -3.0368,
+      -0.9985
+    ],
+    "boundsMax": [
+      2.4378,
+      3.0538,
+      1.063
+    ],
+    "dimensions": [
+      6.3196,
+      6.0906,
+      2.0616
+    ],
+    "materialCount": 6
+  },
+  "glbInspection": {
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 1690536,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 193,
+    "meshCount": 193,
+    "materialCount": 4,
+    "textureCount": 0,
+    "animationCount": 0,
+    "extensionsUsed": []
+  },
+  "acceptanceTargets": [
+    "preserve Meshy-107 open C-shell silhouette and missing quadrant",
+    "add high-frequency fracture plates, strata, and varied material zones",
+    "keep no-floor hollow cavity visible",
+    "avoid building/machinery/facility detail until baseline is accepted",
+    "remain browser-usable as GLB"
+  ],
+  "decision": "passed high-fidelity baseline candidate gate; needs runtime-scale/collision acceptance before facility population",
+  "visualDecision": {
+    "status": "passed-high-fidelity-baseline-candidate",
+    "summary": "Visual QA passes Meshy-108 as a credible high-fidelity asteroid C-shell baseline candidate. It preserves Meshy-107 open C-shell topology while adding visible fracture plates, raised strata, jagged rim detail, shadowed cavity, and material variation.",
+    "passed": [
+      "open C-shell and missing quadrant preserved",
+      "no floor slab or closed bowl",
+      "visible fracture/detail/material variation",
+      "asteroid rock only; no buildings, machinery, or facility assets",
+      "browser-suitable GLB stats with no textures"
+    ],
+    "caveats": [
+      "193 mesh objects is acceptable for proof but should be merged/optimized before production shipping",
+      "Mission Control app smoke proves GLB load path; final in-scene scale/collision acceptance remains next"
+    ]
+  },
+  "runtimeProof": {
+    "appVariant": "?camera=detail&asteroid=108",
+    "glbHttpStatus": 200,
+    "glbPath": "assets/blender/meshy-108-hifi-cshell-detail-v1.glb",
+    "screenshot": "docs/visual-reviews/2026-05-20-meshy-108-hifi-cshell-runtime-smoke.png",
+    "note": "App smoke requested and served the Meshy-108 GLB. The app screenshot is load-path proof; Blender board/renders are the visual acceptance proof."
+  },
+  "board": "docs/visual-reviews/2026-05-20-meshy-108-hifi-cshell-detail-board.png"
+}

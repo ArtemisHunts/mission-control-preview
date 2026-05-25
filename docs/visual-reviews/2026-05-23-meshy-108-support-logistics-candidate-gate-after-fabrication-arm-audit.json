@@ -1,0 +1,588 @@
+{
+  "candidate": "meshy-108-support-logistics-candidate-gate-after-fabrication-arm-audit",
+  "gapPicked": "gate next Meshy-108 support/logistics candidate after fabrication robotic arm density/runtime audit",
+  "createdAt": "2026-05-23T11:35:56Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "noNewFacilityAssetPlaced": true,
+  "currentScene": {
+    "path": "assets/blender/meshy-108-fabrication-robotic-arm-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 71764212,
+    "mb": 68.44,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 412,
+    "meshCount": 381,
+    "materialCount": 67,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1161,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "sourceAudit": "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement.json",
+  "runtimeBudget": {
+    "sceneBudgetBytes": 100663296,
+    "sceneBudgetMB": 96.0,
+    "currentSceneBytes": 71764212,
+    "currentSceneMB": 68.44,
+    "currentRemainingBytes": 28899084,
+    "currentRemainingMB": 27.56,
+    "currentUsagePercent": 71.29,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "currentGuardMarginBytes": 3733260,
+    "currentGuardMarginMB": 3.56,
+    "currentGuardPass": true,
+    "auditDecision": "passed-density-runtime-audit-after-fabrication-robotic-arm-placement"
+  },
+  "alreadyUsedSupportLogisticsAssets": [
+    {
+      "path": "assets/meshy/api/02-command-control-spine.meshy.glb",
+      "reason": "placed as heavy command-spine hero/proxy composition"
+    },
+    {
+      "path": "assets/meshy/api/04-gantry-crane.meshy.glb",
+      "reason": "optimized and placed as production gantry proxy"
+    },
+    {
+      "path": "assets/meshy/api/09-modular-catwalk-deck-segment.meshy.glb",
+      "reason": "installed in density pass 2"
+    },
+    {
+      "path": "assets/meshy/api/10-modular-catwalk-recovery-long-bridge.meshy.glb",
+      "reason": "locked pass-1 catwalk"
+    },
+    {
+      "path": "assets/meshy/api/11-cable-pipe-duct-wall-insert.meshy.glb",
+      "reason": "installed as support utility detail"
+    },
+    {
+      "path": "assets/meshy/api/12-maintenance-drone.meshy.glb",
+      "reason": "optimized and placed as maintenance drone proxy"
+    },
+    {
+      "path": "assets/meshy/api/13-cargo-tool-pod.meshy.glb",
+      "reason": "optimized and placed as cargo tool pod proxy"
+    },
+    {
+      "path": "assets/meshy/api/14-fabrication-robotic-arm.meshy.glb",
+      "reason": "installed as fabrication robotic arm production-support accent"
+    },
+    {
+      "path": "assets/meshy/api/14-fabrication-robotic-arm-background-workcell-v3.glb",
+      "reason": "accepted in pass 1/contact audit; do not re-place"
+    },
+    {
+      "path": "assets/meshy/api/15-docking-clamp-airlock-collar.meshy.glb",
+      "reason": "locked pass-1 logistics collar"
+    },
+    {
+      "path": "assets/meshy/api/16-light-hazard-gantry.meshy.glb",
+      "reason": "optimized and placed as light hazard gantry runtime recovery proxy"
+    },
+    {
+      "path": "assets/meshy/api/22-hangar-airlock-portal-frame.meshy.glb",
+      "reason": "installed in density pass 2"
+    },
+    {
+      "path": "assets/meshy/api/23-control-console-bank.meshy.glb",
+      "reason": "locked pass-1 control console"
+    },
+    {
+      "path": "assets/meshy/api/24-communications-dish-mast.meshy.glb",
+      "reason": "locked pass-1 signal mast"
+    },
+    {
+      "path": "assets/meshy/api/25-hangar-airlock-portal-frame-v2.meshy.glb",
+      "reason": "locked pass-1 hangar portal"
+    },
+    {
+      "path": "assets/meshy/api/26-circular-observation-control-pod.meshy.glb",
+      "reason": "installed in density pass 2"
+    },
+    {
+      "path": "assets/meshy/api/27-radar-satellite-tower-v2.meshy.glb",
+      "reason": "already consumed by signal coverage pass"
+    },
+    {
+      "path": "assets/meshy/api/39-portal-adjacent-control-insert.meshy.glb",
+      "reason": "installed as portal-adjacent control insert"
+    },
+    {
+      "path": "assets/meshy/api/52-embedded-signal-control-booth.meshy.glb",
+      "reason": "already consumed by signal/control coverage pass"
+    },
+    {
+      "path": "assets/meshy/api/54-tight-panoramic-command-bunker-face.meshy.glb",
+      "reason": "locked pass-1 command facade"
+    },
+    {
+      "path": "assets/meshy/api/58-server-control-cabinet-cluster.meshy.glb",
+      "reason": "locked pass-1 power/server detail"
+    },
+    {
+      "path": "assets/meshy/api/65-embedded-ops-window-wall-bunker.meshy.glb",
+      "reason": "installed as embedded ops wall bunker"
+    },
+    {
+      "path": "assets/meshy/api/93-tight-console-room-command-bay.meshy.glb",
+      "reason": "direct source blocked; optimized proxy placed instead"
+    }
+  ],
+  "candidates": [
+    {
+      "path": "assets/meshy/api/01-hangar-loading-bay-frame.meshy.glb",
+      "role": "hangar-logistics",
+      "label": "Hangar loading bay frame",
+      "fit": "strong logistics frame, but source import should be optimized before placement at the current budget stage",
+      "inspection": {
+        "path": "assets/meshy/api/01-hangar-loading-bay-frame.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 66136228,
+        "mb": 63.072,
+        "asset": {
+          "generator": "pygltflib@v1.16.5",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 1,
+        "textureCount": 1,
+        "imageCount": 1,
+        "accessorCount": 4,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "projectedSceneBytes": 137900440,
+      "projectedSceneMB": 131.512,
+      "remainingAfterDirectBytes": -37237144,
+      "remainingAfterDirectMB": -35.512,
+      "guardMarginBytes": -62402968,
+      "guardMarginMB": -59.512,
+      "directClass": "defer-over-budget",
+      "decision": "defer-optimize-first",
+      "reason": "direct placement exceeds the 96 MB scene guard"
+    },
+    {
+      "path": "assets/meshy/api/05-conveyor-processing-machine.meshy.glb",
+      "role": "production-logistics",
+      "label": "Conveyor processing machine",
+      "fit": "valuable production/logistics silhouette, but it is too large for direct placement now",
+      "inspection": {
+        "path": "assets/meshy/api/05-conveyor-processing-machine.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 38167736,
+        "mb": 36.4,
+        "asset": {
+          "generator": "pygltflib@v1.16.5",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 1,
+        "textureCount": 1,
+        "imageCount": 1,
+        "accessorCount": 4,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "projectedSceneBytes": 109931948,
+      "projectedSceneMB": 104.839,
+      "remainingAfterDirectBytes": -9268652,
+      "remainingAfterDirectMB": -8.839,
+      "guardMarginBytes": -34434476,
+      "guardMarginMB": -32.839,
+      "directClass": "defer-over-budget",
+      "decision": "defer-optimize-first",
+      "reason": "direct placement exceeds the 96 MB scene guard"
+    },
+    {
+      "path": "assets/meshy/api/08-operator-console-chair-cluster.meshy.glb",
+      "role": "control-support",
+      "label": "Operator console chair cluster",
+      "fit": "interior-support read, but the unoptimized source is too heavy for this pass",
+      "inspection": {
+        "path": "assets/meshy/api/08-operator-console-chair-cluster.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 37612664,
+        "mb": 35.87,
+        "asset": {
+          "generator": "pygltflib@v1.16.5",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 1,
+        "textureCount": 1,
+        "imageCount": 1,
+        "accessorCount": 4,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "projectedSceneBytes": 109376876,
+      "projectedSceneMB": 104.31,
+      "remainingAfterDirectBytes": -8713580,
+      "remainingAfterDirectMB": -8.31,
+      "guardMarginBytes": -33879404,
+      "guardMarginMB": -32.31,
+      "directClass": "defer-over-budget",
+      "decision": "defer-optimize-first",
+      "reason": "direct placement exceeds the 96 MB scene guard"
+    },
+    {
+      "path": "assets/meshy/api/21-control-window-spine-module.meshy.glb",
+      "role": "control-support",
+      "label": "Control window spine module",
+      "fit": "small control-support spine that can add structure without threatening runtime headroom",
+      "inspection": {
+        "path": "assets/meshy/api/21-control-window-spine-module.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 173088,
+        "mb": 0.165,
+        "asset": {
+          "generator": "libmeshy",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 0,
+        "textureCount": 0,
+        "imageCount": 0,
+        "accessorCount": 2,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "projectedSceneBytes": 71937300,
+      "projectedSceneMB": 68.605,
+      "remainingAfterDirectBytes": 28725996,
+      "remainingAfterDirectMB": 27.395,
+      "guardMarginBytes": 3560172,
+      "guardMarginMB": 3.395,
+      "directClass": "direct-eligible",
+      "decision": "selected-next-placement-proof",
+      "reason": "smallest useful support/control spine that preserves the next-increment guard after fabrication arm placement"
+    },
+    {
+      "path": "assets/meshy/api/28-glazed-command-room-wall-module.meshy.glb",
+      "role": "command-support",
+      "label": "Glazed command room wall module",
+      "fit": "viable backup, but more duplicative after recent command/control population passes",
+      "inspection": {
+        "path": "assets/meshy/api/28-glazed-command-room-wall-module.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 258624,
+        "mb": 0.247,
+        "asset": {
+          "generator": "libmeshy",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 0,
+        "textureCount": 0,
+        "imageCount": 0,
+        "accessorCount": 2,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "projectedSceneBytes": 72022836,
+      "projectedSceneMB": 68.686,
+      "remainingAfterDirectBytes": 28640460,
+      "remainingAfterDirectMB": 27.314,
+      "guardMarginBytes": 3474636,
+      "guardMarginMB": 3.314,
+      "directClass": "direct-eligible",
+      "decision": "eligible-backup",
+      "reason": "direct placement fits, but role value or duplication is weaker than the selected control spine"
+    },
+    {
+      "path": "assets/meshy/api/94-sealed-monitor-wall-command-bay.meshy.glb",
+      "role": "control-support",
+      "label": "Sealed monitor wall command bay",
+      "fit": "direct-fit backup, but less useful than the smaller spine for the next tight pass",
+      "inspection": {
+        "path": "assets/meshy/api/94-sealed-monitor-wall-command-bay.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 462480,
+        "mb": 0.441,
+        "asset": {
+          "generator": "libmeshy",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 0,
+        "textureCount": 0,
+        "imageCount": 0,
+        "accessorCount": 2,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "projectedSceneBytes": 72226692,
+      "projectedSceneMB": 68.881,
+      "remainingAfterDirectBytes": 28436604,
+      "remainingAfterDirectMB": 27.119,
+      "guardMarginBytes": 3270780,
+      "guardMarginMB": 3.119,
+      "directClass": "direct-eligible",
+      "decision": "eligible-backup",
+      "reason": "direct placement fits, but role value or duplication is weaker than the selected control spine"
+    }
+  ],
+  "selectedCandidate": {
+    "path": "assets/meshy/api/21-control-window-spine-module.meshy.glb",
+    "role": "control-support",
+    "label": "Control window spine module",
+    "fit": "small control-support spine that can add structure without threatening runtime headroom",
+    "inspection": {
+      "path": "assets/meshy/api/21-control-window-spine-module.meshy.glb",
+      "exists": true,
+      "validGlbHeader": true,
+      "version": 2,
+      "totalLength": 173088,
+      "mb": 0.165,
+      "asset": {
+        "generator": "libmeshy",
+        "version": "2.0"
+      },
+      "sceneCount": 1,
+      "nodeCount": 1,
+      "meshCount": 1,
+      "materialCount": 0,
+      "textureCount": 0,
+      "imageCount": 0,
+      "accessorCount": 2,
+      "animationCount": 0,
+      "extensionsUsed": []
+    },
+    "projectedSceneBytes": 71937300,
+    "projectedSceneMB": 68.605,
+    "remainingAfterDirectBytes": 28725996,
+    "remainingAfterDirectMB": 27.395,
+    "guardMarginBytes": 3560172,
+    "guardMarginMB": 3.395,
+    "directClass": "direct-eligible",
+    "decision": "selected-next-placement-proof",
+    "reason": "smallest useful support/control spine that preserves the next-increment guard after fabrication arm placement"
+  },
+  "deferredLargeCandidates": [
+    {
+      "path": "assets/meshy/api/01-hangar-loading-bay-frame.meshy.glb",
+      "role": "hangar-logistics",
+      "label": "Hangar loading bay frame",
+      "fit": "strong logistics frame, but source import should be optimized before placement at the current budget stage",
+      "inspection": {
+        "path": "assets/meshy/api/01-hangar-loading-bay-frame.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 66136228,
+        "mb": 63.072,
+        "asset": {
+          "generator": "pygltflib@v1.16.5",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 1,
+        "textureCount": 1,
+        "imageCount": 1,
+        "accessorCount": 4,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "projectedSceneBytes": 137900440,
+      "projectedSceneMB": 131.512,
+      "remainingAfterDirectBytes": -37237144,
+      "remainingAfterDirectMB": -35.512,
+      "guardMarginBytes": -62402968,
+      "guardMarginMB": -59.512,
+      "directClass": "defer-over-budget",
+      "decision": "defer-optimize-first",
+      "reason": "direct placement exceeds the 96 MB scene guard"
+    },
+    {
+      "path": "assets/meshy/api/05-conveyor-processing-machine.meshy.glb",
+      "role": "production-logistics",
+      "label": "Conveyor processing machine",
+      "fit": "valuable production/logistics silhouette, but it is too large for direct placement now",
+      "inspection": {
+        "path": "assets/meshy/api/05-conveyor-processing-machine.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 38167736,
+        "mb": 36.4,
+        "asset": {
+          "generator": "pygltflib@v1.16.5",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 1,
+        "textureCount": 1,
+        "imageCount": 1,
+        "accessorCount": 4,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "projectedSceneBytes": 109931948,
+      "projectedSceneMB": 104.839,
+      "remainingAfterDirectBytes": -9268652,
+      "remainingAfterDirectMB": -8.839,
+      "guardMarginBytes": -34434476,
+      "guardMarginMB": -32.839,
+      "directClass": "defer-over-budget",
+      "decision": "defer-optimize-first",
+      "reason": "direct placement exceeds the 96 MB scene guard"
+    },
+    {
+      "path": "assets/meshy/api/08-operator-console-chair-cluster.meshy.glb",
+      "role": "control-support",
+      "label": "Operator console chair cluster",
+      "fit": "interior-support read, but the unoptimized source is too heavy for this pass",
+      "inspection": {
+        "path": "assets/meshy/api/08-operator-console-chair-cluster.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 37612664,
+        "mb": 35.87,
+        "asset": {
+          "generator": "pygltflib@v1.16.5",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 1,
+        "textureCount": 1,
+        "imageCount": 1,
+        "accessorCount": 4,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "projectedSceneBytes": 109376876,
+      "projectedSceneMB": 104.31,
+      "remainingAfterDirectBytes": -8713580,
+      "remainingAfterDirectMB": -8.31,
+      "guardMarginBytes": -33879404,
+      "guardMarginMB": -32.31,
+      "directClass": "defer-over-budget",
+      "decision": "defer-optimize-first",
+      "reason": "direct placement exceeds the 96 MB scene guard"
+    }
+  ],
+  "eligibleBackups": [
+    {
+      "path": "assets/meshy/api/28-glazed-command-room-wall-module.meshy.glb",
+      "role": "command-support",
+      "label": "Glazed command room wall module",
+      "fit": "viable backup, but more duplicative after recent command/control population passes",
+      "inspection": {
+        "path": "assets/meshy/api/28-glazed-command-room-wall-module.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 258624,
+        "mb": 0.247,
+        "asset": {
+          "generator": "libmeshy",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 0,
+        "textureCount": 0,
+        "imageCount": 0,
+        "accessorCount": 2,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "projectedSceneBytes": 72022836,
+      "projectedSceneMB": 68.686,
+      "remainingAfterDirectBytes": 28640460,
+      "remainingAfterDirectMB": 27.314,
+      "guardMarginBytes": 3474636,
+      "guardMarginMB": 3.314,
+      "directClass": "direct-eligible",
+      "decision": "eligible-backup",
+      "reason": "direct placement fits, but role value or duplication is weaker than the selected control spine"
+    },
+    {
+      "path": "assets/meshy/api/94-sealed-monitor-wall-command-bay.meshy.glb",
+      "role": "control-support",
+      "label": "Sealed monitor wall command bay",
+      "fit": "direct-fit backup, but less useful than the smaller spine for the next tight pass",
+      "inspection": {
+        "path": "assets/meshy/api/94-sealed-monitor-wall-command-bay.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 462480,
+        "mb": 0.441,
+        "asset": {
+          "generator": "libmeshy",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 0,
+        "textureCount": 0,
+        "imageCount": 0,
+        "accessorCount": 2,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "projectedSceneBytes": 72226692,
+      "projectedSceneMB": 68.881,
+      "remainingAfterDirectBytes": 28436604,
+      "remainingAfterDirectMB": 27.119,
+      "guardMarginBytes": 3270780,
+      "guardMarginMB": 3.119,
+      "directClass": "direct-eligible",
+      "decision": "eligible-backup",
+      "reason": "direct placement fits, but role value or duplication is weaker than the selected control spine"
+    }
+  ],
+  "decision": "selected-control-window-spine-placement-proof",
+  "nextStep": "place the control window spine module and prove contact/runtime before adding any larger support/logistics asset",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-23-meshy-108-support-logistics-candidate-gate-after-fabrication-arm-audit.md",
+    "docs/visual-reviews/2026-05-23-meshy-108-support-logistics-candidate-gate-after-fabrication-arm-audit.json",
+    "docs/visual-reviews/2026-05-23-meshy-108-support-logistics-candidate-gate-after-fabrication-arm-audit-board.png",
+    "docs/visual-reviews/2026-05-23-meshy-108-support-logistics-candidate-gate-after-fabrication-arm-audit-viewer.html",
+    "docs/visual-reviews/2026-05-23-meshy-108-support-logistics-candidate-gate-after-fabrication-arm-audit-browser-smoke.png"
+  ]
+}

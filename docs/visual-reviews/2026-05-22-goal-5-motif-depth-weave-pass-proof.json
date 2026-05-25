@@ -1,0 +1,61 @@
+{
+  "id": "visual-review-goal-5-motif-depth-weave-pass-20260522",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-motif-depth-weave-pass",
+  "artifactId": "artifact-goal-5-motif-depth-weave-pass",
+  "createdAt": "2026-05-23T01:21:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match UI pass only.",
+  "decision": "motif-depth-weave-improved-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-22-goal-5-motif-depth-weave-pass-proof.md",
+    "docs/visual-reviews/2026-05-22-goal-5-motif-depth-weave-pass-proof.json",
+    "docs/visual-reviews/2026-05-22-goal-5-motif-depth-weave-pass-mobile.png",
+    "docs/visual-reviews/2026-05-22-goal-5-motif-depth-weave-pass-desktop.png",
+    "tmp/goal-5-motif-depth-weave-pass-dom.html"
+  ],
+  "uiMarkers": [
+    "reference-scale-motif-depth-weave",
+    "depth grid",
+    "rail shadow",
+    "contrast read",
+    "reference-scale-proof-band-clamp",
+    "Command Table Core"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The table core now includes a motif depth weave under the proof band clamp."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "Proof count and latest proof signal now sit in a fine-line instrumentation strip tied to the lower orbit band."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "The weave adds depth grid, rail shadow, and contrast read markers from canonical reference-zone state."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "The weave reuses existing selected Goal 5 state and introduces no fake backend actions."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop/mobile overlay captures and DOM smoke are recorded after the motif depth weave pass."
+    }
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM smoke for motif depth weave markers",
+    "PNG sanity for desktop/mobile captures"
+  ],
+  "nextGoal5Step": "Capture a fresh side-by-side reference proof after the motif depth weave pass before making a stronger reference-match claim."
+}

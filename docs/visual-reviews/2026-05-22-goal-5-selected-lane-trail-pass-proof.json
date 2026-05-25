@@ -1,0 +1,51 @@
+{
+  "id": "proof-goal-5-selected-lane-trail-pass",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-selected-lane-trail-pass",
+  "createdAt": "2026-05-22T02:51:00.000Z",
+  "scope": "Goal 5 overlay-only command-table overview at ?overlay=1&console=overview",
+  "gap": "The command-table overview lacked one compact state-backed trail tying the current task, gate, proof artifact, and event together before the lower panels.",
+  "changes": [
+    "Added a read-only Selected Lane Trail band to the Goal 5 command-table overview.",
+    "Filled the trail from canonical Goal 5 task, review, artifact, and event state.",
+    "Kept the trail compact on desktop and wrapped into a two-column mobile grid.",
+    "Added no backend action controls and no fake state."
+  ],
+  "artifacts": {
+    "mobileScreenshot": "docs/visual-reviews/2026-05-22-goal-5-selected-lane-trail-pass-mobile.png",
+    "desktopScreenshot": "docs/visual-reviews/2026-05-22-goal-5-selected-lane-trail-pass-desktop.png",
+    "domSmoke": "tmp/goal-5-selected-lane-trail-pass-dom.html"
+  },
+  "screenshotQa": {
+    "mobile": {
+      "width": 390,
+      "height": 2400,
+      "nonblank": true,
+      "selectedLaneTrailReadable": true,
+      "noClipping": true,
+      "noOverlap": true
+    },
+    "desktop": {
+      "width": 1440,
+      "height": 1200,
+      "captured": true
+    }
+  },
+  "smokeMarkers": [
+    "Selected Lane Trail",
+    "Task / gate / proof / event",
+    "Goal 5 mobile nav spacing pass proof",
+    "Command Table Core",
+    ".command-center-trail"
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "Headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM/CSS smoke for selected-lane trail markers",
+    "Mobile screenshot QA"
+  ],
+  "blocked": false,
+  "nextStep": "Use the selected-lane trail as the anchor for the next Goal 5 detail drill-down density pass."
+}

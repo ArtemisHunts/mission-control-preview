@@ -1,0 +1,53 @@
+{
+  "source": "assets/meshy/api/104-asymmetric-broken-c-shell-asteroid-v1.meshy.glb",
+  "blend": "assets/blender/meshy-104-asymmetric-cshell-preview-inspection.blend",
+  "render": "docs/visual-reviews/2026-05-20-meshy-104-asymmetric-cshell-preview-proof.png",
+  "rawStats": {
+    "source": "assets/meshy/api/104-asymmetric-broken-c-shell-asteroid-v1.meshy.glb",
+    "sourceSizeBytes": 10404128,
+    "meshObjects": 1,
+    "vertices": 288986,
+    "polygons": 577960,
+    "triangles": 577960,
+    "materials": 0,
+    "bounds": [
+      1.8988,
+      1.8228,
+      1.8623
+    ],
+    "min": [
+      -0.9505,
+      -0.9101,
+      -0.9321
+    ],
+    "max": [
+      0.9483,
+      0.9127,
+      0.9302
+    ]
+  },
+  "inspectionStats": {
+    "source": "assets/meshy/api/104-asymmetric-broken-c-shell-asteroid-v1.meshy.glb",
+    "sourceSizeBytes": 10404128,
+    "meshObjects": 1,
+    "vertices": 288986,
+    "polygons": 577960,
+    "triangles": 577960,
+    "materials": 0,
+    "bounds": [
+      16.0,
+      15.3592,
+      15.6922
+    ],
+    "min": [
+      -8.008,
+      -7.6701,
+      -6.9224
+    ],
+    "max": [
+      7.992,
+      7.6891,
+      8.7699
+    ]
+  }
+}

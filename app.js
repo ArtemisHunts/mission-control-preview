@@ -114,8 +114,8 @@ const LEGACY_FACILITY_STATE = {
       body: 'Live preview is using the Meshy-101 open-front asteroid runtime GLB. Canonical mission state is unavailable, so this readout is falling back to the legacy scene description.'
     },
     command: {
-      title: 'Holo-table Pending State',
-      body: 'Canonical mission state is unavailable. Command console binding is waiting on mission-control-state.json.'
+      title: 'Command Center Pending State',
+      body: 'Mission state is unavailable. Command Center binding is waiting on mission-control-state.json.'
     },
     build: {
       title: 'Build Queue Unavailable',
@@ -142,7 +142,7 @@ let activeConsolePanel = 'overview';
 let selectedConsoleGoalId = null;
 
 const CONSOLE_PANELS = [
-  ['overview', 'Overview'],
+  ['overview', 'Command Center'],
   ['map', 'Mission Map'],
   ['agents', 'Agents'],
   ['tasks', 'Tasks'],
@@ -524,6 +524,1478 @@ function addHoloDrilldownStrip(container, actions) {
   container.appendChild(strip);
 }
 
+function addHoloProofCorridor(container, proofTrail = {}) {
+  const corridor = node('div', 'holo-proof-corridor');
+  const entries = [
+    {
+      label: 'Review decision',
+      title: proofTrail.visualReview?.title || 'No Goal 5 visual review recorded.',
+      meta: proofTrail.visualReview
+        ? formatStatus(proofTrail.visualReview.decision || proofTrail.visualReview.status)
+        : 'waiting for proof',
+      tone: proofTrail.visualReview?.decision?.includes('pass') || proofTrail.visualReview?.status === 'completed' ? 'green' : 'gold',
+      panelId: 'review'
+    },
+    {
+      label: 'Proof artifact',
+      title: proofTrail.artifact?.name || 'No Goal 5 artifact recorded.',
+      meta: proofTrail.artifact?.path || 'no artifact path',
+      tone: 'gold',
+      panelId: 'build'
+    },
+    {
+      label: 'Latest event',
+      title: proofTrail.event?.message || 'No Goal 5 event recorded.',
+      meta: proofTrail.event ? eventSourceLabel(proofTrail.event) : 'no event source',
+      tone: 'cyan',
+      panelId: 'telemetry'
+    }
+  ];
+
+  entries.forEach(({ label, title, meta, tone, panelId }) => {
+    const button = node('button', 'holo-proof-node tone-' + tone);
+    button.type = 'button';
+    button.appendChild(node('span', null, label));
+    button.appendChild(node('strong', null, title));
+    button.appendChild(node('small', null, meta));
+    button.addEventListener('click', () => renderMissionConsole(panelId));
+    corridor.appendChild(button);
+  });
+
+  container.appendChild(corridor);
+}
+
+function addCommandTableSilhouette(container, data = {}) {
+  const {
+    tasks = [],
+    pendingReviews = [],
+    events = [],
+    telemetry = {}
+  } = data;
+  const activeTasks = tasks.filter((task) => task.status === 'active' || task.status === 'running');
+  const table = node('div', 'command-table-object');
+  table.setAttribute('aria-label', 'State-backed central command table silhouette');
+
+  const halo = node('div', 'command-table-halo');
+  const deck = node('div', 'command-table-deck');
+  const spine = node('div', 'command-table-spine');
+  const core = node('div', 'command-table-core-object');
+  core.appendChild(node('span', null, 'Ops Core'));
+  core.appendChild(node('strong', null, String(telemetry.activeTasks ?? activeTasks.length)));
+  core.appendChild(node('small', null, 'active tasks'));
+  spine.appendChild(core);
+
+  [
+    { label: 'Tasks', value: telemetry.activeTasks ?? activeTasks.length, tone: 'cyan' },
+    { label: 'Reviews', value: pendingReviews.length, tone: pendingReviews.length ? 'coral' : 'green' },
+    { label: 'Events', value: events.length, tone: 'gold' },
+    { label: 'Queued', value: telemetry.queuedTasks ?? tasks.filter((task) => task.status === 'queued').length, tone: 'violet' }
+  ].forEach(({ label, value, tone }, index) => {
+    const pod = node('div', 'command-table-pod pod-' + index + ' tone-' + tone);
+    pod.appendChild(node('span', null, label));
+    pod.appendChild(node('strong', null, String(value)));
+    deck.appendChild(pod);
+  });
+
+  table.appendChild(halo);
+  table.appendChild(deck);
+  table.appendChild(spine);
+  container.appendChild(table);
+}
+
+function addCommandRoomLightingField(container, data = {}) {
+  const {
+    openTasks = [],
+    pendingReviews = [],
+    events = [],
+    artifacts = [],
+    telemetry = {},
+    referenceMatch = {}
+  } = data;
+  const centralZone = referenceMatch?.zones?.find((zone) => zone.id === 'zone-central-command-table');
+  const motifZone = referenceMatch?.zones?.find((zone) => zone.id === 'zone-reference-visual-motifs');
+  const lightField = node('div', 'command-room-light-field tone-' + referenceTone(centralZone?.status || motifZone?.status || ''));
+  lightField.setAttribute('aria-label', 'State-backed command-room lighting hierarchy');
+
+  const header = node('div', 'command-room-light-header');
+  header.appendChild(node('span', null, formatStatus(centralZone?.status || motifZone?.status || 'unscored')));
+  header.appendChild(node('strong', null, 'Command Room Light Field'));
+  header.appendChild(node('small', null, 'Authored table glow keyed to live work, review pressure, and proof state.'));
+  lightField.appendChild(header);
+
+  [
+    {
+      label: 'Table key light',
+      value: String(telemetry.activeGoals ?? 0),
+      unit: 'active goals',
+      detail: centralZone?.currentRead || 'Central table remains the first-read object.',
+      tone: 'cyan'
+    },
+    {
+      label: 'Work wash',
+      value: String(openTasks.length),
+      unit: 'open tasks',
+      detail: openTasks[0]?.title || 'No open task pressure recorded.',
+      tone: 'gold'
+    },
+    {
+      label: 'Review shadow',
+      value: String(pendingReviews.length),
+      unit: 'reviews',
+      detail: pendingReviews[0]?.title || 'No pending review pressure.',
+      tone: pendingReviews.length ? 'coral' : 'green'
+    },
+    {
+      label: 'Proof horizon',
+      value: String(artifacts.length + events.length),
+      unit: 'signals',
+      detail: artifacts[artifacts.length - 1]?.name || events[0]?.message || 'No proof signal recorded.',
+      tone: 'green'
+    }
+  ].forEach((item, index) => {
+    const beam = node('article', 'command-room-light-beam beam-' + index + ' tone-' + item.tone);
+    beam.appendChild(node('span', null, item.label));
+    beam.appendChild(node('strong', null, item.value));
+    beam.appendChild(node('small', null, item.unit + ' - ' + item.detail));
+    lightField.appendChild(beam);
+  });
+
+  container.appendChild(lightField);
+}
+
+function addOrbitBandMarker(container, label, status, detail) {
+  const marker = node('div', 'orbit-band-marker tone-' + referenceTone(status || ''));
+  marker.appendChild(node('span', null, formatStatus(status || 'unscored')));
+  marker.appendChild(node('strong', null, label));
+  marker.appendChild(node('small', null, detail || 'State-backed orbital instrument band.'));
+  container.appendChild(marker);
+}
+
+function addVisualMotifRail(container, referenceMatch = {}) {
+  const motifZone = referenceMatch?.zones?.find((zone) => zone.id === 'zone-reference-visual-motifs');
+  const rail = node('div', 'visual-motif-rail tone-' + referenceTone(motifZone?.status || ''));
+  rail.setAttribute('aria-label', 'Reference visual motif calibration');
+  const header = node('div', 'visual-motif-header');
+  header.appendChild(node('span', null, formatStatus(motifZone?.status || 'unscored')));
+  header.appendChild(node('strong', null, 'Visual Motif Layer'));
+  rail.appendChild(header);
+
+  [
+    ['Fine-line grid', 'instrumentation'],
+    ['Depth rings', 'layered holo depth'],
+    ['Contrast rails', 'command-room contrast']
+  ].forEach(([label, detail]) => {
+    const chip = node('div', 'visual-motif-chip');
+    chip.appendChild(node('span', null, label));
+    chip.appendChild(node('small', null, detail));
+    rail.appendChild(chip);
+  });
+
+  container.appendChild(rail);
+}
+
+function addOperationalDensityHierarchy(container, data = {}) {
+  const {
+    activeGoal,
+    tasks = [],
+    openTasks = [],
+    pendingReviews = [],
+    workingAgents = [],
+    events = [],
+    artifacts = [],
+    telemetry = {},
+    referenceMatch = {}
+  } = data;
+  const densityZone = referenceMatch?.zones?.find((zone) => zone.id === 'zone-operational-density');
+  const activeTasks = tasks.filter((task) => task.status === 'active' || task.status === 'running');
+  const hierarchy = node('div', 'operational-density-hierarchy tone-' + referenceTone(densityZone?.status || ''));
+  hierarchy.setAttribute('aria-label', 'Operational density hierarchy');
+
+  const header = node('div', 'density-hierarchy-header');
+  header.appendChild(node('span', null, formatStatus(densityZone?.status || 'unscored')));
+  header.appendChild(node('strong', null, 'Operational Density Hierarchy'));
+  header.appendChild(node('small', null, densityZone?.gap || 'State-backed scan order for dense command-table data.'));
+  hierarchy.appendChild(header);
+
+  [
+    {
+      tier: '01 Command',
+      label: activeGoal?.title || 'No selected goal',
+      detail: (activeGoal?.status ? formatStatus(activeGoal.status) : 'unscored') + ' · ' + channelLabel(activeGoal),
+      value: telemetry.activeGoals ?? 0,
+      unit: 'active goals',
+      tone: 'cyan'
+    },
+    {
+      tier: '02 Flow',
+      label: (openTasks[0]?.title || 'No open work') + (pendingReviews.length ? ' · review pressure present' : ''),
+      detail: (telemetry.activeTasks ?? activeTasks.length) + ' active · ' + (telemetry.queuedTasks ?? tasks.filter((task) => task.status === 'queued').length) + ' queued · ' + workingAgents.length + ' agents working',
+      value: openTasks.length + pendingReviews.length,
+      unit: 'open signals',
+      tone: pendingReviews.length ? 'coral' : 'gold'
+    },
+    {
+      tier: '03 Proof',
+      label: events[0]?.message || 'No events recorded',
+      detail: artifacts.length + ' artifacts · latest event ' + (telemetry.latestEventId || events[0]?.id || 'none'),
+      value: artifacts.length + events.length,
+      unit: 'evidence items',
+      tone: 'green'
+    }
+  ].forEach((item) => {
+    const row = node('article', 'density-hierarchy-row tone-' + item.tone);
+    row.appendChild(node('span', 'density-hierarchy-tier', item.tier));
+    const copy = node('div', 'density-hierarchy-copy');
+    copy.appendChild(node('strong', null, item.label));
+    copy.appendChild(node('small', null, item.detail));
+    row.appendChild(copy);
+    const meter = node('div', 'density-hierarchy-meter');
+    meter.appendChild(node('strong', null, String(item.value)));
+    meter.appendChild(node('span', null, item.unit));
+    row.appendChild(meter);
+    hierarchy.appendChild(row);
+  });
+
+  container.appendChild(hierarchy);
+}
+
+function addAsymmetricCommandVector(container, data = {}) {
+  const {
+    activeGoal,
+    openTasks = [],
+    pendingReviews = [],
+    events = [],
+    artifacts = [],
+    telemetry = {},
+    referenceMatch = {}
+  } = data;
+  const centralZone = referenceMatch?.zones?.find((zone) => zone.id === 'zone-central-command-table');
+  const peripheralZone = referenceMatch?.zones?.find((zone) => zone.id === 'zone-peripheral-ops-bands');
+  const vector = node('div', 'asym-command-vector tone-' + referenceTone(centralZone?.status || peripheralZone?.status || ''));
+  vector.setAttribute('aria-label', 'Asymmetric command-table hierarchy');
+
+  const header = node('div', 'asym-vector-header');
+  header.appendChild(node('span', null, formatStatus(peripheralZone?.status || centralZone?.status || 'unscored')));
+  header.appendChild(node('strong', null, 'Asymmetric Command Vector'));
+  header.appendChild(node('small', null, 'Table-first read with offset execution, pressure, and proof counterweights.'));
+  vector.appendChild(header);
+
+  [
+    {
+      label: 'Primary table',
+      value: activeGoal?.title || 'Mission Control',
+      metric: String(telemetry.activeGoals ?? 0),
+      unit: 'goals',
+      tone: 'cyan'
+    },
+    {
+      label: 'Execution draw',
+      value: openTasks[0]?.title || 'No open work',
+      metric: String(openTasks.length),
+      unit: 'open tasks',
+      tone: 'gold'
+    },
+    {
+      label: 'Pressure counterweight',
+      value: pendingReviews[0]?.title || 'No pending reviews',
+      metric: String(pendingReviews.length),
+      unit: 'reviews',
+      tone: pendingReviews.length ? 'coral' : 'green'
+    },
+    {
+      label: 'Proof tail',
+      value: artifacts[artifacts.length - 1]?.name || events[0]?.message || 'No proof recorded',
+      metric: String(events.length),
+      unit: 'events',
+      tone: 'green'
+    }
+  ].forEach((item, index) => {
+    const nodeClass = 'asym-vector-node node-' + index + ' tone-' + item.tone;
+    const vectorNode = node('article', nodeClass);
+    vectorNode.appendChild(node('span', null, item.label));
+    vectorNode.appendChild(node('strong', null, item.value));
+    const meta = node('small', null, item.metric + ' ' + item.unit);
+    vectorNode.appendChild(meta);
+    vector.appendChild(vectorNode);
+  });
+
+  container.appendChild(vector);
+}
+
+function addRoomCompositionSpine(container, data = {}) {
+  const {
+    activeGoal,
+    openTasks = [],
+    pendingReviews = [],
+    events = [],
+    artifacts = [],
+    workingAgents = [],
+    telemetry = {},
+    referenceMatch = {}
+  } = data;
+  const centralZone = referenceMatch?.zones?.find((zone) => zone.id === 'zone-central-command-table');
+  const peripheralZone = referenceMatch?.zones?.find((zone) => zone.id === 'zone-peripheral-ops-bands');
+  const motifZone = referenceMatch?.zones?.find((zone) => zone.id === 'zone-reference-visual-motifs');
+  const spine = node('div', 'room-composition-spine tone-' + referenceTone(peripheralZone?.status || centralZone?.status || ''));
+  spine.setAttribute('aria-label', 'State-backed full-room composition continuity');
+
+  const header = node('div', 'room-composition-header');
+  header.appendChild(node('span', null, formatStatus(peripheralZone?.status || centralZone?.status || 'unscored')));
+  header.appendChild(node('strong', null, 'Full-Room Composition Spine'));
+  header.appendChild(node('small', null, peripheralZone?.gap || motifZone?.gap || 'Tie the table, bands, lighting, and proof into one command-room read.'));
+  spine.appendChild(header);
+
+  [
+    {
+      label: 'Table anchor',
+      value: activeGoal?.title || 'Mission Control',
+      metric: String(telemetry.activeGoals ?? 0),
+      unit: 'goals',
+      tone: 'cyan'
+    },
+    {
+      label: 'Left orbit',
+      value: openTasks[0]?.title || 'No open work',
+      metric: String(openTasks.length),
+      unit: 'work signals',
+      tone: 'gold'
+    },
+    {
+      label: 'Right orbit',
+      value: pendingReviews[0]?.title || (workingAgents[0]?.name ? workingAgents[0].name + ' active' : 'No review pressure'),
+      metric: String(pendingReviews.length + workingAgents.length),
+      unit: 'pressure signals',
+      tone: pendingReviews.length ? 'coral' : 'green'
+    },
+    {
+      label: 'Horizon proof',
+      value: artifacts[artifacts.length - 1]?.name || events[0]?.message || 'No proof recorded',
+      metric: String(artifacts.length + events.length),
+      unit: 'proof signals',
+      tone: 'green'
+    }
+  ].forEach((item, index) => {
+    const chamber = node('article', 'room-composition-chamber chamber-' + index + ' tone-' + item.tone);
+    chamber.appendChild(node('span', null, item.label));
+    chamber.appendChild(node('strong', null, item.value));
+    chamber.appendChild(node('small', null, item.metric + ' ' + item.unit));
+    spine.appendChild(chamber);
+  });
+
+  container.appendChild(spine);
+}
+
+function addReferenceScaleCompositionField(container, data = {}) {
+  const {
+    activeGoal,
+    openTasks = [],
+    pendingReviews = [],
+    events = [],
+    artifacts = [],
+    workingAgents = [],
+    telemetry = {},
+    referenceMatch = {}
+  } = data;
+  const centralZone = referenceMatch?.zones?.find((zone) => zone.id === 'zone-central-command-table');
+  const peripheralZone = referenceMatch?.zones?.find((zone) => zone.id === 'zone-peripheral-ops-bands');
+  const motifZone = referenceMatch?.zones?.find((zone) => zone.id === 'zone-reference-visual-motifs');
+  const referenceZones = Array.isArray(referenceMatch?.zones) ? referenceMatch.zones : [];
+  const nextWeakPointZones = [
+    referenceZones.find((zone) => zone.id === 'zone-central-command-table'),
+    referenceZones.find((zone) => zone.id === 'zone-peripheral-ops-bands'),
+    referenceZones.find((zone) => zone.id === 'zone-reference-visual-motifs')
+  ].filter(Boolean);
+  const goalArtifacts = activeGoal?.id ? artifacts.filter((artifact) => artifact.goalId === activeGoal.id) : [];
+  const goalEvents = activeGoal?.id ? events.filter((event) => event.goalId === activeGoal.id) : [];
+  const goalOpenTasks = activeGoal?.id ? openTasks.filter((task) => task.goalId === activeGoal.id) : [];
+  const goalPendingReviews = activeGoal?.id ? pendingReviews.filter((review) => review.goalId === activeGoal.id) : [];
+  const scopedOpenTasks = activeGoal?.id ? goalOpenTasks : openTasks;
+  const scopedPendingReviews = activeGoal?.id ? goalPendingReviews : pendingReviews;
+  const scopedArtifacts = goalArtifacts.length ? goalArtifacts : artifacts;
+  const scopedEvents = goalEvents.length ? goalEvents : events;
+  const proofSignalCount = scopedArtifacts.length + scopedEvents.length;
+  const pressureSignalCount = scopedPendingReviews.length;
+  const activeGoalLabel = activeGoal?.title || 'Mission Control';
+  const openTaskLabel = scopedOpenTasks[0]?.title || 'No selected-goal queue pressure';
+  const reviewLabel = scopedPendingReviews[0]?.title || 'No selected-goal review gate';
+  const latestArtifact = scopedArtifacts[scopedArtifacts.length - 1] || null;
+  const latestEvent = scopedEvents[0] || null;
+  const proofLabel = latestArtifact?.name || latestEvent?.message || 'No proof recorded';
+  const field = node('div', 'reference-scale-composition-field tone-' + referenceTone(peripheralZone?.status || centralZone?.status || ''));
+  field.setAttribute('aria-label', 'State-backed reference-scale command-table composition field');
+
+  const header = node('div', 'reference-scale-header');
+  header.appendChild(node('span', null, formatStatus(peripheralZone?.status || centralZone?.status || 'unscored')));
+  header.appendChild(node('strong', null, 'Reference-Scale Composition Field'));
+  header.appendChild(node('small', null, 'Condensed command-room lighting band: table, work mass, counterweight, and proof horizon.'));
+  field.appendChild(header);
+
+  const tableCore = node('div', 'reference-scale-table-core');
+  tableCore.setAttribute('aria-label', 'State-backed command table core anchor');
+  tableCore.appendChild(node('span', 'reference-scale-core-kicker', 'table-first likeness'));
+  tableCore.appendChild(node('strong', null, 'Command Table Core'));
+  tableCore.appendChild(node('small', null, [
+    String(telemetry.activeGoals ?? 0) + ' goal lanes',
+    String(scopedOpenTasks.length) + ' work',
+    String(scopedPendingReviews.length) + ' reviews',
+    String(proofSignalCount) + ' proof'
+  ].join(' / ')));
+  const coreRings = node('div', 'reference-scale-core-rings');
+  ['inner ring', 'data orbit', 'table rim'].forEach((label) => {
+    const ring = node('i');
+    ring.setAttribute('aria-label', label);
+    coreRings.appendChild(ring);
+  });
+  tableCore.appendChild(coreRings);
+  const coreAxis = node('div', 'reference-scale-core-axis');
+  coreAxis.appendChild(node('b', null, 'left work mass'));
+  coreAxis.appendChild(node('b', null, 'right proof counterweight'));
+  tableCore.appendChild(coreAxis);
+
+  const tableFirstHierarchyLock = node('div', 'reference-scale-table-first-hierarchy-lock');
+  tableFirstHierarchyLock.setAttribute('aria-label', 'State-backed table-first hierarchy lock');
+  [
+    {
+      label: 'first hierarchy',
+      value: formatStatus(centralZone?.status || 'unscored'),
+      detail: centralZone?.gap || centralZone?.zone || 'Central command table',
+      tone: 'cyan'
+    },
+    {
+      label: 'orbit restraint',
+      value: String(scopedOpenTasks.length) + ' work / ' + String(scopedPendingReviews.length) + ' gates',
+      detail: peripheralZone?.zone || 'Peripheral ops bands',
+      tone: scopedOpenTasks.length || scopedPendingReviews.length ? 'gold' : 'green'
+    },
+    {
+      label: 'proof anchor',
+      value: String(proofSignalCount) + ' proof',
+      detail: latestArtifact?.name || latestEvent?.message || 'proof orbit ready',
+      tone: 'violet'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-table-first-hierarchy-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    tableFirstHierarchyLock.appendChild(chip);
+  });
+  tableCore.appendChild(tableFirstHierarchyLock);
+
+  const tableHierarchyTightener = node('div', 'reference-scale-table-hierarchy-tightener');
+  tableHierarchyTightener.setAttribute('aria-label', 'State-backed selected table-first hierarchy tightener');
+  [
+    {
+      label: 'selected table',
+      value: centralZone?.zone || 'Central command table',
+      detail: centralZone?.gap || referenceMatch?.nextStep || 'Tighten the table-first read.',
+      tone: 'gold'
+    },
+    {
+      label: 'orbit quiet',
+      value: String(scopedOpenTasks.length) + ' work / ' + String(scopedPendingReviews.length) + ' gates',
+      detail: scopedOpenTasks[0]?.title || scopedPendingReviews[0]?.title || 'secondary pressure stays under the table',
+      tone: scopedOpenTasks.length || scopedPendingReviews.length ? 'gold' : 'green'
+    },
+    {
+      label: 'proof pressure',
+      value: String(proofSignalCount) + ' proof signals',
+      detail: latestArtifact?.name || latestEvent?.message || 'proof counterweight ready',
+      tone: 'violet'
+    },
+    {
+      label: 'next lock',
+      value: formatStatus(centralZone?.status || 'unscored'),
+      detail: referenceMatch?.nextStep || centralZone?.target || 'command-table hierarchy remains the selected gap',
+      tone: 'cyan'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-table-hierarchy-tightener-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    tableHierarchyTightener.appendChild(chip);
+  });
+  tableCore.appendChild(tableHierarchyTightener);
+
+  const tableHierarchyDecisionBand = node('div', 'reference-scale-table-hierarchy-decision-band');
+  tableHierarchyDecisionBand.setAttribute('aria-label', 'State-backed table hierarchy decision band');
+  [
+    {
+      label: 'selected table',
+      value: centralZone?.zone || 'Central command table',
+      detail: centralZone?.gap || referenceMatch?.nextStep || 'Table hierarchy selected from proof board.',
+      tone: 'gold'
+    },
+    {
+      label: 'first read',
+      value: formatStatus(centralZone?.status || 'unscored'),
+      detail: centralZone?.target || 'table remains the first-read object',
+      tone: 'cyan'
+    },
+    {
+      label: 'orbit restraint',
+      value: String(scopedOpenTasks.length + scopedPendingReviews.length) + ' work gates',
+      detail: peripheralZone?.zone || 'Peripheral ops bands stay secondary',
+      tone: scopedOpenTasks.length || scopedPendingReviews.length ? 'gold' : 'green'
+    },
+    {
+      label: 'proof anchor',
+      value: String(proofSignalCount) + ' proof',
+      detail: latestArtifact?.name || latestEvent?.message || 'proof anchor ready',
+      tone: 'violet'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-table-hierarchy-decision-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    tableHierarchyDecisionBand.appendChild(chip);
+  });
+  tableCore.appendChild(tableHierarchyDecisionBand);
+
+  const silhouetteLock = node('div', 'reference-scale-core-silhouette-lock');
+  silhouetteLock.setAttribute('aria-label', 'State-backed central table silhouette lock');
+  [
+    {
+      label: 'table silhouette',
+      value: formatStatus(centralZone?.status || 'unscored'),
+      detail: centralZone?.zone || 'Central command table',
+      tone: 'cyan'
+    },
+    {
+      label: 'first read',
+      value: String(telemetry.activeGoals ?? 0) + ' lanes',
+      detail: activeGoalLabel,
+      tone: 'green'
+    },
+    {
+      label: 'rim lock',
+      value: String(proofSignalCount) + ' proof',
+      detail: latestArtifact?.name || latestEvent?.message || 'proof orbit ready',
+      tone: 'violet'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-core-silhouette-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    silhouetteLock.appendChild(chip);
+  });
+  tableCore.appendChild(silhouetteLock);
+
+  const instrumentBand = node('div', 'reference-scale-instrument-band');
+  instrumentBand.setAttribute('aria-label', 'State-backed peripheral instrumentation orbit');
+  [
+    {
+      label: 'queue',
+      value: String(scopedOpenTasks.length),
+      detail: scopedOpenTasks[0]?.title || 'selected goal clear'
+    },
+    {
+      label: 'review',
+      value: String(scopedPendingReviews.length),
+      detail: scopedPendingReviews[0]?.title || 'selected goal clear'
+    },
+    {
+      label: 'agents',
+      value: String(workingAgents.length),
+      detail: workingAgents[0]?.name || 'standby'
+    },
+    {
+      label: 'proof',
+      value: String(proofSignalCount),
+      detail: latestArtifact?.name || 'recorded'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-instrument-chip');
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    instrumentBand.appendChild(chip);
+  });
+  tableCore.appendChild(instrumentBand);
+
+  const proofOrbitBridge = node('div', 'reference-scale-proof-orbit-bridge');
+  proofOrbitBridge.setAttribute('aria-label', 'State-backed lower right proof orbit bridge');
+  [
+    {
+      label: 'left orbit',
+      value: String(scopedOpenTasks.length) + ' queue',
+      detail: scopedOpenTasks[0]?.title || 'selected goal clear',
+      tone: scopedOpenTasks.length ? 'gold' : 'cyan'
+    },
+    {
+      label: 'lower rail',
+      value: 'proof/status rail',
+      detail: String(scopedPendingReviews.length) + ' gates / ' + String(proofSignalCount) + ' proof',
+      tone: scopedPendingReviews.length ? 'coral' : 'green'
+    },
+    {
+      label: 'right mass',
+      value: String(proofSignalCount) + ' proof',
+      detail: latestArtifact?.name || 'artifact ledger',
+      tone: 'violet'
+    },
+    {
+      label: 'orbit sync',
+      value: latestEvent ? formatStatus(latestEvent.type) : 'event ready',
+      detail: latestEvent?.message || 'event stream empty',
+      tone: latestEvent ? 'cyan' : 'gold'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-proof-orbit-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    proofOrbitBridge.appendChild(chip);
+  });
+  tableCore.appendChild(proofOrbitBridge);
+
+  const proofBandClamp = node('div', 'reference-scale-proof-band-clamp');
+  proofBandClamp.setAttribute('aria-label', 'State-backed proof band clamp binding bridge to rail');
+  [
+    {
+      label: 'core bind',
+      value: String(scopedOpenTasks.length) + ' queue / ' + String(proofSignalCount) + ' proof',
+      detail: activeGoalLabel,
+      tone: 'cyan'
+    },
+    {
+      label: 'rail join',
+      value: 'bridge + proof rail',
+      detail: latestArtifact?.name || latestEvent?.message || 'proof stream ready',
+      tone: latestArtifact ? 'green' : 'gold'
+    },
+    {
+      label: 'orbit verdict',
+      value: formatStatus(peripheralZone?.status || motifZone?.status || 'unscored'),
+      detail: peripheralZone?.zone || 'Peripheral ops bands',
+      tone: 'violet'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-proof-band-clamp-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    proofBandClamp.appendChild(chip);
+  });
+  tableCore.appendChild(proofBandClamp);
+
+  const motifDepthWeave = node('div', 'reference-scale-motif-depth-weave');
+  motifDepthWeave.setAttribute('aria-label', 'State-backed reference visual motif depth weave');
+  [
+    {
+      label: 'depth grid',
+      value: formatStatus(motifZone?.status || 'unscored'),
+      detail: motifZone?.zone || 'Reference visual motifs',
+      tone: 'cyan'
+    },
+    {
+      label: 'rail shadow',
+      value: String(proofSignalCount) + ' proof signals',
+      detail: latestArtifact?.name || 'proof horizon clear',
+      tone: 'green'
+    },
+    {
+      label: 'contrast read',
+      value: formatStatus(centralZone?.status || peripheralZone?.status || 'unscored'),
+      detail: centralZone?.zone || peripheralZone?.zone || 'Command-table contrast',
+      tone: 'violet'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-motif-depth-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    motifDepthWeave.appendChild(chip);
+  });
+  tableCore.appendChild(motifDepthWeave);
+
+  const motifContrastLock = node('div', 'reference-scale-motif-contrast-lock');
+  motifContrastLock.setAttribute('aria-label', 'State-backed reference motif contrast lock');
+  [
+    {
+      label: 'motif contrast',
+      value: formatStatus(motifZone?.status || 'unscored'),
+      detail: motifZone?.gap || 'visual motif contrast calibrated',
+      tone: 'cyan'
+    },
+    {
+      label: 'table rim read',
+      value: formatStatus(centralZone?.status || motifZone?.status || 'unscored'),
+      detail: centralZone?.zone || 'Central command table',
+      tone: 'gold'
+    },
+    {
+      label: 'proof glow',
+      value: String(proofSignalCount) + ' state signals',
+      detail: latestArtifact?.name || latestEvent?.message || 'proof light quiet',
+      tone: 'green'
+    },
+    {
+      label: 'contrast source',
+      value: latestEvent ? formatStatus(latestEvent.type) : 'state ready',
+      detail: latestEvent?.source || 'mission-control-state.json',
+      tone: 'violet'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-motif-contrast-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    motifContrastLock.appendChild(chip);
+  });
+  tableCore.appendChild(motifContrastLock);
+
+  const motifContrastCalibration = node('div', 'reference-scale-motif-contrast-calibration');
+  motifContrastCalibration.setAttribute('aria-label', 'State-backed visual motif contrast calibration');
+  [
+    {
+      label: 'contrast verdict',
+      value: formatStatus(motifZone?.status || centralZone?.status || 'unscored'),
+      detail: motifZone?.gap || 'visual motif contrast needs proof',
+      tone: 'gold'
+    },
+    {
+      label: 'density echo',
+      value: String(scopedOpenTasks.length + scopedPendingReviews.length + workingAgents.length) + ' live signals',
+      detail: peripheralZone?.zone || 'Peripheral ops bands',
+      tone: scopedOpenTasks.length || scopedPendingReviews.length ? 'gold' : 'cyan'
+    },
+    {
+      label: 'line language',
+      value: latestEvent ? formatStatus(latestEvent.type) : 'state ready',
+      detail: latestEvent?.message || latestArtifact?.name || 'proof light ready',
+      tone: latestEvent ? 'cyan' : 'green'
+    },
+    {
+      label: 'next proof',
+      value: String(proofSignalCount) + ' proof',
+      detail: latestArtifact?.name || 'proof board pending',
+      tone: 'violet'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-motif-calibration-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    motifContrastCalibration.appendChild(chip);
+  });
+  tableCore.appendChild(motifContrastCalibration);
+
+  const motifDecisionBand = node('div', 'reference-scale-motif-decision-band');
+  motifDecisionBand.setAttribute('aria-label', 'State-backed visual motif contrast decision band');
+  [
+    {
+      label: 'selected motif',
+      value: motifZone?.zone || 'Reference visual motifs',
+      detail: motifZone?.gap || referenceMatch?.nextStep || 'Visual motif contrast selected from proof board.',
+      tone: 'gold'
+    },
+    {
+      label: 'contrast field',
+      value: formatStatus(motifZone?.status || centralZone?.status || 'unscored'),
+      detail: centralZone?.zone || 'Central command table',
+      tone: 'cyan'
+    },
+    {
+      label: 'line restraint',
+      value: String(scopedOpenTasks.length + scopedPendingReviews.length) + ' work gates',
+      detail: scopedOpenTasks[0]?.title || scopedPendingReviews[0]?.title || 'keep motifs behind state density',
+      tone: scopedOpenTasks.length || scopedPendingReviews.length ? 'gold' : 'green'
+    },
+    {
+      label: 'proof echo',
+      value: String(proofSignalCount) + ' proof',
+      detail: latestArtifact?.name || latestEvent?.message || 'proof echo ready',
+      tone: 'violet'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-motif-decision-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    motifDecisionBand.appendChild(chip);
+  });
+  tableCore.appendChild(motifDecisionBand);
+
+  const motifContrastTightener = node('div', 'reference-scale-motif-contrast-tightener');
+  motifContrastTightener.setAttribute('aria-label', 'State-backed visual motif contrast tightener');
+  [
+    {
+      label: 'tighten motif',
+      value: motifZone?.zone || 'Reference visual motifs',
+      detail: referenceMatch?.nextStep || motifZone?.gap || 'tighten motif contrast around the denser table core',
+      tone: 'gold'
+    },
+    {
+      label: 'density underlay',
+      value: String(scopedOpenTasks.length + scopedPendingReviews.length + workingAgents.length) + ' live signals',
+      detail: peripheralZone?.zone || 'Peripheral ops bands stay under table read',
+      tone: scopedOpenTasks.length || scopedPendingReviews.length ? 'gold' : 'cyan'
+    },
+    {
+      label: 'rim restraint',
+      value: formatStatus(centralZone?.status || motifZone?.status || 'unscored'),
+      detail: centralZone?.target || 'table remains first-read',
+      tone: 'green'
+    },
+    {
+      label: 'proof source',
+      value: String(proofSignalCount) + ' proof',
+      detail: latestArtifact?.name || latestEvent?.message || 'state-backed proof only',
+      tone: 'violet'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-motif-tightener-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    motifContrastTightener.appendChild(chip);
+  });
+  tableCore.appendChild(motifContrastTightener);
+
+  const tableHierarchyFocusPass = node('div', 'reference-scale-table-hierarchy-focus-pass');
+  tableHierarchyFocusPass.setAttribute('aria-label', 'State-backed table hierarchy focus pass');
+  [
+    {
+      label: 'table priority',
+      value: centralZone?.zone || 'Central command table',
+      detail: referenceMatch?.nextStep || centralZone?.gap || 'table hierarchy selected next',
+      tone: 'gold'
+    },
+    {
+      label: 'motif carried',
+      value: formatStatus(motifZone?.status || centralZone?.status || 'unscored'),
+      detail: motifZone?.zone || 'Reference visual motifs',
+      tone: 'cyan'
+    },
+    {
+      label: 'work below rim',
+      value: String(scopedOpenTasks.length) + ' work / ' + String(scopedPendingReviews.length) + ' gates',
+      detail: scopedOpenTasks[0]?.title || scopedPendingReviews[0]?.title || 'secondary state stays under the table read',
+      tone: scopedOpenTasks.length || scopedPendingReviews.length ? 'gold' : 'green'
+    },
+    {
+      label: 'proof stack',
+      value: String(proofSignalCount) + ' proof signals',
+      detail: latestArtifact?.name || latestEvent?.message || 'proof stack tethered to table',
+      tone: 'violet'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-table-hierarchy-focus-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    tableHierarchyFocusPass.appendChild(chip);
+  });
+  tableCore.appendChild(tableHierarchyFocusPass);
+
+  const nextWeakPointLock = node('div', 'reference-scale-next-weak-point-lock');
+  nextWeakPointLock.setAttribute('aria-label', 'State-backed next weak point selector');
+  const nextWeakPointHeader = node('div', 'reference-scale-next-weak-point-header');
+  nextWeakPointHeader.appendChild(node('b', null, 'next weak point'));
+  nextWeakPointHeader.appendChild(node('strong', null, nextWeakPointZones[0]?.zone || 'Reference gap selector'));
+  nextWeakPointHeader.appendChild(node('small', null, referenceMatch?.nextStep || nextWeakPointZones[0]?.gap || 'Select the next holo-table reference gap from canonical state.'));
+  nextWeakPointLock.appendChild(nextWeakPointHeader);
+  nextWeakPointZones.slice(0, 3).forEach((zone, index) => {
+    const chip = node('span', 'reference-scale-next-weak-point-chip tone-' + ['gold', 'cyan', 'violet'][index]);
+    chip.appendChild(node('b', null, index === 0 ? 'selected gap' : 'candidate ' + String(index + 1)));
+    chip.appendChild(node('strong', null, formatStatus(zone.status || 'unscored')));
+    chip.appendChild(node('small', null, zone.gap || zone.target || zone.zone));
+    nextWeakPointLock.appendChild(chip);
+  });
+  tableCore.appendChild(nextWeakPointLock);
+
+  const edgeLightSeparator = node('div', 'reference-scale-edge-light-separator');
+  edgeLightSeparator.setAttribute('aria-label', 'State-backed table edge light and shadow separator');
+  [
+    {
+      label: 'edge light',
+      value: formatStatus(motifZone?.status || centralZone?.status || 'unscored'),
+      detail: 'table rim separation',
+      tone: 'cyan'
+    },
+    {
+      label: 'shadow lock',
+      value: String(scopedPendingReviews.length) + ' gates / ' + String(proofSignalCount) + ' proof',
+      detail: latestEvent?.message || 'proof shadow aligned',
+      tone: scopedPendingReviews.length ? 'gold' : 'green'
+    },
+    {
+      label: 'rim proof',
+      value: latestArtifact ? 'artifact current' : 'artifact pending',
+      detail: latestArtifact?.name || proofLabel,
+      tone: 'violet'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-edge-light-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    edgeLightSeparator.appendChild(chip);
+  });
+  tableCore.appendChild(edgeLightSeparator);
+
+  const shadowDepthBaffle = node('div', 'reference-scale-shadow-depth-baffle');
+  shadowDepthBaffle.setAttribute('aria-label', 'State-backed surrounding shadow depth baffle');
+  [
+    {
+      label: 'shadow depth',
+      value: formatStatus(motifZone?.status || peripheralZone?.status || 'unscored'),
+      detail: 'surrounding table falloff',
+      tone: 'cyan'
+    },
+    {
+      label: 'band occlusion',
+      value: String(scopedOpenTasks.length) + ' work / ' + String(scopedPendingReviews.length) + ' gates',
+      detail: scopedOpenTasks[0]?.title || scopedPendingReviews[0]?.title || 'selected lane clear',
+      tone: scopedOpenTasks.length || scopedPendingReviews.length ? 'gold' : 'green'
+    },
+    {
+      label: 'proof falloff',
+      value: String(proofSignalCount) + ' proof signals',
+      detail: latestArtifact?.name || latestEvent?.message || 'proof field quiet',
+      tone: 'violet'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-shadow-depth-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    shadowDepthBaffle.appendChild(chip);
+  });
+  tableCore.appendChild(shadowDepthBaffle);
+
+  const peripheralBandTether = node('div', 'reference-scale-peripheral-band-tether');
+  peripheralBandTether.setAttribute('aria-label', 'State-backed peripheral band table tether');
+  [
+    {
+      label: 'orbit tether',
+      value: formatStatus(peripheralZone?.status || centralZone?.status || 'unscored'),
+      detail: peripheralZone?.zone || 'Peripheral ops bands',
+      tone: 'cyan'
+    },
+    {
+      label: 'lane bind',
+      value: String(scopedOpenTasks.length) + ' work / ' + String(scopedPendingReviews.length) + ' review',
+      detail: activeGoalLabel,
+      tone: scopedOpenTasks.length || scopedPendingReviews.length ? 'gold' : 'green'
+    },
+    {
+      label: 'proof tether',
+      value: String(proofSignalCount) + ' proof',
+      detail: latestArtifact?.name || latestEvent?.message || 'proof rail quiet',
+      tone: 'violet'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-peripheral-tether-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    peripheralBandTether.appendChild(chip);
+  });
+  tableCore.appendChild(peripheralBandTether);
+
+  const peripheralDensityLock = node('div', 'reference-scale-peripheral-density-lock');
+  peripheralDensityLock.setAttribute('aria-label', 'State-backed peripheral density lock');
+  [
+    {
+      label: 'band density',
+      value: String(scopedOpenTasks.length + scopedPendingReviews.length + workingAgents.length) + ' live signals',
+      detail: peripheralZone?.gap || peripheralZone?.zone || 'Peripheral ops bands',
+      tone: scopedOpenTasks.length || scopedPendingReviews.length ? 'gold' : 'cyan'
+    },
+    {
+      label: 'agent orbit',
+      value: String(workingAgents.length) + ' agents',
+      detail: workingAgents[0]?.name || 'agent lane standby',
+      tone: workingAgents.length ? 'green' : 'gold'
+    },
+    {
+      label: 'evidence spread',
+      value: String(scopedArtifacts.length) + ' artifacts / ' + String(scopedEvents.length) + ' events',
+      detail: latestArtifact?.name || latestEvent?.message || 'evidence rail quiet',
+      tone: 'violet'
+    },
+    {
+      label: 'table tether',
+      value: formatStatus(centralZone?.status || peripheralZone?.status || 'unscored'),
+      detail: activeGoalLabel,
+      tone: 'cyan'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-peripheral-density-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    peripheralDensityLock.appendChild(chip);
+  });
+  tableCore.appendChild(peripheralDensityLock);
+
+  const peripheralDecisionBand = node('div', 'reference-scale-peripheral-decision-band');
+  peripheralDecisionBand.setAttribute('aria-label', 'State-backed peripheral density decision band');
+  [
+    {
+      label: 'selected band',
+      value: peripheralZone?.zone || 'Peripheral ops bands',
+      detail: peripheralZone?.gap || referenceMatch?.nextStep || 'Peripheral density is the selected follow-up.',
+      tone: 'gold'
+    },
+    {
+      label: 'live orbit',
+      value: String(workingAgents.length) + ' agents / ' + String(scopedOpenTasks.length) + ' work',
+      detail: workingAgents[0]?.name || scopedOpenTasks[0]?.title || 'agent orbit quiet',
+      tone: workingAgents.length ? 'green' : 'cyan'
+    },
+    {
+      label: 'evidence field',
+      value: String(scopedArtifacts.length) + ' artifacts / ' + String(scopedEvents.length) + ' events',
+      detail: latestArtifact?.name || latestEvent?.message || 'evidence field ready',
+      tone: 'violet'
+    },
+    {
+      label: 'table restraint',
+      value: formatStatus(centralZone?.status || peripheralZone?.status || 'unscored'),
+      detail: 'keep density orbiting the Command Table Core',
+      tone: 'cyan'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-peripheral-decision-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    peripheralDecisionBand.appendChild(chip);
+  });
+  tableCore.appendChild(peripheralDecisionBand);
+
+  const peripheralDensityReadBand = node('div', 'reference-scale-peripheral-density-read-band');
+  peripheralDensityReadBand.setAttribute('aria-label', 'State-backed peripheral density read tightener');
+  [
+    {
+      label: 'density read',
+      value: String(scopedOpenTasks.length + scopedPendingReviews.length + workingAgents.length) + ' orbit signals',
+      detail: peripheralZone?.gap || referenceMatch?.nextStep || 'tighten peripheral density around table',
+      tone: 'gold'
+    },
+    {
+      label: 'agent pressure',
+      value: String(workingAgents.length) + ' agents',
+      detail: workingAgents[0]?.name || 'agent orbit quiet',
+      tone: workingAgents.length ? 'green' : 'cyan'
+    },
+    {
+      label: 'proof spread',
+      value: String(scopedArtifacts.length) + ' artifacts / ' + String(scopedEvents.length) + ' events',
+      detail: latestArtifact?.name || latestEvent?.message || 'proof spread ready',
+      tone: 'violet'
+    },
+    {
+      label: 'table tether',
+      value: formatStatus(centralZone?.status || peripheralZone?.status || 'unscored'),
+      detail: 'keep density subordinate to table-first read',
+      tone: 'cyan'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-peripheral-density-read-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    peripheralDensityReadBand.appendChild(chip);
+  });
+  tableCore.appendChild(peripheralDensityReadBand);
+
+  const proofMassBalancer = node('div', 'reference-scale-proof-mass-balancer');
+  proofMassBalancer.setAttribute('aria-label', 'State-backed lower right proof mass balance rail');
+  [
+    {
+      label: 'right rail balance',
+      value: scopedPendingReviews.length ? String(scopedPendingReviews.length) + ' gates' : 'gate clear',
+      detail: scopedPendingReviews[0]?.title || 'review pressure stays off the proof rail',
+      tone: scopedPendingReviews.length ? 'coral' : 'green'
+    },
+    {
+      label: 'proof mass',
+      value: String(proofSignalCount) + ' linked proof',
+      detail: latestArtifact?.name || latestEvent?.message || 'proof ledger quiet',
+      tone: 'violet'
+    },
+    {
+      label: 'counterweight',
+      value: formatStatus(peripheralZone?.status || centralZone?.status || 'unscored'),
+      detail: 'lower/right rail tied to table core',
+      tone: 'cyan'
+    },
+    {
+      label: 'rail source',
+      value: latestEvent ? formatStatus(latestEvent.type) : 'state ready',
+      detail: latestEvent?.source || 'mission-control-state.json',
+      tone: latestEvent ? 'gold' : 'green'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-proof-mass-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    proofMassBalancer.appendChild(chip);
+  });
+  tableCore.appendChild(proofMassBalancer);
+
+  const proofMassRebalanceLock = node('div', 'reference-scale-proof-mass-rebalance-lock');
+  proofMassRebalanceLock.setAttribute('aria-label', 'State-backed lower proof mass rebalance lock');
+  [
+    {
+      label: 'mass compression',
+      value: String(proofSignalCount) + ' proof',
+      detail: latestArtifact?.name || latestEvent?.message || 'proof rail quiet',
+      tone: 'violet'
+    },
+    {
+      label: 'core tie',
+      value: formatStatus(centralZone?.status || peripheralZone?.status || 'unscored'),
+      detail: centralZone?.zone || peripheralZone?.zone || 'Command table core',
+      tone: 'cyan'
+    },
+    {
+      label: 'next decision',
+      value: scopedPendingReviews.length ? String(scopedPendingReviews.length) + ' gates' : 'rebalance clear',
+      detail: peripheralZone?.gap || centralZone?.gap || 'lower proof mass balanced',
+      tone: scopedPendingReviews.length ? 'gold' : 'green'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-proof-mass-rebalance-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    proofMassRebalanceLock.appendChild(chip);
+  });
+  tableCore.appendChild(proofMassRebalanceLock);
+
+  const drilldownHierarchy = node('div', 'reference-scale-drilldown-hierarchy');
+  drilldownHierarchy.setAttribute('aria-label', 'State-backed command-table drill-down hierarchy');
+  drilldownHierarchy.appendChild(node('span', 'reference-scale-drilldown-kicker', 'drill-down hierarchy'));
+  [
+    {
+      label: 'goal',
+      value: activeGoalLabel,
+      signal: String(telemetry.activeGoals ?? 0) + ' lanes',
+      panelId: 'map',
+      tone: 'cyan'
+    },
+    {
+      label: 'queue',
+      value: openTaskLabel,
+      signal: String(scopedOpenTasks.length) + ' selected',
+      panelId: 'tasks',
+      tone: scopedOpenTasks.length ? 'gold' : 'green'
+    },
+    {
+      label: 'gate',
+      value: reviewLabel,
+      signal: String(scopedPendingReviews.length) + ' selected',
+      panelId: 'review',
+      tone: scopedPendingReviews.length ? 'coral' : 'green'
+    },
+    {
+      label: 'proof',
+      value: proofLabel,
+      signal: String(proofSignalCount) + ' records',
+      panelId: 'telemetry',
+      tone: 'green'
+    }
+  ].forEach((item) => {
+    const row = node('button', 'reference-scale-drilldown-row tone-' + item.tone);
+    row.type = 'button';
+    row.setAttribute('aria-label', 'Open ' + item.label + ' drill-down panel: ' + item.value);
+    row.addEventListener('click', () => renderMissionConsole(item.panelId));
+    row.appendChild(node('b', null, item.label));
+    row.appendChild(node('strong', null, item.value));
+    row.appendChild(node('small', null, item.signal));
+    drilldownHierarchy.appendChild(row);
+  });
+  tableCore.appendChild(drilldownHierarchy);
+
+  const evidenceRail = node('div', 'reference-scale-evidence-rail');
+  evidenceRail.setAttribute('aria-label', 'State-backed proof and status evidence rail');
+  evidenceRail.appendChild(node('span', 'reference-scale-evidence-kicker', 'proof/status rail'));
+  [
+    {
+      label: 'proof',
+      value: latestArtifact?.name || 'No artifact recorded',
+      detail: latestArtifact ? formatStatus(latestArtifact.kind || 'artifact') + ' / ' + (latestArtifact.createdAt || 'timestamp pending') : 'artifact ledger empty',
+      tone: latestArtifact ? 'green' : 'gold'
+    },
+    {
+      label: 'event',
+      value: latestEvent?.message || 'No event recorded',
+      detail: latestEvent ? formatStatus(latestEvent.type) + ' / ' + eventSourceLabel(latestEvent) : 'event stream empty',
+      tone: latestEvent ? 'cyan' : 'gold'
+    },
+    {
+      label: 'gate',
+      value: scopedPendingReviews[0]?.title || 'No selected-goal review gate',
+      detail: scopedPendingReviews.length ? formatStatus(scopedPendingReviews[0].status) + ' / ' + formatStatus(scopedPendingReviews[0].riskLevel || 'risk unknown') : 'selected goal clear',
+      tone: scopedPendingReviews.length ? 'coral' : 'green'
+    }
+  ].forEach((item, index) => {
+    const row = node('article', 'reference-scale-evidence-row tone-' + item.tone + (index === 0 ? ' is-primary' : ''));
+    row.appendChild(node('b', null, item.label));
+    row.appendChild(node('strong', null, item.value));
+    row.appendChild(node('small', null, item.detail));
+    evidenceRail.appendChild(row);
+  });
+  const contrastRail = node('div', 'reference-scale-contrast-rail');
+  contrastRail.setAttribute('aria-label', 'State-backed proof rail contrast and asymmetry calibration');
+  [
+    {
+      label: 'anchor',
+      value: 'table core',
+      detail: activeGoalLabel,
+      tone: 'cyan'
+    },
+    {
+      label: 'offset',
+      value: 'right proof mass',
+      detail: String(proofSignalCount) + ' proof signals',
+      tone: 'violet'
+    },
+    {
+      label: 'glow',
+      value: latestArtifact ? 'artifact hot' : 'event hot',
+      detail: latestArtifact?.name || latestEvent?.message || 'no proof signal',
+      tone: latestArtifact ? 'green' : 'gold'
+    }
+  ].forEach((item) => {
+    const chip = node('span', 'reference-scale-contrast-chip tone-' + item.tone);
+    chip.appendChild(node('b', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    contrastRail.appendChild(chip);
+  });
+  evidenceRail.appendChild(contrastRail);
+  tableCore.appendChild(evidenceRail);
+  field.appendChild(tableCore);
+
+  [
+    {
+      label: 'Table-first axis',
+      value: String(telemetry.activeGoals ?? 0) + ' goal lanes',
+      detail: 'Central table stays first-read.',
+      signal: activeGoalLabel,
+      light: 'key light',
+      tone: 'cyan'
+    },
+    {
+      label: 'Left mass band',
+      value: String(scopedOpenTasks.length) + ' selected work signals',
+      detail: scopedOpenTasks.length ? 'Selected-goal execution mass pulls left.' : 'Selected-goal queue is clear.',
+      signal: openTaskLabel,
+      light: 'work wash',
+      tone: scopedOpenTasks.length ? 'gold' : 'green'
+    },
+    {
+      label: 'Right counterweight',
+      value: String(pressureSignalCount) + ' pressure signals',
+      detail: scopedPendingReviews.length ? 'Selected-goal reviews counterbalance the table.' : 'Selected-goal gate is clear.',
+      signal: reviewLabel,
+      light: 'shadow rail',
+      tone: scopedPendingReviews.length ? 'coral' : 'green'
+    },
+    {
+      label: 'Horizon light band',
+      value: String(proofSignalCount) + ' proof signals',
+      detail: motifZone?.gap ? 'Lighting continuity remains open.' : 'Proof light holds the back edge.',
+      signal: proofLabel,
+      light: 'proof glow',
+      tone: 'green'
+    }
+  ].forEach((item, index) => {
+    const plate = node('article', 'reference-scale-plate plate-' + index + ' tone-' + item.tone);
+    plate.appendChild(node('span', null, item.label));
+    plate.appendChild(node('strong', null, item.value));
+    plate.appendChild(node('p', null, item.detail));
+    plate.appendChild(node('em', 'reference-scale-light-tag', item.light));
+    plate.appendChild(node('small', null, item.signal));
+    field.appendChild(plate);
+  });
+
+  container.appendChild(field);
+}
+
+function referenceTone(status = '') {
+  if (status.includes('pass') || status.includes('locked')) return 'green';
+  if (status.includes('partial')) return 'gold';
+  if (status.includes('gap') || status.includes('needs')) return 'coral';
+  return 'cyan';
+}
+
+function addReferenceMatchMatrix(container, referenceMatch = {}) {
+  const zones = referenceMatch.zones || [];
+  const matrix = node('div', 'reference-match-matrix');
+  const header = node('div', 'reference-match-header');
+  header.appendChild(node('span', null, 'Reference Match Matrix'));
+  header.appendChild(node('strong', null, referenceMatch.verdict || 'Functional scaffold; reference match not locked.'));
+  matrix.appendChild(header);
+
+  const list = node('div', 'reference-zone-list');
+  const rows = zones.length ? zones : [{
+    zone: 'Reference decomposition',
+    target: 'Define product-quality reference zones before the next visual claim.',
+    currentRead: 'No state-backed reference matrix recorded.',
+    gap: 'Add canonical criteria.',
+    status: 'needs-decomposition'
+  }];
+
+  rows.slice(0, 5).forEach((zone) => {
+    const row = node('article', 'reference-zone-card tone-' + referenceTone(zone.status || ''));
+    row.appendChild(node('span', null, formatStatus(zone.status || 'unknown')));
+    row.appendChild(node('strong', null, zone.zone || 'Unnamed zone'));
+    row.appendChild(node('p', null, zone.target || 'No target recorded.'));
+    const meta = node('small', null, 'Current: ' + (zone.currentRead || 'unknown') + ' | Gap: ' + (zone.gap || 'none recorded'));
+    row.appendChild(meta);
+    list.appendChild(row);
+  });
+
+  matrix.appendChild(list);
+  container.appendChild(matrix);
+}
+
+function addCommandLensDetail(container, config = {}) {
+  const lens = node('div', 'command-lens-detail tone-' + (config.tone || 'cyan'));
+  lens.setAttribute('aria-label', 'State-backed command-lens detail header');
+
+  const header = node('div', 'command-lens-header');
+  header.appendChild(node('span', null, config.kicker || 'command lens'));
+  header.appendChild(node('strong', null, config.title || 'Detail Panel'));
+  header.appendChild(node('small', null, config.summary || 'State-backed detail view.'));
+  lens.appendChild(header);
+
+  const metrics = node('div', 'command-lens-metrics');
+  (config.metrics || []).forEach((metric) => {
+    const tile = node('span', 'command-lens-metric');
+    tile.appendChild(node('b', null, metric.label));
+    tile.appendChild(node('strong', null, String(metric.value)));
+    tile.appendChild(node('small', null, metric.detail || 'canonical'));
+    metrics.appendChild(tile);
+  });
+  lens.appendChild(metrics);
+
+  const rows = node('div', 'command-lens-rows');
+  (config.rows || []).forEach((item) => {
+    const row = node('article', 'command-lens-row tone-' + (item.tone || config.tone || 'cyan'));
+    row.appendChild(node('span', null, item.label));
+    row.appendChild(node('strong', null, item.value));
+    row.appendChild(node('small', null, item.detail));
+    rows.appendChild(row);
+  });
+  lens.appendChild(rows);
+  container.appendChild(lens);
+}
+
+function createCommandLensPanel(panelId, data = {}) {
+  const {
+    activeGoal,
+    runs = [],
+    tasks = [],
+    openTasks = [],
+    pendingReviews = [],
+    events = [],
+    artifacts = [],
+    telemetry = {}
+  } = data;
+  const goalEvents = events.filter((event) => event.goalId === activeGoal?.id);
+  const activeRun = runs.find((run) => run.id === activeGoal?.currentRunId)
+    || runs.find((run) => run.goalId === activeGoal?.id);
+  const selectedTasks = activeGoal?.id ? tasks.filter((task) => task.goalId === activeGoal.id) : tasks;
+  const selectedOpenTasks = activeGoal?.id ? openTasks.filter((task) => task.goalId === activeGoal.id) : openTasks;
+  const selectedActiveTasks = selectedTasks.filter((task) => task.status === 'active' || task.status === 'running');
+  const selectedQueuedTasks = selectedTasks.filter((task) => task.status === 'queued');
+  const selectedBlockedTasks = selectedTasks.filter((task) => task.status === 'blocked');
+  const selectedCompletedTasks = selectedTasks
+    .filter((task) => task.status === 'completed')
+    .slice()
+    .sort((a, b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
+  const selectedPendingReviews = activeGoal?.id ? pendingReviews.filter((review) => review.goalId === activeGoal.id) : pendingReviews;
+  const selectedArtifacts = latestByCreatedAt(activeGoal?.id ? artifacts.filter((artifact) => artifact.goalId === activeGoal.id) : artifacts);
+  const selectedProofSignalCount = selectedArtifacts.length + goalEvents.length;
+  const proofSignalCount = artifacts.length + events.length;
+  const configs = {
+    map: {
+      kicker: 'goal lens',
+      title: activeGoal?.title || 'Mission Map',
+      summary: 'Command-table goal drill-down with selected lane, run state, and latest Goal 5 movement.',
+      tone: 'cyan',
+      metrics: [
+        { label: 'active', value: telemetry.activeGoals ?? 0, detail: 'goals' },
+        { label: 'run', value: activeRun?.status ? formatStatus(activeRun.status) : 'none', detail: activeRun?.id || 'no run' },
+        { label: 'events', value: goalEvents.length, detail: 'selected goal' }
+      ],
+      rows: [
+        { label: 'selected', value: activeGoal?.title || 'No selected goal', detail: activeGoal ? formatStatus(activeGoal.status) + ' / ' + channelLabel(activeGoal) : 'no goal', tone: 'cyan' },
+        { label: 'run summary', value: activeRun?.summary || 'No active run summary', detail: activeRun?.verificationSummary || 'verification not recorded', tone: 'green' },
+        { label: 'latest', value: goalEvents[0]?.message || events[0]?.message || 'No event recorded', detail: goalEvents[0]?.createdAt || events[0]?.createdAt || 'no timestamp', tone: 'gold' }
+      ]
+    },
+    tasks: {
+      kicker: 'queue lens',
+      title: 'Task Board Drill-Down',
+      summary: 'Command-table queue drill-down with open flow, active pressure, and blocked work visible before the kanban.',
+      tone: 'gold',
+      metrics: [
+        { label: 'lane open', value: selectedOpenTasks.length, detail: activeGoal?.title || 'selected goal' },
+        { label: 'lane active', value: selectedActiveTasks.length, detail: 'now' },
+        { label: 'lane queued', value: selectedQueuedTasks.length, detail: 'waiting' }
+      ],
+      rows: [
+        { label: 'lane next', value: selectedOpenTasks[0]?.title || 'Selected lane clear', detail: selectedOpenTasks[0] ? formatStatus(selectedOpenTasks[0].status) + ' / ' + taskCardMeta(selectedOpenTasks[0]) : 'no open Goal 5 work', tone: 'gold' },
+        { label: 'lane blocked', value: selectedBlockedTasks[0]?.title || 'No selected-lane blocker', detail: String(selectedBlockedTasks.length) + ' blocked in selected lane', tone: selectedBlockedTasks.length ? 'coral' : 'green' },
+        { label: 'lane complete', value: selectedCompletedTasks[0]?.title || 'No selected completion recorded', detail: String(selectedCompletedTasks.length) + ' selected-lane completions', tone: 'green' }
+      ]
+    },
+    review: {
+      kicker: 'gate lens',
+      title: 'Review Queue Drill-Down',
+      summary: 'Command-table gate drill-down for approvals, risk, evidence, and artifact pressure.',
+      tone: selectedPendingReviews.length ? 'coral' : 'green',
+      metrics: [
+        { label: 'lane open', value: selectedPendingReviews.length, detail: 'reviews' },
+        { label: 'lane proof', value: selectedArtifacts.length, detail: 'artifacts' },
+        { label: 'lane risk', value: selectedPendingReviews[0]?.riskLevel ? formatStatus(selectedPendingReviews[0].riskLevel) : 'clear', detail: 'highest selected' }
+      ],
+      rows: [
+        { label: 'lane gate', value: selectedPendingReviews[0]?.title || 'No selected-lane review gate', detail: selectedPendingReviews[0] ? formatStatus(selectedPendingReviews[0].status) + ' / ' + formatStatus(selectedPendingReviews[0].decision || 'pending') : 'selected lane clear', tone: selectedPendingReviews.length ? 'coral' : 'green' },
+        { label: 'lane evidence', value: selectedPendingReviews[0]?.evidence?.[0] || selectedArtifacts[0]?.name || 'No selected evidence needed', detail: selectedPendingReviews[0]?.note || 'state-backed Goal 5 proof only', tone: 'gold' },
+        { label: 'constraint', value: 'No fake backend actions', detail: 'approvals remain explicit', tone: 'cyan' }
+      ]
+    },
+    telemetry: {
+      kicker: 'proof lens',
+      title: 'Telemetry Proof Drill-Down',
+      summary: 'Command-table proof drill-down with latest event, state counts, and local bridge mode.',
+      tone: 'green',
+      metrics: [
+        { label: 'lane signals', value: selectedProofSignalCount, detail: 'events + artifacts' },
+        { label: 'lane events', value: goalEvents.length, detail: 'canonical' },
+        { label: 'latest', value: goalEvents[0] ? 'linked' : 'none', detail: goalEvents[0]?.id || telemetry.latestEventId || 'no event id' }
+      ],
+      rows: [
+        { label: 'lane event', value: goalEvents[0]?.message || 'No selected event recorded', detail: goalEvents[0] ? goalEvents[0].createdAt + ' / ' + eventSourceLabel(goalEvents[0]) : 'no selected source', tone: 'green' },
+        { label: 'lane artifact', value: selectedArtifacts[0]?.name || 'No selected artifact recorded', detail: selectedArtifacts[0]?.path || 'no selected path', tone: 'gold' },
+        { label: 'global state', value: String(telemetry.activeGoals ?? 0) + ' active goals / ' + String(telemetry.activeTasks ?? 0) + ' active tasks', detail: 'mission-control-state.json', tone: 'cyan' }
+      ]
+    }
+  };
+  const config = configs[panelId];
+  if (!config) return null;
+  return {
+    title: 'Command Lens / ' + config.title,
+    body: 'Opened from the overview command-table drill-down. This is a read-only state lens, not a backend action surface.',
+    wide: true,
+    renderContent: (panel) => addCommandLensDetail(panel, config)
+  };
+}
+
 function addHoloCommandOverview(panel, data) {
   const {
     activeGoal,
@@ -537,165 +2009,375 @@ function addHoloCommandOverview(panel, data) {
     events,
     artifacts,
     telemetry,
-    laneGoals
+    laneGoals,
+    referenceMatch
   } = data;
 
   const activeTasks = tasks.filter((task) => task.status === 'active' || task.status === 'running');
   const activeRun = runs.find((run) => run.id === activeGoal?.currentRunId) || runs.find((run) => run.goalId === activeGoal?.id && run.status === 'running');
   const latestEvent = events[0] || null;
-  const layout = node('div', 'holo-command-layout');
-  const topRail = node('div', 'holo-top-rail');
-  addHoloStatusPill(topRail, 'Goal lanes', laneGoals.length, 'cyan');
-  addHoloStatusPill(topRail, 'Active tasks', telemetry.activeTasks ?? activeTasks.length, 'gold');
-  addHoloStatusPill(topRail, 'Review pressure', pendingReviews.length, pendingReviews.length ? 'coral' : 'green');
-  addHoloStatusPill(topRail, 'Assets in flight', attentionAssets.length, 'violet');
-  addHoloStatusPill(topRail, 'Agents working', workingAgents.length, 'cyan');
-  layout.appendChild(topRail);
-
-  const stage = node('div', 'holo-table-stage');
-  const leftBand = node('aside', 'holo-band holo-band-left');
-
-  const center = node('section', 'holo-table-core');
-  center.appendChild(node('span', 'holo-core-kicker', 'Active Command Table'));
-  center.appendChild(node('h3', null, activeGoal?.title || 'Mission Control'));
-  center.appendChild(node('p', null, activeGoal?.objective || facilityState.modes.overview.body));
-  addHoloCoreDetails(center, [
+  const primaryAgents = workingAgents.length ? workingAgents : (facilityState.raw?.agents || []).slice(0, 4);
+  const queueItems = openTasks.length ? openTasks : tasks.filter((task) => task.status !== 'completed');
+  const selectedGoalTasks = activeGoal?.id ? tasks.filter((task) => task.goalId === activeGoal.id) : [];
+  const selectedOpenTasks = activeGoal?.id ? openTasks.filter((task) => task.goalId === activeGoal.id) : [];
+  const selectedPendingReviews = activeGoal?.id ? pendingReviews.filter((review) => review.goalId === activeGoal.id) : [];
+  const selectedEvents = activeGoal?.id ? events.filter((event) => event.goalId === activeGoal.id) : [];
+  const selectedArtifacts = activeGoal?.id ? artifacts.filter((artifact) => artifact.goalId === activeGoal.id) : [];
+  const selectedQueueItems = selectedOpenTasks.length ? selectedOpenTasks : selectedGoalTasks.slice(-3).reverse();
+  const selectedSignalItems = selectedEvents.length ? selectedEvents : events.slice(0, 4);
+  const selectedAssetItems = selectedArtifacts.length ? selectedArtifacts.slice(-4).reverse() : artifacts.slice(-4).reverse();
+  const latestSelectedTask = selectedGoalTasks
+    .slice()
+    .sort((a, b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0))[0] || null;
+  const latestSelectedArtifact = latestByCreatedAt(selectedArtifacts)[0] || null;
+  const nextReview = selectedPendingReviews[0] || null;
+  const selectedTrailItems = [
     {
-      label: 'Current run',
-      value: activeRun?.summary || 'No run summary recorded.',
-      tone: 'cyan',
-      actionLabel: 'Mission Map',
-      onAction: () => renderMissionConsole('map')
-    },
-    {
-      label: 'Routing',
-      value: `${channelLabel(activeGoal)} · owner ${agentById(activeGoal?.ownerAgentId)?.name || activeGoal?.ownerAgentId || 'unknown'}`,
+      label: 'task',
+      value: latestSelectedTask?.title || 'No selected task recorded',
+      detail: latestSelectedTask ? formatStatus(latestSelectedTask.status) + ' / ' + (latestSelectedTask.updatedAt || latestSelectedTask.createdAt || 'timestamp pending') : 'Goal 5 task ledger empty',
       tone: 'gold',
-      actionLabel: 'Agents',
-      onAction: () => renderMissionConsole('agents')
+      panelId: 'tasks'
     },
     {
-      label: 'Latest signal',
-      value: latestEvent?.message || 'No events recorded.',
+      label: 'gate',
+      value: nextReview?.title || 'Goal 5 gate clear',
+      detail: nextReview ? formatStatus(nextReview.status) + ' / ' + formatStatus(nextReview.decision || 'pending') : 'No selected-lane review pressure',
+      tone: nextReview ? 'coral' : 'green',
+      panelId: 'review'
+    },
+    {
+      label: 'proof',
+      value: latestSelectedArtifact?.name || 'No selected proof recorded',
+      detail: latestSelectedArtifact ? formatStatus(latestSelectedArtifact.kind || 'artifact') + ' / ' + (latestSelectedArtifact.createdAt || 'timestamp pending') : 'Goal 5 artifact ledger empty',
       tone: 'violet',
-      actionLabel: 'Telemetry',
-      onAction: () => renderMissionConsole('telemetry')
+      panelId: 'telemetry'
+    },
+    {
+      label: 'event',
+      value: selectedEvents[0]?.message || 'No selected event recorded',
+      detail: selectedEvents[0] ? formatStatus(selectedEvents[0].type) + ' / ' + eventSourceLabel(selectedEvents[0]) : 'Goal 5 event ledger empty',
+      tone: 'cyan',
+      panelId: 'telemetry'
     }
-  ]);
+  ];
+  const nextTask = queueItems[0];
+  const shell = node('div', 'command-center-shell');
 
-  const rings = node('div', 'holo-table-rings');
+  const hero = node('section', 'command-center-hero');
+  const heroCopy = node('div', 'command-center-hero-copy');
+  heroCopy.appendChild(node('span', 'command-center-kicker', 'Command Center'));
+  heroCopy.appendChild(node('h2', null, 'Mission Control'));
+  heroCopy.appendChild(node('p', null, 'Agent management, work routing, review gates, and live project signals in one clean operating surface.'));
+  hero.appendChild(heroCopy);
+
+  const heroFocus = node('div', 'command-center-focus-card');
+  heroFocus.appendChild(node('span', null, 'Now'));
+  heroFocus.appendChild(node('strong', null, nextTask?.title || activeRun?.summary || 'No active task selected'));
+  heroFocus.appendChild(node('small', null, nextTask ? taskCardMeta(nextTask) : 'Select a lane below to start routing work.'));
+  hero.appendChild(heroFocus);
+
+  const stats = node('div', 'command-center-stats');
   [
-    ['Goals', goals.filter((goal) => goal.status === 'running' || goal.status === 'active').length],
-    ['Tasks', activeTasks.length],
-    ['Reviews', pendingReviews.length],
-    ['Events', events.length]
+    ['Agents', primaryAgents.length, 'working roster', 'cyan'],
+    ['Tasks', telemetry.activeTasks ?? activeTasks.length, 'active now', 'gold'],
+    ['Reviews', pendingReviews.length, 'waiting gate', pendingReviews.length ? 'coral' : 'green'],
+    ['Signals', events.length, 'latest events', 'violet']
+  ].forEach(([label, value, detail, tone]) => {
+    const stat = node('article', 'command-center-stat tone-' + tone);
+    stat.appendChild(node('span', null, label));
+    stat.appendChild(node('strong', null, String(value)));
+    stat.appendChild(node('small', null, detail));
+    stats.appendChild(stat);
+  });
+  hero.appendChild(stats);
+  shell.appendChild(hero);
+  addReferenceScaleCompositionField(shell, {
+    activeGoal,
+    openTasks,
+    pendingReviews,
+    events,
+    artifacts,
+    workingAgents,
+    telemetry,
+    referenceMatch
+  });
+
+  const trail = node('section', 'command-center-trail');
+  const trailHeader = node('div', 'command-center-trail-header');
+  trailHeader.appendChild(node('span', 'command-center-panel-label', 'Selected Lane Trail'));
+  trailHeader.appendChild(node('strong', null, 'Task / gate / proof / event'));
+  trail.appendChild(trailHeader);
+  const trailGrid = node('div', 'command-center-trail-grid');
+  selectedTrailItems.forEach((item) => {
+    const trailNode = node('button', 'command-center-trail-node tone-' + item.tone);
+    trailNode.type = 'button';
+    trailNode.setAttribute('aria-label', 'Open ' + item.label + ' detail lens');
+    trailNode.addEventListener('click', () => {
+      if (activeGoal?.id) selectedConsoleGoalId = activeGoal.id;
+      renderMissionConsole(item.panelId);
+    });
+    trailNode.appendChild(node('span', null, item.label));
+    trailNode.appendChild(node('strong', null, item.value));
+    trailNode.appendChild(node('small', null, item.detail));
+    trailGrid.appendChild(trailNode);
+  });
+  trail.appendChild(trailGrid);
+  shell.appendChild(trail);
+
+  const mainGrid = node('div', 'command-center-grid');
+
+  const agentsPanel = node('section', 'command-center-panel command-center-panel-agents');
+  agentsPanel.appendChild(node('span', 'command-center-panel-label', 'Agent Roster'));
+  agentsPanel.appendChild(node('h3', null, 'Who is working'));
+  const agentList = node('div', 'command-center-agent-list');
+  primaryAgents.slice(0, 4).forEach((agent) => {
+    const row = node('article', 'command-center-agent-row');
+    const avatar = node('div', 'command-center-agent-avatar', (agent.name || '?').slice(0, 1));
+    row.appendChild(avatar);
+    const copy = node('div');
+    copy.appendChild(node('strong', null, agent.name || agent.id));
+    copy.appendChild(node('span', null, formatStatus(agent.status) + ' / ' + (agent.role || 'operator') + ' / load ' + (agent.load || 0) + '%'));
+    row.appendChild(copy);
+    const pulse = node('i', 'command-center-agent-pulse');
+    row.appendChild(pulse);
+    agentList.appendChild(row);
+  });
+  agentsPanel.appendChild(agentList);
+  mainGrid.appendChild(agentsPanel);
+
+  const workPanel = node('section', 'command-center-panel command-center-panel-work');
+  workPanel.appendChild(node('span', 'command-center-panel-label', 'Selected Lane Work'));
+  workPanel.appendChild(node('h3', null, selectedOpenTasks.length ? 'Goal 5 queue' : 'Goal 5 recent work'));
+  const workList = node('div', 'command-center-work-list');
+  if (!selectedQueueItems.length) {
+    const row = node('article', 'command-center-work-row is-clear');
+    row.appendChild(node('span', 'command-center-work-index', '00'));
+    const copy = node('div');
+    copy.appendChild(node('strong', null, 'No selected-lane work recorded'));
+    copy.appendChild(node('small', null, 'Goal 5 queue is clear'));
+    row.appendChild(copy);
+    workList.appendChild(row);
+  }
+  selectedQueueItems.slice(0, 5).forEach((task, index) => {
+    const row = node('article', 'command-center-work-row');
+    row.appendChild(node('span', 'command-center-work-index', String(index + 1).padStart(2, '0')));
+    const copy = node('div');
+    copy.appendChild(node('strong', null, task.title));
+    copy.appendChild(node('small', null, formatStatus(task.status) + ' / ' + taskCardMeta(task)));
+    row.appendChild(copy);
+    workList.appendChild(row);
+  });
+  workPanel.appendChild(workList);
+  mainGrid.appendChild(workPanel);
+
+  const reviewPanel = node('section', 'command-center-panel command-center-panel-review');
+  reviewPanel.appendChild(node('span', 'command-center-panel-label', 'Selected Lane Gates'));
+  reviewPanel.appendChild(node('h3', null, nextReview?.title || 'Goal 5 review gate clear'));
+  reviewPanel.appendChild(node('p', null, nextReview ? formatStatus(nextReview.status) + ' / ' + formatStatus(nextReview.riskLevel || 'risk unknown') : 'No selected-lane review pressure is open.'));
+  const gateStrip = node('div', 'command-center-gate-strip');
+  [
+    ['Goal 5 queue', selectedOpenTasks.length],
+    ['Goal 5 reviews', selectedPendingReviews.length],
+    ['Goal 5 proof', selectedArtifacts.length]
   ].forEach(([label, value]) => {
-    const cell = node('div', 'holo-ring-cell');
-    cell.appendChild(node('strong', null, String(value)));
-    cell.appendChild(node('span', null, label));
-    rings.appendChild(cell);
+    const gate = node('span', 'command-center-gate' + (value ? ' active' : ''));
+    gate.textContent = label + ' · ' + String(value);
+    gateStrip.appendChild(gate);
   });
-  center.appendChild(rings);
+  reviewPanel.appendChild(gateStrip);
+  reviewPanel.appendChild(buildSelectedLaneGateChips({
+    review: nextReview,
+    latestArtifact: latestSelectedArtifact,
+    latestEvent: selectedEvents[0] || null,
+    reviewCount: selectedPendingReviews.length,
+    artifactCount: selectedArtifacts.length,
+    eventCount: selectedEvents.length
+  }));
+  mainGrid.appendChild(reviewPanel);
 
-  const laneRail = node('div', 'holo-lane-strip');
-  laneGoals.slice(0, 2).forEach((goal) => {
-    const lane = node('button', 'holo-lane-chip' + (goal.id === activeGoal?.id ? ' active' : ''));
-    lane.type = 'button';
-    lane.appendChild(node('span', null, channelLabel(goal)));
-    lane.appendChild(node('strong', null, goal.title));
-    lane.addEventListener('click', () => selectGoalLocally(goal.id));
-    laneRail.appendChild(lane);
+  const signalPanel = node('section', 'command-center-panel command-center-panel-signals');
+  signalPanel.appendChild(node('span', 'command-center-panel-label', 'Selected Lane Signals'));
+  signalPanel.appendChild(node('h3', null, 'Goal 5 movement'));
+  const signalList = node('div', 'command-center-signal-list');
+  selectedSignalItems.slice(0, 4).forEach((event) => {
+    const item = node('article', 'command-center-signal-row');
+    item.appendChild(node('strong', null, event.message));
+    item.appendChild(node('small', null, formatStatus(event.type) + ' / ' + eventSourceLabel(event)));
+    signalList.appendChild(item);
   });
-  center.appendChild(laneRail);
-  addHoloDrilldownStrip(center, [
-    { label: 'Task Board', panelId: 'tasks', tone: 'cyan' },
-    { label: 'Review Queue', panelId: 'review', tone: 'coral' },
-    { label: 'Buildout', panelId: 'build', tone: 'violet' },
-    { label: 'Signals', panelId: 'signals', tone: 'gold' }
-  ]);
+  signalPanel.appendChild(signalList);
+  mainGrid.appendChild(signalPanel);
 
-  const rightBand = node('aside', 'holo-band holo-band-right');
-  addHoloRows(leftBand, {
-    title: 'Execution Queue',
-    actionLabel: 'Open Task Board',
-    onAction: () => renderMissionConsole('tasks'),
-    items: openTasks.slice(0, 5).map((task) => ({
-      title: task.title,
-      kicker: goalById(task.goalId)?.title || 'Unrouted goal',
-      meta: formatStatus(task.status) + ' - ' + taskCardMeta(task),
-      tone: task.status === 'blocked' ? 'coral' : task.status === 'queued' ? 'gold' : 'cyan',
-      onAction: () => renderMissionConsole('tasks')
-    })),
-    emptyText: 'No open tasks.'
+  const assetPanel = node('section', 'command-center-panel command-center-panel-assets');
+  assetPanel.appendChild(node('span', 'command-center-panel-label', 'Selected Lane Proof'));
+  assetPanel.appendChild(node('h3', null, 'Goal 5 artifacts'));
+  const assetGrid = node('div', 'command-center-asset-grid');
+  selectedAssetItems.slice(0, 4).forEach((asset) => {
+    const card = node('article', 'command-center-asset-card');
+    card.appendChild(node('strong', null, asset.name || asset.title || asset.id));
+    card.appendChild(node('small', null, formatStatus(asset.status || asset.kind || 'artifact')));
+    assetGrid.appendChild(card);
+  });
+  assetPanel.appendChild(assetGrid);
+  mainGrid.appendChild(assetPanel);
+
+  shell.appendChild(mainGrid);
+
+  const nav = node('div', 'command-center-nav');
+  [
+    ['Mission Map', 'map'],
+    ['Agents', 'agents'],
+    ['Tasks', 'tasks'],
+    ['Review', 'review'],
+    ['Signals', 'signals'],
+    ['Buildout', 'build']
+  ].forEach(([label, panelId]) => {
+    const button = node('button', null, label);
+    button.type = 'button';
+    button.addEventListener('click', () => renderMissionConsole(panelId));
+    nav.appendChild(button);
+  });
+  shell.appendChild(nav);
+
+  panel.appendChild(shell);
+}
+
+function buildSelectedLaneGateChips({
+  review,
+  latestArtifact,
+  latestEvent,
+  reviewCount,
+  artifactCount,
+  eventCount
+}) {
+  const rack = node('div', 'command-center-review-chip-rack');
+  [
+    {
+      label: 'gate',
+      value: review ? formatStatus(review.status) : 'clear',
+      detail: review ? review.title || review.id : 'no open selected-lane gate',
+      tone: review ? 'coral' : 'green'
+    },
+    {
+      label: 'decision',
+      value: review ? formatStatus(review.decision || 'pending') : 'none',
+      detail: review ? formatStatus(review.riskLevel || 'risk unknown') : 'selected lane clear',
+      tone: review ? 'gold' : 'green'
+    },
+    {
+      label: 'approvals',
+      value: review?.requiredApprovals?.length ? String(review.requiredApprovals.length) : '0',
+      detail: review?.requiredApprovals?.join(' / ') || 'no approval queue',
+      tone: review?.requiredApprovals?.length ? 'cyan' : 'green'
+    },
+    {
+      label: 'proof',
+      value: String(artifactCount),
+      detail: latestArtifact?.name || 'no selected proof artifact',
+      tone: artifactCount ? 'violet' : 'gold'
+    },
+    {
+      label: 'events',
+      value: String(eventCount),
+      detail: latestEvent?.message || 'no selected event recorded',
+      tone: eventCount ? 'cyan' : 'gold'
+    },
+    {
+      label: 'risk',
+      value: review ? formatStatus(review.riskLevel || 'unknown') : 'clear',
+      detail: review?.evidence?.[0] || latestArtifact?.createdAt || String(reviewCount) + ' selected-lane review rows',
+      tone: reviewCount ? 'coral' : 'green'
+    }
+  ].forEach((item) => {
+    const chip = node('article', 'command-center-review-chip tone-' + item.tone);
+    chip.appendChild(node('span', null, item.label));
+    chip.appendChild(node('strong', null, item.value));
+    chip.appendChild(node('small', null, item.detail));
+    rack.appendChild(chip);
+  });
+  return rack;
+}
+
+function addReviewLensRecordRows(panel, { kind, items = [], emptyText }) {
+  const list = node('div', 'review-lens-record-list review-lens-record-list-' + kind);
+  const rows = items.length ? items : [{
+    title: emptyText || 'No records.',
+    meta: 'Canonical state has no matching rows.',
+    chips: [{ label: kind || 'state', value: 'empty', tone: 'green' }]
+  }];
+
+  rows.forEach((item) => {
+    const row = node('article', 'review-lens-record-row');
+    const copy = node('div', 'review-lens-record-copy');
+    copy.appendChild(node('span', 'review-lens-record-kind', kind));
+    copy.appendChild(node('strong', null, item.title));
+    if (item.meta) copy.appendChild(node('small', null, item.meta));
+    row.appendChild(copy);
+
+    const chips = node('div', 'review-lens-record-chips');
+    (item.chips || []).forEach(({ label, value, tone }) => {
+      const chip = node('span', 'review-lens-record-chip' + (tone ? ' tone-' + tone : ''));
+      chip.appendChild(node('b', null, label));
+      chip.appendChild(node('em', null, String(value)));
+      chips.appendChild(chip);
+    });
+    row.appendChild(chips);
+    list.appendChild(row);
   });
 
-  addHoloRows(rightBand, {
-    title: 'Agent / Review Pressure',
-    actionLabel: 'Open Review',
-    onAction: () => renderMissionConsole('review'),
-    items: [
-      ...workingAgents.slice(0, 3).map((agent) => ({
-        title: agent.name + ' - ' + agent.role,
-        kicker: agent.currentTaskId ? 'Task ' + agent.currentTaskId : 'Active roster',
-        meta: formatStatus(agent.status) + ' - load ' + (agent.load || 0) + '%',
-        tone: 'cyan',
-        onAction: () => renderMissionConsole('agents')
-      })),
-      ...pendingReviews.slice(0, 3).map((review) => ({
-        title: review.title || review.id,
-        kicker: formatStatus(review.decision || 'pending'),
-        meta: formatStatus(review.status) + ' - ' + formatStatus(review.riskLevel || 'risk unknown'),
-        tone: review.decision === 'approved' ? 'green' : 'coral',
-        onAction: () => renderMissionConsole('review')
-      }))
-    ].slice(0, 6),
-    emptyText: 'No agent or review pressure.'
+  panel.appendChild(list);
+}
+
+function addTelemetryEventRows(panel, { events = [], emptyText = 'No events recorded.' }) {
+  const list = node('div', 'telemetry-event-log');
+  const rows = events.length ? events : [{
+    type: 'event.empty',
+    message: emptyText,
+    createdAt: 'pending',
+    source: 'canonical-state'
+  }];
+
+  rows.forEach((event) => {
+    const row = node('article', 'telemetry-event-row tone-' + eventTone(event));
+    const copy = node('div', 'telemetry-event-copy');
+    copy.appendChild(node('span', 'telemetry-event-kind', formatStatus(event.type || 'event')));
+    copy.appendChild(node('strong', null, event.message || event.id || emptyText));
+    copy.appendChild(node('small', null, (event.createdAt || 'timestamp pending') + ' / ' + eventSourceLabel(event)));
+    row.appendChild(copy);
+
+    const chips = node('div', 'telemetry-event-chips');
+    [
+      { label: 'type', value: formatStatus(event.type || 'event'), tone: eventTone(event) },
+      { label: 'goal', value: goalById(event.goalId)?.title || event.goalId || 'global', tone: event.goalId ? 'cyan' : 'gold' },
+      { label: 'task', value: event.taskId || 'none', tone: event.taskId ? 'violet' : 'green' },
+      { label: 'proof', value: String((event.artifactIds || []).length), tone: (event.artifactIds || []).length ? 'violet' : 'gold' },
+      { label: 'time', value: compactRecordDate(event.createdAt), tone: 'green' }
+    ].forEach(({ label, value, tone }) => {
+      const chip = node('span', 'telemetry-event-chip tone-' + tone);
+      chip.appendChild(node('b', null, label));
+      chip.appendChild(node('em', null, String(value)));
+      chips.appendChild(chip);
+    });
+    row.appendChild(chips);
+    list.appendChild(row);
   });
 
-  stage.appendChild(leftBand);
-  stage.appendChild(center);
-  stage.appendChild(rightBand);
-  layout.appendChild(stage);
+  panel.appendChild(list);
+}
 
-  const bottomRail = node('div', 'holo-bottom-rail');
-  addHoloRows(bottomRail, {
-    title: 'Latest Events',
-    actionLabel: 'Open Telemetry',
-    onAction: () => renderMissionConsole('telemetry'),
-    items: events.slice(0, 4).map((event) => ({
-      title: event.message,
-      kicker: formatStatus(event.type),
-      meta: event.createdAt + ' - ' + eventSourceLabel(event),
-      tone: 'cyan',
-      onAction: () => renderMissionConsole('telemetry')
-    })),
-    emptyText: 'No events recorded.'
-  });
-  addHoloRows(bottomRail, {
-    title: 'Evidence / Assets',
-    actionLabel: 'Open Buildout',
-    onAction: () => renderMissionConsole('build'),
-    items: [
-    ...attentionAssets.slice(0, 2).map((asset) => ({
-      title: asset.name,
-      kicker: formatStatus(asset.status),
-      meta: formatStatus(asset.status) + ' - ' + asset.source,
-      tone: 'violet',
-      onAction: () => renderMissionConsole('build')
-    })),
-    ...artifacts.slice(-2).reverse().map((artifact) => ({
-      title: artifact.name,
-      kicker: artifact.kind,
-      meta: artifact.kind + ' - ' + artifact.path,
-      tone: 'gold',
-      onAction: () => renderMissionConsole('build')
-    }))
-  ].slice(0, 4),
-    emptyText: 'No evidence recorded.'
-  });
-  layout.appendChild(bottomRail);
+function eventTone(event = {}) {
+  if ((event.type || '').includes('artifact')) return 'violet';
+  if ((event.type || '').includes('task')) return 'gold';
+  if ((event.type || '').includes('review')) return 'coral';
+  if ((event.type || '').includes('goal')) return 'cyan';
+  return 'green';
+}
 
-  panel.appendChild(layout);
+function compactRecordDate(value) {
+  if (!value) return 'pending';
+  const raw = String(value);
+  return raw.includes('T') ? raw.slice(0, 10) : raw;
 }
 
 function addConsolePanel(grid, { title, body, items = [], emptyText = 'No records yet.', wide = false, renderContent = null }) {
@@ -798,6 +2480,8 @@ function eventSourceLabel(event = {}) {
 
 function selectedGoal() {
   const goals = facilityState.raw?.goals || [];
+  const goal5 = goals.find((goal) => goal.id === 'goal-5-holo-table-density-kanban');
+  if (overlayFocusMode && goal5 && !queryParams.get('goal')) return goal5;
   return goals.find((goal) => goal.id === selectedConsoleGoalId)
     || goals.find((goal) => goal.id === facilityState.raw?.localBridge?.selectedGoalId)
     || goals.find((goal) => goal.status === 'running')
@@ -990,6 +2674,8 @@ function buildConsolePanel(panelId) {
   const reviews = raw.reviews || [];
   const artifacts = raw.artifacts || [];
   const assets = raw.facilityAssets || [];
+  const visualReviews = raw.visualReviews || [];
+  const referenceMatch = raw.referenceMatch?.goal5 || null;
   const telemetry = raw.telemetry?.summary || {};
   const localBridge = raw.localBridge || {};
   const activeGoal = selectedGoal();
@@ -1008,12 +2694,42 @@ function buildConsolePanel(panelId) {
     'goal-5-holo-table-density-kanban',
     'goal-6-high-fidelity-asteroid-baseline'
   ].includes(goal.id));
+  const goal5Id = 'goal-5-holo-table-density-kanban';
+  const goal5Reviews = latestByCreatedAt(visualReviews
+    .filter((review) => review.goalId === goal5Id)
+    .map((review) => ({ ...review, createdAt: review.updatedAt || review.createdAt })));
+  const goal5Artifacts = latestByCreatedAt(artifacts.filter((artifact) => artifact.goalId === goal5Id));
+  const goal5Events = events.filter((event) => event.goalId === goal5Id);
+  const proofTrail = {
+    visualReview: goal5Reviews[0] || null,
+    artifact: goal5Artifacts[0] || null,
+    event: goal5Events[0] || null
+  };
+  const selectedLaneReviews = activeGoal?.id
+    ? pendingReviews.filter((review) => review.goalId === activeGoal.id)
+    : pendingReviews;
+  const selectedLaneArtifacts = latestByCreatedAt(activeGoal?.id
+    ? artifacts.filter((artifact) => artifact.goalId === activeGoal.id)
+    : artifacts);
+  const selectedLaneEvents = activeGoal?.id
+    ? events.filter((event) => event.goalId === activeGoal.id)
+    : events;
+  const drilldownLensPanel = createCommandLensPanel(panelId, {
+    activeGoal,
+    runs,
+    tasks,
+    openTasks,
+    pendingReviews,
+    events,
+    artifacts,
+    telemetry
+  });
 
   if (panelId === 'overview') {
     return [
       {
-        title: 'Command Table Overview',
-        body: 'Reference-match pass: one table-driven command surface where mission state radiates from the central holo-table instead of splitting across dashboard cards.',
+        title: 'Agent Operations Dashboard',
+        body: 'Design-first Command Center surface for agent management, task routing, review gates, project signals, and current build material.',
         wide: true,
         renderContent: (panel) => addHoloCommandOverview(panel, {
           activeGoal,
@@ -1027,7 +2743,9 @@ function buildConsolePanel(panelId) {
           events,
           artifacts,
           telemetry,
-          laneGoals
+          laneGoals,
+          proofTrail,
+          referenceMatch
         })
       }
     ];
@@ -1035,6 +2753,7 @@ function buildConsolePanel(panelId) {
 
   if (panelId === 'map') {
     return [
+      drilldownLensPanel,
       {
         title: 'Goal Lifecycle',
         body: 'Mission map is derived from canonical goals and runs.',
@@ -1054,7 +2773,7 @@ function buildConsolePanel(panelId) {
         })),
         emptyText: 'No runs recorded.'
       }
-    ];
+    ].filter(Boolean);
   }
 
   if (panelId === 'agents') {
@@ -1085,6 +2804,7 @@ function buildConsolePanel(panelId) {
 
   if (panelId === 'tasks') {
     return [
+      drilldownLensPanel,
       {
         title: 'Task Board',
         body: 'Kanban view keeps open work, blockers, and recent completions on one surface instead of burying task state in a long flat list.',
@@ -1115,42 +2835,112 @@ function buildConsolePanel(panelId) {
         emptyText: 'No auto-assignable open tasks.',
         wide: true
       }
-    ];
+    ].filter(Boolean);
   }
 
   if (panelId === 'review') {
     return [
+      drilldownLensPanel,
+      {
+        title: 'Selected Lane Gate Summary',
+        body: (activeGoal?.title || 'Selected lane') + ' gate, evidence, and event state opened from the command-table trail.',
+        wide: true,
+        renderContent: (panel) => {
+          addMetricStrip(panel, [
+            { label: 'Lane reviews', value: selectedLaneReviews.length, tone: selectedLaneReviews.length ? 'coral' : 'green' },
+            { label: 'Lane proof', value: selectedLaneArtifacts.length, tone: 'violet' },
+            { label: 'Lane events', value: selectedLaneEvents.length, tone: 'cyan' }
+          ]);
+          addHoloRows(panel, {
+            title: 'Gate / Evidence / Event',
+            items: [
+              {
+                kicker: 'gate',
+                title: selectedLaneReviews[0]?.title || 'Selected lane gate clear',
+                meta: selectedLaneReviews[0]
+                  ? formatStatus(selectedLaneReviews[0].status) + ' / ' + formatStatus(selectedLaneReviews[0].decision || 'pending')
+                  : 'No selected-lane review pressure',
+                tone: selectedLaneReviews.length ? 'coral' : 'green'
+              },
+              {
+                kicker: 'evidence',
+                title: selectedLaneReviews[0]?.evidence?.[0] || selectedLaneArtifacts[0]?.name || 'No selected evidence needed',
+                meta: selectedLaneReviews[0]?.note || selectedLaneArtifacts[0]?.createdAt || 'state-backed Goal 5 proof only',
+                tone: 'gold'
+              },
+              {
+                kicker: 'event',
+                title: selectedLaneEvents[0]?.message || 'No selected event recorded',
+                meta: selectedLaneEvents[0]
+                  ? selectedLaneEvents[0].createdAt + ' / ' + eventSourceLabel(selectedLaneEvents[0])
+                  : 'Goal 5 event ledger empty',
+                tone: 'cyan'
+              }
+            ],
+            emptyText: 'No selected-lane gate summary.'
+          });
+        }
+      },
       {
         title: 'Review Chamber',
         body: 'Risky actions stop here until their approval, evidence, and decision state are explicit.',
-        items: reviews.map((review) => ({
-          title: review.title || review.id,
-          meta: `${formatStatus(review.status)} · ${formatStatus(review.decision || 'pending')} · ${formatStatus(review.riskLevel || 'risk unknown')} · approvals ${(review.requiredApprovals || []).join(', ') || 'none'}`
-        })),
-        emptyText: 'No review gates are open yet.'
+        wide: true,
+        renderContent: (panel) => addReviewLensRecordRows(panel, {
+          kind: 'review',
+          emptyText: 'No review gates are open yet.',
+          items: reviews.map((review) => ({
+            title: review.title || review.id,
+            meta: review.note || review.id,
+            chips: [
+              { label: 'status', value: formatStatus(review.status), tone: review.status === 'completed' ? 'green' : 'coral' },
+              { label: 'decision', value: formatStatus(review.decision || 'pending'), tone: review.decision === 'approved' ? 'green' : 'gold' },
+              { label: 'risk', value: formatStatus(review.riskLevel || 'unknown'), tone: review.riskLevel === 'low' ? 'green' : 'coral' },
+              { label: 'approvals', value: (review.requiredApprovals || []).join(' / ') || 'none', tone: (review.requiredApprovals || []).length ? 'cyan' : 'green' }
+            ]
+          }))
+        })
       },
       {
         title: 'Approval Evidence',
-        items: reviews.map((review) => ({
-          title: review.title || review.id,
-          meta: (review.evidence || []).join(' · ') || review.note || 'No evidence recorded.'
-        })),
         emptyText: 'No approval evidence recorded.',
-        wide: true
+        wide: true,
+        renderContent: (panel) => addReviewLensRecordRows(panel, {
+          kind: 'evidence',
+          emptyText: 'No approval evidence recorded.',
+          items: reviews.map((review) => ({
+            title: review.title || review.id,
+            meta: (review.evidence || []).join(' / ') || review.note || 'No evidence recorded.',
+            chips: [
+              { label: 'evidence', value: String((review.evidence || []).length), tone: (review.evidence || []).length ? 'violet' : 'gold' },
+              { label: 'updated', value: compactRecordDate(review.updatedAt || review.createdAt), tone: 'cyan' },
+              { label: 'gate', value: formatStatus(review.status), tone: review.status === 'completed' ? 'green' : 'coral' }
+            ]
+          }))
+        })
       },
       {
         title: 'Verification Artifacts',
-        items: artifacts.map((artifact) => ({
-          title: artifact.name,
-          meta: `${artifact.kind} · ${artifact.path}`
-        })),
-        emptyText: 'No artifacts recorded.'
+        wide: true,
+        renderContent: (panel) => addReviewLensRecordRows(panel, {
+          kind: 'artifact',
+          emptyText: 'No artifacts recorded.',
+          items: artifacts.slice(0, 12).map((artifact) => ({
+            title: artifact.name,
+            meta: artifact.path,
+            chips: [
+              { label: 'kind', value: artifact.kind || 'artifact', tone: 'violet' },
+              { label: 'goal', value: artifact.goalId === activeGoal?.id ? 'selected' : 'context', tone: artifact.goalId === activeGoal?.id ? 'green' : 'cyan' },
+              { label: 'recorded', value: compactRecordDate(artifact.createdAt), tone: 'gold' }
+            ]
+          }))
+        })
       }
-    ];
+    ].filter(Boolean);
   }
 
   if (panelId === 'telemetry') {
     return [
+      drilldownLensPanel,
       {
         title: 'Telemetry Summary',
         body: `${telemetry.activeGoals ?? 0} active goals · ${telemetry.activeTasks ?? 0} active tasks · ${telemetry.queuedTasks ?? 0} queued tasks · ${telemetry.blockedGoals ?? 0} blocked goals.`,
@@ -1158,11 +2948,12 @@ function buildConsolePanel(panelId) {
       },
       {
         title: 'Recent Events',
-        items: events.slice(0, 6).map((event) => ({
-          title: formatStatus(event.type),
-          meta: `${event.message} · ${event.createdAt} · ${eventSourceLabel(event)}`
-        })),
-        emptyText: 'No events recorded.'
+        body: (activeGoal?.title || 'Selected lane') + ' event stream rendered as compact read-only operator-log rows.',
+        wide: true,
+        renderContent: (panel) => addTelemetryEventRows(panel, {
+          events: (selectedLaneEvents.length ? selectedLaneEvents : events).slice(0, 8),
+          emptyText: 'No selected-lane events recorded.'
+        })
       },
       {
         title: 'Local Event Bridge',
@@ -1182,7 +2973,7 @@ function buildConsolePanel(panelId) {
           meta: 'task.recorded, task.assigned, task.status_changed, task.progress_reported, goal.checkpoint, artifact.recorded'
         }]
       }
-    ];
+    ].filter(Boolean);
   }
 
   if (panelId === 'signals') {
@@ -1252,7 +3043,7 @@ function buildConsolePanel(panelId) {
     },
     {
       title: 'Goal Lanes',
-      body: 'Overlay and 3D work now have separate channel ownership, so the holo-table can keep moving while the asteroid baseline is proven elsewhere.',
+      body: 'Dashboard and 3D work now have separate channel ownership, so the Command Center can keep moving while the asteroid baseline is proven elsewhere.',
       wide: true,
       renderContent: (panel) => addGoalLaneRail(panel, laneGoals)
     },
@@ -1342,7 +3133,9 @@ function renderMissionConsole(panelId = activeConsolePanel) {
     tabs.appendChild(button);
   });
 
-  title.textContent = facilityState.meta.title || 'Mission Control';
+  title.textContent = activeConsolePanel === 'overview'
+    ? 'Command Center'
+    : (facilityState.meta.title || 'Mission Control');
   kicker.textContent = facilityState.meta.updatedAt
     ? `${facilityState.meta.sourceLabel} · ${facilityState.meta.updatedAt.slice(0, 10)}`
     : facilityState.meta.sourceLabel;
@@ -5551,7 +7344,58 @@ function buildHifi18OperationsCavernCarveoutPass() {
 function loadMeshy101LiveBaseline() {
   const loader = new GLTFLoader();
   const live = new THREE.Group();
-  live.name = 'Meshy-101 live baseline asteroid model root';
+  const asteroidVariant = new URLSearchParams(window.location.search).get('asteroid');
+  const asteroidAsset = asteroidVariant === '108'
+    ? {
+        path: 'assets/blender/meshy-108-hifi-cshell-detail-v1.glb?v=meshy108-hifi-cshell-detail-v1',
+        rootName: 'Meshy-108 high-fidelity C-shell candidate asteroid model root',
+        modelName: 'Meshy-108 high-fidelity C-shell runtime GLB',
+        scale: 5.8,
+        rotationY: 0.54,
+        position: [0.0, -4.8, -11.7],
+        useSourceMaterial: true
+      }
+    : asteroidVariant === '107'
+    ? {
+        path: 'assets/blender/meshy-107-hand-authored-cshell-baseline-v1.glb?v=meshy107-hand-authored-cshell-v1',
+        rootName: 'Meshy-107 hand-authored C-shell candidate asteroid model root',
+        modelName: 'Meshy-107 hand-authored C-shell runtime GLB',
+        scale: 2.42,
+        rotationY: 0.28,
+        position: [0.0, -5.7, -12.8]
+      }
+    : asteroidVariant === '103'
+    ? {
+        path: 'assets/blender/meshy-103-clear-interior-sidebay-textured-v1.glb?v=meshy103-textured-v1-local-proof',
+        rootName: 'Meshy-103 clear interior sidebay candidate asteroid model root',
+        modelName: 'Meshy-103 clear interior sidebay candidate runtime GLB',
+        scale: 14.5,
+        rotationY: 0.65,
+        position: [0.0, -5.6, -12.8],
+        useSourceMaterial: true
+      }
+    : asteroidVariant === '102'
+    ? {
+        path: 'assets/blender/meshy-102-broken-overhang-candidate-v1.glb?v=meshy102-candidate-v1-local-proof',
+        rootName: 'Meshy-102 broken overhang candidate asteroid model root',
+        modelName: 'Meshy-102 broken overhang candidate runtime GLB',
+        scale: 11.4,
+        rotationY: -0.22,
+        position: [0.0, -5.6, -12.8]
+      }
+    : {
+        path: 'assets/blender/meshy-101-open-front-clean-runtime-v1.glb?v=meshy101-clean-v1-rollback-20260519',
+        rootName: 'Meshy-101 live baseline asteroid model root',
+        modelName: 'Meshy-101 clean rollback asteroid runtime GLB',
+        scale: 1.28,
+        rotationY: -0.14,
+        position: [0.0, -5.6, -12.8]
+      };
+  const asteroidYawOverride = Number(queryParams.get('asteroidYaw'));
+  const asteroidScaleOverride = Number(queryParams.get('asteroidScale'));
+  if (Number.isFinite(asteroidYawOverride)) asteroidAsset.rotationY = asteroidYawOverride;
+  if (Number.isFinite(asteroidScaleOverride) && asteroidScaleOverride > 0) asteroidAsset.scale = asteroidScaleOverride;
+  live.name = asteroidAsset.rootName;
   root.add(live);
 
   const rockMaterial = new THREE.MeshStandardMaterial({
@@ -5564,24 +7408,24 @@ function loadMeshy101LiveBaseline() {
     flatShading: false
   });
 
-  loader.load('assets/blender/meshy-101-open-front-clean-runtime-v1.glb?v=meshy101-clean-v1-rollback-20260519', (gltf) => {
+  loader.load(asteroidAsset.path, (gltf) => {
     const model = gltf.scene;
-    model.name = 'Meshy-101 open-front clean v1 asteroid runtime GLB';
-    model.position.set(0.0, -5.6, -12.8);
-    model.rotation.set(0.0, -0.14, 0.0);
-    model.scale.setScalar(1.28);
+    model.name = asteroidAsset.modelName;
+    model.position.set(...asteroidAsset.position);
+    model.rotation.set(0.0, asteroidAsset.rotationY, 0.0);
+    model.scale.setScalar(asteroidAsset.scale);
 
     model.traverse((node) => {
       if (node.isMesh) {
         node.frustumCulled = false;
         node.receiveShadow = true;
-        node.material = rockMaterial;
+        if (!asteroidAsset.useSourceMaterial) node.material = rockMaterial;
       }
     });
 
     live.add(model);
   }, undefined, (error) => {
-    console.warn('Failed to load Meshy-101 live baseline asteroid model', error);
+    console.warn('Failed to load live baseline asteroid model', error);
   });
 
   const topKey = new THREE.DirectionalLight(0xd8e4ff, 5.8);

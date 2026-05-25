@@ -1,0 +1,169 @@
+{
+  "candidate": "meshy-108-portal-adjacent-control-insert-placement-contact-proof",
+  "gapPicked": "place portal-adjacent control insert and prove contact/runtime",
+  "createdAt": "2026-05-22T10:02:15Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "sourceSceneBlend": "assets/blender/meshy-108-cargo-tool-pod-proxy-placement-contact-proof.blend",
+  "sourceSceneGlb": "assets/blender/meshy-108-cargo-tool-pod-proxy-placement-contact-proof.glb",
+  "assetSourceGlb": "assets/meshy/api/39-portal-adjacent-control-insert.meshy.glb",
+  "candidateGateMetrics": "docs/visual-reviews/2026-05-22-meshy-108-support-logistics-candidate-gate-after-cargo-audit.json",
+  "outBlend": "assets/blender/meshy-108-portal-adjacent-control-insert-placement-contact-proof.blend",
+  "outGlb": "assets/blender/meshy-108-portal-adjacent-control-insert-placement-contact-proof.glb",
+  "placement": {
+    "role": "hangar-support",
+    "label": "Portal-adjacent control insert",
+    "zone": "lower right hangar portal support wall",
+    "location": [
+      1.72,
+      1.34,
+      0.88
+    ],
+    "rotationZDegrees": -19,
+    "targetMaxDimension": 0.62,
+    "importedMeshCount": 1
+  },
+  "contactAudit": {
+    "pad": "portal adjacent control insert support pad",
+    "marker": "portal adjacent control insert cyan locator",
+    "assetBounds": {
+      "min": [
+        1.3284,
+        0.9532,
+        0.8221
+      ],
+      "max": [
+        2.1116,
+        1.7268,
+        0.9379
+      ],
+      "dimensions": [
+        0.7831,
+        0.7736,
+        0.1159
+      ]
+    },
+    "padBounds": {
+      "min": [
+        1.338,
+        0.9699,
+        0.7941
+      ],
+      "max": [
+        2.102,
+        1.7101,
+        0.8221
+      ],
+      "dimensions": [
+        0.7639,
+        0.7402,
+        0.028
+      ]
+    },
+    "verticalGapAssetMinToPadTop": 0.0,
+    "xyOverlapRatio": 1.0,
+    "status": "accepted-contact-range"
+  },
+  "acceptedContactCount": 1,
+  "needsReviewCount": 0,
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 72792232,
+    "sourceSceneMB": 69.42,
+    "assetSourceBytes": 207924,
+    "assetSourceMB": 0.198,
+    "gateProjectedSceneMB": 69.618,
+    "outputBytes": 74206668,
+    "outputMB": 70.769,
+    "remainingBytes": 26456628,
+    "remainingMB": 25.231,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "nextIncrementHeadroomPass": true,
+    "status": "pass"
+  },
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-cargo-tool-pod-proxy-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 72792232,
+    "mb": 69.42,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 414,
+    "meshCount": 388,
+    "materialCount": 55,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1210,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "assetSourceInspection": {
+    "path": "assets/meshy/api/39-portal-adjacent-control-insert.meshy.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 207924,
+    "mb": 0.198,
+    "asset": {
+      "generator": "libmeshy",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 1,
+    "meshCount": 1,
+    "materialCount": 0,
+    "textureCount": 0,
+    "imageCount": 0,
+    "accessorCount": 2,
+    "animationCount": 0,
+    "extensionsUsed": []
+  },
+  "placementGlbInspection": {
+    "path": "assets/blender/meshy-108-portal-adjacent-control-insert-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 74206668,
+    "mb": 70.769,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 424,
+    "meshCount": 397,
+    "materialCount": 60,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1241,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-portal-adjacent-control-insert-placement-contact-proof/2026-05-22-meshy-108-portal-adjacent-control-insert-placement-contact-proof-top.png",
+    "front": "docs/visual-reviews/meshy-108-portal-adjacent-control-insert-placement-contact-proof/2026-05-22-meshy-108-portal-adjacent-control-insert-placement-contact-proof-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-portal-adjacent-control-insert-placement-contact-proof/2026-05-22-meshy-108-portal-adjacent-control-insert-placement-contact-proof-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-portal-adjacent-control-insert-placement-contact-proof/2026-05-22-meshy-108-portal-adjacent-control-insert-placement-contact-proof-detail.png"
+  },
+  "decision": "portal-adjacent-control-insert-placement-contact-passed",
+  "nextStep": "run a Meshy-108 density/runtime audit after portal-adjacent control insert placement before adding another asset",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-22-meshy-108-portal-adjacent-control-insert-placement-contact-proof.md",
+    "docs/visual-reviews/2026-05-22-meshy-108-portal-adjacent-control-insert-placement-contact-proof.json",
+    "docs/visual-reviews/2026-05-22-meshy-108-portal-adjacent-control-insert-placement-contact-proof-board.png",
+    "docs/visual-reviews/2026-05-22-meshy-108-portal-adjacent-control-insert-placement-contact-proof-viewer.html",
+    "docs/visual-reviews/2026-05-22-meshy-108-portal-adjacent-control-insert-placement-contact-proof-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-portal-adjacent-control-insert-placement-contact-proof"
+  ]
+}

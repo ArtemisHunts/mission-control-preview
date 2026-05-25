@@ -1,0 +1,121 @@
+{
+  "candidate": "meshy-108-density-runtime-audit-after-tight-console-proxy-placement",
+  "gapPicked": "audit Meshy-108 density/runtime after tight console proxy placement",
+  "createdAt": "2026-05-22T23:36:59Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "noNewFacilityAssetPlaced": true,
+  "sourceSceneBlend": "assets/blender/meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof.blend",
+  "sourceSceneGlb": "assets/blender/meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof.glb",
+  "sourcePlacementMetrics": "docs/visual-reviews/2026-05-22-meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof.json",
+  "auditBlend": "assets/blender/meshy-108-density-runtime-audit-after-tight-console-proxy-placement.blend",
+  "auditGlb": "assets/blender/meshy-108-density-runtime-audit-after-tight-console-proxy-placement.glb",
+  "sceneBounds": {
+    "min": [
+      -3.8818,
+      -3.0368,
+      -1.8656
+    ],
+    "max": [
+      3.2963,
+      3.1295,
+      2.1056
+    ],
+    "dimensions": [
+      7.178,
+      6.1663,
+      3.9712
+    ]
+  },
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 71046076,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 395,
+    "meshCount": 366,
+    "materialCount": 59,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1116,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "auditGlbInspection": {
+    "path": "assets/blender/meshy-108-density-runtime-audit-after-tight-console-proxy-placement.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 76719996,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 461,
+    "meshCount": 432,
+    "materialCount": 78,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1357,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 71046076,
+    "sourceSceneMB": 67.755,
+    "sourceRemainingBytes": 29617220,
+    "sourceRemainingMB": 28.245,
+    "sourceUsagePercent": 70.58,
+    "auditGlbBytes": 76719996,
+    "auditGlbMB": 73.166,
+    "auditRemainingBytes": 23943300,
+    "auditRemainingMB": 22.834,
+    "auditUsagePercent": 76.21,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "nextIncrementHeadroomPass": true,
+    "status": "pass-density-runtime-audit"
+  },
+  "densityRuntimeAudit": {
+    "commandHero": "pass-visible-upper-command-band",
+    "productionGantry": "pass-visible-lower-left-production-span",
+    "supportDuct": "pass-visible-right-lower-service-wall",
+    "portalControlInsert": "pass-visible-lower-right-hangar-portal-support-wall",
+    "tightConsoleProxy": "pass-visible-lower-command-control-support-strip",
+    "tightConsoleProxyContact": "accepted-contact-range",
+    "tightConsoleProxyContactGap": 0.0,
+    "tightConsoleProxyContactOverlap": 0.9946,
+    "openMouthClearance": "pass-clearance-corridor-marked",
+    "roleReadability": "pass-command-production-hangar-power-signal-control-logistics-catwalk-support-utility-cargo-tool-pod-embedded-ops-wall-bunker-tight-console-proxy-present",
+    "balance": "pass-with-caution-next-asset-needs-role-value-and-runtime-gate"
+  },
+  "decision": "passed-density-runtime-audit-after-tight-console-proxy-placement",
+  "nextStep": "gate the next Meshy-108 support/logistics candidate before placement; optimize first if direct placement would consume too much runtime headroom",
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-density-runtime-audit-after-tight-console-proxy-placement/2026-05-22-meshy-108-density-runtime-audit-after-tight-console-proxy-placement-top.png",
+    "front": "docs/visual-reviews/meshy-108-density-runtime-audit-after-tight-console-proxy-placement/2026-05-22-meshy-108-density-runtime-audit-after-tight-console-proxy-placement-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-density-runtime-audit-after-tight-console-proxy-placement/2026-05-22-meshy-108-density-runtime-audit-after-tight-console-proxy-placement-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-density-runtime-audit-after-tight-console-proxy-placement/2026-05-22-meshy-108-density-runtime-audit-after-tight-console-proxy-placement-detail.png"
+  },
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-tight-console-proxy-placement.md",
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-tight-console-proxy-placement.json",
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-tight-console-proxy-placement-board.png",
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-tight-console-proxy-placement-viewer.html",
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-tight-console-proxy-placement-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-tight-console-proxy-placement"
+  ]
+}

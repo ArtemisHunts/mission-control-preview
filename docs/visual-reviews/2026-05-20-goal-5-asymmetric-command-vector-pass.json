@@ -1,0 +1,30 @@
+{
+  "id": "visual-review-goal-5-asymmetric-command-vector-20260520",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-asymmetric-command-vector",
+  "scope": "goal-5-overlay-ui",
+  "createdAt": "2026-05-20T14:51:00.000Z",
+  "decision": "asymmetric-hierarchy-improved-not-reference-complete",
+  "zones": [
+    "zone-central-command-table",
+    "zone-peripheral-ops-bands"
+  ],
+  "changes": [
+    "Added asymmetric command vector to overlay-only overview",
+    "Bound Primary table, Execution draw, Pressure counterweight, and Proof tail to canonical state",
+    "Updated central/peripheral reference-zone language without marking the overlay complete"
+  ],
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-20-goal-5-asymmetric-command-vector-desktop.png",
+    "docs/visual-reviews/2026-05-20-goal-5-asymmetric-command-vector-mobile.png",
+    "tmp/goal-5-asymmetric-command-vector-dom.html"
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM smoke for asymmetric command vector"
+  ],
+  "remainingGap": "Needs stronger command-room lighting integration and repeat side-by-side proof before reference-complete claims."
+}

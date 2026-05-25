@@ -1,0 +1,78 @@
+{
+  "candidate": "meshy-107-hand-authored-cshell-baseline-v1",
+  "sourceReason": "No-spend hand-authored candidate after Meshy-106 source-guided generation collapsed the missing quadrant into a bowl/tube.",
+  "blend": "assets/blender/meshy-107-hand-authored-cshell-baseline-v1.blend",
+  "glb": "assets/blender/meshy-107-hand-authored-cshell-baseline-v1.glb",
+  "renders": {
+    "top": "docs/visual-reviews/meshy-107-hand-authored-cshell-baseline-v1/2026-05-20-meshy-107-hand-authored-cshell-top.png",
+    "front": "docs/visual-reviews/meshy-107-hand-authored-cshell-baseline-v1/2026-05-20-meshy-107-hand-authored-cshell-front.png",
+    "side": "docs/visual-reviews/meshy-107-hand-authored-cshell-baseline-v1/2026-05-20-meshy-107-hand-authored-cshell-side.png",
+    "oblique": "docs/visual-reviews/meshy-107-hand-authored-cshell-baseline-v1/2026-05-20-meshy-107-hand-authored-cshell-oblique.png"
+  },
+  "blenderInspection": {
+    "meshObjectCount": 47,
+    "vertexCount": 6980,
+    "polygonCount": 7380,
+    "boundsMin": [
+      -3.5003,
+      -2.8272,
+      -0.8929
+    ],
+    "boundsMax": [
+      2.0487,
+      2.853,
+      0.7918
+    ],
+    "dimensions": [
+      5.549,
+      5.6801,
+      1.6847
+    ]
+  },
+  "glbInspection": {
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 828272,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 47,
+    "meshCount": 47,
+    "materialCount": 1,
+    "textureCount": 0,
+    "animationCount": 0,
+    "extensionsUsed": []
+  },
+  "acceptanceTargets": [
+    "top-view broken C-shell negative space remains open",
+    "large missing quadrant/open mouth cannot close into a bowl",
+    "thin torn rim and jagged end caps",
+    "no floor slab; central cavity remains empty",
+    "asteroid rock only; no facility/building/machinery detail"
+  ],
+  "decision": "passed local topology/runtime candidate gate; not accepted high-fidelity final",
+  "visualDecision": {
+    "status": "passed-topology-runtime-candidate",
+    "summary": "Visual QA passes Meshy-107 as a usable hand-authored baseline candidate because the top-view broken C-shell and missing quadrant remain open. It is not high-fidelity final art yet.",
+    "passed": [
+      "unmistakable top-view broken C-shell negative space",
+      "large missing quadrant/open mouth remains open",
+      "thin uneven torn rim",
+      "no floor slab or closed bowl interior",
+      "asteroid rock only; no facility/building/machinery detail"
+    ],
+    "caveats": [
+      "topology/runtime candidate only, not high-fidelity final",
+      "Mission Control app smoke loaded the GLB but existing scene framing is too dark for visual acceptance; Blender board remains the visual proof"
+    ]
+  },
+  "runtimeProof": {
+    "appVariant": "?camera=detail&asteroid=107",
+    "glbHttpStatus": 200,
+    "appScreenshot": "docs/visual-reviews/2026-05-20-meshy-107-hand-authored-cshell-runtime-smoke.png",
+    "proofViewer": "docs/visual-reviews/2026-05-20-meshy-107-hand-authored-cshell-runtime-proof.html",
+    "note": "Mission Control app variant requested the Meshy-107 GLB and captured a nonblank scene smoke; visual acceptance is based on Blender renders/board because app lighting is too dark for final art review."
+  }
+}

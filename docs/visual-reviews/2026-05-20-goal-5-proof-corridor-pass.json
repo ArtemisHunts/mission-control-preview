@@ -1,0 +1,47 @@
+{
+  "id": "visual-review-goal-5-proof-corridor-20260520",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-holo-table-proof-corridor",
+  "title": "Goal 5 proof corridor overlay pass",
+  "status": "completed",
+  "decision": "passed-browser-smoke",
+  "url": "http://127.0.0.1:4177/?overlay=1&console=overview",
+  "screenshots": {
+    "desktop": {
+      "path": "docs/visual-reviews/2026-05-20-goal-5-proof-corridor-desktop.png",
+      "width": 1440,
+      "height": 1100,
+      "bytes": 423254
+    },
+    "mobile": {
+      "path": "docs/visual-reviews/2026-05-20-goal-5-proof-corridor-mobile.png",
+      "width": 390,
+      "height": 900,
+      "bytes": 249482
+    }
+  },
+  "domSmoke": {
+    "path": "tmp/goal-5-proof-corridor-dom.html",
+    "proofNodes": 3,
+    "requiredText": [
+      "Review decision",
+      "Proof artifact",
+      "Latest event",
+      "Goal 5 proof corridor overlay pass",
+      "Goal 5 proof corridor pass added",
+      "Command Table Overview"
+    ],
+    "missingText": [],
+    "pass": true
+  },
+  "checks": [
+    "node --check app.js",
+    "node scripts/validate-mission-state.mjs",
+    "git diff --check",
+    "headless Chrome desktop screenshot",
+    "headless Chrome mobile screenshot",
+    "headless Chrome DOM smoke"
+  ],
+  "createdAt": "2026-05-20T04:21:00.000Z",
+  "isDemo": false
+}

@@ -1,0 +1,28 @@
+{
+  "id": "visual-review-goal-5-command-lens-drilldown-20260521",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-command-lens-drilldown-controls",
+  "artifactId": "artifact-goal-5-command-lens-drilldown-controls",
+  "createdAt": "2026-05-21T11:55:12.000Z",
+  "route": "?overlay=1&console=overview",
+  "decision": "command-lens-drilldowns-improved-not-reference-complete",
+  "pickedGap": "Drill-down hierarchy rows were state-backed but passive.",
+  "change": "Converted goal, queue, gate, and proof hierarchy rows into read-only controls that open existing detail panels.",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-goal-5-command-lens-drilldown-proof.md",
+    "docs/visual-reviews/2026-05-21-goal-5-command-lens-drilldown-proof.json",
+    "docs/visual-reviews/2026-05-21-goal-5-command-lens-drilldown-desktop.png",
+    "docs/visual-reviews/2026-05-21-goal-5-command-lens-drilldown-mobile.png",
+    "tmp/goal-5-command-lens-drilldown-dom.html"
+  ],
+  "criteria": [
+    "Command Table Core renders in overlay overview",
+    "drill-down hierarchy label renders",
+    "goal, queue, gate, and proof drill-down controls are present",
+    "controls route only to existing panels and do not create backend actions",
+    "desktop and mobile screenshots are nonblank",
+    "DOM smoke assertions pass"
+  ],
+  "isDemo": false
+}

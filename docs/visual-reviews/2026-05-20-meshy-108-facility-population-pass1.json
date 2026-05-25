@@ -1,0 +1,176 @@
+{
+  "candidate": "meshy-108-facility-population-pass1",
+  "gapPicked": "first facility asset population pass on accepted Meshy-108 baseline",
+  "noMeshySpend": true,
+  "sourceAsteroid": "assets/blender/meshy-108-hifi-cshell-detail-v1.glb",
+  "sourceBlend": "assets/blender/meshy-108-hifi-cshell-detail-v1.blend",
+  "blend": "assets/blender/meshy-108-facility-population-pass1.blend",
+  "glb": "assets/blender/meshy-108-facility-population-pass1.glb",
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-facility-population-pass1/2026-05-20-meshy-108-facility-population-pass1-top.png",
+    "front": "docs/visual-reviews/meshy-108-facility-population-pass1/2026-05-20-meshy-108-facility-population-pass1-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-facility-population-pass1/2026-05-20-meshy-108-facility-population-pass1-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-facility-population-pass1/2026-05-20-meshy-108-facility-population-pass1-detail.png"
+  },
+  "selectedAssets": [
+    {
+      "role": "command",
+      "label": "Command bay",
+      "path": "assets/meshy/api/54-tight-panoramic-command-bunker-face.meshy.glb",
+      "location": [
+        -0.45,
+        1.2,
+        0.9
+      ],
+      "rotationZDegrees": -4,
+      "targetMaxDimension": 1.8
+    },
+    {
+      "role": "hangar",
+      "label": "Hangar airlock",
+      "path": "assets/meshy/api/25-hangar-airlock-portal-frame-v2.meshy.glb",
+      "location": [
+        -2.05,
+        -0.85,
+        0.82
+      ],
+      "rotationZDegrees": 14,
+      "targetMaxDimension": 1.65
+    },
+    {
+      "role": "production",
+      "label": "Fabrication arm",
+      "path": "assets/meshy/api/14-fabrication-robotic-arm-background-workcell-v3.glb",
+      "location": [
+        1.65,
+        -1.05,
+        0.78
+      ],
+      "rotationZDegrees": -18,
+      "targetMaxDimension": 1.55
+    },
+    {
+      "role": "power",
+      "label": "Server utility",
+      "path": "assets/meshy/api/58-server-control-cabinet-cluster.meshy.glb",
+      "location": [
+        1.95,
+        0.9,
+        0.66
+      ],
+      "rotationZDegrees": -28,
+      "targetMaxDimension": 1.35
+    },
+    {
+      "role": "logistics",
+      "label": "Docking clamp",
+      "path": "assets/meshy/api/15-docking-clamp-airlock-collar.meshy.glb",
+      "location": [
+        -1.4,
+        -2.12,
+        0.54
+      ],
+      "rotationZDegrees": 8,
+      "targetMaxDimension": 1.05
+    },
+    {
+      "role": "catwalk",
+      "label": "Service bridge",
+      "path": "assets/meshy/api/10-modular-catwalk-recovery-long-bridge.meshy.glb",
+      "location": [
+        0.2,
+        -0.52,
+        0.52
+      ],
+      "rotationZDegrees": 2,
+      "targetMaxDimension": 2.65
+    },
+    {
+      "role": "signal",
+      "label": "Signal mast",
+      "path": "assets/meshy/api/24-communications-dish-mast.meshy.glb",
+      "location": [
+        2.55,
+        2.12,
+        1.22
+      ],
+      "rotationZDegrees": -25,
+      "targetMaxDimension": 1.45
+    },
+    {
+      "role": "control",
+      "label": "Console bank",
+      "path": "assets/meshy/api/23-control-console-bank.meshy.glb",
+      "location": [
+        -2.8,
+        1.48,
+        0.72
+      ],
+      "rotationZDegrees": 22,
+      "targetMaxDimension": 1.2
+    }
+  ],
+  "roleCoverage": [
+    "catwalk",
+    "command",
+    "control",
+    "hangar",
+    "logistics",
+    "power",
+    "production",
+    "signal"
+  ],
+  "importedFacilityAssetCount": 8,
+  "importedFacilityMeshCount": 8,
+  "authoredMountGeometry": "Role pads, central bridge, markers, and radius guide only; facility modules remain separate imported Meshy assets.",
+  "asteroidGlbInspection": {
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 1690536,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 193,
+    "meshCount": 193,
+    "materialCount": 4,
+    "textureCount": 0,
+    "animationCount": 0,
+    "extensionsUsed": []
+  },
+  "populationGlbInspection": {
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 8671504,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 241,
+    "meshCount": 232,
+    "materialCount": 9,
+    "textureCount": 0,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "decision": "passed first facility population proof; next step is mount-contact/intersection audit and role inventory lock",
+  "nextStep": "tighten placement and role inventory after visual review; do not merge into asteroid baseline source",
+  "board": "docs/visual-reviews/2026-05-20-meshy-108-facility-population-pass1-board.png",
+  "browserSmoke": {
+    "viewer": "docs/visual-reviews/2026-05-20-meshy-108-facility-population-pass1-viewer.html",
+    "screenshot": "docs/visual-reviews/2026-05-20-meshy-108-facility-population-pass1-browser-smoke.png",
+    "glbHeadStatus": 200,
+    "viewerHeadStatus": 200,
+    "browserGetGlbStatus": 200,
+    "result": "passed: local Chrome fetched and parsed the GLB header, then rendered the role-placement canvas smoke"
+  },
+  "visualDecision": {
+    "status": "passed-first-facility-population-proof",
+    "summary": "Visual QA passed the revised proof board: open C-shell mouth remains clear, eight facility roles are readable in top view, and front/oblique/detail renders confirm embedded modules on mounts.",
+    "caveat": "Some labels remain partially obscured in front/oblique views; top view resolves role placement."
+  }
+}

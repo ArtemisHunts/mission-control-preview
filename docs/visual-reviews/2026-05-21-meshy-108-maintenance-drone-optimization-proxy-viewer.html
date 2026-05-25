@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Meshy-108 Maintenance Drone Optimization Proxy</title>
+<style>
+  body { margin: 0; background: #071016; color: #e8f7f4; font: 16px/1.45 system-ui, sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 32px; }
+  h1 { font-size: 28px; margin: 0 0 8px; }
+  .summary { color: #8bdde0; margin-bottom: 24px; }
+  table { width: 100%; border-collapse: collapse; background: #0d1a22; border: 1px solid #24434a; margin-bottom: 24px; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid #1f343b; vertical-align: top; }
+  th { color: #90f3ff; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  img { width: 100%; border: 1px solid #24434a; background: #05080b; }
+  code { color: #ffd166; }
+</style>
+<main>
+  <h1>Meshy-108 Maintenance Drone Optimization Proxy</h1>
+  <div class="summary">Proxy generated before placement. Source <code>21.654 MB</code>; proxy <code>0.394 MB</code>; no Meshy spend.</div>
+  <div id="runtime-check" class="summary">Proxy GLB fetch: pending</div>
+  <table><thead><tr><th>Metric</th><th>Path / Decision</th><th>Value</th></tr></thead><tbody><tr><td>Current scene</td><td>assets/blender/meshy-108-support-utility-detail-placement-contact-proof.glb</td><td>67.612 MB</td></tr>
+<tr><td>Source direct projection</td><td>optimize-before-placement</td><td>89.265 MB; 6.735 MB left</td></tr>
+<tr><td>Proxy projection</td><td>assets/blender/meshy-108-maintenance-drone-optimization-proxy.glb</td><td>68.006 MB; 27.994 MB left</td></tr>
+<tr><td>Decision</td><td>maintenance-drone-proxy-passed-runtime-footprint-gate-not-yet-placed</td><td>place the optimized maintenance drone proxy in Meshy-108 and prove contact/clearance before using the full 22.7 MB source</td></tr></tbody></table>
+  <img src="./2026-05-21-meshy-108-maintenance-drone-optimization-proxy-board.png" alt="maintenance drone optimization proxy proof board">
+</main>
+<script>
+  const out = document.getElementById('runtime-check');
+  fetch('../../assets/blender/meshy-108-maintenance-drone-optimization-proxy.glb')
+    .then((response) => {
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      return response.arrayBuffer();
+    })
+    .then((buffer) => {
+      const view = new DataView(buffer);
+      const magic = String.fromCharCode(...new Uint8Array(buffer, 0, 4));
+      const version = view.getUint32(4, true);
+      const length = view.getUint32(8, true);
+      out.textContent = 'Proxy GLB fetch: ' + magic + ' v' + version + ', ' + length + ' bytes';
+    })
+    .catch((error) => {
+      out.textContent = 'Proxy GLB fetch failed: ' + error.message;
+    });
+</script>
+</html>

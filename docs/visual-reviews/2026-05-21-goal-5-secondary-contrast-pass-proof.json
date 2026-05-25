@@ -1,0 +1,54 @@
+{
+  "id": "proof-goal-5-secondary-contrast-pass",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-secondary-contrast-pass",
+  "createdAt": "2026-05-21T17:51:00.000Z",
+  "scope": "Goal 5 overlay-only command-table overview at ?overlay=1&console=overview",
+  "gap": "Secondary and microcopy text had weak contrast against the overlay grid/backdrop treatment.",
+  "changes": [
+    "Reduced overlay/grid interference in the overlay-focus and command-center backdrop layers.",
+    "Raised secondary/microcopy contrast on command-lens, command-center, kanban, and console surfaces.",
+    "Kept the command-table surface read-only and state-backed with no backend action affordances."
+  ],
+  "artifacts": {
+    "mobileScreenshot": "docs/visual-reviews/2026-05-21-goal-5-secondary-contrast-pass-mobile.png",
+    "desktopScreenshot": "docs/visual-reviews/2026-05-21-goal-5-secondary-contrast-pass-desktop.png",
+    "domSmoke": "tmp/goal-5-secondary-contrast-pass-dom.html"
+  },
+  "screenshotQa": {
+    "mobile": {
+      "width": 390,
+      "height": 1200,
+      "nonblank": true,
+      "keyControlsVisible": true,
+      "secondaryTextReadable": true,
+      "noIncoherentOverlap": true
+    },
+    "desktop": {
+      "width": 1440,
+      "height": 1100,
+      "captured": true
+    }
+  },
+  "smokeMarkers": [
+    "Command Table Core",
+    "drill-down hierarchy",
+    "Open goal drill-down panel",
+    "Open queue drill-down panel",
+    "Open gate drill-down panel",
+    "Open proof drill-down panel",
+    "rgba(89, 241, 255, 0.07)",
+    "rgba(231, 239, 255, 0.86)",
+    "rgba(231, 239, 255, 0.78)"
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "Headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM/CSS smoke for overview markers and contrast CSS markers",
+    "Mobile screenshot QA"
+  ],
+  "blocked": false,
+  "nextStep": "Tune the overview command-lens proof/status area so fresh evidence is easier to scan without adding action controls."
+}

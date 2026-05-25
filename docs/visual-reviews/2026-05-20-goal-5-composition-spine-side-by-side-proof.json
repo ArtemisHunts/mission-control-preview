@@ -1,0 +1,47 @@
+{
+  "id": "visual-review-goal-5-composition-spine-side-by-side-proof-20260520",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-composition-spine-side-by-side-proof",
+  "artifactId": "artifact-goal-5-composition-spine-side-by-side-proof",
+  "createdAt": "2026-05-20T20:51:00.000Z",
+  "scope": "Goal 5 holo-table reference-match side-by-side proof",
+  "decision": "side-by-side-proof-recorded-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-20-goal-5-composition-spine-side-by-side-proof.md",
+    "docs/visual-reviews/2026-05-20-goal-5-composition-spine-side-by-side-proof.json",
+    "docs/visual-reviews/2026-05-20-goal-5-composition-spine-side-by-side-proof.html",
+    "docs/visual-reviews/2026-05-20-goal-5-composition-spine-side-by-side-board.png",
+    "docs/visual-reviews/2026-05-20-goal-5-composition-spine-side-by-side-current-desktop.png",
+    "docs/visual-reviews/2026-05-20-goal-5-composition-spine-side-by-side-current-mobile.png",
+    "tmp/goal-5-composition-spine-side-by-side-dom.html"
+  ],
+  "zoneVerdicts": [
+    {
+      "id": "zone-central-command-table",
+      "status": "partial-match-improved",
+      "note": "Composition-spine proof captures the table object, asymmetric vector, light field, and surrounding command read together."
+    },
+    {
+      "id": "zone-peripheral-ops-bands",
+      "status": "partial-match-improved",
+      "note": "Orbit bands and composition spine are present; stronger reference-scale surrounding composition is still needed."
+    },
+    {
+      "id": "zone-reference-visual-motifs",
+      "status": "partial-match-improved",
+      "note": "Fine-line motifs and contrast rails remain visible; authored lighting continuity still needs another pass."
+    },
+    {
+      "id": "zone-operational-density",
+      "status": "partial-match-improved",
+      "note": "Dense state-backed goals, tasks, agents, reviews, telemetry, artifacts, and events remain visible without fake backend actions."
+    },
+    {
+      "id": "zone-responsive-product-proof",
+      "status": "partial-match-improved",
+      "note": "Fresh desktop/mobile overlay captures and a side-by-side board are recorded after the composition-spine pass."
+    }
+  ],
+  "nextGoal5Step": "Strengthen reference-scale table-first composition with larger asymmetric bands and authored full-room lighting continuity."
+}

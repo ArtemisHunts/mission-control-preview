@@ -1,0 +1,148 @@
+{
+  "candidate": "meshy-108-heavy-hero-command-spine",
+  "gapPicked": "place one heavy hero-scale promoted Meshy facility asset on Meshy-108",
+  "noMeshySpend": true,
+  "sourceBlend": "assets/blender/meshy-108-facility-density-pass2.blend",
+  "sourceGlb": "assets/blender/meshy-108-facility-density-pass2.glb",
+  "heroBlend": "assets/blender/meshy-108-heavy-hero-command-spine.blend",
+  "heroGlb": "assets/blender/meshy-108-heavy-hero-command-spine.glb",
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-heavy-hero-command-spine/2026-05-21-meshy-108-heavy-hero-command-spine-top.png",
+    "front": "docs/visual-reviews/meshy-108-heavy-hero-command-spine/2026-05-21-meshy-108-heavy-hero-command-spine-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-heavy-hero-command-spine/2026-05-21-meshy-108-heavy-hero-command-spine-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-heavy-hero-command-spine/2026-05-21-meshy-108-heavy-hero-command-spine-detail.png"
+  },
+  "selectedHeavyAsset": {
+    "role": "command",
+    "label": "Heavy command spine",
+    "zone": "upper command hero band",
+    "path": "assets/meshy/api/02-command-control-spine.meshy.glb",
+    "sourceBytes": 28959068,
+    "location": [
+      0.05,
+      2.62,
+      1.12
+    ],
+    "rotationZDegrees": -6,
+    "targetMaxDimension": 1.72,
+    "importedMeshCount": 1
+  },
+  "contactAudit": {
+    "pad": "hero command spine contact pad",
+    "marker": "hero command spine cyan locator",
+    "label": "hero command spine label",
+    "openMouthLabel": "hero command spine open mouth label",
+    "auditLabel": "hero command spine contact audit label",
+    "assetBounds": {
+      "min": [
+        -0.8459,
+        2.1434,
+        0.8349
+      ],
+      "max": [
+        0.9459,
+        3.0966,
+        1.4051
+      ],
+      "dimensions": [
+        1.7919,
+        0.9533,
+        0.5702
+      ]
+    },
+    "padBounds": {
+      "min": [
+        -0.2511,
+        2.4383,
+        0.7999
+      ],
+      "max": [
+        0.3511,
+        2.8017,
+        0.8349
+      ],
+      "dimensions": [
+        0.6021,
+        0.3633,
+        0.035
+      ]
+    },
+    "verticalGapAssetMinToPadTop": 0,
+    "xyOverlapRatio": 1,
+    "status": "accepted-contact-range"
+  },
+  "acceptedContactCount": 1,
+  "needsReviewCount": 0,
+  "heavyAssetSelectionReason": "Chosen as the smallest command-scale heavy promoted asset: visibly hero-scale, role-relevant, and safer for browser proof than 40-115 MB heavy candidates.",
+  "sourceDensityGlbInspection": {
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 21322188,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 299,
+    "meshCount": 278,
+    "materialCount": 15,
+    "textureCount": 1,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "heroGlbInspection": {
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 50651016,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 307,
+    "meshCount": 285,
+    "materialCount": 20,
+    "textureCount": 2,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "decision": "heavy hero command spine passed visual, browser, GLB, and contact proof",
+  "nextStep": "audit whether one heavier production or power hero asset is worth the runtime cost",
+  "board": "docs/visual-reviews/2026-05-21-meshy-108-heavy-hero-command-spine-board.png",
+  "visualDecision": {
+    "result": "PASS",
+    "reviewer": "openclaw_image",
+    "summary": "Proof board shows exactly one heavy promoted command spine, preserves open C-shell mouth/readability, shows accepted contact metrics, and states no Meshy spend."
+  },
+  "browserSmoke": {
+    "viewer": "docs/visual-reviews/2026-05-21-meshy-108-heavy-hero-command-spine-viewer.html",
+    "screenshot": "docs/visual-reviews/2026-05-21-meshy-108-heavy-hero-command-spine-browser-smoke.png",
+    "viewerStatus": 200,
+    "glbStatus": 200,
+    "browserGetGlbStatus": 200,
+    "result": "PASS",
+    "summary": "Headless browser fetched and parsed the 50.7 MB hero GLB, rendered a nonblank smoke view, and displayed exactly one heavy command spine with accepted contact/no Meshy spend/open mouth clear."
+  },
+  "heroGltfInspection": {
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 50651016,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 307,
+    "meshCount": 285,
+    "materialCount": 20,
+    "textureCount": 2,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  }
+}

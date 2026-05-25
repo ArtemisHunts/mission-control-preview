@@ -1,0 +1,125 @@
+{
+  "candidate": "meshy-108-maintenance-drone-optimization-proxy",
+  "gapPicked": "gate and optimize next Meshy-108 support/detail candidate before placement",
+  "createdAt": "2026-05-21T22:01:56Z",
+  "noMeshySpend": true,
+  "currentSceneSource": "assets/blender/meshy-108-support-utility-detail-placement-contact-proof.glb",
+  "currentSceneBytes": 70895848,
+  "currentSceneMB": 67.612,
+  "remainingBeforeBytes": 29767448,
+  "remainingBeforeMB": 28.388,
+  "sourceAsset": {
+    "path": "assets/meshy/api/12-maintenance-drone.meshy.glb",
+    "role": "support",
+    "label": "Maintenance drone",
+    "bounds": {
+      "min": [
+        -0.9501,
+        -0.7501,
+        -0.7114
+      ],
+      "max": [
+        0.9487,
+        0.7535,
+        0.7129
+      ],
+      "dimensions": [
+        1.8988,
+        1.5036,
+        1.4243
+      ]
+    },
+    "inspection": {
+      "path": "assets/meshy/api/12-maintenance-drone.meshy.glb",
+      "exists": true,
+      "validGlbHeader": true,
+      "version": 2,
+      "totalLength": 22705608,
+      "asset": {
+        "generator": "pygltflib@v1.16.5",
+        "version": "2.0"
+      },
+      "sceneCount": 1,
+      "nodeCount": 1,
+      "meshCount": 1,
+      "materialCount": 1,
+      "textureCount": 1,
+      "imageCount": 1,
+      "accessorCount": 4,
+      "animationCount": 0,
+      "extensionsUsed": []
+    },
+    "directProjectedSceneBytes": 93601456,
+    "directProjectedSceneMB": 89.265,
+    "directHeadroomAfterBytes": 7061840,
+    "directHeadroomAfterMB": 6.735,
+    "directPlacementDecision": "optimize-before-placement",
+    "directPlacementReason": "source would leave less than 8 MB under the 96 MB guard and consume most remaining headroom"
+  },
+  "proxyAsset": {
+    "blend": "assets/blender/meshy-108-maintenance-drone-optimization-proxy.blend",
+    "glb": "assets/blender/meshy-108-maintenance-drone-optimization-proxy.glb",
+    "targetMaxDimension": 0.92,
+    "bounds": {
+      "min": [
+        -0.4714,
+        -0.3618,
+        -0.012
+      ],
+      "max": [
+        0.4714,
+        0.3618,
+        0.4309
+      ],
+      "dimensions": [
+        0.9428,
+        0.7237,
+        0.4429
+      ]
+    },
+    "inspection": {
+      "path": "assets/blender/meshy-108-maintenance-drone-optimization-proxy.glb",
+      "exists": true,
+      "validGlbHeader": true,
+      "version": 2,
+      "totalLength": 413252,
+      "asset": {
+        "generator": "Khronos glTF Blender I/O v5.1.19",
+        "version": "2.0"
+      },
+      "sceneCount": 1,
+      "nodeCount": 29,
+      "meshCount": 29,
+      "materialCount": 5,
+      "textureCount": 0,
+      "imageCount": 0,
+      "accessorCount": 94,
+      "animationCount": 0,
+      "extensionsUsed": [
+        "KHR_materials_emissive_strength"
+      ]
+    },
+    "proxyProjectedSceneBytes": 71309100,
+    "proxyProjectedSceneMB": 68.006,
+    "proxyHeadroomAfterBytes": 29354196,
+    "proxyHeadroomAfterMB": 27.994,
+    "byteReductionPercent": 98.18,
+    "proxyObjectCount": 27
+  },
+  "decision": "maintenance-drone-proxy-passed-runtime-footprint-gate-not-yet-placed",
+  "nextStep": "place the optimized maintenance drone proxy in Meshy-108 and prove contact/clearance before using the full 22.7 MB source",
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-maintenance-drone-optimization-proxy/2026-05-21-meshy-108-maintenance-drone-optimization-proxy-top.png",
+    "front": "docs/visual-reviews/meshy-108-maintenance-drone-optimization-proxy/2026-05-21-meshy-108-maintenance-drone-optimization-proxy-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-maintenance-drone-optimization-proxy/2026-05-21-meshy-108-maintenance-drone-optimization-proxy-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-maintenance-drone-optimization-proxy/2026-05-21-meshy-108-maintenance-drone-optimization-proxy-detail.png"
+  },
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-meshy-108-maintenance-drone-optimization-proxy.md",
+    "docs/visual-reviews/2026-05-21-meshy-108-maintenance-drone-optimization-proxy.json",
+    "docs/visual-reviews/2026-05-21-meshy-108-maintenance-drone-optimization-proxy-board.png",
+    "docs/visual-reviews/2026-05-21-meshy-108-maintenance-drone-optimization-proxy-viewer.html",
+    "docs/visual-reviews/2026-05-21-meshy-108-maintenance-drone-optimization-proxy-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-maintenance-drone-optimization-proxy"
+  ]
+}

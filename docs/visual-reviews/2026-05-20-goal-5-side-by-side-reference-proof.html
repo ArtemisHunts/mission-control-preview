@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Goal 5 Side-by-Side Reference Proof</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #030812;
+      --panel: rgba(7, 16, 30, 0.92);
+      --cyan: #59f1ff;
+      --gold: #e6a93a;
+      --green: #74d99a;
+      --ink: rgba(246, 248, 255, 0.94);
+      --muted: rgba(231, 239, 255, 0.72);
+      --line: rgba(89, 241, 255, 0.2);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(89, 241, 255, 0.15), transparent 32%),
+        radial-gradient(circle at 82% 18%, rgba(230, 169, 58, 0.13), transparent 28%),
+        var(--bg);
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    main {
+      display: grid;
+      gap: 18px;
+      width: min(1800px, 100vw);
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: end;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1,
+    h2,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      max-width: 960px;
+      font-size: 30px;
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .stamp,
+    .kicker,
+    .zone span,
+    .metric span {
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .stamp {
+      justify-self: end;
+      padding: 10px 12px;
+      border: 1px solid rgba(230, 169, 58, 0.25);
+      border-radius: 8px;
+      background: rgba(230, 169, 58, 0.08);
+      text-align: right;
+    }
+
+    .comparison {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .frame,
+    .zone,
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel);
+      box-shadow: inset 0 0 0 1px rgba(246, 248, 255, 0.035), 0 18px 60px rgba(0, 0, 0, 0.32);
+    }
+
+    .frame {
+      display: grid;
+      gap: 10px;
+      padding: 12px;
+    }
+
+    .frame h2 {
+      color: var(--cyan);
+      font-size: 15px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .frame p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid rgba(89, 241, 255, 0.18);
+      background: rgba(0, 0, 0, 0.38);
+    }
+
+    .matrix {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .zone {
+      display: grid;
+      align-content: start;
+      gap: 7px;
+      min-height: 178px;
+      padding: 11px;
+    }
+
+    .zone strong {
+      font-size: 14px;
+      line-height: 1.18;
+    }
+
+    .zone p {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.32;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .metric {
+      display: grid;
+      gap: 5px;
+      padding: 12px;
+    }
+
+    .metric strong {
+      font-size: 18px;
+      line-height: 1.1;
+    }
+
+    .metric p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.3;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="kicker">Goal 5 / Holo-table overlay</p>
+        <h1>Side-by-side reference proof against the command-table matrix</h1>
+      </div>
+      <div class="stamp">2026-05-20 13:21 UTC<br>Partial match, not complete</div>
+    </header>
+
+    <section class="comparison" aria-label="Reference and current overlay comparison">
+      <article class="frame">
+        <h2>Reference direction</h2>
+        <p>Holographic command-table moodboard: central table as hero object, projected operational data, fine-line depth, and cinematic command-room contrast.</p>
+        <img src="../moodboards/holographic-ui.png" alt="Holographic command-table reference moodboard">
+      </article>
+      <article class="frame">
+        <h2>Current overlay proof</h2>
+        <p>Current overlay-only capture from <code>?overlay=1&amp;console=overview</code>. The table and state hierarchy are present, but the matrix still calls this a partial match.</p>
+        <img src="2026-05-20-goal-5-side-by-side-reference-current-desktop.png" alt="Current Mission Control holo-table overview screenshot">
+      </article>
+    </section>
+
+    <section class="matrix" aria-label="Reference zone verdicts">
+      <article class="zone">
+        <span>Partial improved</span>
+        <strong>Central command table</strong>
+        <p>Improved table-object silhouette and state-backed pods. Still needs stronger architectural integration with surrounding bands.</p>
+      </article>
+      <article class="zone">
+        <span>Partial improved</span>
+        <strong>Peripheral ops bands</strong>
+        <p>Execution, pressure, and evidence orbits are visible. Still flatter and more symmetrical than the target composition.</p>
+      </article>
+      <article class="zone">
+        <span>Partial improved</span>
+        <strong>Visual motifs</strong>
+        <p>Fine-line grid, depth rings, and contrast rail now exist. Needs stronger command-room lighting hierarchy.</p>
+      </article>
+      <article class="zone">
+        <span>Partial improved</span>
+        <strong>Operational density</strong>
+        <p>Command, flow, and proof scan tiers make dense state more authored. Still needs less rectangular rhythm.</p>
+      </article>
+      <article class="zone">
+        <span>Partial improved</span>
+        <strong>Responsive proof</strong>
+        <p>This board adds the missing side-by-side proof step with desktop/mobile overlay captures and matrix verdicts.</p>
+      </article>
+    </section>
+
+    <section class="metrics" aria-label="Proof constraints">
+      <article class="metric">
+        <span>State source</span>
+        <strong>Canonical JSON</strong>
+        <p>Goal/task/review/event/artifact data remains read from <code>mission-control-state.json</code>.</p>
+      </article>
+      <article class="metric">
+        <span>Backend actions</span>
+        <strong>None added</strong>
+        <p>This is a proof pass only. It does not fake backend writes, deploys, or automation.</p>
+      </article>
+      <article class="metric">
+        <span>Next pass</span>
+        <strong>Asymmetry</strong>
+        <p>Use this board to guide the next UI change: more asymmetric command-table hierarchy.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

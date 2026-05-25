@@ -1,0 +1,47 @@
+{
+  "id": "visual-review-goal-5-lighting-copy-side-by-side-proof-20260520",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-lighting-copy-side-by-side-proof",
+  "artifactId": "artifact-goal-5-lighting-copy-side-by-side-proof",
+  "createdAt": "2026-05-21T01:21:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match proof only.",
+  "decision": "side-by-side-proof-recorded-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-20-goal-5-lighting-copy-side-by-side-proof.md",
+    "docs/visual-reviews/2026-05-20-goal-5-lighting-copy-side-by-side-proof.json",
+    "docs/visual-reviews/2026-05-20-goal-5-lighting-copy-side-by-side-proof.html",
+    "docs/visual-reviews/2026-05-20-goal-5-lighting-copy-side-by-side-board.png",
+    "docs/visual-reviews/2026-05-20-goal-5-lighting-copy-side-by-side-current-desktop.png",
+    "docs/visual-reviews/2026-05-20-goal-5-lighting-copy-side-by-side-current-mobile.png",
+    "tmp/goal-5-lighting-copy-side-by-side-dom.html"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "Compact state-backed labels and explicit light tags improve the table-first read; stronger reference-like composition remains open."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "The proof board records the tuned band balance; deeper asymmetric surrounding bands remain open."
+    },
+    {
+      "zoneId": "zone-visual-motif-parity",
+      "verdict": "partial-match-improved",
+      "read": "Key/work/shadow/proof light tags improve continuity; reference-level depth and contrast still need another pass."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "Goal, task, review, event, artifact, and telemetry reads remain state-backed without fake backend actions."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop, mobile, DOM, and side-by-side board proof are captured after the lighting/copy tune."
+    }
+  ],
+  "nextGoal5Step": "Improve table-first reference likeness with stronger band balance, depth, and contrast now that the tuned state has side-by-side proof."
+}

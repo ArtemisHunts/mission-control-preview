@@ -1,0 +1,28 @@
+{
+  "id": "visual-review-goal-5-drilldown-hierarchy-20260521",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-drilldown-hierarchy-pass",
+  "artifactId": "artifact-goal-5-drilldown-hierarchy-pass",
+  "createdAt": "2026-05-21T08:51:00.000Z",
+  "route": "?overlay=1&console=overview",
+  "decision": "drilldown-hierarchy-improved-not-reference-complete",
+  "pickedGap": "Denser drill-down hierarchy around the command table.",
+  "change": "Added compact state-backed goal, queue, gate, and proof rows beneath the Command Table Core instrument orbit.",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-goal-5-drilldown-hierarchy-pass.md",
+    "docs/visual-reviews/2026-05-21-goal-5-drilldown-hierarchy-pass.json",
+    "docs/visual-reviews/2026-05-21-goal-5-drilldown-hierarchy-desktop.png",
+    "docs/visual-reviews/2026-05-21-goal-5-drilldown-hierarchy-mobile.png",
+    "tmp/goal-5-drilldown-hierarchy-dom.html"
+  ],
+  "criteria": [
+    "Command Table Core renders in overlay overview",
+    "drill-down hierarchy label renders",
+    "goal, queue, gate, and proof rows are present",
+    "desktop and mobile screenshots are nonblank",
+    "no fake backend action is introduced",
+    "state verdict remains partial-match-improved"
+  ],
+  "isDemo": false
+}

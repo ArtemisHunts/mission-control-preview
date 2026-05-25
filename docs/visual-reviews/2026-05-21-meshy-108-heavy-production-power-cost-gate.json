@@ -1,0 +1,190 @@
+{
+  "candidate": "meshy-108-heavy-production-power-cost-gate",
+  "gapPicked": "gate next heavy production/power hero facility asset by runtime cost before placement",
+  "createdAt": "2026-05-21T11:37:05Z",
+  "noMeshySpend": true,
+  "currentScene": {
+    "path": "assets/blender/meshy-108-heavy-hero-command-spine.glb",
+    "bytes": 50651016,
+    "mb": 48.3,
+    "inspection": {
+      "path": "assets/blender/meshy-108-heavy-hero-command-spine.glb",
+      "exists": true,
+      "validGlbHeader": true,
+      "version": 2,
+      "totalLength": 50651016,
+      "asset": {
+        "generator": "Khronos glTF Blender I/O v5.1.19",
+        "version": "2.0"
+      },
+      "sceneCount": 1,
+      "nodeCount": 307,
+      "meshCount": 285,
+      "materialCount": 20,
+      "textureCount": 2,
+      "animationCount": 0,
+      "extensionsUsed": [
+        "KHR_materials_emissive_strength"
+      ],
+      "accessorCount": 877,
+      "imageCount": 2
+    }
+  },
+  "previousScene": {
+    "path": "assets/blender/meshy-108-facility-density-pass2.glb",
+    "bytes": 21322188,
+    "mb": 20.33,
+    "inspection": {
+      "path": "assets/blender/meshy-108-facility-density-pass2.glb",
+      "exists": true,
+      "validGlbHeader": true,
+      "version": 2,
+      "totalLength": 21322188,
+      "asset": {
+        "generator": "Khronos glTF Blender I/O v5.1.19",
+        "version": "2.0"
+      },
+      "sceneCount": 1,
+      "nodeCount": 299,
+      "meshCount": 278,
+      "materialCount": 15,
+      "textureCount": 1,
+      "animationCount": 0,
+      "extensionsUsed": [
+        "KHR_materials_emissive_strength"
+      ],
+      "accessorCount": 853,
+      "imageCount": 1
+    }
+  },
+  "budgets": {
+    "maxIncrementBytes": 36700160,
+    "maxIncrementMB": 35.0,
+    "maxSceneBytes": 100663296,
+    "maxSceneMB": 96.0,
+    "budgetReason": "Local browser runtime guard after the accepted 50.7 MB command-spine scene; another raw 35+ MB source prop needs an optimization gate first."
+  },
+  "candidates": [
+    {
+      "role": "power",
+      "label": "Reactor power core",
+      "path": "assets/meshy/api/03-reactor-power-core.meshy.glb",
+      "visualValue": "strong hero read, but extreme runtime cost",
+      "zoneFit": "central/lower power bay only after optimization",
+      "inspection": {
+        "path": "assets/meshy/api/03-reactor-power-core.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 115590796,
+        "asset": {
+          "generator": "pygltflib@v1.16.5",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 1,
+        "textureCount": 1,
+        "animationCount": 0,
+        "extensionsUsed": [],
+        "accessorCount": 4,
+        "imageCount": 1
+      },
+      "gate": {
+        "decision": "defer-optimize-first",
+        "reason": "source GLB alone exceeds direct-placement increment budget; power hero needs decimated proxy or baked low-cost version first",
+        "sourceBytes": 115590796,
+        "sourceMB": 110.24,
+        "projectedSceneBytesIfDirect": 166241812,
+        "projectedSceneMBIfDirect": 158.54,
+        "incrementBudgetMB": 35.0,
+        "sceneBudgetMB": 96.0
+      }
+    },
+    {
+      "role": "production",
+      "label": "Gantry crane",
+      "path": "assets/meshy/api/04-gantry-crane.meshy.glb",
+      "visualValue": "clear industrial silhouette and good production role coverage",
+      "zoneFit": "upper/lower production span after decimation test",
+      "inspection": {
+        "path": "assets/meshy/api/04-gantry-crane.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 42506964,
+        "asset": {
+          "generator": "pygltflib@v1.16.5",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 1,
+        "textureCount": 1,
+        "animationCount": 0,
+        "extensionsUsed": [],
+        "accessorCount": 4,
+        "imageCount": 1
+      },
+      "gate": {
+        "decision": "optimize-before-placement",
+        "reason": "good role fit, but source GLB exceeds direct-placement increment budget",
+        "sourceBytes": 42506964,
+        "sourceMB": 40.54,
+        "projectedSceneBytesIfDirect": 93157980,
+        "projectedSceneMBIfDirect": 88.84,
+        "incrementBudgetMB": 35.0,
+        "sceneBudgetMB": 96.0
+      }
+    },
+    {
+      "role": "production",
+      "label": "Conveyor processing machine",
+      "path": "assets/meshy/api/05-conveyor-processing-machine.meshy.glb",
+      "visualValue": "good functional detail, lower hero value than gantry",
+      "zoneFit": "background production strip after decimation test",
+      "inspection": {
+        "path": "assets/meshy/api/05-conveyor-processing-machine.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 38167736,
+        "asset": {
+          "generator": "pygltflib@v1.16.5",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 1,
+        "textureCount": 1,
+        "animationCount": 0,
+        "extensionsUsed": [],
+        "accessorCount": 4,
+        "imageCount": 1
+      },
+      "gate": {
+        "decision": "optimize-before-placement",
+        "reason": "good role fit, but source GLB exceeds direct-placement increment budget",
+        "sourceBytes": 38167736,
+        "sourceMB": 36.4,
+        "projectedSceneBytesIfDirect": 88818752,
+        "projectedSceneMBIfDirect": 84.7,
+        "incrementBudgetMB": 35.0,
+        "sceneBudgetMB": 96.0
+      }
+    }
+  ],
+  "decision": "do-not-direct-place-production-power-heavy-asset-this-pass",
+  "recommendedNextAsset": "assets/meshy/api/04-gantry-crane.meshy.glb",
+  "nextStep": "create optimized gantry-crane proxy/decimation test before any placement on Meshy-108",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-meshy-108-heavy-production-power-cost-gate.md",
+    "docs/visual-reviews/2026-05-21-meshy-108-heavy-production-power-cost-gate.json",
+    "docs/visual-reviews/2026-05-21-meshy-108-heavy-production-power-cost-gate-board.png",
+    "docs/visual-reviews/2026-05-21-meshy-108-heavy-production-power-cost-gate-viewer.html",
+    "docs/visual-reviews/2026-05-21-meshy-108-heavy-production-power-cost-gate-browser-smoke.png"
+  ]
+}

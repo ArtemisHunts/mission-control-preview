@@ -1,0 +1,56 @@
+{
+  "id": "visual-review-goal-5-drilldown-hierarchy-side-by-side-proof-20260521",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-drilldown-hierarchy-side-by-side-proof",
+  "artifactId": "artifact-goal-5-drilldown-hierarchy-side-by-side-proof",
+  "createdAt": "2026-05-21T10:21:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match proof only.",
+  "decision": "side-by-side-proof-recorded-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-goal-5-drilldown-hierarchy-side-by-side-proof.md",
+    "docs/visual-reviews/2026-05-21-goal-5-drilldown-hierarchy-side-by-side-proof.json",
+    "docs/visual-reviews/2026-05-21-goal-5-drilldown-hierarchy-side-by-side-proof.html",
+    "docs/visual-reviews/2026-05-21-goal-5-drilldown-hierarchy-side-by-side-board.png",
+    "docs/visual-reviews/2026-05-21-goal-5-drilldown-hierarchy-desktop.png",
+    "docs/visual-reviews/2026-05-21-goal-5-drilldown-hierarchy-mobile.png",
+    "tmp/goal-5-drilldown-hierarchy-side-by-side-dom.html"
+  ],
+  "uiMarkers": [
+    "Command Table Core",
+    "drill-down hierarchy",
+    "goal",
+    "queue",
+    "gate",
+    "proof",
+    "partial-match-improved"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The board confirms the command-table core now shows table-attached goal, queue, gate, and proof drill-down rows beneath the orbit chips."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "The row hierarchy gives surrounding operational data a clearer scan order, but asymmetric composition still needs proof before a reference-complete claim."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "The darker core, chip grid, and stacked rows improve contrast/hierarchy, while finer contrast polish remains open."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "Goal, queue, gate, and proof rows keep dense overview data grounded in canonical state with no fake backend action."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop, mobile, DOM, and side-by-side board proof are captured after the drill-down hierarchy pass."
+    }
+  ],
+  "nextGoal5Step": "Use this board to choose the next focused UI pass: finer contrast polish around the command table or a tighter asymmetric peripheral hierarchy pass."
+}

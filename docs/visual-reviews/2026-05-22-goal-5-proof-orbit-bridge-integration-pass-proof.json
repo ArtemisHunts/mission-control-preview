@@ -1,0 +1,61 @@
+{
+  "id": "visual-review-goal-5-proof-orbit-bridge-integration-pass-20260522",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-proof-orbit-bridge-integration-pass",
+  "artifactId": "artifact-goal-5-proof-orbit-bridge-integration-pass",
+  "createdAt": "2026-05-22T19:21:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match UI pass only.",
+  "decision": "proof-orbit-bridge-integrated-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-22-goal-5-proof-orbit-bridge-integration-pass-proof.md",
+    "docs/visual-reviews/2026-05-22-goal-5-proof-orbit-bridge-integration-pass-proof.json",
+    "docs/visual-reviews/2026-05-22-goal-5-proof-orbit-bridge-integration-pass-mobile.png",
+    "docs/visual-reviews/2026-05-22-goal-5-proof-orbit-bridge-integration-pass-desktop.png",
+    "tmp/goal-5-proof-orbit-bridge-integration-pass-dom.html"
+  ],
+  "uiMarkers": [
+    "reference-scale-proof-orbit-bridge",
+    "left orbit",
+    "lower rail",
+    "right mass",
+    "orbit sync",
+    "Command Table Core"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The table core now carries the proof orbit bridge between the instrument band and proof/status rail."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "Queue, review, proof, and event state now cross the lower/right orbit as one integrated proof band."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "Slanted bridge geometry and offset chips improve command-table orbit integration, but fresh side-by-side proof is still required."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "The added bridge reuses existing selected Goal 5 state and introduces no fake backend actions."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop/mobile overlay captures and DOM smoke are recorded after the proof orbit bridge pass."
+    }
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM smoke for proof orbit bridge markers",
+    "PNG sanity for desktop/mobile captures"
+  ],
+  "nextGoal5Step": "Capture a fresh side-by-side reference proof after the proof orbit bridge integration pass before claiming stronger reference-match progress."
+}

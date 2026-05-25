@@ -1,0 +1,31 @@
+{
+  "id": "visual-review-goal-5-command-room-light-field-20260520",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-command-room-light-field",
+  "artifactId": "artifact-goal-5-command-room-light-field-pass",
+  "timestamp": "2026-05-20T16:21:00.000Z",
+  "gapPicked": "central command table needs authored command-room lighting integration",
+  "decision": "lighting-hierarchy-improved-not-reference-complete",
+  "status": "partial-match-improved",
+  "stateBackedSignals": [
+    "active goal telemetry",
+    "open task count and task context",
+    "pending review pressure",
+    "artifact and event proof horizon"
+  ],
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-20-goal-5-command-room-light-field-pass.md",
+    "docs/visual-reviews/2026-05-20-goal-5-command-room-light-field-pass.json",
+    "docs/visual-reviews/2026-05-20-goal-5-command-room-light-field-desktop.png",
+    "docs/visual-reviews/2026-05-20-goal-5-command-room-light-field-mobile.png",
+    "tmp/goal-5-command-room-light-field-dom.html"
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots",
+    "DOM smoke"
+  ],
+  "isDemo": false
+}

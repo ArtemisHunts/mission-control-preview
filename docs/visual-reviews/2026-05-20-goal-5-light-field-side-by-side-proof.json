@@ -1,0 +1,36 @@
+{
+  "id": "visual-review-goal-5-light-field-side-by-side-proof-20260520",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-light-field-side-by-side-proof",
+  "artifactId": "artifact-goal-5-light-field-side-by-side-proof",
+  "timestamp": "2026-05-20T17:51:00.000Z",
+  "gapPicked": "responsive proof after command-room light-field pass",
+  "decision": "side-by-side-proof-recorded-not-reference-complete",
+  "status": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-20-goal-5-light-field-side-by-side-proof.md",
+    "docs/visual-reviews/2026-05-20-goal-5-light-field-side-by-side-proof.json",
+    "docs/visual-reviews/2026-05-20-goal-5-light-field-side-by-side-proof.html",
+    "docs/visual-reviews/2026-05-20-goal-5-light-field-side-by-side-board.png",
+    "docs/visual-reviews/2026-05-20-goal-5-light-field-side-by-side-current-desktop.png",
+    "docs/visual-reviews/2026-05-20-goal-5-light-field-side-by-side-current-mobile.png",
+    "tmp/goal-5-light-field-side-by-side-dom.html"
+  ],
+  "zoneVerdicts": [
+    { "zone": "Central command table", "status": "partial-match-improved" },
+    { "zone": "Peripheral ops bands", "status": "partial-match-improved" },
+    { "zone": "Reference visual motifs", "status": "partial-match-improved" },
+    { "zone": "Operational density", "status": "partial-match-improved" },
+    { "zone": "Responsive proof", "status": "partial-match-improved" }
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome overlay desktop/mobile screenshots",
+    "headless Chrome proof-board screenshot",
+    "DOM smoke",
+    "screenshot visual check"
+  ],
+  "isDemo": false
+}

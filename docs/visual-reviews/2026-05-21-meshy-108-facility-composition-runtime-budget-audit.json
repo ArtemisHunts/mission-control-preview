@@ -1,0 +1,105 @@
+{
+  "candidate": "meshy-108-facility-composition-runtime-budget-audit",
+  "gapPicked": "audit Meshy-108 facility composition and runtime budget before another production/power asset",
+  "createdAt": "2026-05-21T16:01:53Z",
+  "noMeshySpend": true,
+  "sourceSceneBlend": "assets/blender/meshy-108-gantry-proxy-placement-contact-proof.blend",
+  "sourceSceneGlb": "assets/blender/meshy-108-gantry-proxy-placement-contact-proof.glb",
+  "auditBlend": "assets/blender/meshy-108-facility-composition-runtime-budget-audit.blend",
+  "auditGlb": "assets/blender/meshy-108-facility-composition-runtime-budget-audit.glb",
+  "sceneBounds": {
+    "min": [
+      -3.8818,
+      -3.0368,
+      -1.8656
+    ],
+    "max": [
+      3.2963,
+      3.0966,
+      2.1056
+    ],
+    "dimensions": [
+      7.178,
+      6.1334,
+      3.9712
+    ]
+  },
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-gantry-proxy-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 51379860,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 336,
+    "meshCount": 313,
+    "materialCount": 29,
+    "textureCount": 2,
+    "imageCount": 2,
+    "accessorCount": 968,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "auditGlbInspection": {
+    "path": "assets/blender/meshy-108-facility-composition-runtime-budget-audit.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 51928124,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 346,
+    "meshCount": 323,
+    "materialCount": 34,
+    "textureCount": 2,
+    "imageCount": 2,
+    "accessorCount": 1002,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "currentBytes": 51379860,
+    "currentMB": 49.0,
+    "remainingBytes": 49283436,
+    "remainingMB": 47.0,
+    "usagePercent": 51.04,
+    "nextHeavyIncrementBudgetMB": 35.0,
+    "status": "pass-with-audit-before-more-heavy-assets"
+  },
+  "compositionAudit": {
+    "commandHero": "pass-visible-upper-command-band",
+    "productionGantry": "pass-visible-lower-left-production-span",
+    "openMouthClearance": "pass-clearance-corridor-marked",
+    "roleReadability": "pass-command-production-hangar-power-signal-control-logistics-catwalk-present",
+    "balance": "pass-with-caution-next-heavy-asset-needs-placement-audit"
+  },
+  "decision": "passed-composition-runtime-budget-audit",
+  "nextStep": "gate the next added facility asset by role value and runtime cost; prefer light/medium support or signal detail before another heavy production/power prop",
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-facility-composition-runtime-budget-audit/2026-05-21-meshy-108-facility-composition-runtime-budget-audit-top.png",
+    "front": "docs/visual-reviews/meshy-108-facility-composition-runtime-budget-audit/2026-05-21-meshy-108-facility-composition-runtime-budget-audit-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-facility-composition-runtime-budget-audit/2026-05-21-meshy-108-facility-composition-runtime-budget-audit-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-facility-composition-runtime-budget-audit/2026-05-21-meshy-108-facility-composition-runtime-budget-audit-detail.png"
+  },
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-meshy-108-facility-composition-runtime-budget-audit.md",
+    "docs/visual-reviews/2026-05-21-meshy-108-facility-composition-runtime-budget-audit.json",
+    "docs/visual-reviews/2026-05-21-meshy-108-facility-composition-runtime-budget-audit-board.png",
+    "docs/visual-reviews/2026-05-21-meshy-108-facility-composition-runtime-budget-audit-viewer.html",
+    "docs/visual-reviews/2026-05-21-meshy-108-facility-composition-runtime-budget-audit-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-facility-composition-runtime-budget-audit"
+  ]
+}

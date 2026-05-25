@@ -1,0 +1,61 @@
+{
+  "id": "visual-review-goal-5-shadow-depth-baffle-pass-20260523",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-shadow-depth-baffle-pass",
+  "artifactId": "artifact-goal-5-shadow-depth-baffle-pass",
+  "createdAt": "2026-05-23T07:21:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match UI pass only.",
+  "decision": "shadow-depth-baffle-improved-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-23-goal-5-shadow-depth-baffle-pass-proof.md",
+    "docs/visual-reviews/2026-05-23-goal-5-shadow-depth-baffle-pass-proof.json",
+    "docs/visual-reviews/2026-05-23-goal-5-shadow-depth-baffle-pass-mobile.png",
+    "docs/visual-reviews/2026-05-23-goal-5-shadow-depth-baffle-pass-desktop.png",
+    "tmp/goal-5-shadow-depth-baffle-pass-dom.html"
+  ],
+  "uiMarkers": [
+    "reference-scale-shadow-depth-baffle",
+    "shadow depth",
+    "band occlusion",
+    "proof falloff",
+    "reference-scale-edge-light-separator",
+    "Command Table Core"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The table core now includes a shadow depth baffle below the edge light separator to sharpen table falloff."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "Work, review, and proof pressure remain bound to the table edge through the baffle instead of reading as separate panels."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "The baffle adds surrounding shadow depth, band occlusion, and proof falloff markers from canonical Goal 5 state."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "The baffle reuses existing selected Goal 5 state and introduces no fake backend actions."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop/mobile overlay captures and DOM smoke are recorded after the shadow depth baffle pass."
+    }
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM smoke for shadow depth baffle markers",
+    "PNG sanity for desktop/mobile captures"
+  ],
+  "nextGoal5Step": "Capture a fresh side-by-side reference proof after the shadow depth baffle pass before making a stronger reference-match claim."
+}

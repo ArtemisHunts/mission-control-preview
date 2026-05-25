@@ -1,0 +1,120 @@
+{
+  "candidate": "meshy-108-density-runtime-audit-after-portal-insert",
+  "gapPicked": "audit Meshy-108 density/runtime after portal-adjacent control insert placement",
+  "createdAt": "2026-05-22T11:31:20Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "noNewFacilityAssetPlaced": true,
+  "sourceSceneBlend": "assets/blender/meshy-108-portal-adjacent-control-insert-placement-contact-proof.blend",
+  "sourceSceneGlb": "assets/blender/meshy-108-portal-adjacent-control-insert-placement-contact-proof.glb",
+  "sourcePlacementMetrics": "docs/visual-reviews/2026-05-22-meshy-108-portal-adjacent-control-insert-placement-contact-proof.json",
+  "auditBlend": "assets/blender/meshy-108-density-runtime-audit-after-portal-insert.blend",
+  "auditGlb": "assets/blender/meshy-108-density-runtime-audit-after-portal-insert.glb",
+  "sceneBounds": {
+    "min": [
+      -3.8818,
+      -3.0368,
+      -1.8656
+    ],
+    "max": [
+      3.2963,
+      3.1295,
+      2.1056
+    ],
+    "dimensions": [
+      7.178,
+      6.1663,
+      3.9712
+    ]
+  },
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-portal-adjacent-control-insert-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 74206668,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 424,
+    "meshCount": 397,
+    "materialCount": 60,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1241,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "auditGlbInspection": {
+    "path": "assets/blender/meshy-108-density-runtime-audit-after-portal-insert.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 75004872,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 438,
+    "meshCount": 411,
+    "materialCount": 65,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1289,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 74206668,
+    "sourceSceneMB": 70.769,
+    "sourceRemainingBytes": 26456628,
+    "sourceRemainingMB": 25.231,
+    "sourceUsagePercent": 73.72,
+    "auditGlbBytes": 75004872,
+    "auditGlbMB": 71.53,
+    "auditRemainingBytes": 25658424,
+    "auditRemainingMB": 24.47,
+    "auditUsagePercent": 74.51,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "nextIncrementHeadroomPass": true,
+    "status": "pass-density-runtime-audit"
+  },
+  "densityRuntimeAudit": {
+    "commandHero": "pass-visible-upper-command-band",
+    "productionGantry": "pass-visible-lower-left-production-span",
+    "supportDuct": "pass-visible-right-lower-service-wall",
+    "portalControlInsert": "pass-visible-lower-right-hangar-portal-support-wall",
+    "portalControlInsertContact": "accepted-contact-range",
+    "portalControlInsertContactGap": 0.0,
+    "portalControlInsertContactOverlap": 1.0,
+    "openMouthClearance": "pass-clearance-corridor-marked",
+    "roleReadability": "pass-command-production-hangar-power-signal-control-logistics-catwalk-support-utility-cargo-tool-pod-portal-insert-present",
+    "balance": "pass-with-caution-next-asset-needs-role-value-and-runtime-gate"
+  },
+  "decision": "passed-density-runtime-audit-after-portal-insert",
+  "nextStep": "gate the next Meshy-108 support/logistics candidate before placement; optimize first if direct placement would consume too much runtime headroom",
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-density-runtime-audit-after-portal-insert/2026-05-22-meshy-108-density-runtime-audit-after-portal-insert-top.png",
+    "front": "docs/visual-reviews/meshy-108-density-runtime-audit-after-portal-insert/2026-05-22-meshy-108-density-runtime-audit-after-portal-insert-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-density-runtime-audit-after-portal-insert/2026-05-22-meshy-108-density-runtime-audit-after-portal-insert-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-density-runtime-audit-after-portal-insert/2026-05-22-meshy-108-density-runtime-audit-after-portal-insert-detail.png"
+  },
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-portal-insert.md",
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-portal-insert.json",
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-portal-insert-board.png",
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-portal-insert-viewer.html",
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-portal-insert-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-portal-insert"
+  ]
+}

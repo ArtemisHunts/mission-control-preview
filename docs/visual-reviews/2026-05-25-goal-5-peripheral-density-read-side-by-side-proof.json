@@ -1,0 +1,37 @@
+{
+  "id": "visual-review-goal-5-peripheral-density-read-side-by-side-proof-20260525",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-peripheral-density-read-side-by-side-proof",
+  "artifactId": "artifact-goal-5-peripheral-density-read-side-by-side-proof",
+  "createdAt": "2026-05-25T12:02:00.000Z",
+  "surface": "?overlay=1&console=overview",
+  "selectedGap": "Fresh side-by-side reference proof after the peripheral density read pass.",
+  "verdict": "partial-match-improved",
+  "referenceComplete": false,
+  "comparison": [
+    "Reference moodboard",
+    "Fresh desktop overview after peripheral density read band",
+    "Fresh mobile overview after peripheral density read band",
+    "Canonical five-zone Goal 5 verdict matrix"
+  ],
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-25-goal-5-peripheral-density-read-side-by-side-proof.md",
+    "docs/visual-reviews/2026-05-25-goal-5-peripheral-density-read-side-by-side-proof.json",
+    "docs/visual-reviews/2026-05-25-goal-5-peripheral-density-read-side-by-side-proof.html",
+    "docs/visual-reviews/2026-05-25-goal-5-peripheral-density-read-side-by-side-board.png",
+    "docs/visual-reviews/2026-05-25-goal-5-peripheral-density-read-side-by-side-current-desktop.png",
+    "docs/visual-reviews/2026-05-25-goal-5-peripheral-density-read-side-by-side-current-mobile.png",
+    "tmp/goal-5-peripheral-density-read-side-by-side-overview-dom.html",
+    "tmp/goal-5-peripheral-density-read-side-by-side-board-dom.html"
+  ],
+  "domSmokeMarkers": [
+    "reference-scale-peripheral-density-read-band",
+    "State-backed peripheral density read tightener",
+    "density read",
+    "agent pressure",
+    "proof spread",
+    "table tether",
+    "Goal 5 Peripheral Density Read Side-by-Side Proof"
+  ],
+  "nextStep": "Use this board to decide whether table hierarchy, motif contrast, or peripheral density needs the next pass."
+}

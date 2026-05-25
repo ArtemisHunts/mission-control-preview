@@ -1,0 +1,408 @@
+{
+  "candidate": "meshy-108-facility-contact-audit-pass1",
+  "gapPicked": "mount-contact/intersection audit for Meshy-108 facility population pass 1",
+  "sourceBlend": "assets/blender/meshy-108-facility-population-pass1.blend",
+  "sourceGlb": "assets/blender/meshy-108-facility-population-pass1.glb",
+  "auditBlend": "assets/blender/meshy-108-facility-contact-audit-pass1.blend",
+  "auditGlb": "assets/blender/meshy-108-facility-contact-audit-pass1.glb",
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-facility-contact-audit-pass1/2026-05-20-meshy-108-facility-contact-audit-pass1-top.png",
+    "front": "docs/visual-reviews/meshy-108-facility-contact-audit-pass1/2026-05-20-meshy-108-facility-contact-audit-pass1-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-facility-contact-audit-pass1/2026-05-20-meshy-108-facility-contact-audit-pass1-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-facility-contact-audit-pass1/2026-05-20-meshy-108-facility-contact-audit-pass1-detail.png"
+  },
+  "rolesAudited": 8,
+  "acceptedContactCount": 8,
+  "needsReviewCount": 0,
+  "roleReports": [
+    {
+      "role": "command",
+      "group": "pass1_command_Command bay",
+      "pad": "pass1 command upper deck",
+      "assetBounds": {
+        "min": [
+          -1.3631,
+          0.9178,
+          0.5692
+        ],
+        "max": [
+          0.4631,
+          1.4822,
+          1.2308
+        ],
+        "dimensions": [
+          1.8263,
+          0.5643,
+          0.6616
+        ]
+      },
+      "padBounds": {
+        "min": [
+          -0.9159,
+          1.0482,
+          0.44
+        ],
+        "max": [
+          0.0159,
+          1.3118,
+          0.52
+        ],
+        "dimensions": [
+          0.9317,
+          0.2637,
+          0.08
+        ]
+      },
+      "verticalGapAssetMinToPadTop": 0.0492,
+      "xyOverlapRatio": 1,
+      "status": "accepted-contact-range"
+    },
+    {
+      "role": "hangar",
+      "group": "pass1_hangar_Hangar airlock",
+      "pad": "pass1 hangar landing pad",
+      "assetBounds": {
+        "min": [
+          -2.9349,
+          -1.3882,
+          0.3558
+        ],
+        "max": [
+          -1.1651,
+          -0.3118,
+          1.2842
+        ],
+        "dimensions": [
+          1.7698,
+          1.0764,
+          0.9283
+        ]
+      },
+      "padBounds": {
+        "min": [
+          -2.4938,
+          -1.1699,
+          0.3
+        ],
+        "max": [
+          -1.6062,
+          -0.5301,
+          0.38
+        ],
+        "dimensions": [
+          0.8875,
+          0.6399,
+          0.08
+        ]
+      },
+      "verticalGapAssetMinToPadTop": -0.0242,
+      "xyOverlapRatio": 1,
+      "status": "accepted-contact-range"
+    },
+    {
+      "role": "production",
+      "group": "pass1_production_Fabrication arm",
+      "pad": "pass1 fabrication workcell deck",
+      "assetBounds": {
+        "min": [
+          0.7981,
+          -1.643,
+          0.1295
+        ],
+        "max": [
+          2.5019,
+          -0.457,
+          1.4305
+        ],
+        "dimensions": [
+          1.7039,
+          1.186,
+          1.301
+        ]
+      },
+      "padBounds": {
+        "min": [
+          1.17,
+          -1.4016,
+          0.3
+        ],
+        "max": [
+          2.13,
+          -0.6984,
+          0.38
+        ],
+        "dimensions": [
+          0.9601,
+          0.7032,
+          0.08
+        ]
+      },
+      "verticalGapAssetMinToPadTop": -0.2505,
+      "xyOverlapRatio": 1,
+      "status": "accepted-contact-range"
+    },
+    {
+      "role": "power",
+      "group": "pass1_power_Server utility",
+      "pad": "pass1 power utility plinth",
+      "assetBounds": {
+        "min": [
+          1.207,
+          0.3065,
+          0.107
+        ],
+        "max": [
+          2.693,
+          1.4935,
+          1.213
+        ],
+        "dimensions": [
+          1.4861,
+          1.1869,
+          1.1061
+        ]
+      },
+      "padBounds": {
+        "min": [
+          1.6307,
+          0.5972,
+          0.22
+        ],
+        "max": [
+          2.2693,
+          1.2028,
+          0.34
+        ],
+        "dimensions": [
+          0.6387,
+          0.6056,
+          0.12
+        ]
+      },
+      "verticalGapAssetMinToPadTop": -0.233,
+      "xyOverlapRatio": 1,
+      "status": "accepted-contact-range"
+    },
+    {
+      "role": "logistics",
+      "group": "pass1_logistics_Docking clamp",
+      "pad": "pass1 logistics pocket pad",
+      "assetBounds": {
+        "min": [
+          -1.9816,
+          -2.6318,
+          0.2457
+        ],
+        "max": [
+          -0.8184,
+          -1.6082,
+          0.8343
+        ],
+        "dimensions": [
+          1.1631,
+          1.0236,
+          0.5886
+        ]
+      },
+      "padBounds": {
+        "min": [
+          -1.691,
+          -2.3259,
+          0.245
+        ],
+        "max": [
+          -1.109,
+          -1.9141,
+          0.315
+        ],
+        "dimensions": [
+          0.5821,
+          0.4118,
+          0.07
+        ]
+      },
+      "verticalGapAssetMinToPadTop": -0.0693,
+      "xyOverlapRatio": 1,
+      "status": "accepted-contact-range"
+    },
+    {
+      "role": "catwalk",
+      "group": "pass1_catwalk_Service bridge",
+      "pad": "pass1 central service bridge spine",
+      "assetBounds": {
+        "min": [
+          -1.1317,
+          -0.781,
+          0.2425
+        ],
+        "max": [
+          1.5317,
+          -0.259,
+          0.7975
+        ],
+        "dimensions": [
+          2.6634,
+          0.5221,
+          0.555
+        ]
+      },
+      "padBounds": {
+        "min": [
+          -0.5274,
+          -0.6253,
+          0.23
+        ],
+        "max": [
+          0.9274,
+          -0.4147,
+          0.29
+        ],
+        "dimensions": [
+          1.4547,
+          0.2105,
+          0.06
+        ]
+      },
+      "verticalGapAssetMinToPadTop": -0.0475,
+      "xyOverlapRatio": 1,
+      "status": "accepted-contact-range"
+    },
+    {
+      "role": "signal",
+      "group": "pass1_signal_Signal mast",
+      "pad": "pass1 signal mast anchor",
+      "assetBounds": {
+        "min": [
+          1.8037,
+          1.6224,
+          0.5553
+        ],
+        "max": [
+          3.2963,
+          2.6176,
+          1.8847
+        ],
+        "dimensions": [
+          1.4925,
+          0.9953,
+          1.3294
+        ]
+      },
+      "padBounds": {
+        "min": [
+          2.306,
+          1.8856,
+          0.63
+        ],
+        "max": [
+          2.794,
+          2.3544,
+          0.73
+        ],
+        "dimensions": [
+          0.4881,
+          0.4687,
+          0.1
+        ]
+      },
+      "verticalGapAssetMinToPadTop": -0.1747,
+      "xyOverlapRatio": 1,
+      "status": "accepted-contact-range"
+    },
+    {
+      "role": "control",
+      "group": "pass1_control_Console bank",
+      "pad": "pass1 utility wall pad",
+      "assetBounds": {
+        "min": [
+          -3.4297,
+          1.0736,
+          0.3664
+        ],
+        "max": [
+          -2.1703,
+          1.8864,
+          1.0736
+        ],
+        "dimensions": [
+          1.2594,
+          0.8128,
+          0.7072
+        ]
+      },
+      "padBounds": {
+        "min": [
+          -3.0823,
+          1.2806,
+          0.32
+        ],
+        "max": [
+          -2.5177,
+          1.6794,
+          0.4
+        ],
+        "dimensions": [
+          0.5645,
+          0.3988,
+          0.08
+        ]
+      },
+      "verticalGapAssetMinToPadTop": -0.0336,
+      "xyOverlapRatio": 1,
+      "status": "accepted-contact-range"
+    }
+  ],
+  "sourceGlbInspection": {
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 8671504,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 241,
+    "meshCount": 232,
+    "materialCount": 9,
+    "textureCount": 0,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "auditGlbInspection": {
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 9804392,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 257,
+    "meshCount": 248,
+    "materialCount": 11,
+    "textureCount": 0,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "decision": "passed contact/intersection audit; role inventory can lock next",
+  "nextStep": "lock role inventory and expand facility density",
+  "board": "docs/visual-reviews/2026-05-20-meshy-108-facility-contact-audit-pass1-board.png",
+  "visualDecision": {
+    "result": "PASS",
+    "reviewer": "openclaw_image",
+    "summary": "Proof board clearly states 8/8 contact audit pass, shows Blender gap/overlap annotations, and includes completed browser smoke artifact language."
+  },
+  "browserSmoke": {
+    "viewer": "docs/visual-reviews/2026-05-20-meshy-108-facility-contact-audit-pass1-viewer.html",
+    "screenshot": "docs/visual-reviews/2026-05-20-meshy-108-facility-contact-audit-pass1-browser-smoke.png",
+    "viewerStatus": 200,
+    "glbStatus": 200,
+    "browserGetGlbStatus": 200,
+    "result": "PASS",
+    "summary": "Headless browser fetched and parsed the audit GLB, drew a nonblank contact-audit schematic, and exposed all 8 roles with gap/overlap labels."
+  }
+}

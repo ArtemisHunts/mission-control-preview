@@ -1,0 +1,57 @@
+{
+  "id": "visual-review-goal-5-review-chip-rack-pass-20260522",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-review-chip-rack-pass",
+  "title": "Goal 5 review chip rack pass",
+  "createdAt": "2026-05-22T08:51:00.000Z",
+  "decision": "operator-chip-density-improved",
+  "scope": [
+    "overview selected-lane gates panel",
+    "read-only review status chips",
+    "overlay-only preview at ?overlay=1&console=overview"
+  ],
+  "pickedGap": "The selected-lane gate panel had counts but lacked compact state-backed operator chips for gate, decision, risk, approvals, proof, and events.",
+  "changes": [
+    "Added buildSelectedLaneGateChips() to render gate, decision, risk, approvals, proof, and events from selected Goal 5 review/artifact/event state.",
+    "Styled .command-center-review-chip-rack and .command-center-review-chip for compact two-column command-table density.",
+    "Kept the panel read-only with no fake backend actions."
+  ],
+  "screenshots": {
+    "mobileOverview": {
+      "path": "docs/visual-reviews/2026-05-22-goal-5-review-chip-rack-pass-mobile.png",
+      "viewport": "390x5200",
+      "status": "captured"
+    },
+    "desktopOverview": {
+      "path": "docs/visual-reviews/2026-05-22-goal-5-review-chip-rack-pass-desktop.png",
+      "viewport": "1440x1200",
+      "status": "captured"
+    }
+  },
+  "domSmoke": {
+    "path": "tmp/goal-5-review-chip-rack-pass-dom.html",
+    "markers": [
+      "Selected Lane Gates",
+      "<span>gate</span>",
+      "<span>decision</span>",
+      "<span>risk</span>",
+      "<span>approvals</span>",
+      "<span>proof</span>",
+      "<span>events</span>",
+      "Goal 5 selected gate summary pass proof",
+      "Selected Lane Trail",
+      "Command Table Core"
+    ],
+    "status": "pass"
+  },
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM smoke for selected-lane gate chip markers",
+    "screenshot QA: PASS - all six compact status chips are present and readable, with no severe clipping or overlap"
+  ],
+  "blocked": false,
+  "nextGoal5Step": "Tighten the Review Queue drill-down list itself so global review/evidence/artifact rows inherit the same compact status-chip language without fake backend actions."
+}

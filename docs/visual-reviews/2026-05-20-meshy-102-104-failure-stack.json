@@ -1,0 +1,40 @@
+{
+  "artifact": "Goal 6 Meshy 102-104 failure stack board",
+  "decision": "no-spend diagnostic proof; do not submit another blind prompt from the same prompt family",
+  "inputs": [
+    {
+      "id": "102",
+      "title": "102 thin-wall prompt",
+      "thumbnail": "assets/meshy/api/102-thinwall-open-front-hollow-asteroid-v3.thumbnail.png",
+      "render": "docs/visual-reviews/2026-05-20-meshy-102-thinwall-preview-proof.png",
+      "failure": "thick shell + smooth floor/slab",
+      "credits": 20,
+      "triangles": 921212
+    },
+    {
+      "id": "103",
+      "title": "103 no-floor retry",
+      "thumbnail": "assets/meshy/api/103-no-floor-thin-wall-hollow-asteroid-v1.thumbnail.png",
+      "render": "docs/visual-reviews/2026-05-20-meshy-103-no-floor-preview-proof.png",
+      "failure": "tube/ring symmetry + blocky thick walls",
+      "credits": 20,
+      "triangles": 1472166
+    },
+    {
+      "id": "104",
+      "title": "104 asymmetric C-shell",
+      "thumbnail": "assets/meshy/api/104-asymmetric-broken-c-shell-asteroid-v1.thumbnail.png",
+      "render": "docs/visual-reviews/2026-05-20-meshy-104-asymmetric-cshell-preview-proof.png",
+      "failure": "unclear C-shell + slab/floor remains",
+      "credits": 20,
+      "triangles": 577960
+    }
+  ],
+  "totalCreditsRepresented": 60,
+  "facilityPopulationBlocked": true,
+  "nextGate": "topology-first source/reference or explicit re-scope before another paid Meshy task",
+  "paths": {
+    "board": "docs/visual-reviews/2026-05-20-meshy-102-104-failure-stack-board.png",
+    "json": "docs/visual-reviews/2026-05-20-meshy-102-104-failure-stack.json"
+  }
+}

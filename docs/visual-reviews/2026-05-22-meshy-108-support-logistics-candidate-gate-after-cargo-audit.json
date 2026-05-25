@@ -1,0 +1,289 @@
+{
+  "candidate": "meshy-108-support-logistics-candidate-gate-after-cargo-audit",
+  "gapPicked": "gate next Meshy-108 support/logistics candidate after cargo audit",
+  "createdAt": "2026-05-22T08:36:50Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "noNewFacilityAssetPlaced": true,
+  "currentScene": {
+    "path": "assets/blender/meshy-108-cargo-tool-pod-proxy-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 72792232,
+    "mb": 69.42,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 414,
+    "meshCount": 388,
+    "materialCount": 55,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1210,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "cargoAuditSource": "meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy",
+  "cargoAuditDecision": "passed-density-runtime-audit-after-cargo-tool-pod-proxy",
+  "runtimeBudget": {
+    "sceneBudgetBytes": 100663296,
+    "sceneBudgetMB": 96.0,
+    "currentSceneBytes": 72792232,
+    "currentSceneMB": 69.42,
+    "currentRemainingBytes": 27871064,
+    "currentRemainingMB": 26.58,
+    "currentUsagePercent": 72.31,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "directPlacementHeadroomFloorBytes": 18874368,
+    "directPlacementHeadroomFloorMB": 18.0
+  },
+  "alreadyUsedSupportLogisticsAssets": [
+    {
+      "path": "assets/meshy/api/09-modular-catwalk-deck-segment.meshy.glb",
+      "reason": "installed in density pass 2"
+    },
+    {
+      "path": "assets/meshy/api/10-modular-catwalk-recovery-long-bridge.meshy.glb",
+      "reason": "locked pass-1 catwalk"
+    },
+    {
+      "path": "assets/meshy/api/11-cable-pipe-duct-wall-insert.meshy.glb",
+      "reason": "installed as support utility detail"
+    },
+    {
+      "path": "assets/meshy/api/12-maintenance-drone.meshy.glb",
+      "reason": "optimized and placed as maintenance drone proxy"
+    },
+    {
+      "path": "assets/meshy/api/13-cargo-tool-pod.meshy.glb",
+      "reason": "optimized and placed as cargo tool pod proxy"
+    },
+    {
+      "path": "assets/meshy/api/15-docking-clamp-airlock-collar.meshy.glb",
+      "reason": "locked pass-1 logistics collar"
+    },
+    {
+      "path": "assets/meshy/api/22-hangar-airlock-portal-frame.meshy.glb",
+      "reason": "installed in density pass 2"
+    },
+    {
+      "path": "assets/meshy/api/23-control-console-bank.meshy.glb",
+      "reason": "locked pass-1 control console"
+    },
+    {
+      "path": "assets/meshy/api/25-hangar-airlock-portal-frame-v2.meshy.glb",
+      "reason": "locked pass-1 hangar portal"
+    },
+    {
+      "path": "assets/meshy/api/26-circular-observation-control-pod.meshy.glb",
+      "reason": "installed in density pass 2"
+    }
+  ],
+  "candidates": [
+    {
+      "path": "assets/meshy/api/01-hangar-loading-bay-frame.meshy.glb",
+      "role": "hangar-logistics",
+      "label": "Hangar loading bay frame",
+      "value": "large hangar/logistics frame, strong role value but too expensive after current population",
+      "fit": "defer until proxy optimization or a separate budget branch",
+      "inspection": {
+        "path": "assets/meshy/api/01-hangar-loading-bay-frame.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 66136228,
+        "mb": 63.072,
+        "asset": {
+          "generator": "pygltflib@v1.16.5",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 1,
+        "textureCount": 1,
+        "imageCount": 1,
+        "accessorCount": 4,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "inventoryBucket": "promoteNextPass",
+      "inventoryStatus": "promote-density-pass2",
+      "inventoryReason": "curated next-pass asset with distinct role coverage",
+      "directClass": "defer-over-budget",
+      "projectedSceneBytes": 138928460,
+      "projectedSceneMB": 132.493,
+      "remainingAfterDirectBytes": -38265164,
+      "remainingAfterDirectMB": -36.493,
+      "decision": "defer-optimize-first",
+      "reason": "direct placement exceeds the 96 MB scene guard"
+    },
+    {
+      "path": "assets/meshy/api/08-operator-console-chair-cluster.meshy.glb",
+      "role": "control-support",
+      "label": "Operator console chair cluster",
+      "value": "interior support detail, but source import would exceed the runtime guard",
+      "fit": "defer or proxy before command/control interior placement",
+      "inspection": {
+        "path": "assets/meshy/api/08-operator-console-chair-cluster.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 37612664,
+        "mb": 35.87,
+        "asset": {
+          "generator": "pygltflib@v1.16.5",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 1,
+        "textureCount": 1,
+        "imageCount": 1,
+        "accessorCount": 4,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "inventoryBucket": "promoteNextPass",
+      "inventoryStatus": "promote-density-pass2",
+      "inventoryReason": "curated next-pass asset with distinct role coverage",
+      "directClass": "defer-over-budget",
+      "projectedSceneBytes": 110404896,
+      "projectedSceneMB": 105.29,
+      "remainingAfterDirectBytes": -9741600,
+      "remainingAfterDirectMB": -9.29,
+      "decision": "defer-optimize-first",
+      "reason": "direct placement exceeds the 96 MB scene guard"
+    },
+    {
+      "path": "assets/meshy/api/39-portal-adjacent-control-insert.meshy.glb",
+      "role": "hangar-support",
+      "label": "Portal-adjacent control insert",
+      "value": "small hangar/support detail that reinforces the existing portal and keeps runtime headroom intact",
+      "fit": "next direct placement/contact proof near the lower right hangar portal",
+      "inspection": {
+        "path": "assets/meshy/api/39-portal-adjacent-control-insert.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 207924,
+        "mb": 0.198,
+        "asset": {
+          "generator": "libmeshy",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 0,
+        "textureCount": 0,
+        "imageCount": 0,
+        "accessorCount": 2,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "inventoryBucket": "reserve",
+      "inventoryStatus": "reserve",
+      "inventoryReason": "valid local facility asset, but not required in the next density slice",
+      "directClass": "direct-eligible",
+      "projectedSceneBytes": 73000156,
+      "projectedSceneMB": 69.618,
+      "remainingAfterDirectBytes": 27663140,
+      "remainingAfterDirectMB": 26.382,
+      "decision": "selected-next-placement-proof",
+      "reason": "best remaining support/logistics detail that preserves the next-increment guard"
+    },
+    {
+      "path": "assets/meshy/api/65-embedded-ops-window-wall-bunker.meshy.glb",
+      "role": "control-support",
+      "label": "Embedded ops window wall bunker",
+      "value": "light reserve control/support insert, useful backup after the portal insert",
+      "fit": "backup direct placement if the portal insert fails contact/readability",
+      "inspection": {
+        "path": "assets/meshy/api/65-embedded-ops-window-wall-bunker.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 280296,
+        "mb": 0.267,
+        "asset": {
+          "generator": "libmeshy",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 0,
+        "textureCount": 0,
+        "imageCount": 0,
+        "accessorCount": 2,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "inventoryBucket": "reserve",
+      "inventoryStatus": "reserve",
+      "inventoryReason": "valid local facility asset, but not required in the next density slice",
+      "directClass": "direct-eligible",
+      "projectedSceneBytes": 73072528,
+      "projectedSceneMB": 69.687,
+      "remainingAfterDirectBytes": 27590768,
+      "remainingAfterDirectMB": 26.313,
+      "decision": "eligible-backup",
+      "reason": "direct placement is viable, but role value is lower than the selected portal support insert"
+    }
+  ],
+  "selectedCandidate": {
+    "path": "assets/meshy/api/39-portal-adjacent-control-insert.meshy.glb",
+    "role": "hangar-support",
+    "label": "Portal-adjacent control insert",
+    "value": "small hangar/support detail that reinforces the existing portal and keeps runtime headroom intact",
+    "fit": "next direct placement/contact proof near the lower right hangar portal",
+    "inspection": {
+      "path": "assets/meshy/api/39-portal-adjacent-control-insert.meshy.glb",
+      "exists": true,
+      "validGlbHeader": true,
+      "version": 2,
+      "totalLength": 207924,
+      "mb": 0.198,
+      "asset": {
+        "generator": "libmeshy",
+        "version": "2.0"
+      },
+      "sceneCount": 1,
+      "nodeCount": 1,
+      "meshCount": 1,
+      "materialCount": 0,
+      "textureCount": 0,
+      "imageCount": 0,
+      "accessorCount": 2,
+      "animationCount": 0,
+      "extensionsUsed": []
+    },
+    "inventoryBucket": "reserve",
+    "inventoryStatus": "reserve",
+    "inventoryReason": "valid local facility asset, but not required in the next density slice",
+    "directClass": "direct-eligible",
+    "projectedSceneBytes": 73000156,
+    "projectedSceneMB": 69.618,
+    "remainingAfterDirectBytes": 27663140,
+    "remainingAfterDirectMB": 26.382,
+    "decision": "selected-next-placement-proof",
+    "reason": "best remaining support/logistics detail that preserves the next-increment guard"
+  },
+  "decision": "selected-portal-adjacent-control-insert-placement-proof",
+  "nextStep": "place the portal-adjacent control insert and prove contact/runtime",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-22-meshy-108-support-logistics-candidate-gate-after-cargo-audit.md",
+    "docs/visual-reviews/2026-05-22-meshy-108-support-logistics-candidate-gate-after-cargo-audit.json",
+    "docs/visual-reviews/2026-05-22-meshy-108-support-logistics-candidate-gate-after-cargo-audit-board.png",
+    "docs/visual-reviews/2026-05-22-meshy-108-support-logistics-candidate-gate-after-cargo-audit-viewer.html",
+    "docs/visual-reviews/2026-05-22-meshy-108-support-logistics-candidate-gate-after-cargo-audit-browser-smoke.png"
+  ]
+}

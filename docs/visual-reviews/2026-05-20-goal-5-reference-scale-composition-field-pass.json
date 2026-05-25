@@ -1,0 +1,45 @@
+{
+  "id": "visual-review-goal-5-reference-scale-composition-field-20260520",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-reference-scale-composition-field",
+  "artifactId": "artifact-goal-5-reference-scale-composition-field-pass",
+  "createdAt": "2026-05-20T22:21:00.000Z",
+  "scope": "Goal 5 holo-table reference-scale composition UI pass",
+  "decision": "reference-scale-composition-improved-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-20-goal-5-reference-scale-composition-field-pass.md",
+    "docs/visual-reviews/2026-05-20-goal-5-reference-scale-composition-field-pass.json",
+    "docs/visual-reviews/2026-05-20-goal-5-reference-scale-composition-field-desktop.png",
+    "docs/visual-reviews/2026-05-20-goal-5-reference-scale-composition-field-mobile.png",
+    "tmp/goal-5-reference-scale-composition-field-dom.html"
+  ],
+  "zoneVerdicts": [
+    {
+      "id": "zone-central-command-table",
+      "status": "partial-match-improved",
+      "note": "The central command table now has a larger table-first composition field, but authored lighting continuity is still open."
+    },
+    {
+      "id": "zone-peripheral-ops-bands",
+      "status": "partial-match-improved",
+      "note": "The surrounding bands now read as left mass, right counterweight, and horizon band; dense copy still needs tightening."
+    },
+    {
+      "id": "zone-reference-visual-motifs",
+      "status": "partial-match-improved",
+      "note": "The composition field reinforces line, depth, and contrast motifs without claiming final reference match."
+    },
+    {
+      "id": "zone-operational-density",
+      "status": "partial-match-improved",
+      "note": "The field remains state-backed by canonical goals, tasks, reviews, agents, telemetry, artifacts, and events."
+    },
+    {
+      "id": "zone-responsive-product-proof",
+      "status": "partial-match-improved",
+      "note": "Desktop and mobile screenshots plus DOM smoke are required for this UI pass."
+    }
+  ],
+  "nextGoal5Step": "Tighten authored lighting continuity and reduce dense microcopy inside the composition plates."
+}

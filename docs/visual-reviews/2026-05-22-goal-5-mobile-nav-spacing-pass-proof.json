@@ -1,0 +1,55 @@
+{
+  "id": "proof-goal-5-mobile-nav-spacing-pass",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-mobile-nav-spacing-pass",
+  "createdAt": "2026-05-22T01:21:00.000Z",
+  "scope": "Goal 5 overlay-only command-table overview at ?overlay=1&console=overview",
+  "gap": "Mobile command-center navigation could still clip peripheral tab/proof labels at the right edge on narrow screens.",
+  "changes": [
+    "Converted the mobile console tab strip to a three-column grid so command panels no longer depend on horizontal partial-scroll visibility.",
+    "Converted the internal command-center nav to a two-column wrapping-safe grid for narrow screens.",
+    "Allowed mobile proof/artifact card titles and statuses to wrap instead of being line-clamped at the rail edge.",
+    "Tightened bottom dock spacing while keeping the surface read-only and state-backed."
+  ],
+  "artifacts": {
+    "mobileScreenshot": "docs/visual-reviews/2026-05-22-goal-5-mobile-nav-spacing-pass-mobile.png",
+    "desktopScreenshot": "docs/visual-reviews/2026-05-22-goal-5-mobile-nav-spacing-pass-desktop.png",
+    "domSmoke": "tmp/goal-5-mobile-nav-spacing-pass-dom.html"
+  },
+  "screenshotQa": {
+    "mobile": {
+      "width": 390,
+      "height": 2200,
+      "nonblank": true,
+      "navLabelsReadable": true,
+      "proofRailReadable": true,
+      "noRightEdgeClipping": true,
+      "noSevereOverlap": true
+    },
+    "desktop": {
+      "width": 1440,
+      "height": 1100,
+      "captured": true
+    }
+  },
+  "smokeMarkers": [
+    "Command Center",
+    "Command Table Core",
+    "Mission Map",
+    "Buildout",
+    "Selected Lane Proof",
+    "grid-template-columns: repeat(3, minmax(0, 1fr));",
+    "grid-template-columns: repeat(2, minmax(0, 1fr));",
+    "-webkit-line-clamp: unset;"
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "Headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM/CSS smoke for mobile nav/proof markers",
+    "Mobile screenshot QA"
+  ],
+  "blocked": false,
+  "nextStep": "Use this unclipped mobile command shell to tune the next Goal 5 detail drill-down density pass."
+}

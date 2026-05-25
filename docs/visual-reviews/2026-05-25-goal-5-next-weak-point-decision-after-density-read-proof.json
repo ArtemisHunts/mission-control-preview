@@ -1,0 +1,38 @@
+{
+  "id": "visual-review-goal-5-next-weak-point-decision-after-density-read-20260525",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-next-weak-point-decision-after-density-read",
+  "artifactId": "artifact-goal-5-next-weak-point-decision-after-density-read",
+  "createdAt": "2026-05-25T13:32:00.000Z",
+  "surface": "?overlay=1&console=overview",
+  "selectedGap": "Tighten visual motif contrast around the denser Command Table Core using selected-goal tasks, reviews, agents, telemetry, artifacts, and events only.",
+  "verdict": "partial-match-improved",
+  "referenceComplete": false,
+  "decision": "motif-contrast-selected-next-after-density-read-proof",
+  "comparison": [
+    "Reference moodboard",
+    "Latest peripheral density read side-by-side board",
+    "Fresh desktop overview after density-read proof",
+    "Fresh mobile overview after density-read proof",
+    "Next weak-point decision matrix"
+  ],
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-25-goal-5-next-weak-point-decision-after-density-read-proof.md",
+    "docs/visual-reviews/2026-05-25-goal-5-next-weak-point-decision-after-density-read-proof.json",
+    "docs/visual-reviews/2026-05-25-goal-5-next-weak-point-decision-after-density-read-proof.html",
+    "docs/visual-reviews/2026-05-25-goal-5-next-weak-point-decision-after-density-read-board.png",
+    "docs/visual-reviews/2026-05-25-goal-5-next-weak-point-decision-after-density-read-current-desktop.png",
+    "docs/visual-reviews/2026-05-25-goal-5-next-weak-point-decision-after-density-read-current-mobile.png",
+    "tmp/goal-5-next-weak-point-decision-after-density-read-overview-dom.html",
+    "tmp/goal-5-next-weak-point-decision-after-density-read-board-dom.html"
+  ],
+  "domSmokeMarkers": [
+    "Goal 5 Next Weak-Point Decision After Density Read",
+    "motif contrast selected next",
+    "density proof complete",
+    "table hierarchy recently proved",
+    "visual motif contrast",
+    "partial-match-improved"
+  ],
+  "nextStep": "Tighten visual motif contrast around the denser Command Table Core using selected-goal tasks, reviews, agents, telemetry, artifacts, and events only."
+}

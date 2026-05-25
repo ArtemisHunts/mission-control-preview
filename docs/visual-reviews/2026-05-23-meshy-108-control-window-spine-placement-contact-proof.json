@@ -1,0 +1,174 @@
+{
+  "candidate": "meshy-108-control-window-spine-placement-contact-proof",
+  "gapPicked": "place control window spine and prove contact/runtime",
+  "createdAt": "2026-05-23T13:06:23Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "sourceSceneGlb": "assets/blender/meshy-108-fabrication-robotic-arm-placement-contact-proof.glb",
+  "assetSourceGlb": "assets/meshy/api/21-control-window-spine-module.meshy.glb",
+  "outBlend": "assets/blender/meshy-108-control-window-spine-placement-contact-proof.blend",
+  "outGlb": "assets/blender/meshy-108-control-window-spine-placement-contact-proof.glb",
+  "placement": {
+    "role": "control-support",
+    "label": "Control window spine module",
+    "zone": "upper command/control support band",
+    "location": [
+      1.38,
+      1.72,
+      1.22
+    ],
+    "rotationZDegrees": -12,
+    "targetMaxDimension": 0.42
+  },
+  "contactAudit": {
+    "pad": "control window spine support pad",
+    "assetBounds": {
+      "min": [
+        1.1616,
+        1.6152,
+        1.1605
+      ],
+      "max": [
+        1.5984,
+        1.8248,
+        1.2795
+      ],
+      "dimensions": [
+        0.4368,
+        0.2096,
+        0.119
+      ]
+    },
+    "padBounds": {
+      "min": [
+        1.1861,
+        1.5947,
+        1.1365
+      ],
+      "max": [
+        1.5739,
+        1.8453,
+        1.1605
+      ],
+      "dimensions": [
+        0.3878,
+        0.2505,
+        0.024
+      ]
+    },
+    "verticalGapAssetMinToPadTop": 0.0,
+    "xyOverlapRatio": 0.8878,
+    "status": "accepted-contact-range"
+  },
+  "acceptedContactCount": 1,
+  "needsReviewCount": 0,
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 71764212,
+    "sourceSceneMB": 68.44,
+    "outputBytes": 72431960,
+    "outputMB": 69.076,
+    "incrementBytes": 667748,
+    "incrementMB": 0.637,
+    "remainingBytes": 28231336,
+    "remainingMB": 26.924,
+    "usagePercent": 71.95,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "nextIncrementGuardMarginBytes": 3065512,
+    "nextIncrementGuardMarginMB": 2.924,
+    "nextIncrementHeadroomPass": true,
+    "status": "pass",
+    "assetSourceBytes": 173088,
+    "assetSourceMB": 0.165,
+    "gateProjectedSceneMB": 68.605,
+    "gateProjectedGuardMarginMB": 3.395
+  },
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-fabrication-robotic-arm-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 71764212,
+    "mb": 68.44,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 412,
+    "meshCount": 381,
+    "materialCount": 67,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1161,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "assetSourceInspection": {
+    "path": "assets/meshy/api/21-control-window-spine-module.meshy.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 173088,
+    "mb": 0.165,
+    "asset": {
+      "generator": "libmeshy",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 1,
+    "meshCount": 1,
+    "materialCount": 0,
+    "textureCount": 0,
+    "imageCount": 0,
+    "accessorCount": 2,
+    "animationCount": 0,
+    "extensionsUsed": []
+  },
+  "placementGlbInspection": {
+    "path": "assets/blender/meshy-108-control-window-spine-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 72431960,
+    "mb": 69.076,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 415,
+    "meshCount": 383,
+    "materialCount": 68,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1168,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-control-window-spine-placement-contact-proof/2026-05-23-meshy-108-control-window-spine-placement-contact-proof-top.png",
+    "front": "docs/visual-reviews/meshy-108-control-window-spine-placement-contact-proof/2026-05-23-meshy-108-control-window-spine-placement-contact-proof-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-control-window-spine-placement-contact-proof/2026-05-23-meshy-108-control-window-spine-placement-contact-proof-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-control-window-spine-placement-contact-proof/2026-05-23-meshy-108-control-window-spine-placement-contact-proof-detail.png"
+  },
+  "decision": "control-window-spine-placement-contact-passed",
+  "nextStep": "run a Meshy-108 density/runtime audit after control window spine placement before adding another asset",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-23-meshy-108-control-window-spine-placement-contact-proof.md",
+    "docs/visual-reviews/2026-05-23-meshy-108-control-window-spine-placement-contact-proof.json",
+    "docs/visual-reviews/2026-05-23-meshy-108-control-window-spine-placement-contact-proof-board.png",
+    "docs/visual-reviews/2026-05-23-meshy-108-control-window-spine-placement-contact-proof-viewer.html",
+    "docs/visual-reviews/2026-05-23-meshy-108-control-window-spine-placement-contact-proof-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-control-window-spine-placement-contact-proof/2026-05-23-meshy-108-control-window-spine-placement-contact-proof-top.png",
+    "docs/visual-reviews/meshy-108-control-window-spine-placement-contact-proof/2026-05-23-meshy-108-control-window-spine-placement-contact-proof-front.png",
+    "docs/visual-reviews/meshy-108-control-window-spine-placement-contact-proof/2026-05-23-meshy-108-control-window-spine-placement-contact-proof-oblique.png",
+    "docs/visual-reviews/meshy-108-control-window-spine-placement-contact-proof/2026-05-23-meshy-108-control-window-spine-placement-contact-proof-detail.png"
+  ]
+}

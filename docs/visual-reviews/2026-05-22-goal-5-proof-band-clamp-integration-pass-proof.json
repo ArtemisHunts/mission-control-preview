@@ -1,0 +1,61 @@
+{
+  "id": "visual-review-goal-5-proof-band-clamp-integration-pass-20260522",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-proof-band-clamp-integration-pass",
+  "artifactId": "artifact-goal-5-proof-band-clamp-integration-pass",
+  "createdAt": "2026-05-22T22:21:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match UI pass only.",
+  "decision": "proof-band-clamp-integrated-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-22-goal-5-proof-band-clamp-integration-pass-proof.md",
+    "docs/visual-reviews/2026-05-22-goal-5-proof-band-clamp-integration-pass-proof.json",
+    "docs/visual-reviews/2026-05-22-goal-5-proof-band-clamp-integration-pass-mobile.png",
+    "docs/visual-reviews/2026-05-22-goal-5-proof-band-clamp-integration-pass-desktop.png",
+    "tmp/goal-5-proof-band-clamp-integration-pass-dom.html"
+  ],
+  "uiMarkers": [
+    "reference-scale-proof-band-clamp",
+    "core bind",
+    "rail join",
+    "orbit verdict",
+    "reference-scale-proof-orbit-bridge",
+    "Command Table Core"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The table core now includes a proof band clamp that binds the bridge toward the lower proof/status rail."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "Queue/proof state and the canonical orbit verdict now sit in a connector strip between the bridge and rail."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "Clamp geometry improves the table-bound instrument motif, while fresh side-by-side proof is still required."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "The clamp reuses existing selected Goal 5 state and introduces no fake backend actions."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop/mobile overlay captures and DOM smoke are recorded after the clamp integration pass."
+    }
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM smoke for proof band clamp markers",
+    "PNG sanity for desktop/mobile captures"
+  ],
+  "nextGoal5Step": "Capture a fresh side-by-side reference proof after the proof band clamp integration pass before making a stronger reference-match claim."
+}

@@ -1,0 +1,121 @@
+{
+  "candidate": "meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker",
+  "gapPicked": "audit Meshy-108 density/runtime after embedded ops wall bunker placement",
+  "createdAt": "2026-05-22T16:01:52Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "noNewFacilityAssetPlaced": true,
+  "sourceSceneBlend": "assets/blender/meshy-108-embedded-ops-wall-bunker-placement-contact-proof.blend",
+  "sourceSceneGlb": "assets/blender/meshy-108-embedded-ops-wall-bunker-placement-contact-proof.glb",
+  "sourcePlacementMetrics": "docs/visual-reviews/2026-05-22-meshy-108-embedded-ops-wall-bunker-placement-contact-proof.json",
+  "auditBlend": "assets/blender/meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker.blend",
+  "auditGlb": "assets/blender/meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker.glb",
+  "sceneBounds": {
+    "min": [
+      -3.8818,
+      -3.0368,
+      -1.8656
+    ],
+    "max": [
+      3.2963,
+      3.1295,
+      2.1056
+    ],
+    "dimensions": [
+      7.178,
+      6.1663,
+      3.9712
+    ]
+  },
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-embedded-ops-wall-bunker-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 75012152,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 427,
+    "meshCount": 399,
+    "materialCount": 61,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1247,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "auditGlbInspection": {
+    "path": "assets/blender/meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 76397724,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 448,
+    "meshCount": 420,
+    "materialCount": 70,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1319,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 75012152,
+    "sourceSceneMB": 71.537,
+    "sourceRemainingBytes": 25651144,
+    "sourceRemainingMB": 24.463,
+    "sourceUsagePercent": 74.52,
+    "auditGlbBytes": 76397724,
+    "auditGlbMB": 72.859,
+    "auditRemainingBytes": 24265572,
+    "auditRemainingMB": 23.141,
+    "auditUsagePercent": 75.89,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "nextIncrementHeadroomPass": true,
+    "status": "pass-density-runtime-audit"
+  },
+  "densityRuntimeAudit": {
+    "commandHero": "pass-visible-upper-command-band",
+    "productionGantry": "pass-visible-lower-left-production-span",
+    "supportDuct": "pass-visible-right-lower-service-wall",
+    "portalControlInsert": "pass-visible-lower-right-hangar-portal-support-wall",
+    "embeddedOpsWallBunker": "pass-visible-upper-command-wall-support-band",
+    "embeddedOpsWallBunkerContact": "accepted-contact-range",
+    "embeddedOpsWallBunkerContactGap": 0.0,
+    "embeddedOpsWallBunkerContactOverlap": 0.8615,
+    "openMouthClearance": "pass-clearance-corridor-marked",
+    "roleReadability": "pass-command-production-hangar-power-signal-control-logistics-catwalk-support-utility-cargo-tool-pod-embedded-ops-wall-bunker-present",
+    "balance": "pass-with-caution-next-asset-needs-role-value-and-runtime-gate"
+  },
+  "decision": "passed-density-runtime-audit-after-embedded-ops-wall-bunker",
+  "nextStep": "gate the next Meshy-108 support/logistics candidate before placement; optimize first if direct placement would consume too much runtime headroom",
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker/2026-05-22-meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker-top.png",
+    "front": "docs/visual-reviews/meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker/2026-05-22-meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker/2026-05-22-meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker/2026-05-22-meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker-detail.png"
+  },
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker.md",
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker.json",
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker-board.png",
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker-viewer.html",
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker"
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "id": "visual-review-goal-5-proof-rail-contrast-asymmetry-pass-20260522",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-proof-rail-contrast-asymmetry-pass",
+  "artifactId": "artifact-goal-5-proof-rail-contrast-asymmetry-pass",
+  "createdAt": "2026-05-22T16:21:00.000Z",
+  "decision": "proof-rail-contrast-asymmetry-improved",
+  "verdict": "partial-match-improved",
+  "scope": [
+    "Command Table Core",
+    "Proof/status rail",
+    "Peripheral proof counterweight",
+    "overlay-only preview at ?overlay=1&console=overview"
+  ],
+  "pickedGap": "The previous side-by-side proof showed the proof/status rail needed stronger contrast and asymmetric peripheral hierarchy.",
+  "changes": [
+    "Added a reference-scale-contrast-rail below the proof/status rows.",
+    "Rendered anchor, offset, and glow chips from selected Goal 5 lane/proof state.",
+    "Visually raised the right proof mass chip to strengthen asymmetric proof counterweight.",
+    "Kept the strip read-only and state-backed."
+  ],
+  "screenshots": {
+    "mobileOverview": {
+      "path": "docs/visual-reviews/2026-05-22-goal-5-proof-rail-contrast-asymmetry-pass-mobile.png",
+      "viewport": "390x5800",
+      "status": "captured"
+    },
+    "desktopOverview": {
+      "path": "docs/visual-reviews/2026-05-22-goal-5-proof-rail-contrast-asymmetry-pass-desktop.png",
+      "viewport": "1440x1500",
+      "status": "captured"
+    }
+  },
+  "domSmoke": {
+    "overviewPath": "tmp/goal-5-proof-rail-contrast-asymmetry-pass-dom.html",
+    "markers": [
+      "Command Table Core",
+      "proof/status rail",
+      "reference-scale-contrast-rail",
+      "right proof mass",
+      "artifact hot",
+      "Goal 5 telemetry event log side-by-side proof"
+    ],
+    "status": "pass"
+  },
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM smoke for proof rail contrast/asymmetry markers",
+    "screenshot sanity: PASS - nonblank desktop/mobile overview captures"
+  ],
+  "blocked": false,
+  "nextGoal5Step": "Capture a fresh side-by-side reference proof after the proof rail contrast/asymmetry pass before claiming stronger reference-match progress."
+}

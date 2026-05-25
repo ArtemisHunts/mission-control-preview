@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Meshy-108 Tiny Support/Control Candidate Gate After Asym Bulkhead Audit</title>
+<style>
+  body { margin: 0; background: #071016; color: #e8f7f4; font: 16px/1.45 system-ui, sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 32px; }
+  h1 { font-size: 28px; margin: 0 0 8px; }
+  .summary, .status { color: #8bdde0; margin-bottom: 18px; }
+  .status { padding: 12px 14px; border: 1px solid #28525a; background: #0d1a22; }
+  table { width: 100%; border-collapse: collapse; background: #0d1a22; border: 1px solid #24434a; margin-bottom: 24px; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid #1f343b; vertical-align: top; }
+  th { color: #90f3ff; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  img { width: 100%; border: 1px solid #24434a; background: #05080b; }
+  code { color: #ffd166; }
+</style>
+<main>
+  <h1>Meshy-108 Tiny Support/Control Candidate Gate After Asym Bulkhead Audit</h1>
+  <div class="summary">Selected <code>assets/meshy/api/75-armored-panel-command-wall-facade.meshy.glb</code>; projected <code>69.427 MB</code>; guard margin <code>2.573 MB</code>; no Meshy spend.</div>
+  <div id="glb-status" class="status">selected-glb-pending</div>
+  <table>
+    <thead><tr><th>Candidate</th><th>Role</th><th>Source MB</th><th>Projected MB</th><th>Remaining MB</th><th>Guard Margin MB</th><th>Decision</th></tr></thead>
+    <tbody><tr><td>Clean heavy command wall bunker</td><td>command-support</td><td>0.079</td><td>69.423</td><td>26.577</td><td>2.577</td><td>eligible-backup</td></tr>
+<tr><td>Armored panel command wall facade</td><td>control-support</td><td>0.083</td><td>69.427</td><td>26.573</td><td>2.573</td><td>selected-next-placement-proof</td></tr>
+<tr><td>Clean centered command wall bay</td><td>command-support</td><td>0.09</td><td>69.434</td><td>26.566</td><td>2.566</td><td>eligible-backup</td></tr>
+<tr><td>Clean command slit wall bay</td><td>command-support</td><td>0.113</td><td>69.457</td><td>26.543</td><td>2.543</td><td>eligible-backup</td></tr>
+<tr><td>Clean compact command aperture facade</td><td>command-support</td><td>0.095</td><td>69.439</td><td>26.561</td><td>2.561</td><td>eligible-backup</td></tr></tbody>
+  </table>
+  <img src="./2026-05-23-meshy-108-tiny-support-control-candidate-gate-after-asym-bulkhead-audit-board.png" alt="candidate gate proof board">
+</main>
+<script>
+async function inspectSelectedGlb() {
+  const status = document.getElementById('glb-status');
+  const response = await fetch('../../assets/meshy/api/75-armored-panel-command-wall-facade.meshy.glb');
+  if (!response.ok) throw new Error('HTTP ' + response.status);
+  const buffer = await response.arrayBuffer();
+  const view = new DataView(buffer);
+  const magic = String.fromCharCode(...new Uint8Array(buffer, 0, 4));
+  const version = view.getUint32(4, true);
+  const length = view.getUint32(8, true);
+  status.textContent = magic === 'glTF' && version === 2 && length === buffer.byteLength
+    ? 'selected-glb-ok ' + buffer.byteLength + ' bytes'
+    : 'selected-glb-fail magic=' + magic + ' version=' + version + ' length=' + length + ' actual=' + buffer.byteLength;
+}
+inspectSelectedGlb().catch((error) => {
+  document.getElementById('glb-status').textContent = 'selected-glb-error ' + error.message;
+});
+</script>
+</html>

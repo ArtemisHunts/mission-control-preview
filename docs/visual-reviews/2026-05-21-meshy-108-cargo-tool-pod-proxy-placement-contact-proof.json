@@ -1,0 +1,165 @@
+{
+  "candidate": "meshy-108-cargo-tool-pod-proxy-placement-contact-proof",
+  "gapPicked": "place optimized Meshy-108 cargo tool pod proxy and prove contact/runtime",
+  "createdAt": "2026-05-22T05:32:11Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "sourceSceneBlend": "assets/blender/meshy-108-maintenance-drone-proxy-placement-contact-proof.blend",
+  "sourceSceneGlb": "assets/blender/meshy-108-maintenance-drone-proxy-placement-contact-proof.glb",
+  "proxySourceGlb": "assets/blender/meshy-108-cargo-tool-pod-optimization-proxy.glb",
+  "proxyOptimizationMetrics": "docs/visual-reviews/2026-05-21-meshy-108-cargo-tool-pod-optimization-proxy.json",
+  "outBlend": "assets/blender/meshy-108-cargo-tool-pod-proxy-placement-contact-proof.blend",
+  "outGlb": "assets/blender/meshy-108-cargo-tool-pod-proxy-placement-contact-proof.glb",
+  "placement": {
+    "role": "logistics",
+    "label": "Optimized cargo tool pod proxy",
+    "zone": "lower logistics service bay",
+    "location": [
+      -2.28,
+      -1.74,
+      0.88
+    ],
+    "rotationZDegrees": 14,
+    "targetMaxDimension": 0.86,
+    "importedMeshCount": 24
+  },
+  "contactAudit": {
+    "pad": "cargo tool pod proxy logistics pad",
+    "marker": "cargo tool pod proxy cyan locator",
+    "assetBounds": {
+      "min": [
+        -2.7155,
+        -2.2389,
+        0.5983
+      ],
+      "max": [
+        -1.8506,
+        -1.2401,
+        1.1617
+      ],
+      "dimensions": [
+        0.865,
+        0.9988,
+        0.5634
+      ]
+    },
+    "padBounds": {
+      "min": [
+        -2.6343,
+        -2.1192,
+        0.5703
+      ],
+      "max": [
+        -1.9257,
+        -1.3608,
+        0.5983
+      ],
+      "dimensions": [
+        0.7086,
+        0.7583,
+        0.028
+      ]
+    },
+    "verticalGapAssetMinToPadTop": 0.0,
+    "xyOverlapRatio": 1.0,
+    "status": "accepted-contact-range"
+  },
+  "acceptedContactCount": 1,
+  "needsReviewCount": 0,
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 71805396,
+    "sourceSceneMB": 68.479,
+    "proxySourceBytes": 426404,
+    "proxySourceMB": 0.407,
+    "fullSourceDirectProjectedSceneMB": 125.422,
+    "outputBytes": 72792232,
+    "outputMB": 69.42,
+    "remainingBytes": 27871064,
+    "remainingMB": 26.58,
+    "status": "pass"
+  },
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-maintenance-drone-proxy-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 71805396,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 382,
+    "meshCount": 357,
+    "materialCount": 45,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1111,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "proxySourceInspection": {
+    "path": "assets/blender/meshy-108-cargo-tool-pod-optimization-proxy.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 426404,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 24,
+    "meshCount": 24,
+    "materialCount": 6,
+    "textureCount": 0,
+    "imageCount": 0,
+    "accessorCount": 78,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "placementGlbInspection": {
+    "path": "assets/blender/meshy-108-cargo-tool-pod-proxy-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 72792232,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 414,
+    "meshCount": 388,
+    "materialCount": 55,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1210,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-cargo-tool-pod-proxy-placement-contact-proof/2026-05-21-meshy-108-cargo-tool-pod-proxy-placement-contact-proof-top.png",
+    "front": "docs/visual-reviews/meshy-108-cargo-tool-pod-proxy-placement-contact-proof/2026-05-21-meshy-108-cargo-tool-pod-proxy-placement-contact-proof-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-cargo-tool-pod-proxy-placement-contact-proof/2026-05-21-meshy-108-cargo-tool-pod-proxy-placement-contact-proof-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-cargo-tool-pod-proxy-placement-contact-proof/2026-05-21-meshy-108-cargo-tool-pod-proxy-placement-contact-proof-detail.png"
+  },
+  "decision": "cargo-tool-pod-proxy-placement-contact-passed",
+  "nextStep": "run a Meshy-108 density/runtime audit after cargo tool pod proxy placement before adding another asset",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-meshy-108-cargo-tool-pod-proxy-placement-contact-proof.md",
+    "docs/visual-reviews/2026-05-21-meshy-108-cargo-tool-pod-proxy-placement-contact-proof.json",
+    "docs/visual-reviews/2026-05-21-meshy-108-cargo-tool-pod-proxy-placement-contact-proof-board.png",
+    "docs/visual-reviews/2026-05-21-meshy-108-cargo-tool-pod-proxy-placement-contact-proof-viewer.html",
+    "docs/visual-reviews/2026-05-21-meshy-108-cargo-tool-pod-proxy-placement-contact-proof-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-cargo-tool-pod-proxy-placement-contact-proof"
+  ]
+}

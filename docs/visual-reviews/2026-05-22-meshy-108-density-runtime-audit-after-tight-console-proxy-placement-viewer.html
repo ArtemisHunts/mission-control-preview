@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Meshy-108 Density/Runtime Audit After Tight Console Proxy</title>
+<style>
+  body { margin: 0; background: #071016; color: #e8f7f4; font: 16px/1.45 system-ui, sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 32px; }
+  h1 { font-size: 28px; margin: 0 0 8px; }
+  .summary { color: #8bdde0; margin-bottom: 24px; }
+  table { width: 100%; border-collapse: collapse; background: #0d1a22; border: 1px solid #24434a; margin-bottom: 24px; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid #1f343b; vertical-align: top; }
+  th { color: #90f3ff; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  img { width: 100%; border: 1px solid #24434a; background: #05080b; }
+  code { color: #ffd166; }
+</style>
+<main>
+  <h1>Meshy-108 Density/Runtime Audit After Tight Console Proxy</h1>
+  <div class="summary">Audit-only pass. Runtime scene <code>67.755 MB</code>; tight console proxy contact <code>accepted-contact-range</code>; no Meshy spend.</div>
+  <div id="runtime-check" class="summary">Audit GLB fetch: pending</div>
+  <table><thead><tr><th>Metric</th><th>Path / Decision</th><th>Value</th></tr></thead><tbody><tr><td>Runtime scene</td><td>assets/blender/meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof.glb</td><td>67.755 MB / 96.0 MB</td></tr>
+<tr><td>Runtime headroom</td><td>pass-density-runtime-audit</td><td>28.245 MB remaining; next guard True</td></tr>
+<tr><td>Tight console proxy contact</td><td>accepted-contact-range</td><td>gap +0.0000, overlap 0.99</td></tr>
+<tr><td>Open mouth</td><td>pass-clearance-corridor-marked</td><td>clearance corridor marked</td></tr>
+<tr><td>Decision</td><td>passed-density-runtime-audit-after-tight-console-proxy-placement</td><td>gate the next Meshy-108 support/logistics candidate before placement; optimize first if direct placement would consume too much runtime headroom</td></tr></tbody></table>
+  <img src="./2026-05-22-meshy-108-density-runtime-audit-after-tight-console-proxy-placement-board.png" alt="density runtime audit after tight console proxy proof board">
+</main>
+<script>
+  const out = document.getElementById('runtime-check');
+  fetch('../../assets/blender/meshy-108-density-runtime-audit-after-tight-console-proxy-placement.glb')
+    .then((response) => {
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      return response.arrayBuffer();
+    })
+    .then((buffer) => {
+      const view = new DataView(buffer);
+      const magic = String.fromCharCode(...new Uint8Array(buffer, 0, 4));
+      const version = view.getUint32(4, true);
+      const length = view.getUint32(8, true);
+      out.textContent = 'Audit GLB fetch: ' + magic + ' v' + version + ', ' + length + ' bytes';
+    })
+    .catch((error) => {
+      out.textContent = 'Audit GLB fetch failed: ' + error.message;
+    });
+</script>
+</html>

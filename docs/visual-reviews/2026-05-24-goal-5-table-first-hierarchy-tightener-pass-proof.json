@@ -1,0 +1,33 @@
+{
+  "id": "visual-review-goal-5-table-first-hierarchy-tightener-pass-20260524",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-table-first-hierarchy-tightener-pass",
+  "artifactId": "artifact-goal-5-table-first-hierarchy-tightener-pass",
+  "createdAt": "2026-05-24T20:53:00.000Z",
+  "surface": "?overlay=1&console=overview",
+  "selectedGap": "Tighten the selected table-first hierarchy gap surfaced by the next weak-point selector.",
+  "verdict": "partial-match-improved",
+  "referenceComplete": false,
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-tightener-pass-proof.md",
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-tightener-pass-proof.json",
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-tightener-pass-desktop.png",
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-tightener-pass-mobile.png",
+    "tmp/goal-5-table-first-hierarchy-tightener-pass-dom.html"
+  ],
+  "domSmokeMarkers": [
+    "reference-scale-table-hierarchy-tightener",
+    "State-backed selected table-first hierarchy tightener",
+    "selected table",
+    "orbit quiet",
+    "proof pressure",
+    "next lock"
+  ],
+  "stateBackedInputs": [
+    "referenceMatch.goal5.nextStep",
+    "referenceMatch.goal5.zones[zone-central-command-table]",
+    "selected-goal tasks and review pressure",
+    "selected-goal artifacts and events"
+  ],
+  "nextStep": "Capture a fresh side-by-side reference proof after the table-first hierarchy tightener pass."
+}

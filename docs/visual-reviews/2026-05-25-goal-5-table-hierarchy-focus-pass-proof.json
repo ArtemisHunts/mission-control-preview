@@ -1,0 +1,27 @@
+{
+  "id": "visual-review-goal-5-table-hierarchy-focus-pass-20260525",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-table-hierarchy-focus-pass",
+  "artifactId": "artifact-goal-5-table-hierarchy-focus-pass",
+  "createdAt": "2026-05-25T19:39:00.000Z",
+  "verdict": "partial-match-improved",
+  "referenceComplete": false,
+  "decision": "table-hierarchy-focus-pass-improved-not-reference-complete",
+  "selectedGap": "table hierarchy focus pass",
+  "implementedMarkers": [
+    "reference-scale-table-hierarchy-focus-pass",
+    "State-backed table hierarchy focus pass",
+    "table priority",
+    "motif carried",
+    "work below rim",
+    "proof stack"
+  ],
+  "proofPaths": {
+    "markdown": "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-focus-pass-proof.md",
+    "json": "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-focus-pass-proof.json",
+    "desktopScreenshot": "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-focus-pass-desktop.png",
+    "mobileScreenshot": "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-focus-pass-mobile.png",
+    "overlayDom": "tmp/goal-5-table-hierarchy-focus-pass-dom.html"
+  },
+  "nextStep": "Capture a fresh side-by-side reference proof after the table hierarchy focus pass."
+}

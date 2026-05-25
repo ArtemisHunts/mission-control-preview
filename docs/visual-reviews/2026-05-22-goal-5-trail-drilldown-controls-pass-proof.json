@@ -1,0 +1,56 @@
+{
+  "id": "proof-goal-5-trail-drilldown-controls-pass",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-trail-drilldown-controls-pass",
+  "createdAt": "2026-05-22T04:21:00.000Z",
+  "scope": "Goal 5 overlay-only command-table overview at ?overlay=1&console=overview",
+  "gap": "The selected-lane trail showed task, gate, proof, and event state, but those cards were still passive.",
+  "changes": [
+    "Converted the four selected-lane trail cards into button controls.",
+    "Routed task to the Task Board lens, gate to Review Queue, and proof/event to Telemetry.",
+    "Added visible OPEN affordances, focus states, and touch handling.",
+    "Kept every control read-only with no backend actions or fake state."
+  ],
+  "artifacts": {
+    "mobileScreenshot": "docs/visual-reviews/2026-05-22-goal-5-trail-drilldown-controls-pass-mobile.png",
+    "desktopScreenshot": "docs/visual-reviews/2026-05-22-goal-5-trail-drilldown-controls-pass-desktop.png",
+    "domSmoke": "tmp/goal-5-trail-drilldown-controls-pass-dom.html"
+  },
+  "screenshotQa": {
+    "mobile": {
+      "width": 390,
+      "height": 2400,
+      "nonblank": true,
+      "trailControlsReadable": true,
+      "trailControlsTappable": true,
+      "openAffordancesVisible": true,
+      "noClipping": true,
+      "noOverlap": true
+    },
+    "desktop": {
+      "width": 1440,
+      "height": 1200,
+      "captured": true
+    }
+  },
+  "smokeMarkers": [
+    "Selected Lane Trail",
+    "Open task detail lens",
+    "Open gate detail lens",
+    "Open proof detail lens",
+    "Open event detail lens",
+    "Goal 5 selected lane trail pass proof",
+    ".command-center-trail-node::after",
+    "content: 'OPEN';"
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "Headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM/CSS smoke for trail control markers",
+    "Mobile screenshot QA"
+  ],
+  "blocked": false,
+  "nextStep": "Add denser state summaries inside the Task, Review, and Telemetry drill-down lenses opened by these trail controls."
+}

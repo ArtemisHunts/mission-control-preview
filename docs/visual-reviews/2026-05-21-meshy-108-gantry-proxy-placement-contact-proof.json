@@ -1,0 +1,152 @@
+{
+  "candidate": "meshy-108-gantry-proxy-placement-contact-proof",
+  "gapPicked": "place optimized Meshy-108 gantry proxy and prove contact/runtime",
+  "createdAt": "2026-05-21T14:37:24Z",
+  "noMeshySpend": true,
+  "sourceSceneBlend": "assets/blender/meshy-108-heavy-hero-command-spine.blend",
+  "sourceSceneGlb": "assets/blender/meshy-108-heavy-hero-command-spine.glb",
+  "proxySourceGlb": "assets/blender/meshy-108-gantry-crane-optimization-proxy.glb",
+  "outBlend": "assets/blender/meshy-108-gantry-proxy-placement-contact-proof.blend",
+  "outGlb": "assets/blender/meshy-108-gantry-proxy-placement-contact-proof.glb",
+  "placement": {
+    "role": "production",
+    "label": "Optimized gantry proxy",
+    "zone": "lower-left production span",
+    "location": [
+      -1.32,
+      0.78,
+      0.82
+    ],
+    "rotationZDegrees": 9,
+    "targetMaxDimension": 1.55,
+    "importedMeshCount": 22
+  },
+  "contactAudit": {
+    "pad": "gantry proxy production contact pad",
+    "marker": "gantry proxy cyan locator",
+    "label": "gantry proxy placement label",
+    "openMouthLabel": "gantry proxy open mouth label",
+    "auditLabel": "gantry proxy contact audit label",
+    "assetBounds": {
+      "min": [
+        -2.1936,
+        0.0038,
+        0.2206
+      ],
+      "max": [
+        -0.5377,
+        1.5838,
+        1.4194
+      ],
+      "dimensions": [
+        1.6558,
+        1.58,
+        1.1989
+      ]
+    },
+    "padBounds": {
+      "min": [
+        -1.7366,
+        0.3641,
+        0.1886
+      ],
+      "max": [
+        -0.9034,
+        1.1959,
+        0.2206
+      ],
+      "dimensions": [
+        0.8333,
+        0.8318,
+        0.032
+      ]
+    },
+    "verticalGapAssetMinToPadTop": 0.0,
+    "xyOverlapRatio": 1.0,
+    "status": "accepted-contact-range"
+  },
+  "acceptedContactCount": 1,
+  "needsReviewCount": 0,
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-heavy-hero-command-spine.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 50651016,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 307,
+    "meshCount": 285,
+    "materialCount": 20,
+    "textureCount": 2,
+    "imageCount": 2,
+    "accessorCount": 877,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "proxySourceInspection": {
+    "path": "assets/blender/meshy-108-gantry-crane-optimization-proxy.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 330564,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 22,
+    "meshCount": 22,
+    "materialCount": 5,
+    "textureCount": 0,
+    "imageCount": 0,
+    "accessorCount": 71,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "placementGlbInspection": {
+    "path": "assets/blender/meshy-108-gantry-proxy-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 51379860,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 336,
+    "meshCount": 313,
+    "materialCount": 29,
+    "textureCount": 2,
+    "imageCount": 2,
+    "accessorCount": 968,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-gantry-proxy-placement-contact-proof/2026-05-21-meshy-108-gantry-proxy-placement-contact-proof-top.png",
+    "front": "docs/visual-reviews/meshy-108-gantry-proxy-placement-contact-proof/2026-05-21-meshy-108-gantry-proxy-placement-contact-proof-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-gantry-proxy-placement-contact-proof/2026-05-21-meshy-108-gantry-proxy-placement-contact-proof-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-gantry-proxy-placement-contact-proof/2026-05-21-meshy-108-gantry-proxy-placement-contact-proof-detail.png"
+  },
+  "decision": "gantry-proxy-placement-contact-passed",
+  "nextStep": "audit broader facility composition/runtime budget before adding another production/power asset",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-meshy-108-gantry-proxy-placement-contact-proof.md",
+    "docs/visual-reviews/2026-05-21-meshy-108-gantry-proxy-placement-contact-proof.json",
+    "docs/visual-reviews/2026-05-21-meshy-108-gantry-proxy-placement-contact-proof-board.png",
+    "docs/visual-reviews/2026-05-21-meshy-108-gantry-proxy-placement-contact-proof-viewer.html",
+    "docs/visual-reviews/2026-05-21-meshy-108-gantry-proxy-placement-contact-proof-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-gantry-proxy-placement-contact-proof"
+  ]
+}

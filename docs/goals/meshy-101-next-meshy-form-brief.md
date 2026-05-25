@@ -69,6 +69,13 @@ The brief now has a concrete no-spend launch path attached to it:
 - Guarded submit script: `scripts/submit-meshy-101-thinwall-hollow-v3.py`
 - Current create spec: `assets/meshy/api/102-thinwall-open-front-hollow-asteroid-v3.create-spec.json`
 
+Current retry pack after Meshy-102/103 rejection:
+
+- Guarded submit script: `scripts/submit-meshy-104-asymmetric-cshell-v1.py`
+- Current create spec: `assets/meshy/api/104-asymmetric-broken-c-shell-asteroid-v1.create-spec.json`
+- Proof note: `docs/visual-reviews/2026-05-20-meshy-104-asymmetric-cshell-submission-pack.md`
+- Target: break Meshy-103's tube/ring symmetry by asking for an asymmetrical broken C-shaped shell with a large missing quadrant, while preserving the no-floor/no-slab constraint.
+
 Dry-run only:
 
 ```bash

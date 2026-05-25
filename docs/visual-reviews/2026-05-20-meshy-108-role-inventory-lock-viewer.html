@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meshy-108 Facility Role Inventory Lock Browser Smoke</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #04070c;
+      color: #e8fbff;
+      font-family: Inter, system-ui, sans-serif;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+    }
+
+    .shell {
+      width: min(1180px, calc(100vw - 56px));
+      padding: 28px;
+      border: 1px solid rgba(111, 231, 255, 0.34);
+      background: linear-gradient(145deg, rgba(12, 21, 30, 0.94), rgba(6, 11, 16, 0.96));
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      letter-spacing: 0;
+    }
+
+    .sub {
+      margin: 0 0 22px;
+      color: #9fd5df;
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric,
+    .lane {
+      border: 1px solid rgba(140, 166, 160, 0.25);
+      background: rgba(12, 20, 24, 0.78);
+      padding: 12px;
+      min-height: 76px;
+    }
+
+    .value {
+      display: block;
+      color: #64e8ff;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .label {
+      color: #b9c7c2;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .lanes {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .lane h2 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .lane ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #d8e6e1;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .readout {
+      margin-top: 18px;
+      color: #8ed7ff;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <h1>Meshy-108 Facility Role Inventory Lock</h1>
+    <p class="sub">Browser smoke for local Meshy GLB inventory classification. No Meshy spend. No asteroid baseline source edits.</p>
+    <section class="grid" id="metrics"></section>
+    <section class="lanes" id="lanes"></section>
+    <div class="readout" id="readout">Loading inventory JSON</div>
+  </main>
+  <script>
+    const JSON_URL = './2026-05-20-meshy-108-role-inventory-lock.json';
+    const metrics = document.getElementById('metrics');
+    const lanes = document.getElementById('lanes');
+    const readout = document.getElementById('readout');
+
+    function metric(value, label) {
+      const div = document.createElement('div');
+      div.className = 'metric';
+      div.innerHTML = '<span class="value">' + value + '</span><span class="label">' + label + '</span>';
+      metrics.appendChild(div);
+    }
+
+    function lane(title, items) {
+      const div = document.createElement('div');
+      div.className = 'lane';
+      const list = items.slice(0, 7).map((item) => '<li>' + item.role + ': ' + item.name + '</li>').join('');
+      div.innerHTML = '<h2>' + title + '</h2><ul>' + list + '</ul>';
+      lanes.appendChild(div);
+    }
+
+    async function load() {
+      const response = await fetch(JSON_URL, { cache: 'no-store' });
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      const data = await response.json();
+      metric(data.totalGlbsInspected, 'Local GLBs inspected');
+      metric(data.lockedPass1Count, 'Locked pass-1 roles');
+      metric(data.promoteNextPassCount, 'Promoted pass-2 assets');
+      metric(data.demotedCount, 'Duplicate command demotions');
+      lane('Locked Mount Set', data.lockedPass1);
+      lane('Promote Density Pass 2', data.promoteNextPass);
+      lane('Excluded Source Assets', data.excluded);
+      window.__M108_ROLE_INVENTORY_LOADED = true;
+      window.__M108_ROLE_INVENTORY_COUNTS = {
+        total: data.totalGlbsInspected,
+        locked: data.lockedPass1Count,
+        promoted: data.promoteNextPassCount,
+        demoted: data.demotedCount,
+        excluded: data.excludedCount
+      };
+      readout.textContent = 'Loaded inventory JSON / locked ' + data.lockedPass1Count + ' roles / promoted ' + data.promoteNextPassCount + ' density assets';
+    }
+
+    load().catch((error) => {
+      window.__M108_ROLE_INVENTORY_ERROR = String(error && error.message || error);
+      readout.textContent = 'Failed / ' + window.__M108_ROLE_INVENTORY_ERROR;
+    });
+  </script>
+</body>
+</html>

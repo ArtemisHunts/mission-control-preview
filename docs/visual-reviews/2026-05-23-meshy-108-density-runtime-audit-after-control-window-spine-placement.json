@@ -1,0 +1,164 @@
+{
+  "candidate": "meshy-108-density-runtime-audit-after-control-window-spine-placement",
+  "gapPicked": "audit Meshy-108 density/runtime after control window spine placement",
+  "createdAt": "2026-05-23T14:35:43Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "noNewFacilityAssetPlaced": true,
+  "sourceSceneGlb": "assets/blender/meshy-108-control-window-spine-placement-contact-proof.glb",
+  "auditBlend": "assets/blender/meshy-108-density-runtime-audit-after-control-window-spine-placement.blend",
+  "auditGlb": "assets/blender/meshy-108-density-runtime-audit-after-control-window-spine-placement.glb",
+  "sourcePlacementMetrics": "docs/visual-reviews/2026-05-23-meshy-108-control-window-spine-placement-contact-proof.json",
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-control-window-spine-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 72431960,
+    "mb": 69.076,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 415,
+    "meshCount": 383,
+    "materialCount": 68,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1168,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "auditGlbInspection": {
+    "path": "assets/blender/meshy-108-density-runtime-audit-after-control-window-spine-placement.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 73357732,
+    "mb": 69.959,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 432,
+    "meshCount": 400,
+    "materialCount": 74,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1227,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 72431960,
+    "sourceSceneMB": 69.076,
+    "sourceRemainingBytes": 28231336,
+    "sourceRemainingMB": 26.924,
+    "sourceUsagePercent": 71.95,
+    "auditGlbBytes": 73357732,
+    "auditGlbMB": 69.959,
+    "auditRemainingBytes": 27305564,
+    "auditRemainingMB": 26.041,
+    "auditUsagePercent": 72.87,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "nextIncrementGuardMarginBytes": 3065512,
+    "nextIncrementGuardMarginMB": 2.924,
+    "nextIncrementHeadroomPass": true,
+    "status": "pass-density-runtime-audit"
+  },
+  "contactAudit": {
+    "pad": "control window spine support pad",
+    "assetBounds": {
+      "min": [
+        1.1616,
+        1.6152,
+        1.1605
+      ],
+      "max": [
+        1.5984,
+        1.8248,
+        1.2795
+      ],
+      "dimensions": [
+        0.4368,
+        0.2096,
+        0.119
+      ]
+    },
+    "padBounds": {
+      "min": [
+        1.1861,
+        1.5947,
+        1.1365
+      ],
+      "max": [
+        1.5739,
+        1.8453,
+        1.1605
+      ],
+      "dimensions": [
+        0.3878,
+        0.2505,
+        0.024
+      ]
+    },
+    "verticalGapAssetMinToPadTop": 0.0,
+    "xyOverlapRatio": 0.8878,
+    "status": "accepted-contact-range"
+  },
+  "densityStatus": "pass-with-tight-guard-next-asset-needs-small-direct-or-proxy-gate",
+  "facilityBounds": {
+    "min": [
+      -3.8818,
+      -3.0368,
+      -1.8656
+    ],
+    "max": [
+      3.2963,
+      3.1295,
+      2.1056
+    ],
+    "dimensions": [
+      7.178,
+      6.1663,
+      3.9712
+    ]
+  },
+  "markers": {
+    "openMouthClear": true,
+    "commandHeroVisible": true,
+    "productionGantryVisible": true,
+    "supportDuctVisible": true,
+    "fabricationArmVisible": true,
+    "controlWindowSpineVisible": true,
+    "nextAssetGateNeeded": true
+  },
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-density-runtime-audit-after-control-window-spine-placement/2026-05-23-meshy-108-density-runtime-audit-after-control-window-spine-placement-top.png",
+    "front": "docs/visual-reviews/meshy-108-density-runtime-audit-after-control-window-spine-placement/2026-05-23-meshy-108-density-runtime-audit-after-control-window-spine-placement-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-density-runtime-audit-after-control-window-spine-placement/2026-05-23-meshy-108-density-runtime-audit-after-control-window-spine-placement-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-density-runtime-audit-after-control-window-spine-placement/2026-05-23-meshy-108-density-runtime-audit-after-control-window-spine-placement-detail.png"
+  },
+  "decision": "passed-density-runtime-audit-after-control-window-spine-placement",
+  "nextStep": "gate the next tiny support/control candidate before placement; use proxy/optimization for anything that risks the 24 MB next-increment guard",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-control-window-spine-placement.md",
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-control-window-spine-placement.json",
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-control-window-spine-placement-board.png",
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-control-window-spine-placement-viewer.html",
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-control-window-spine-placement-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-control-window-spine-placement/2026-05-23-meshy-108-density-runtime-audit-after-control-window-spine-placement-top.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-control-window-spine-placement/2026-05-23-meshy-108-density-runtime-audit-after-control-window-spine-placement-front.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-control-window-spine-placement/2026-05-23-meshy-108-density-runtime-audit-after-control-window-spine-placement-oblique.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-control-window-spine-placement/2026-05-23-meshy-108-density-runtime-audit-after-control-window-spine-placement-detail.png"
+  ]
+}

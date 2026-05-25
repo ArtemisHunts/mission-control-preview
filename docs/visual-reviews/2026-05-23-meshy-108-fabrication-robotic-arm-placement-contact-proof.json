@@ -1,0 +1,174 @@
+{
+  "candidate": "meshy-108-fabrication-robotic-arm-placement-contact-proof",
+  "gapPicked": "place Meshy-108 fabrication robotic arm and prove contact/runtime",
+  "createdAt": "2026-05-23T08:33:26Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "sourceSceneGlb": "assets/blender/meshy-108-light-hazard-gantry-runtime-recovery-proxy.glb",
+  "assetSourceGlb": "assets/meshy/api/14-fabrication-robotic-arm.meshy.glb",
+  "candidateGateMetrics": "docs/visual-reviews/2026-05-23-meshy-108-support-logistics-candidate-gate-after-light-hazard-audit.json",
+  "outBlend": "assets/blender/meshy-108-fabrication-robotic-arm-placement-contact-proof.blend",
+  "outGlb": "assets/blender/meshy-108-fabrication-robotic-arm-placement-contact-proof.glb",
+  "placement": {
+    "role": "production-support",
+    "label": "Fabrication robotic arm",
+    "zone": "lower production workcell support strip",
+    "location": [
+      -1.64,
+      0.76,
+      1.04
+    ],
+    "rotationZDegrees": 18,
+    "targetMaxDimension": 0.38,
+    "importedMeshCount": 1
+  },
+  "contactAudit": {
+    "pad": "fabrication robotic arm virtual contact pad",
+    "assetBounds": {
+      "min": [
+        -1.7861,
+        0.5509,
+        0.8637
+      ],
+      "max": [
+        -1.4939,
+        0.9691,
+        1.2163
+      ],
+      "dimensions": [
+        0.2922,
+        0.4182,
+        0.3526
+      ]
+    },
+    "padBounds": {
+      "min": [
+        -1.7911,
+        0.5828,
+        0.8357
+      ],
+      "max": [
+        -1.4889,
+        0.9372,
+        0.8637
+      ],
+      "dimensions": [
+        0.3023,
+        0.3543,
+        0.028
+      ]
+    },
+    "verticalGapAssetMinToPadTop": 0.0,
+    "xyOverlapRatio": 0.9666,
+    "status": "accepted-contact-range",
+    "runtimeExportHelpersRemoved": true
+  },
+  "acceptedContactCount": 1,
+  "needsReviewCount": 0,
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 71070056,
+    "sourceSceneMB": 67.778,
+    "assetSourceBytes": 132996,
+    "assetSourceMB": 0.127,
+    "gateProjectedSceneMB": 67.905,
+    "gateProjectedRemainingMB": 28.095,
+    "gateProjectedGuardMarginMB": 4.095,
+    "outputBytes": 71764212,
+    "outputMB": 68.44,
+    "incrementBytes": 694156,
+    "incrementMB": 0.662,
+    "remainingBytes": 28899084,
+    "remainingMB": 27.56,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "nextIncrementHeadroomPass": true,
+    "nextIncrementGuardMarginBytes": 3733260,
+    "nextIncrementGuardMarginMB": 3.56,
+    "status": "pass"
+  },
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-light-hazard-gantry-runtime-recovery-proxy.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 71070056,
+    "mb": 67.778,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 410,
+    "meshCount": 380,
+    "materialCount": 66,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1158,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "assetSourceInspection": {
+    "path": "assets/meshy/api/14-fabrication-robotic-arm.meshy.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 132996,
+    "mb": 0.127,
+    "asset": {
+      "generator": "libmeshy",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 1,
+    "meshCount": 1,
+    "materialCount": 0,
+    "textureCount": 0,
+    "imageCount": 0,
+    "accessorCount": 2,
+    "animationCount": 0,
+    "extensionsUsed": []
+  },
+  "placementGlbInspection": {
+    "path": "assets/blender/meshy-108-fabrication-robotic-arm-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 71764212,
+    "mb": 68.44,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 412,
+    "meshCount": 381,
+    "materialCount": 67,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1161,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-fabrication-robotic-arm-placement-contact-proof/2026-05-23-meshy-108-fabrication-robotic-arm-placement-contact-proof-top.png",
+    "front": "docs/visual-reviews/meshy-108-fabrication-robotic-arm-placement-contact-proof/2026-05-23-meshy-108-fabrication-robotic-arm-placement-contact-proof-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-fabrication-robotic-arm-placement-contact-proof/2026-05-23-meshy-108-fabrication-robotic-arm-placement-contact-proof-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-fabrication-robotic-arm-placement-contact-proof/2026-05-23-meshy-108-fabrication-robotic-arm-placement-contact-proof-detail.png"
+  },
+  "decision": "fabrication-robotic-arm-placement-contact-passed",
+  "nextStep": "run a Meshy-108 density/runtime audit after fabrication robotic arm placement before adding another asset",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-23-meshy-108-fabrication-robotic-arm-placement-contact-proof.md",
+    "docs/visual-reviews/2026-05-23-meshy-108-fabrication-robotic-arm-placement-contact-proof.json",
+    "docs/visual-reviews/2026-05-23-meshy-108-fabrication-robotic-arm-placement-contact-proof-board.png",
+    "docs/visual-reviews/2026-05-23-meshy-108-fabrication-robotic-arm-placement-contact-proof-viewer.html",
+    "docs/visual-reviews/2026-05-23-meshy-108-fabrication-robotic-arm-placement-contact-proof-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-fabrication-robotic-arm-placement-contact-proof"
+  ]
+}

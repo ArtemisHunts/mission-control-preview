@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Meshy-108 Support/Signal Detail Selection</title>
+<style>
+  body { margin: 0; background: #071016; color: #e8f7f4; font: 16px/1.45 system-ui, sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 32px; }
+  h1 { font-size: 28px; margin: 0 0 8px; }
+  .summary { color: #8bdde0; margin-bottom: 18px; }
+  .status { padding: 12px 14px; border: 1px solid #28525a; background: #0d1a22; margin-bottom: 22px; }
+  table { width: 100%; border-collapse: collapse; background: #0d1a22; border: 1px solid #24434a; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid #1f343b; vertical-align: top; }
+  th { color: #90f3ff; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  img { width: 100%; margin-top: 24px; border: 1px solid #24434a; background: #05080b; }
+  code { color: #ffd166; }
+</style>
+<main>
+  <h1>Meshy-108 Support/Signal Detail Selection</h1>
+  <div class="summary">Selected <code>assets/meshy/api/11-cable-pipe-duct-wall-insert.meshy.glb</code>; projected direct scene <code>66.88 MB</code>; no Meshy spend.</div>
+  <div id="glb-status" class="status">selected-glb-pending</div>
+  <table>
+    <thead><tr><th>Candidate</th><th>Role</th><th>Source MB</th><th>Projected Scene MB</th><th>Decision</th><th>Reason</th></tr></thead>
+    <tbody><tr><td>Cable / pipe duct wall insert</td><td>support-utility</td><td>17.88</td><td>66.88</td><td>selected-next-placement-proof</td><td>lowest-cost unplaced support utility detail; gives infrastructure read while staying inside the 96 MB scene guard</td></tr>
+<tr><td>Maintenance drone</td><td>support</td><td>21.65</td><td>70.65</td><td>eligible-backup</td><td>within direct placement budget, but lower scene-value-per-MB than the selected duct insert</td></tr>
+<tr><td>Operator console chair cluster</td><td>control-support</td><td>35.87</td><td>84.87</td><td>proxy-before-placement</td><td>projected scene stays under 96 MB, but source exceeds the direct-medium increment guard</td></tr>
+<tr><td>Cargo tool pod</td><td>logistics-support</td><td>56.94</td><td>105.94</td><td>defer-optimize-first</td><td>direct placement would break the 96 MB scene guard</td></tr></tbody>
+  </table>
+  <img src="./2026-05-21-meshy-108-light-support-signal-detail-selection-board.png" alt="support detail selection proof board">
+</main>
+<script>
+async function inspectSelectedGlb() {
+  const status = document.getElementById('glb-status');
+  const response = await fetch('../../assets/meshy/api/11-cable-pipe-duct-wall-insert.meshy.glb');
+  const buffer = await response.arrayBuffer();
+  const view = new DataView(buffer);
+  const magic = String.fromCharCode(...new Uint8Array(buffer.slice(0, 4)));
+  const version = view.getUint32(4, true);
+  const length = view.getUint32(8, true);
+  if (magic === 'glTF' && version === 2 && length === buffer.byteLength) {
+    status.textContent = 'selected-glb-ok ' + buffer.byteLength + ' bytes';
+  } else {
+    status.textContent = 'selected-glb-fail magic=' + magic + ' version=' + version + ' length=' + length + ' actual=' + buffer.byteLength;
+  }
+}
+inspectSelectedGlb().catch((error) => {
+  document.getElementById('glb-status').textContent = 'selected-glb-error ' + error.message;
+});
+</script>
+</html>

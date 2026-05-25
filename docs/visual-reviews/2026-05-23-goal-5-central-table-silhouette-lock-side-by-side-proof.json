@@ -1,0 +1,65 @@
+{
+  "id": "visual-review-goal-5-central-table-silhouette-lock-side-by-side-proof-20260523",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-central-table-silhouette-lock-side-by-side-proof",
+  "artifactId": "artifact-goal-5-central-table-silhouette-lock-side-by-side-proof",
+  "createdAt": "2026-05-23T17:51:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match proof only.",
+  "decision": "central-table-silhouette-lock-side-by-side-proof-recorded",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-23-goal-5-central-table-silhouette-lock-side-by-side-proof.md",
+    "docs/visual-reviews/2026-05-23-goal-5-central-table-silhouette-lock-side-by-side-proof.json",
+    "docs/visual-reviews/2026-05-23-goal-5-central-table-silhouette-lock-side-by-side-proof.html",
+    "docs/visual-reviews/2026-05-23-goal-5-central-table-silhouette-lock-side-by-side-board.png",
+    "docs/visual-reviews/2026-05-23-goal-5-central-table-silhouette-lock-side-by-side-current-desktop.png",
+    "docs/visual-reviews/2026-05-23-goal-5-central-table-silhouette-lock-side-by-side-current-mobile.png",
+    "tmp/goal-5-central-table-silhouette-lock-side-by-side-overview-dom.html",
+    "tmp/goal-5-central-table-silhouette-lock-side-by-side-board-dom.html"
+  ],
+  "uiMarkers": [
+    "reference-scale-core-silhouette-lock",
+    "table silhouette",
+    "first read",
+    "rim lock",
+    "Command Table Core",
+    "Goal 5 Central Table Silhouette Lock Side-by-Side Proof"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The silhouette lock strengthens first-read table identity, but the board keeps the central table verdict below reference-complete."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "Peripheral bands stay table-bound while the new lock reinforces hierarchy around the center object."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "The oval silhouette lock adds central motif language without hiding the existing tether, baffle, or proof rail layers."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "The board confirms the lock stays read-only and state-backed."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop/mobile overlay captures, overview DOM, board DOM, and this side-by-side board are recorded after the silhouette pass."
+    }
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "headless Chrome side-by-side board screenshot",
+    "DOM smoke for overlay and board markers",
+    "PNG sanity for desktop/mobile/board captures"
+  ],
+  "nextGoal5Step": "Use this board to decide whether motif contrast, lower proof mass, or another central-table silhouette pass is now weakest."
+}

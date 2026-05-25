@@ -1,0 +1,64 @@
+{
+  "id": "visual-review-goal-5-proof-rail-side-by-side-proof-20260522",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-proof-rail-side-by-side-proof",
+  "artifactId": "artifact-goal-5-proof-rail-side-by-side-proof",
+  "createdAt": "2026-05-22T17:51:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match proof only.",
+  "decision": "side-by-side-proof-recorded-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-22-goal-5-proof-rail-side-by-side-proof.md",
+    "docs/visual-reviews/2026-05-22-goal-5-proof-rail-side-by-side-proof.json",
+    "docs/visual-reviews/2026-05-22-goal-5-proof-rail-side-by-side-proof.html",
+    "docs/visual-reviews/2026-05-22-goal-5-proof-rail-side-by-side-board.png",
+    "docs/visual-reviews/2026-05-22-goal-5-proof-rail-side-by-side-current-desktop.png",
+    "docs/visual-reviews/2026-05-22-goal-5-proof-rail-side-by-side-current-mobile.png",
+    "tmp/goal-5-proof-rail-side-by-side-overview-dom.html",
+    "tmp/goal-5-proof-rail-side-by-side-board-dom.html"
+  ],
+  "uiMarkers": [
+    "Command Table Core",
+    "proof/status rail",
+    "reference-scale-contrast-rail",
+    "right proof mass",
+    "artifact hot",
+    "partial-match-improved"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The table core now carries the proof/status rail plus anchor, offset, and glow chips."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "The right proof mass gives the surrounding signal field a clearer asymmetric counterweight."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "The proof rail adds a stronger calibration strip, but overall command-room contrast is still not reference-complete."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "Goals, tasks, reviews, telemetry, artifacts, and events remain grounded in canonical state with no fake backend actions."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop/mobile overlay captures, overview DOM, board DOM, and this side-by-side board are recorded after the proof rail pass."
+    }
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "browser screenshot/DOM smoke for ?overlay=1&console=overview",
+    "browser screenshot/DOM smoke for side-by-side board",
+    "PNG sanity for board/mobile/desktop captures"
+  ],
+  "nextGoal5Step": "Tune the lower/right proof rail and peripheral orbit bands so the proof mass feels integrated with the command-table composition instead of reading as a separate status strip."
+}

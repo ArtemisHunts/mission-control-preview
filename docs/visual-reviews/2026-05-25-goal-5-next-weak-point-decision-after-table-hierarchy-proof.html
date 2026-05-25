@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Goal 5 Next Weak-Point Decision After Table Hierarchy Proof</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --panel: rgba(5, 14, 26, 0.94);
+      --cyan: #59f1ff;
+      --gold: #e6a93a;
+      --green: #74d99a;
+      --violet: #9d7cff;
+      --ink: rgba(246, 248, 255, 0.94);
+      --muted: rgba(231, 239, 255, 0.72);
+      --line: rgba(89, 241, 255, 0.2);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 18% 14%, rgba(89, 241, 255, 0.16), transparent 30%),
+        radial-gradient(circle at 82% 18%, rgba(157, 124, 255, 0.14), transparent 29%),
+        linear-gradient(180deg, rgba(3, 8, 18, 0.96), #01040a 72%);
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main { display: grid; gap: 16px; width: min(1880px, 100vw); margin: 0 auto; padding: 22px; }
+    header { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: end; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+    h1, h2, p { margin: 0; }
+    h1 { max-width: 1180px; font-size: 30px; line-height: 1.05; letter-spacing: 0; }
+    code { color: var(--cyan); }
+    .kicker, .stamp, .card span, .metric span, .tag { color: var(--gold); font-size: 11px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
+    .stamp { justify-self: end; padding: 10px 12px; border: 1px solid rgba(230, 169, 58, 0.25); border-radius: 8px; background: rgba(230, 169, 58, 0.08); text-align: right; }
+    .comparison { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.08fr) minmax(0, 0.74fr); gap: 16px; align-items: stretch; }
+    .frame, .card, .metric { border: 1px solid var(--line); border-radius: 8px; background: var(--panel); box-shadow: inset 0 0 0 1px rgba(246, 248, 255, 0.035), 0 18px 60px rgba(0, 0, 0, 0.32); }
+    .frame { display: grid; gap: 10px; align-content: start; padding: 12px; }
+    .frame h2 { color: var(--cyan); font-size: 15px; line-height: 1.2; letter-spacing: 0; }
+    .frame p, .card p, .metric p { color: var(--muted); line-height: 1.32; }
+    .frame p, .metric p { font-size: 12px; }
+    img { display: block; width: 100%; border-radius: 8px; border: 1px solid rgba(89, 241, 255, 0.18); background: rgba(0, 0, 0, 0.38); }
+    .mobile-frame img { max-height: 980px; object-fit: cover; object-position: top; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { padding: 5px 7px; border: 1px solid rgba(230, 169, 58, 0.28); border-radius: 999px; background: rgba(230, 169, 58, 0.08); }
+    .matrix { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .card { display: grid; align-content: start; gap: 7px; min-height: 150px; padding: 12px; }
+    .card strong { font-size: 18px; line-height: 1.1; }
+    .card p { font-size: 12px; }
+    .card.selected { border-color: rgba(116, 217, 154, 0.38); background: linear-gradient(180deg, rgba(116, 217, 154, 0.1), rgba(5, 14, 26, 0.94)); }
+    .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .metric { display: grid; gap: 5px; padding: 12px; }
+    .metric strong { font-size: 18px; line-height: 1.1; }
+    .metric.pass { border-color: rgba(116, 217, 154, 0.28); }
+    .metric.warn { border-color: rgba(230, 169, 58, 0.28); }
+    .metric.next { border-color: rgba(157, 124, 255, 0.3); }
+    @media (max-width: 1100px) {
+      main { padding: 12px; }
+      header, .comparison, .matrix, .metrics { grid-template-columns: 1fr; }
+      .stamp { justify-self: start; text-align: left; }
+      .mobile-frame img { max-height: none; object-fit: contain; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="kicker">Goal 5 / Holo-table overlay</p>
+        <h1>Goal 5 Next Weak-Point Decision After Table Hierarchy Proof</h1>
+      </div>
+      <div class="stamp">2026-05-25 09:02 UTC<br>Selected gap: peripheral density</div>
+    </header>
+    <section class="comparison" aria-label="Reference, current overview, and latest board comparison">
+      <article class="frame">
+        <h2>Latest proof board</h2>
+        <p>The latest side-by-side proof asks whether peripheral density, motif contrast, or table hierarchy needs the next pass.</p>
+        <img src="2026-05-25-goal-5-table-hierarchy-decision-side-by-side-board.png" alt="Latest table hierarchy decision side-by-side proof board">
+      </article>
+      <article class="frame">
+        <h2>Current overview evidence</h2>
+        <p>Fresh overlay-only capture from <code>?overlay=1&amp;console=overview</code>. Table hierarchy is now explicitly locked, so the next pass should return to peripheral density without adding fake actions.</p>
+        <div class="tags" aria-label="Decision markers">
+          <span class="tag">selected peripheral density</span>
+          <span class="tag">table hierarchy already proofed</span>
+          <span class="tag">state-backed only</span>
+          <span class="tag">partial-match-improved</span>
+        </div>
+        <img src="2026-05-25-goal-5-next-weak-point-decision-after-table-hierarchy-current-desktop.png" alt="Current Mission Control overview screenshot after table hierarchy proof">
+      </article>
+      <article class="frame mobile-frame">
+        <h2>Mobile evidence</h2>
+        <p>Mobile stack remains readable; the next density pass should focus on peripheral instrument density around the table, not new backend actions.</p>
+        <img src="2026-05-25-goal-5-next-weak-point-decision-after-table-hierarchy-current-mobile.png" alt="Current Mission Control mobile overview screenshot after table hierarchy proof">
+      </article>
+    </section>
+    <section class="matrix" aria-label="Next weak point candidates">
+      <article class="card selected"><span>Selected next</span><strong>Peripheral density</strong><p>After table hierarchy and motif contrast passes, peripheral ops density is the next useful reference-match pressure point around the Command Table Core.</p></article>
+      <article class="card"><span>Held stable</span><strong>Table hierarchy</strong><p>The table hierarchy decision band and side-by-side proof are recorded; do not stack another table-first band before checking density.</p></article>
+      <article class="card"><span>Held stable</span><strong>Motif contrast</strong><p>Motif contrast has a decision band and proof board. Keep contrast state-backed while density is checked next.</p></article>
+    </section>
+    <section class="metrics" aria-label="Proof verdict metrics">
+      <article class="metric pass"><span>Decision recorded</span><strong>Peripheral density</strong><p>This board turns the previous open next-step question into a concrete Goal 5 follow-up.</p></article>
+      <article class="metric warn"><span>Honest status</span><strong>Partial-match-improved</strong><p>No reference-complete claim. This records a next-gap decision only.</p></article>
+      <article class="metric next"><span>Next pass</span><strong>Tighten density around table</strong><p>Use selected-goal tasks, reviews, agents, artifacts, and events to sharpen peripheral density without fake backend actions.</p></article>
+    </section>
+  </main>
+</body>
+</html>

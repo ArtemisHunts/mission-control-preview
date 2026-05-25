@@ -1,0 +1,33 @@
+{
+  "id": "visual-review-goal-5-next-weak-point-selector-pass-20260524",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-next-weak-point-selector-pass",
+  "artifactId": "artifact-goal-5-next-weak-point-selector-pass",
+  "createdAt": "2026-05-24T19:23:00.000Z",
+  "surface": "?overlay=1&console=overview",
+  "selectedGap": "Overlay had proof for motif contrast calibration, but no state-backed next weak-point selector inside the Command Table Core.",
+  "verdict": "partial-match-improved",
+  "referenceComplete": false,
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-24-goal-5-next-weak-point-selector-pass-proof.md",
+    "docs/visual-reviews/2026-05-24-goal-5-next-weak-point-selector-pass-proof.json",
+    "docs/visual-reviews/2026-05-24-goal-5-next-weak-point-selector-pass-desktop.png",
+    "docs/visual-reviews/2026-05-24-goal-5-next-weak-point-selector-pass-mobile.png",
+    "tmp/goal-5-next-weak-point-selector-pass-dom.html"
+  ],
+  "domSmokeMarkers": [
+    "reference-scale-next-weak-point-lock",
+    "State-backed next weak point selector",
+    "next weak point",
+    "selected gap",
+    "candidate 2",
+    "candidate 3"
+  ],
+  "stateBackedInputs": [
+    "referenceMatch.goal5.nextStep",
+    "referenceMatch.goal5.zones[zone-central-command-table]",
+    "referenceMatch.goal5.zones[zone-peripheral-ops-bands]",
+    "referenceMatch.goal5.zones[zone-reference-visual-motifs]"
+  ],
+  "nextStep": "Use the selector to drive the next UI pass into the selected table-first hierarchy gap."
+}

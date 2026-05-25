@@ -1,0 +1,176 @@
+{
+  "candidate": "meshy-108-armored-panel-command-wall-facade-placement-contact-proof",
+  "gapPicked": "place armored panel command wall facade and prove contact/runtime",
+  "createdAt": "2026-05-23T23:35:57Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "sourceSceneGlb": "assets/blender/meshy-108-asym-lockup-command-bulkhead-placement-contact-proof.glb",
+  "assetSourceGlb": "assets/meshy/api/75-armored-panel-command-wall-facade.meshy.glb",
+  "outBlend": "assets/blender/meshy-108-armored-panel-command-wall-facade-placement-contact-proof.blend",
+  "outGlb": "assets/blender/meshy-108-armored-panel-command-wall-facade-placement-contact-proof.glb",
+  "placement": {
+    "role": "control-support",
+    "label": "Armored panel command wall facade",
+    "zone": "upper command/control facade edge after asym bulkhead",
+    "location": [
+      2.18,
+      0.88,
+      1.02
+    ],
+    "rotation_z": -22,
+    "target_max": 0.34,
+    "rotationZDegrees": -22,
+    "targetMaxDimension": 0.34
+  },
+  "contactAudit": {
+    "pad": "armored panel command wall facade support pad",
+    "assetBounds": {
+      "min": [
+        2.0005,
+        0.7623,
+        0.9498
+      ],
+      "max": [
+        2.3595,
+        0.9977,
+        1.0902
+      ],
+      "dimensions": [
+        0.3589,
+        0.2355,
+        0.1403
+      ]
+    },
+    "padBounds": {
+      "min": [
+        1.9863,
+        0.7177,
+        0.9258
+      ],
+      "max": [
+        2.3737,
+        1.0423,
+        0.9498
+      ],
+      "dimensions": [
+        0.3873,
+        0.3246,
+        0.024
+      ]
+    },
+    "verticalGapAssetMinToPadTop": 0.0,
+    "xyOverlapRatio": 1.0,
+    "status": "accepted-contact-range"
+  },
+  "acceptedContactCount": 1,
+  "needsReviewCount": 0,
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 72712424,
+    "sourceSceneMB": 69.344,
+    "outputBytes": 72963752,
+    "outputMB": 69.584,
+    "incrementBytes": 251328,
+    "incrementMB": 0.24,
+    "remainingBytes": 27699544,
+    "remainingMB": 26.416,
+    "usagePercent": 72.48,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "nextIncrementGuardMarginBytes": 2533720,
+    "nextIncrementGuardMarginMB": 2.416,
+    "nextIncrementHeadroomPass": true,
+    "status": "pass",
+    "assetSourceBytes": 87032,
+    "assetSourceMB": 0.083,
+    "gateProjectedSceneMB": 69.427,
+    "gateProjectedGuardMarginMB": 2.573
+  },
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-asym-lockup-command-bulkhead-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 72712424,
+    "mb": 69.344,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 418,
+    "meshCount": 385,
+    "materialCount": 69,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1174,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "assetSourceInspection": {
+    "path": "assets/meshy/api/75-armored-panel-command-wall-facade.meshy.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 87032,
+    "mb": 0.083,
+    "asset": {
+      "generator": "libmeshy",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 1,
+    "meshCount": 1,
+    "materialCount": 0,
+    "textureCount": 0,
+    "imageCount": 0,
+    "accessorCount": 2,
+    "animationCount": 0,
+    "extensionsUsed": []
+  },
+  "placementGlbInspection": {
+    "path": "assets/blender/meshy-108-armored-panel-command-wall-facade-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 72963752,
+    "mb": 69.584,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 421,
+    "meshCount": 387,
+    "materialCount": 70,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1180,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-armored-panel-command-wall-facade-placement-contact-proof/2026-05-23-meshy-108-armored-panel-command-wall-facade-placement-contact-proof-top.png",
+    "front": "docs/visual-reviews/meshy-108-armored-panel-command-wall-facade-placement-contact-proof/2026-05-23-meshy-108-armored-panel-command-wall-facade-placement-contact-proof-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-armored-panel-command-wall-facade-placement-contact-proof/2026-05-23-meshy-108-armored-panel-command-wall-facade-placement-contact-proof-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-armored-panel-command-wall-facade-placement-contact-proof/2026-05-23-meshy-108-armored-panel-command-wall-facade-placement-contact-proof-detail.png"
+  },
+  "decision": "armored-panel-command-wall-facade-placement-contact-passed",
+  "nextStep": "run a Meshy-108 density/runtime audit after armored panel command wall facade placement before adding another asset",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-23-meshy-108-armored-panel-command-wall-facade-placement-contact-proof.md",
+    "docs/visual-reviews/2026-05-23-meshy-108-armored-panel-command-wall-facade-placement-contact-proof.json",
+    "docs/visual-reviews/2026-05-23-meshy-108-armored-panel-command-wall-facade-placement-contact-proof-board.png",
+    "docs/visual-reviews/2026-05-23-meshy-108-armored-panel-command-wall-facade-placement-contact-proof-viewer.html",
+    "docs/visual-reviews/2026-05-23-meshy-108-armored-panel-command-wall-facade-placement-contact-proof-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-armored-panel-command-wall-facade-placement-contact-proof/2026-05-23-meshy-108-armored-panel-command-wall-facade-placement-contact-proof-top.png",
+    "docs/visual-reviews/meshy-108-armored-panel-command-wall-facade-placement-contact-proof/2026-05-23-meshy-108-armored-panel-command-wall-facade-placement-contact-proof-front.png",
+    "docs/visual-reviews/meshy-108-armored-panel-command-wall-facade-placement-contact-proof/2026-05-23-meshy-108-armored-panel-command-wall-facade-placement-contact-proof-oblique.png",
+    "docs/visual-reviews/meshy-108-armored-panel-command-wall-facade-placement-contact-proof/2026-05-23-meshy-108-armored-panel-command-wall-facade-placement-contact-proof-detail.png"
+  ]
+}

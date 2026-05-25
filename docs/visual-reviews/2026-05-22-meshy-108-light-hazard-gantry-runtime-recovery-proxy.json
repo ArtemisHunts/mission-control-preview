@@ -1,0 +1,183 @@
+{
+  "candidate": "meshy-108-light-hazard-gantry-runtime-recovery-proxy",
+  "gapPicked": "recover Meshy-108 light hazard gantry runtime headroom before acceptance",
+  "createdAt": "2026-05-23T04:09:25Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "sourceSceneBlend": "assets/blender/meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof.blend",
+  "sourceSceneGlb": "assets/blender/meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof.glb",
+  "sourceAssetGlb": "assets/meshy/api/16-light-hazard-gantry.meshy.glb",
+  "failedPlacementMetrics": "docs/visual-reviews/2026-05-22-meshy-108-light-hazard-gantry-placement-contact-proof.json",
+  "outBlend": "assets/blender/meshy-108-light-hazard-gantry-runtime-recovery-proxy.blend",
+  "outGlb": "assets/blender/meshy-108-light-hazard-gantry-runtime-recovery-proxy.glb",
+  "placement": {
+    "role": "production-safety-support",
+    "label": "Light hazard gantry runtime recovery proxy",
+    "zone": "lower production/safety support strip",
+    "location": [
+      -1.18,
+      0.36,
+      1.08
+    ],
+    "rotationZDegrees": 10,
+    "targetMaxDimension": 0.62,
+    "authoredProxyMeshCount": 11
+  },
+  "contactAudit": {
+    "pad": "light hazard gantry proxy virtual contact pad",
+    "assetBounds": {
+      "min": [
+        -1.484,
+        0.2463,
+        1.05
+      ],
+      "max": [
+        -0.876,
+        0.4698,
+        1.471
+      ],
+      "dimensions": [
+        0.608,
+        0.2235,
+        0.421
+      ]
+    },
+    "padBounds": {
+      "min": [
+        -1.4275,
+        0.2396,
+        1.022
+      ],
+      "max": [
+        -0.9325,
+        0.4804,
+        1.05
+      ],
+      "dimensions": [
+        0.495,
+        0.2408,
+        0.028
+      ]
+    },
+    "verticalGapAssetMinToPadTop": 0.0,
+    "xyOverlapRatio": 0.9281,
+    "status": "accepted-contact-range",
+    "runtimeExportHelpersRemoved": true
+  },
+  "acceptedContactCount": 1,
+  "needsReviewCount": 0,
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 71046076,
+    "sourceSceneMB": 67.755,
+    "sourceAssetBytes": 445572,
+    "sourceAssetMB": 0.425,
+    "failedOutputBytes": 77890612,
+    "failedOutputMB": 74.282,
+    "failedRemainingBytes": 22772684,
+    "failedRemainingMB": 21.718,
+    "failedGuardMarginBytes": -2393140,
+    "failedGuardMarginMB": -2.282,
+    "requiredRecoveryBytes": 2393141,
+    "requiredRecoveryMB": 2.282,
+    "actualRecoveryBytes": 6820556,
+    "actualRecoveryMB": 6.505,
+    "recoveryPass": true,
+    "outputBytes": 71070056,
+    "outputMB": 67.778,
+    "incrementBytes": 23980,
+    "incrementMB": 0.023,
+    "remainingBytes": 29593240,
+    "remainingMB": 28.222,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "nextIncrementHeadroomPass": true,
+    "nextIncrementGuardMarginBytes": 4427416,
+    "nextIncrementGuardMarginMB": 4.222,
+    "status": "pass"
+  },
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 71046076,
+    "mb": 67.755,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 395,
+    "meshCount": 366,
+    "materialCount": 59,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1116,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "sourceAssetInspection": {
+    "path": "assets/meshy/api/16-light-hazard-gantry.meshy.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 445572,
+    "mb": 0.425,
+    "asset": {
+      "generator": "libmeshy",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 1,
+    "meshCount": 1,
+    "materialCount": 0,
+    "textureCount": 0,
+    "imageCount": 0,
+    "accessorCount": 2,
+    "animationCount": 0,
+    "extensionsUsed": []
+  },
+  "placementGlbInspection": {
+    "path": "assets/blender/meshy-108-light-hazard-gantry-runtime-recovery-proxy.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 71070056,
+    "mb": 67.778,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 410,
+    "meshCount": 380,
+    "materialCount": 66,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1158,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-light-hazard-gantry-runtime-recovery-proxy/2026-05-22-meshy-108-light-hazard-gantry-runtime-recovery-proxy-top.png",
+    "front": "docs/visual-reviews/meshy-108-light-hazard-gantry-runtime-recovery-proxy/2026-05-22-meshy-108-light-hazard-gantry-runtime-recovery-proxy-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-light-hazard-gantry-runtime-recovery-proxy/2026-05-22-meshy-108-light-hazard-gantry-runtime-recovery-proxy-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-light-hazard-gantry-runtime-recovery-proxy/2026-05-22-meshy-108-light-hazard-gantry-runtime-recovery-proxy-detail.png"
+  },
+  "decision": "light-hazard-gantry-runtime-recovery-proxy-accepted",
+  "nextStep": "run a Meshy-108 density/runtime audit after light hazard gantry proxy recovery before adding another asset",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-22-meshy-108-light-hazard-gantry-runtime-recovery-proxy.md",
+    "docs/visual-reviews/2026-05-22-meshy-108-light-hazard-gantry-runtime-recovery-proxy.json",
+    "docs/visual-reviews/2026-05-22-meshy-108-light-hazard-gantry-runtime-recovery-proxy-board.png",
+    "docs/visual-reviews/2026-05-22-meshy-108-light-hazard-gantry-runtime-recovery-proxy-viewer.html",
+    "docs/visual-reviews/2026-05-22-meshy-108-light-hazard-gantry-runtime-recovery-proxy-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-light-hazard-gantry-runtime-recovery-proxy"
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "id": "visual-review-goal-5-peripheral-band-tether-pass-20260523",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-peripheral-band-tether-pass",
+  "artifactId": "artifact-goal-5-peripheral-band-tether-pass",
+  "createdAt": "2026-05-23T10:21:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match UI pass only.",
+  "decision": "peripheral-band-tether-improved-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-23-goal-5-peripheral-band-tether-pass-proof.md",
+    "docs/visual-reviews/2026-05-23-goal-5-peripheral-band-tether-pass-proof.json",
+    "docs/visual-reviews/2026-05-23-goal-5-peripheral-band-tether-pass-mobile.png",
+    "docs/visual-reviews/2026-05-23-goal-5-peripheral-band-tether-pass-desktop.png",
+    "tmp/goal-5-peripheral-band-tether-pass-dom.html"
+  ],
+  "uiMarkers": [
+    "reference-scale-peripheral-band-tether",
+    "orbit tether",
+    "lane bind",
+    "proof tether",
+    "reference-scale-shadow-depth-baffle",
+    "Command Table Core"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The table core now includes a peripheral tether below the shadow depth baffle."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "Orbit, lane, and proof signals are tied back into the table edge through a dedicated tether strip."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "The tether adds low connector geometry to the existing motif stack without hiding state."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "The tether reuses existing selected Goal 5 state and introduces no fake backend actions."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop/mobile overlay captures and DOM smoke are recorded after the peripheral band tether pass."
+    }
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM smoke for peripheral band tether markers",
+    "PNG sanity for desktop/mobile captures"
+  ],
+  "nextGoal5Step": "Capture a fresh side-by-side reference proof after the peripheral band tether pass before making a stronger reference-match claim."
+}

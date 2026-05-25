@@ -1,0 +1,126 @@
+{
+  "candidate": "meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery",
+  "gapPicked": "audit Meshy-108 density/runtime after light hazard gantry proxy recovery",
+  "createdAt": "2026-05-23T05:38:24Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "noNewFacilityAssetPlaced": true,
+  "sourceSceneBlend": "assets/blender/meshy-108-light-hazard-gantry-runtime-recovery-proxy.blend",
+  "sourceSceneGlb": "assets/blender/meshy-108-light-hazard-gantry-runtime-recovery-proxy.glb",
+  "sourceRecoveryMetrics": "docs/visual-reviews/2026-05-22-meshy-108-light-hazard-gantry-runtime-recovery-proxy.json",
+  "auditBlend": "assets/blender/meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery.blend",
+  "auditGlb": "assets/blender/meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery.glb",
+  "sceneBounds": {
+    "min": [
+      -3.8818,
+      -3.0368,
+      -1.8656
+    ],
+    "max": [
+      3.2963,
+      3.1295,
+      2.1056
+    ],
+    "dimensions": [
+      7.178,
+      6.1663,
+      3.9712
+    ]
+  },
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-light-hazard-gantry-runtime-recovery-proxy.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 71070056,
+    "mb": 67.778,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 410,
+    "meshCount": 380,
+    "materialCount": 66,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1158,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "auditGlbInspection": {
+    "path": "assets/blender/meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 77127884,
+    "mb": 73.555,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 480,
+    "meshCount": 450,
+    "materialCount": 85,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1414,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 71070056,
+    "sourceSceneMB": 67.778,
+    "sourceRemainingBytes": 29593240,
+    "sourceRemainingMB": 28.222,
+    "sourceUsagePercent": 70.6,
+    "auditGlbBytes": 77127884,
+    "auditGlbMB": 73.555,
+    "auditRemainingBytes": 23535412,
+    "auditRemainingMB": 22.445,
+    "auditUsagePercent": 76.62,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "nextIncrementGuardMarginBytes": 4427416,
+    "nextIncrementGuardMarginMB": 4.222,
+    "nextIncrementHeadroomPass": true,
+    "status": "pass-density-runtime-audit"
+  },
+  "densityRuntimeAudit": {
+    "commandHero": "pass-visible-upper-command-band",
+    "productionGantry": "pass-visible-lower-left-production-span",
+    "supportDuct": "pass-visible-right-lower-service-wall",
+    "portalControlInsert": "pass-visible-lower-right-hangar-portal-support-wall",
+    "tightConsoleProxy": "pass-visible-lower-command-control-support-strip",
+    "lightHazardGantryProxy": "pass-visible-production-safety-support-detail",
+    "lightHazardGantryProxyContact": "accepted-contact-range",
+    "lightHazardGantryProxyContactGap": 0.0,
+    "lightHazardGantryProxyContactOverlap": 0.9281,
+    "openMouthClearance": "pass-clearance-corridor-marked",
+    "roleReadability": "pass-command-production-hangar-power-signal-control-logistics-catwalk-support-utility-cargo-tool-pod-embedded-ops-wall-bunker-tight-console-proxy-light-hazard-gantry-proxy-present",
+    "balance": "pass-with-caution-next-asset-needs-role-value-and-runtime-gate"
+  },
+  "decision": "passed-density-runtime-audit-after-light-hazard-gantry-proxy-recovery",
+  "nextStep": "gate the next Meshy-108 support/logistics candidate before placement; optimize first if direct placement would consume too much runtime headroom",
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery/2026-05-22-meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery-top.png",
+    "front": "docs/visual-reviews/meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery/2026-05-22-meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery/2026-05-22-meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery/2026-05-22-meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery-detail.png"
+  },
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery.md",
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery.json",
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery-board.png",
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery-viewer.html",
+    "docs/visual-reviews/2026-05-22-meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-light-hazard-gantry-proxy-recovery"
+  ]
+}

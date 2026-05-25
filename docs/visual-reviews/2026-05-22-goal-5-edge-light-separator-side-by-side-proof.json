@@ -1,0 +1,65 @@
+{
+  "id": "visual-review-goal-5-edge-light-separator-side-by-side-proof-20260522",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-edge-light-separator-side-by-side-proof",
+  "artifactId": "artifact-goal-5-edge-light-separator-side-by-side-proof",
+  "createdAt": "2026-05-23T05:51:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match proof only.",
+  "decision": "edge-light-separator-side-by-side-proof-recorded",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-22-goal-5-edge-light-separator-side-by-side-proof.md",
+    "docs/visual-reviews/2026-05-22-goal-5-edge-light-separator-side-by-side-proof.json",
+    "docs/visual-reviews/2026-05-22-goal-5-edge-light-separator-side-by-side-proof.html",
+    "docs/visual-reviews/2026-05-22-goal-5-edge-light-separator-side-by-side-board.png",
+    "docs/visual-reviews/2026-05-22-goal-5-edge-light-separator-side-by-side-current-desktop.png",
+    "docs/visual-reviews/2026-05-22-goal-5-edge-light-separator-side-by-side-current-mobile.png",
+    "tmp/goal-5-edge-light-separator-side-by-side-overview-dom.html",
+    "tmp/goal-5-edge-light-separator-side-by-side-board-dom.html"
+  ],
+  "uiMarkers": [
+    "reference-scale-edge-light-separator",
+    "edge light",
+    "shadow lock",
+    "rim proof",
+    "Command Table Core",
+    "Goal 5 Edge Light Separator Side-by-Side Proof"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The table edge separator is now visible in the current overview, but central-table completion is not claimed."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "Proof and review state sit closer to the table edge through the separator, clamp, weave, and orbit bridge."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "Rim-light and lower-shadow markers are visible enough for the next comparison pass."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "The side-by-side board confirms the edge separator is proof-only and state-backed."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop/mobile overlay captures and board proof are refreshed after the edge light separator pass."
+    }
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "headless Chrome side-by-side board screenshot",
+    "DOM smoke for overlay and board markers",
+    "PNG sanity for desktop/mobile/board captures"
+  ],
+  "nextGoal5Step": "Use this board to choose whether table-edge light separation, surrounding shadow depth, or another motif gap is now the weakest reference-zone target."
+}

@@ -1,0 +1,64 @@
+{
+  "id": "visual-review-goal-5-telemetry-event-log-side-by-side-proof-20260522",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-telemetry-event-log-side-by-side-proof",
+  "artifactId": "artifact-goal-5-telemetry-event-log-side-by-side-proof",
+  "createdAt": "2026-05-22T14:51:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match proof only.",
+  "decision": "side-by-side-proof-recorded-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-22-goal-5-telemetry-event-log-side-by-side-proof.md",
+    "docs/visual-reviews/2026-05-22-goal-5-telemetry-event-log-side-by-side-proof.json",
+    "docs/visual-reviews/2026-05-22-goal-5-telemetry-event-log-side-by-side-proof.html",
+    "docs/visual-reviews/2026-05-22-goal-5-telemetry-event-log-side-by-side-board.png",
+    "docs/visual-reviews/2026-05-22-goal-5-telemetry-event-log-density-pass-overview-desktop.png",
+    "docs/visual-reviews/2026-05-22-goal-5-telemetry-event-log-density-pass-overview-mobile.png",
+    "docs/visual-reviews/2026-05-22-goal-5-telemetry-event-log-density-pass-telemetry-mobile.png",
+    "tmp/goal-5-telemetry-event-log-side-by-side-dom.html"
+  ],
+  "uiMarkers": [
+    "Command Table Core",
+    "Selected Lane Trail",
+    "Telemetry Proof Drill-Down",
+    "telemetry-event-row",
+    "telemetry-event-chip",
+    "partial-match-improved"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The latest Telemetry proof is table-attached in the core, selected-lane trail, proof rail, and artifacts panel."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "Telemetry now matches the Review Queue chip density, reducing the last flat-list drill-down read."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "Event chips improve the fine-line terminal feel, while broader contrast and asymmetry remain open."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "Goals, tasks, reviews, telemetry, artifacts, and events remain grounded in canonical state with no fake backend action."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop, mobile, Telemetry drill-down, DOM, and side-by-side board proof are captured after the Telemetry event-log density pass."
+    }
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "headless Chrome side-by-side board screenshot",
+    "DOM smoke for overview and board proof markers"
+  ],
+  "nextGoal5Step": "Use this board to choose the next focused UI pass: contrast/asymmetry polish around the peripheral hierarchy and command-table proof rail."
+}

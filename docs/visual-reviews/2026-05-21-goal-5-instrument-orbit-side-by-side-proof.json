@@ -1,0 +1,55 @@
+{
+  "id": "visual-review-goal-5-instrument-orbit-side-by-side-proof-20260521",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-instrument-orbit-side-by-side-proof",
+  "artifactId": "artifact-goal-5-instrument-orbit-side-by-side-proof",
+  "createdAt": "2026-05-21T07:21:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match proof only.",
+  "decision": "side-by-side-proof-recorded-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-goal-5-instrument-orbit-side-by-side-proof.md",
+    "docs/visual-reviews/2026-05-21-goal-5-instrument-orbit-side-by-side-proof.json",
+    "docs/visual-reviews/2026-05-21-goal-5-instrument-orbit-side-by-side-proof.html",
+    "docs/visual-reviews/2026-05-21-goal-5-instrument-orbit-side-by-side-board.png",
+    "docs/visual-reviews/2026-05-21-goal-5-instrument-orbit-side-by-side-current-desktop.png",
+    "docs/visual-reviews/2026-05-21-goal-5-instrument-orbit-side-by-side-current-mobile.png",
+    "tmp/goal-5-instrument-orbit-side-by-side-dom.html"
+  ],
+  "uiMarkers": [
+    "Command Table Core",
+    "queue",
+    "review",
+    "agents",
+    "proof",
+    "partial-match-improved"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The board confirms the command table carries the instrument orbit as table-attached state."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "Queue, review, agents, and proof chips improve reference-like surrounding data density."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "The darker table core and chip grid add depth, but contrast parity is still open."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "All proof remains grounded in canonical Goal 5 state with no fake backend actions."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop, mobile, DOM, and side-by-side board proof are captured after the instrument-orbit density pass."
+    }
+  ],
+  "nextGoal5Step": "Use this board to choose the next focused UI pass: denser drill-down hierarchy or finer contrast polish around the command table."
+}

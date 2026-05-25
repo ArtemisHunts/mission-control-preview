@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Meshy-108 Embedded Ops Wall Bunker Placement Contact Proof</title>
+<style>
+  body { margin: 0; background: #071016; color: #e8f7f4; font: 16px/1.45 system-ui, sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 32px; }
+  h1 { font-size: 28px; margin: 0 0 8px; }
+  .summary { color: #8bdde0; margin-bottom: 24px; }
+  table { width: 100%; border-collapse: collapse; background: #0d1a22; border: 1px solid #24434a; margin-bottom: 24px; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid #1f343b; vertical-align: top; }
+  th { color: #90f3ff; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  img { width: 100%; border: 1px solid #24434a; background: #05080b; }
+  code { color: #ffd166; }
+</style>
+<main>
+  <h1>Meshy-108 Embedded Ops Wall Bunker Placement Contact Proof</h1>
+  <div class="summary">Placed control-support insert. Contact <code>accepted-contact-range</code>; output scene <code>71.537 MB</code>; no Meshy spend.</div>
+  <div id="runtime-check" class="summary">Output GLB fetch: pending</div>
+  <table><thead><tr><th>Metric</th><th>Path / Decision</th><th>Value</th></tr></thead><tbody><tr><td>Asset source</td><td>assets/meshy/api/65-embedded-ops-window-wall-bunker.meshy.glb</td><td>0.267 MB</td></tr>
+<tr><td>Output GLB</td><td>assets/blender/meshy-108-embedded-ops-wall-bunker-placement-contact-proof.glb</td><td>71.537 MB</td></tr>
+<tr><td>Runtime budget</td><td>pass</td><td>24.463 MB remaining</td></tr>
+<tr><td>Contact</td><td>accepted-contact-range</td><td>gap +0.0000, overlap 0.86</td></tr>
+<tr><td>Decision</td><td>embedded-ops-wall-bunker-placement-contact-passed</td><td>run a Meshy-108 density/runtime audit after embedded ops wall bunker placement before adding another asset</td></tr></tbody></table>
+  <img src="./2026-05-22-meshy-108-embedded-ops-wall-bunker-placement-contact-proof-board.png" alt="embedded ops wall bunker placement contact proof board">
+</main>
+<script>
+  const out = document.getElementById('runtime-check');
+  fetch('../../assets/blender/meshy-108-embedded-ops-wall-bunker-placement-contact-proof.glb')
+    .then((response) => {
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      return response.arrayBuffer();
+    })
+    .then((buffer) => {
+      const view = new DataView(buffer);
+      const magic = String.fromCharCode(...new Uint8Array(buffer, 0, 4));
+      const version = view.getUint32(4, true);
+      const length = view.getUint32(8, true);
+      out.textContent = 'Output GLB fetch: ' + magic + ' v' + version + ', ' + length + ' bytes';
+    })
+    .catch((error) => {
+      out.textContent = 'Output GLB fetch failed: ' + error.message;
+    });
+</script>
+</html>

@@ -1,0 +1,32 @@
+{
+  "id": "visual-review-goal-5-full-room-composition-spine-20260520",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-full-room-composition-spine",
+  "artifactId": "artifact-goal-5-full-room-composition-spine-pass",
+  "timestamp": "2026-05-20T19:21:00.000Z",
+  "gapPicked": "full-room composition continuity around the central command table",
+  "decision": "full-room-composition-improved-not-reference-complete",
+  "status": "partial-match-improved",
+  "stateBackedSignals": [
+    "active goal telemetry",
+    "open task flow",
+    "review and active-agent pressure",
+    "artifact and event evidence"
+  ],
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-20-goal-5-full-room-composition-spine-pass.md",
+    "docs/visual-reviews/2026-05-20-goal-5-full-room-composition-spine-pass.json",
+    "docs/visual-reviews/2026-05-20-goal-5-full-room-composition-spine-desktop.png",
+    "docs/visual-reviews/2026-05-20-goal-5-full-room-composition-spine-mobile.png",
+    "tmp/goal-5-full-room-composition-spine-dom.html"
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots",
+    "DOM smoke",
+    "screenshot visual check"
+  ],
+  "isDemo": false
+}

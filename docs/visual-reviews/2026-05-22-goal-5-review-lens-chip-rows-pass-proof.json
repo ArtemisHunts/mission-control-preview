@@ -1,0 +1,74 @@
+{
+  "id": "visual-review-goal-5-review-lens-chip-rows-pass-20260522",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-review-lens-chip-rows-pass",
+  "title": "Goal 5 review lens chip rows pass",
+  "createdAt": "2026-05-22T10:21:00.000Z",
+  "decision": "review-drilldown-density-improved",
+  "scope": [
+    "Review Queue drill-down",
+    "Review Chamber rows",
+    "Approval Evidence rows",
+    "Verification Artifacts rows",
+    "overlay-only preview at ?overlay=1&console=overview"
+  ],
+  "pickedGap": "The Review Queue drill-down still rendered review, evidence, and artifact records as long plain-text rows after the overview chip rack pass.",
+  "changes": [
+    "Added addReviewLensRecordRows() for read-only compact record rows.",
+    "Review rows expose status, decision, risk, and approvals as chips.",
+    "Evidence rows expose evidence count, updated date, and gate state as chips.",
+    "Artifact rows expose kind, selected/context scope, and recorded date as chips.",
+    "Shortened record dates for mobile readability and allowed chip values to wrap safely."
+  ],
+  "screenshots": {
+    "mobileOverview": {
+      "path": "docs/visual-reviews/2026-05-22-goal-5-review-lens-chip-rows-pass-mobile.png",
+      "viewport": "390x5200",
+      "status": "captured"
+    },
+    "desktopOverview": {
+      "path": "docs/visual-reviews/2026-05-22-goal-5-review-lens-chip-rows-pass-desktop.png",
+      "viewport": "1440x1200",
+      "status": "captured"
+    },
+    "mobileReviewQueue": {
+      "path": "docs/visual-reviews/2026-05-22-goal-5-review-lens-chip-rows-pass-review-mobile.png",
+      "viewport": "390x5600",
+      "status": "captured"
+    }
+  },
+  "domSmoke": {
+    "overviewPath": "tmp/goal-5-review-lens-chip-rows-pass-overview-dom.html",
+    "reviewPath": "tmp/goal-5-review-lens-chip-rows-pass-review-dom.html",
+    "markers": [
+      "Selected Lane Gates",
+      "Goal 5 review chip rack pass proof",
+      "Command Lens / Review Queue Drill-Down",
+      "Review Chamber",
+      "Approval Evidence",
+      "Verification Artifacts",
+      "review-lens-record-row",
+      "review-lens-record-chip",
+      "<b>status</b>",
+      "<b>decision</b>",
+      "<b>risk</b>",
+      "<b>approvals</b>",
+      "<b>evidence</b>",
+      "<b>kind</b>"
+    ],
+    "reviewRows": 20,
+    "chipCount": 84,
+    "status": "pass"
+  },
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "headless Chrome Review Queue screenshot",
+    "DOM smoke for overview and Review Queue chip markers",
+    "screenshot QA: PASS - compact readable chip rows with no severe clipping or overlap"
+  ],
+  "blocked": false,
+  "nextGoal5Step": "Apply the same compact row density to the Telemetry drill-down event stream so proof/events read like an operator log instead of a flat list."
+}

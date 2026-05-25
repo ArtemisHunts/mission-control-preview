@@ -1,0 +1,164 @@
+{
+  "candidate": "meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement",
+  "gapPicked": "audit Meshy-108 density/runtime after asym lockup command bulkhead placement",
+  "createdAt": "2026-05-23T19:04:19Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "noNewFacilityAssetPlaced": true,
+  "sourceSceneGlb": "assets/blender/meshy-108-asym-lockup-command-bulkhead-placement-contact-proof.glb",
+  "auditBlend": "assets/blender/meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement.blend",
+  "auditGlb": "assets/blender/meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement.glb",
+  "sourcePlacementMetrics": "docs/visual-reviews/2026-05-23-meshy-108-asym-lockup-command-bulkhead-placement-contact-proof.json",
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-asym-lockup-command-bulkhead-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 72712424,
+    "mb": 69.344,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 418,
+    "meshCount": 385,
+    "materialCount": 69,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1174,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "auditGlbInspection": {
+    "path": "assets/blender/meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 73592416,
+    "mb": 70.183,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 435,
+    "meshCount": 402,
+    "materialCount": 75,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1233,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 72712424,
+    "sourceSceneMB": 69.344,
+    "sourceRemainingBytes": 27950872,
+    "sourceRemainingMB": 26.656,
+    "sourceUsagePercent": 72.23,
+    "auditGlbBytes": 73592416,
+    "auditGlbMB": 70.183,
+    "auditRemainingBytes": 27070880,
+    "auditRemainingMB": 25.817,
+    "auditUsagePercent": 73.11,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "nextIncrementGuardMarginBytes": 2785048,
+    "nextIncrementGuardMarginMB": 2.656,
+    "nextIncrementHeadroomPass": true,
+    "status": "pass-density-runtime-audit"
+  },
+  "contactAudit": {
+    "pad": "asym lockup command bulkhead support pad",
+    "assetBounds": {
+      "min": [
+        1.6645,
+        1.0895,
+        0.985
+      ],
+      "max": [
+        2.0555,
+        1.3505,
+        1.135
+      ],
+      "dimensions": [
+        0.391,
+        0.261,
+        0.1501
+      ]
+    },
+    "padBounds": {
+      "min": [
+        1.6518,
+        1.0502,
+        0.961
+      ],
+      "max": [
+        2.0682,
+        1.3898,
+        0.985
+      ],
+      "dimensions": [
+        0.4163,
+        0.3395,
+        0.024
+      ]
+    },
+    "verticalGapAssetMinToPadTop": 0.0,
+    "xyOverlapRatio": 1.0,
+    "status": "accepted-contact-range"
+  },
+  "densityStatus": "pass-with-tight-guard-next-asset-needs-small-direct-or-proxy-gate",
+  "facilityBounds": {
+    "min": [
+      -3.8818,
+      -3.0368,
+      -1.8656
+    ],
+    "max": [
+      3.2963,
+      3.1295,
+      2.1056
+    ],
+    "dimensions": [
+      7.178,
+      6.1663,
+      3.9712
+    ]
+  },
+  "markers": {
+    "openMouthClear": true,
+    "commandHeroVisible": true,
+    "productionGantryVisible": true,
+    "supportDuctVisible": true,
+    "fabricationArmVisible": true,
+    "asymLockupCommandBulkheadVisible": true,
+    "nextAssetGateNeeded": true
+  },
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement/2026-05-23-meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement-top.png",
+    "front": "docs/visual-reviews/meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement/2026-05-23-meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement/2026-05-23-meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement/2026-05-23-meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement-detail.png"
+  },
+  "decision": "passed-density-runtime-audit-after-asym-lockup-command-bulkhead-placement",
+  "nextStep": "gate the next tiny support/control candidate before placement; use proxy/optimization for anything that risks the 24 MB next-increment guard",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement.md",
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement.json",
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement-board.png",
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement-viewer.html",
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement/2026-05-23-meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement-top.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement/2026-05-23-meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement-front.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement/2026-05-23-meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement-oblique.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement/2026-05-23-meshy-108-density-runtime-audit-after-asym-lockup-command-bulkhead-placement-detail.png"
+  ]
+}

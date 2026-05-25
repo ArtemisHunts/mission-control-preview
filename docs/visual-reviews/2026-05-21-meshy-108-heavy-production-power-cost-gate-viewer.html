@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Meshy-108 Heavy Production/Power Cost Gate</title>
+<style>
+  body { margin: 0; background: #071016; color: #e8f7f4; font: 16px/1.45 system-ui, sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 32px; }
+  h1 { font-size: 28px; margin: 0 0 8px; }
+  .summary { color: #8bdde0; margin-bottom: 24px; }
+  table { width: 100%; border-collapse: collapse; background: #0d1a22; border: 1px solid #24434a; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid #1f343b; vertical-align: top; }
+  th { color: #90f3ff; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  img { width: 100%; margin-top: 24px; border: 1px solid #24434a; background: #05080b; }
+  code { color: #ffd166; }
+</style>
+<main>
+  <h1>Meshy-108 Heavy Production/Power Runtime-Cost Gate</h1>
+  <div class="summary">Current scene <code>48.3 MB</code>; no Meshy spend; direct placement blocked unless a candidate stays inside the recorded budget.</div>
+  <table>
+    <thead><tr><th>Candidate</th><th>Role</th><th>Source MB</th><th>Projected Direct Scene MB</th><th>Decision</th><th>Reason</th></tr></thead>
+    <tbody><tr><td>Reactor power core</td><td>power</td><td>110.24</td><td>158.54</td><td>defer-optimize-first</td><td>source GLB alone exceeds direct-placement increment budget; power hero needs decimated proxy or baked low-cost version first</td></tr>
+<tr><td>Gantry crane</td><td>production</td><td>40.54</td><td>88.84</td><td>optimize-before-placement</td><td>good role fit, but source GLB exceeds direct-placement increment budget</td></tr>
+<tr><td>Conveyor processing machine</td><td>production</td><td>36.4</td><td>84.7</td><td>optimize-before-placement</td><td>good role fit, but source GLB exceeds direct-placement increment budget</td></tr></tbody>
+  </table>
+  <img src="./2026-05-21-meshy-108-heavy-production-power-cost-gate-board.png" alt="runtime-cost gate proof board">
+</main>
+</html>

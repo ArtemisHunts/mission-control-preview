@@ -1,0 +1,50 @@
+{
+  "name": "Meshy-105 topology-first broken C-shell reference",
+  "purpose": "Reference/source image pack for future Meshy asteroid pass; not final art and not a paid Meshy task.",
+  "blend": "assets/blender/meshy-105-broken-cshell-topology-reference-v1.blend",
+  "glb": "assets/blender/meshy-105-broken-cshell-topology-reference-v1.glb",
+  "renders": {
+    "front": "docs/visual-reviews/meshy-105-topology-reference-v1/2026-05-20-meshy-105-topology-reference-front.png",
+    "top": "docs/visual-reviews/meshy-105-topology-reference-v1/2026-05-20-meshy-105-topology-reference-top.png",
+    "side": "docs/visual-reviews/meshy-105-topology-reference-v1/2026-05-20-meshy-105-topology-reference-side.png"
+  },
+  "meshStats": [
+    {
+      "name": "topology reference broken C-shell thin asteroid wall",
+      "vertices": 2538,
+      "polygons": 2536,
+      "triangles": 5072
+    },
+    {
+      "name": "transparent deep empty cavity volume marker",
+      "vertices": 722,
+      "polygons": 768,
+      "triangles": 1440
+    },
+    {
+      "name": "future facility deck fit proxy lower",
+      "vertices": 8,
+      "polygons": 6,
+      "triangles": 12
+    },
+    {
+      "name": "future facility deck fit proxy upper",
+      "vertices": 8,
+      "polygons": 6,
+      "triangles": 12
+    },
+    {
+      "name": "future vertical spine clearance proxy",
+      "vertices": 8,
+      "polygons": 6,
+      "triangles": 12
+    }
+  ],
+  "acceptanceTargets": [
+    "unmistakable broken C-shell negative space",
+    "large missing quadrant/open mouth",
+    "thin wall rim visible around shell",
+    "deep empty cavity without floor slab",
+    "facility fit proxies show usable interior volume"
+  ]
+}

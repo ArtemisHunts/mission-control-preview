@@ -1,0 +1,247 @@
+{
+  "candidate": "meshy-108-facility-density-pass2",
+  "gapPicked": "build Meshy-108 facility density pass 2 from promoted local assets",
+  "noMeshySpend": true,
+  "sourceBlend": "assets/blender/meshy-108-facility-population-pass1.blend",
+  "blend": "assets/blender/meshy-108-facility-density-pass2.blend",
+  "glb": "assets/blender/meshy-108-facility-density-pass2.glb",
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-facility-density-pass2/2026-05-20-meshy-108-facility-density-pass2-top.png",
+    "front": "docs/visual-reviews/meshy-108-facility-density-pass2/2026-05-20-meshy-108-facility-density-pass2-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-facility-density-pass2/2026-05-20-meshy-108-facility-density-pass2-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-facility-density-pass2/2026-05-20-meshy-108-facility-density-pass2-detail.png"
+  },
+  "selectedAssets": [
+    {
+      "role": "catwalk",
+      "label": "Deck spur",
+      "zone": "central bridge expansion",
+      "path": "assets/meshy/api/09-modular-catwalk-deck-segment.meshy.glb",
+      "sourceBytes": 2878948,
+      "location": [
+        -0.72,
+        -0.05,
+        0.58
+      ],
+      "rotationZDegrees": 18,
+      "targetMaxDimension": 1.18,
+      "importedMeshCount": 1
+    },
+    {
+      "role": "production",
+      "label": "Hazard gantry",
+      "zone": "fabrication support",
+      "path": "assets/meshy/api/16-light-hazard-gantry.meshy.glb",
+      "sourceBytes": 445572,
+      "location": [
+        1.08,
+        -1.62,
+        0.64
+      ],
+      "rotationZDegrees": -16,
+      "targetMaxDimension": 1,
+      "importedMeshCount": 1
+    },
+    {
+      "role": "hangar",
+      "label": "Aux portal",
+      "zone": "hangar approach",
+      "path": "assets/meshy/api/22-hangar-airlock-portal-frame.meshy.glb",
+      "sourceBytes": 429796,
+      "location": [
+        -2.62,
+        -0.2,
+        0.72
+      ],
+      "rotationZDegrees": 26,
+      "targetMaxDimension": 1.05,
+      "importedMeshCount": 1
+    },
+    {
+      "role": "logistics",
+      "label": "Observation pod",
+      "zone": "logistics pocket",
+      "path": "assets/meshy/api/26-circular-observation-control-pod.meshy.glb",
+      "sourceBytes": 145568,
+      "location": [
+        -1.05,
+        -2.52,
+        0.62
+      ],
+      "rotationZDegrees": -8,
+      "targetMaxDimension": 0.72,
+      "importedMeshCount": 1
+    },
+    {
+      "role": "signal",
+      "label": "Radar tower",
+      "zone": "signal ridge",
+      "path": "assets/meshy/api/27-radar-satellite-tower-v2.meshy.glb",
+      "sourceBytes": 451392,
+      "location": [
+        2.1,
+        1.75,
+        1.03
+      ],
+      "rotationZDegrees": -35,
+      "targetMaxDimension": 0.92,
+      "importedMeshCount": 1
+    },
+    {
+      "role": "command",
+      "label": "Long bunker",
+      "zone": "upper command band",
+      "path": "assets/meshy/api/29-long-control-room-bunker-module.meshy.glb",
+      "sourceBytes": 228540,
+      "location": [
+        0.35,
+        1.55,
+        0.82
+      ],
+      "rotationZDegrees": -8,
+      "targetMaxDimension": 1.05,
+      "importedMeshCount": 1
+    },
+    {
+      "role": "command",
+      "label": "Recessed bay",
+      "zone": "left command wall",
+      "path": "assets/meshy/api/37-clean-recessed-command-bunker-face.meshy.glb",
+      "sourceBytes": 274428,
+      "location": [
+        -1.35,
+        1.72,
+        0.76
+      ],
+      "rotationZDegrees": 8,
+      "targetMaxDimension": 0.92,
+      "importedMeshCount": 1
+    },
+    {
+      "role": "signal",
+      "label": "Signal booth",
+      "zone": "right utility wall",
+      "path": "assets/meshy/api/52-embedded-signal-control-booth.meshy.glb",
+      "sourceBytes": 142736,
+      "location": [
+        2.35,
+        0.92,
+        0.66
+      ],
+      "rotationZDegrees": -30,
+      "targetMaxDimension": 0.7,
+      "importedMeshCount": 1
+    },
+    {
+      "role": "command",
+      "label": "Glazed band",
+      "zone": "top command band",
+      "path": "assets/meshy/api/61-top-center-glazed-command-band-bunker.meshy.glb",
+      "sourceBytes": 259512,
+      "location": [
+        0.02,
+        2.02,
+        0.96
+      ],
+      "rotationZDegrees": -3,
+      "targetMaxDimension": 1,
+      "importedMeshCount": 1
+    },
+    {
+      "role": "command",
+      "label": "Dual gallery",
+      "zone": "upper gallery",
+      "path": "assets/meshy/api/78-long-dual-command-gallery-module.meshy.glb",
+      "sourceBytes": 137052,
+      "location": [
+        -0.78,
+        2.23,
+        1.06
+      ],
+      "rotationZDegrees": 5,
+      "targetMaxDimension": 0.9,
+      "importedMeshCount": 1
+    },
+    {
+      "role": "command",
+      "label": "Control insert",
+      "zone": "command support",
+      "path": "assets/meshy/api/99-embedded-control-bay-room-insert.meshy.glb",
+      "sourceBytes": 226608,
+      "location": [
+        0.92,
+        1.84,
+        0.88
+      ],
+      "rotationZDegrees": -10,
+      "targetMaxDimension": 0.82,
+      "importedMeshCount": 1
+    }
+  ],
+  "roleCoverage": [
+    "catwalk",
+    "command",
+    "hangar",
+    "logistics",
+    "production",
+    "signal"
+  ],
+  "importedFacilityAssetCount": 11,
+  "importedFacilityMeshCount": 11,
+  "selectedSourceBytes": 5620152,
+  "excludedHeavyPromotesReason": "Density pass 2 intentionally uses promoted light/medium GLBs first; heavy promoted assets remain one-off hero placement candidates.",
+  "authoredMountGeometry": "Small pads, markers, labels, and route guide only; imported Meshy GLBs remain the density assets.",
+  "sourcePopulationGlbInspection": {
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 8671504,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 241,
+    "meshCount": 232,
+    "materialCount": 9,
+    "textureCount": 0,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "densityPass2GlbInspection": {
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 21322188,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 299,
+    "meshCount": 278,
+    "materialCount": 15,
+    "textureCount": 1,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "decision": "density pass 2 passed visual proof and browser GLB fetch/parse smoke",
+  "nextStep": "run contact/intersection audit on density pass 2 before adding heavy hero-scale promoted assets",
+  "board": "docs/visual-reviews/2026-05-20-meshy-108-facility-density-pass2-board.png",
+  "visualDecision": {
+    "result": "PASS",
+    "reviewer": "openclaw_image",
+    "summary": "Proof board shows credible facility density increase from local assets, preserves the open C-shell mouth, and states no Meshy spend/baseline source untouched."
+  },
+  "browserSmoke": {
+    "viewer": "docs/visual-reviews/2026-05-20-meshy-108-facility-density-pass2-viewer.html",
+    "screenshot": "docs/visual-reviews/2026-05-20-meshy-108-facility-density-pass2-browser-smoke.png",
+    "viewerStatus": 200,
+    "glbStatus": 200,
+    "browserGetGlbStatus": 200,
+    "result": "PASS",
+    "summary": "Headless browser fetched and parsed the density pass 2 GLB, rendered a nonblank smoke view, and displayed glTF 2 / 11 promoted assets / no Meshy spend."
+  }
+}

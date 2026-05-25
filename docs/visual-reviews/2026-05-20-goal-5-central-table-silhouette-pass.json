@@ -1,0 +1,50 @@
+{
+  "id": "visual-review-goal-5-central-table-silhouette-20260520",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-central-table-silhouette",
+  "title": "Goal 5 central command-table silhouette pass",
+  "status": "completed",
+  "decision": "central-zone-improved-not-reference-complete",
+  "url": "http://127.0.0.1:4177/?overlay=1&console=overview",
+  "screenshots": {
+    "desktop": {
+      "path": "docs/visual-reviews/2026-05-20-goal-5-central-table-silhouette-desktop.png",
+      "width": 1440,
+      "height": 1180,
+      "bytes": 734764
+    },
+    "mobile": {
+      "path": "docs/visual-reviews/2026-05-20-goal-5-central-table-silhouette-mobile.png",
+      "width": 390,
+      "height": 980,
+      "bytes": 334260
+    }
+  },
+  "domSmoke": {
+    "path": "tmp/goal-5-central-table-silhouette-dom.html",
+    "instrumentPods": 4,
+    "requiredText": [
+      "State-backed central command table silhouette",
+      "Ops Core",
+      "active tasks",
+      "Tasks",
+      "Reviews",
+      "Events",
+      "Queued",
+      "Central command table",
+      "partial match improved"
+    ],
+    "missingText": [],
+    "pass": true
+  },
+  "checks": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop screenshot",
+    "headless Chrome mobile screenshot",
+    "headless Chrome DOM smoke"
+  ],
+  "createdAt": "2026-05-20T07:21:00.000Z",
+  "isDemo": false
+}

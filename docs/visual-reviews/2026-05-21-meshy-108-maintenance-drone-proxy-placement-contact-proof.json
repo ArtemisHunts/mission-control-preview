@@ -1,0 +1,165 @@
+{
+  "candidate": "meshy-108-maintenance-drone-proxy-placement-contact-proof",
+  "gapPicked": "place optimized Meshy-108 maintenance drone proxy and prove contact/runtime",
+  "createdAt": "2026-05-21T23:32:09Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "sourceSceneBlend": "assets/blender/meshy-108-support-utility-detail-placement-contact-proof.blend",
+  "sourceSceneGlb": "assets/blender/meshy-108-support-utility-detail-placement-contact-proof.glb",
+  "proxySourceGlb": "assets/blender/meshy-108-maintenance-drone-optimization-proxy.glb",
+  "proxyOptimizationMetrics": "docs/visual-reviews/2026-05-21-meshy-108-maintenance-drone-optimization-proxy.json",
+  "outBlend": "assets/blender/meshy-108-maintenance-drone-proxy-placement-contact-proof.blend",
+  "outGlb": "assets/blender/meshy-108-maintenance-drone-proxy-placement-contact-proof.glb",
+  "placement": {
+    "role": "support",
+    "label": "Optimized maintenance drone proxy",
+    "zone": "right service perch",
+    "location": [
+      2.46,
+      -1.46,
+      1.04
+    ],
+    "rotationZDegrees": -24,
+    "targetMaxDimension": 0.74,
+    "importedMeshCount": 29
+  },
+  "contactAudit": {
+    "pad": "maintenance drone proxy service perch pad",
+    "marker": "maintenance drone proxy cyan locator",
+    "assetBounds": {
+      "min": [
+        1.9977,
+        -1.9098,
+        0.8431
+      ],
+      "max": [
+        2.9335,
+        -1.0052,
+        1.2369
+      ],
+      "dimensions": [
+        0.9358,
+        0.9046,
+        0.3937
+      ]
+    },
+    "padBounds": {
+      "min": [
+        2.1005,
+        -1.8056,
+        0.8151
+      ],
+      "max": [
+        2.8195,
+        -1.1144,
+        0.8431
+      ],
+      "dimensions": [
+        0.719,
+        0.6912,
+        0.028
+      ]
+    },
+    "verticalGapAssetMinToPadTop": 0.0,
+    "xyOverlapRatio": 1.0,
+    "status": "accepted-contact-range"
+  },
+  "acceptedContactCount": 1,
+  "needsReviewCount": 0,
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 70895848,
+    "sourceSceneMB": 67.612,
+    "proxySourceBytes": 413252,
+    "proxySourceMB": 0.394,
+    "fullSourceDirectProjectedSceneMB": 89.265,
+    "outputBytes": 71805396,
+    "outputMB": 68.479,
+    "remainingBytes": 28857900,
+    "remainingMB": 27.521,
+    "status": "pass"
+  },
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-support-utility-detail-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 70895848,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 345,
+    "meshCount": 321,
+    "materialCount": 35,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 996,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "proxySourceInspection": {
+    "path": "assets/blender/meshy-108-maintenance-drone-optimization-proxy.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 413252,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 29,
+    "meshCount": 29,
+    "materialCount": 5,
+    "textureCount": 0,
+    "imageCount": 0,
+    "accessorCount": 94,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "placementGlbInspection": {
+    "path": "assets/blender/meshy-108-maintenance-drone-proxy-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 71805396,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 382,
+    "meshCount": 357,
+    "materialCount": 45,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1111,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-maintenance-drone-proxy-placement-contact-proof/2026-05-21-meshy-108-maintenance-drone-proxy-placement-contact-proof-top.png",
+    "front": "docs/visual-reviews/meshy-108-maintenance-drone-proxy-placement-contact-proof/2026-05-21-meshy-108-maintenance-drone-proxy-placement-contact-proof-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-maintenance-drone-proxy-placement-contact-proof/2026-05-21-meshy-108-maintenance-drone-proxy-placement-contact-proof-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-maintenance-drone-proxy-placement-contact-proof/2026-05-21-meshy-108-maintenance-drone-proxy-placement-contact-proof-detail.png"
+  },
+  "decision": "maintenance-drone-proxy-placement-contact-passed",
+  "nextStep": "run a Meshy-108 facility density/runtime audit after maintenance drone proxy placement before adding another asset",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-meshy-108-maintenance-drone-proxy-placement-contact-proof.md",
+    "docs/visual-reviews/2026-05-21-meshy-108-maintenance-drone-proxy-placement-contact-proof.json",
+    "docs/visual-reviews/2026-05-21-meshy-108-maintenance-drone-proxy-placement-contact-proof-board.png",
+    "docs/visual-reviews/2026-05-21-meshy-108-maintenance-drone-proxy-placement-contact-proof-viewer.html",
+    "docs/visual-reviews/2026-05-21-meshy-108-maintenance-drone-proxy-placement-contact-proof-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-maintenance-drone-proxy-placement-contact-proof"
+  ]
+}

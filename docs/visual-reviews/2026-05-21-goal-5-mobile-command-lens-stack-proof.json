@@ -1,0 +1,31 @@
+{
+  "id": "visual-review-goal-5-mobile-command-lens-stack-20260521",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-mobile-command-lens-stack",
+  "artifactId": "artifact-goal-5-mobile-command-lens-stack",
+  "createdAt": "2026-05-21T14:51:00.000Z",
+  "routes": [
+    "?overlay=1&console=overview",
+    "?overlay=1&console=tasks"
+  ],
+  "decision": "mobile-command-lens-stack-improved-not-reference-complete",
+  "pickedGap": "Command-lens detail panels were readable on desktop but too vertically heavy on mobile.",
+  "change": "Added mobile-only command-lens compaction and capped kanban lane lists for narrow overlay drill-downs.",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-goal-5-mobile-command-lens-stack-proof.md",
+    "docs/visual-reviews/2026-05-21-goal-5-mobile-command-lens-stack-proof.json",
+    "docs/visual-reviews/2026-05-21-goal-5-mobile-command-lens-stack-overview.png",
+    "docs/visual-reviews/2026-05-21-goal-5-mobile-command-lens-stack-tasks-desktop.png",
+    "docs/visual-reviews/2026-05-21-goal-5-mobile-command-lens-stack-tasks-mobile.png",
+    "tmp/goal-5-mobile-command-lens-stack-dom.html"
+  ],
+  "criteria": [
+    "Overview overlay route still renders",
+    "Task drill-down route renders on mobile",
+    "Command-lens header and kanban markers are present",
+    "Mobile screenshot is nonblank and has no obvious text overlap",
+    "No fake backend action is introduced"
+  ],
+  "isDemo": false
+}

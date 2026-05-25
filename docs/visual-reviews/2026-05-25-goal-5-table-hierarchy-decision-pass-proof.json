@@ -1,0 +1,27 @@
+{
+  "id": "visual-review-goal-5-table-hierarchy-decision-pass-20260525",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-table-hierarchy-decision-pass",
+  "artifactId": "artifact-goal-5-table-hierarchy-decision-pass",
+  "createdAt": "2026-05-25T06:02:00.000Z",
+  "surface": "?overlay=1&console=overview",
+  "selectedGap": "Use the motif contrast decision side-by-side board to decide whether table hierarchy, peripheral density, or motif contrast needs the next pass; this pass selects table hierarchy.",
+  "verdict": "partial-match-improved",
+  "referenceComplete": false,
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-decision-pass-proof.md",
+    "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-decision-pass-proof.json",
+    "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-decision-pass-desktop.png",
+    "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-decision-pass-mobile.png",
+    "tmp/goal-5-table-hierarchy-decision-pass-dom.html"
+  ],
+  "domSmokeMarkers": [
+    "reference-scale-table-hierarchy-decision-band",
+    "State-backed table hierarchy decision band",
+    "selected table",
+    "first read",
+    "orbit restraint",
+    "proof anchor"
+  ],
+  "nextStep": "Capture a fresh side-by-side reference proof after the table hierarchy decision pass."
+}

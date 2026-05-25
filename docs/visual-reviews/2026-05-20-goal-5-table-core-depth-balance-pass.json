@@ -1,0 +1,52 @@
+{
+  "id": "visual-review-goal-5-table-core-depth-balance-20260520",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-table-core-depth-balance-pass",
+  "artifactId": "artifact-goal-5-table-core-depth-balance-pass",
+  "createdAt": "2026-05-21T02:51:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match UI only.",
+  "decision": "table-core-likeness-improved-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-20-goal-5-table-core-depth-balance-pass.md",
+    "docs/visual-reviews/2026-05-20-goal-5-table-core-depth-balance-pass.json",
+    "docs/visual-reviews/2026-05-20-goal-5-table-core-depth-balance-desktop.png",
+    "docs/visual-reviews/2026-05-20-goal-5-table-core-depth-balance-mobile.png",
+    "tmp/goal-5-table-core-depth-balance-dom.html"
+  ],
+  "uiMarkers": [
+    "Command Table Core",
+    "table-first likeness",
+    "left work mass",
+    "right proof counterweight",
+    "mobile overlay transform corrected"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "A centered state-backed table core improves first-read command-table likeness."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "Left/right band labels make the surrounding mass read as orbiting the table."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "Oval rings and stronger center contrast improve holographic depth."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "The core count is derived from canonical goal/task/review/proof state, with no fake backend actions."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop and mobile overlay proof are captured after the mobile overlay transform fix; a refreshed side-by-side board is still required before stronger reference claims."
+    }
+  ],
+  "nextGoal5Step": "Capture a fresh side-by-side board after this table-core UI pass, then use that comparison to decide whether the next pass should target peripheral density or contrast polish."
+}

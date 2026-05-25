@@ -1,0 +1,65 @@
+{
+  "id": "visual-review-goal-5-table-first-hierarchy-lock-side-by-side-proof-20260524",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-table-first-hierarchy-lock-side-by-side-proof",
+  "artifactId": "artifact-goal-5-table-first-hierarchy-lock-side-by-side-proof",
+  "createdAt": "2026-05-24T02:53:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match proof only.",
+  "decision": "table-first-hierarchy-lock-side-by-side-proof-recorded",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-lock-side-by-side-proof.md",
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-lock-side-by-side-proof.json",
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-lock-side-by-side-proof.html",
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-lock-side-by-side-board.png",
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-lock-side-by-side-current-desktop.png",
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-lock-side-by-side-current-mobile.png",
+    "tmp/goal-5-table-first-hierarchy-lock-side-by-side-overview-dom.html",
+    "tmp/goal-5-table-first-hierarchy-lock-side-by-side-board-dom.html"
+  ],
+  "uiMarkers": [
+    "reference-scale-table-first-hierarchy-lock",
+    "first hierarchy",
+    "orbit restraint",
+    "proof anchor",
+    "Command Table Core",
+    "Goal 5 Table-First Hierarchy Lock Side-by-Side Proof"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The hierarchy lock strengthens table-first read, but the board keeps the central table verdict below reference-complete."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "Orbiting work/proof bands are restrained as supporting context rather than competing with the table."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "The lock adds a cleaner table-first motif layer while preserving contrast, shadow, and proof-mass layers."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "The board confirms the lock stays read-only and state-backed, with no fake actions."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop/mobile overlay captures, overview DOM, board DOM, and this side-by-side board are recorded after the hierarchy pass."
+    }
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "headless Chrome side-by-side board screenshot",
+    "DOM smoke for overlay and board markers",
+    "PNG sanity for desktop/mobile/board captures"
+  ],
+  "nextGoal5Step": "Use this board to decide whether peripheral density, visual motif contrast, or another table-first hierarchy pass is now weakest."
+}

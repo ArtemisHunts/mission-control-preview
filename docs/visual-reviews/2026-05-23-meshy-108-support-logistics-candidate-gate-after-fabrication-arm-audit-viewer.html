@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Meshy-108 Support/Logistics Candidate Gate After Fabrication Arm Audit</title>
+<style>
+  body { margin: 0; background: #071016; color: #e8f7f4; font: 16px/1.45 system-ui, sans-serif; }
+  main { max-width: 1200px; margin: 0 auto; padding: 32px; }
+  h1 { font-size: 28px; margin: 0 0 8px; }
+  .summary { color: #8bdde0; margin-bottom: 18px; }
+  .status { padding: 12px 14px; border: 1px solid #28525a; background: #0d1a22; margin-bottom: 22px; }
+  table { width: 100%; border-collapse: collapse; background: #0d1a22; border: 1px solid #24434a; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid #1f343b; vertical-align: top; }
+  th { color: #90f3ff; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  img { width: 100%; margin-top: 24px; border: 1px solid #24434a; background: #05080b; }
+  code { color: #ffd166; }
+</style>
+<main>
+  <h1>Meshy-108 Support/Logistics Candidate Gate After Fabrication Arm Audit</h1>
+  <div class="summary">Selected <code>assets/meshy/api/21-control-window-spine-module.meshy.glb</code>; projected <code>68.605 MB</code>; guard margin <code>3.395 MB</code>; no Meshy spend.</div>
+  <div id="glb-status" class="status">selected-glb-pending</div>
+  <table>
+    <thead><tr><th>Candidate</th><th>Role</th><th>Source MB</th><th>Projected MB</th><th>Remaining MB</th><th>Guard Margin MB</th><th>Decision</th></tr></thead>
+    <tbody><tr><td>Hangar loading bay frame</td><td>hangar-logistics</td><td>63.072</td><td>131.512</td><td>-35.512</td><td>-59.512</td><td>defer-optimize-first</td></tr>
+<tr><td>Conveyor processing machine</td><td>production-logistics</td><td>36.4</td><td>104.839</td><td>-8.839</td><td>-32.839</td><td>defer-optimize-first</td></tr>
+<tr><td>Operator console chair cluster</td><td>control-support</td><td>35.87</td><td>104.31</td><td>-8.31</td><td>-32.31</td><td>defer-optimize-first</td></tr>
+<tr><td>Control window spine module</td><td>control-support</td><td>0.165</td><td>68.605</td><td>27.395</td><td>3.395</td><td>selected-next-placement-proof</td></tr>
+<tr><td>Glazed command room wall module</td><td>command-support</td><td>0.247</td><td>68.686</td><td>27.314</td><td>3.314</td><td>eligible-backup</td></tr>
+<tr><td>Sealed monitor wall command bay</td><td>control-support</td><td>0.441</td><td>68.881</td><td>27.119</td><td>3.119</td><td>eligible-backup</td></tr></tbody>
+  </table>
+  <img src="./2026-05-23-meshy-108-support-logistics-candidate-gate-after-fabrication-arm-audit-board.png" alt="support logistics candidate gate proof board">
+</main>
+<script>
+async function inspectSelectedGlb() {
+  const status = document.getElementById('glb-status');
+  const response = await fetch('../../assets/meshy/api/21-control-window-spine-module.meshy.glb');
+  if (!response.ok) throw new Error('HTTP ' + response.status);
+  const buffer = await response.arrayBuffer();
+  const view = new DataView(buffer);
+  const magic = String.fromCharCode(...new Uint8Array(buffer.slice(0, 4)));
+  const version = view.getUint32(4, true);
+  const length = view.getUint32(8, true);
+  status.textContent = magic === 'glTF' && version === 2 && length === buffer.byteLength
+    ? 'selected-glb-ok ' + buffer.byteLength + ' bytes'
+    : 'selected-glb-fail magic=' + magic + ' version=' + version + ' length=' + length + ' actual=' + buffer.byteLength;
+}
+inspectSelectedGlb().catch((error) => {
+  document.getElementById('glb-status').textContent = 'selected-glb-error ' + error.message;
+});
+</script>
+</html>

@@ -1,0 +1,53 @@
+{
+  "id": "proof-goal-5-lower-panel-scope-pass",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-lower-panel-scope-pass",
+  "createdAt": "2026-05-21T23:51:00.000Z",
+  "scope": "Goal 5 overlay-only command-table overview at ?overlay=1&console=overview",
+  "gap": "The central command-table read was selected-goal scoped, but lower panels could still visually prioritize global state over the selected Goal 5 lane.",
+  "changes": [
+    "Scoped lower work, gate, signal, and proof panels to the selected command-table goal before fallback.",
+    "Rendered clear selected-lane states for work and review gates when no Goal 5 pressure is open.",
+    "Kept all lower panel content read-only and state-backed with no backend action controls."
+  ],
+  "artifacts": {
+    "mobileScreenshot": "docs/visual-reviews/2026-05-21-goal-5-lower-panel-scope-pass-mobile.png",
+    "desktopScreenshot": "docs/visual-reviews/2026-05-21-goal-5-lower-panel-scope-pass-desktop.png",
+    "domSmoke": "tmp/goal-5-lower-panel-scope-pass-dom.html"
+  },
+  "screenshotQa": {
+    "mobile": {
+      "width": 390,
+      "height": 1500,
+      "nonblank": true,
+      "selectedLowerPanelsReadable": true,
+      "keyControlsVisible": true,
+      "noIncoherentOverlap": true
+    },
+    "desktop": {
+      "width": 1440,
+      "height": 1100,
+      "captured": true
+    }
+  },
+  "smokeMarkers": [
+    "Command Table Core",
+    "Selected Lane Work",
+    "Selected Lane Gates",
+    "Selected Lane Signals",
+    "Selected Lane Proof",
+    "Goal 5 review gate clear",
+    "Goal 5 queue/gate priority pass proof",
+    ".command-center-work-row.is-clear"
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "Headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM/CSS smoke for selected-lane lower panel markers",
+    "Mobile screenshot QA"
+  ],
+  "blocked": false,
+  "nextStep": "Tighten mobile bottom navigation spacing so the selected-lane command table has no peripheral truncation at narrow widths."
+}

@@ -1,0 +1,177 @@
+{
+  "candidate": "meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof",
+  "gapPicked": "place optimized tight console room command bay proxy and prove contact/runtime",
+  "createdAt": "2026-05-22T22:03:21Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "sourceSceneBlend": "assets/blender/meshy-108-embedded-ops-wall-bunker-placement-contact-proof.blend",
+  "sourceSceneGlb": "assets/blender/meshy-108-embedded-ops-wall-bunker-placement-contact-proof.glb",
+  "proxySourceGlb": "assets/blender/meshy-108-tight-console-room-command-bay-optimization-proxy.glb",
+  "proxyMetrics": "docs/visual-reviews/2026-05-22-meshy-108-tight-console-room-command-bay-optimization-proxy.json",
+  "outBlend": "assets/blender/meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof.blend",
+  "outGlb": "assets/blender/meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof.glb",
+  "placement": {
+    "role": "control-support",
+    "label": "Tight console room command bay proxy",
+    "zone": "lower command/control support strip",
+    "location": [
+      -1.46,
+      1.66,
+      0.98
+    ],
+    "rotationZDegrees": -11,
+    "targetMaxDimension": 0.44,
+    "importedMeshCount": 7
+  },
+  "contactAudit": {
+    "pad": "tight console proxy virtual contact pad",
+    "assetBounds": {
+      "min": [
+        -1.6844,
+        1.5359,
+        0.8583
+      ],
+      "max": [
+        -1.2313,
+        1.7906,
+        1.1017
+      ],
+      "dimensions": [
+        0.4531,
+        0.2547,
+        0.2435
+      ]
+    },
+    "padBounds": {
+      "min": [
+        -1.6599,
+        1.5345,
+        0.8303
+      ],
+      "max": [
+        -1.2601,
+        1.7855,
+        0.8583
+      ],
+      "dimensions": [
+        0.3997,
+        0.2509,
+        0.028
+      ]
+    },
+    "verticalGapAssetMinToPadTop": 0.0,
+    "xyOverlapRatio": 0.9946,
+    "status": "accepted-contact-range",
+    "runtimeExportHelpersRemoved": true
+  },
+  "acceptedContactCount": 1,
+  "needsReviewCount": 0,
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 75012152,
+    "sourceSceneMB": 71.537,
+    "proxyBytes": 12228,
+    "proxyMB": 0.012,
+    "outputBytes": 71046076,
+    "outputMB": 67.755,
+    "incrementBytes": -3966076,
+    "incrementMB": -3.782,
+    "allowedFuturePlacementIncrementBytes": 485320,
+    "allowedFuturePlacementIncrementMB": 0.463,
+    "incrementWithinAllowed": true,
+    "remainingBytes": 29617220,
+    "remainingMB": 28.245,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "nextIncrementHeadroomPass": true,
+    "nextIncrementGuardMarginBytes": 4451396,
+    "nextIncrementGuardMarginMB": 4.245,
+    "status": "pass"
+  },
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-embedded-ops-wall-bunker-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 75012152,
+    "mb": 71.537,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 427,
+    "meshCount": 399,
+    "materialCount": 61,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1247,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "proxyInspection": {
+    "path": "assets/blender/meshy-108-tight-console-room-command-bay-optimization-proxy.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 12228,
+    "mb": 0.012,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 7,
+    "meshCount": 7,
+    "materialCount": 5,
+    "textureCount": 0,
+    "imageCount": 0,
+    "accessorCount": 22,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "placementGlbInspection": {
+    "path": "assets/blender/meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 71046076,
+    "mb": 67.755,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 395,
+    "meshCount": 366,
+    "materialCount": 59,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1116,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof/2026-05-22-meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof-top.png",
+    "front": "docs/visual-reviews/meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof/2026-05-22-meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof/2026-05-22-meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof/2026-05-22-meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof-detail.png"
+  },
+  "decision": "tight-console-room-command-bay-proxy-placement-contact-passed",
+  "nextStep": "run a Meshy-108 density/runtime audit after proxy placement before adding another asset",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-22-meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof.md",
+    "docs/visual-reviews/2026-05-22-meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof.json",
+    "docs/visual-reviews/2026-05-22-meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof-board.png",
+    "docs/visual-reviews/2026-05-22-meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof-viewer.html",
+    "docs/visual-reviews/2026-05-22-meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-tight-console-room-command-bay-proxy-placement-contact-proof"
+  ]
+}

@@ -1,0 +1,246 @@
+{
+  "candidate": "meshy-108-light-support-signal-detail-selection",
+  "gapPicked": "select next light/medium Meshy-108 support or signal detail asset before placement",
+  "createdAt": "2026-05-21T17:41:22Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "currentScene": {
+    "path": "assets/blender/meshy-108-gantry-proxy-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 51379860,
+    "mb": 49.0,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 336,
+    "meshCount": 313,
+    "materialCount": 29,
+    "textureCount": 2,
+    "imageCount": 2,
+    "accessorCount": 968,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "runtimeBudget": {
+    "sceneBudgetBytes": 100663296,
+    "sceneBudgetMB": 96.0,
+    "currentSceneBytes": 51379860,
+    "currentSceneMB": 49.0,
+    "directMediumIncrementBytes": 36700160,
+    "directMediumIncrementMB": 35.0
+  },
+  "compositionAuditSource": "meshy-108-facility-composition-runtime-budget-audit",
+  "alreadyPlacedSignalDetails": [
+    {
+      "path": "assets/meshy/api/24-communications-dish-mast.meshy.glb",
+      "reason": "locked pass-1 signal mast"
+    },
+    {
+      "path": "assets/meshy/api/27-radar-satellite-tower-v2.meshy.glb",
+      "reason": "installed in density pass 2"
+    }
+  ],
+  "unusedExactLightMediumSupportSignalCandidates": [],
+  "candidates": [
+    {
+      "path": "assets/meshy/api/11-cable-pipe-duct-wall-insert.meshy.glb",
+      "role": "support-utility",
+      "label": "Cable / pipe duct wall insert",
+      "value": "adds believable infrastructure detail without another hero-scale production/power prop",
+      "fit": "right/rear utility wall or lower service spine after contact proof",
+      "inspection": {
+        "path": "assets/meshy/api/11-cable-pipe-duct-wall-insert.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 18744120,
+        "mb": 17.88,
+        "asset": {
+          "generator": "pygltflib@v1.16.5",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 1,
+        "textureCount": 1,
+        "imageCount": 1,
+        "accessorCount": 4,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "inventoryStatus": "promote-density-pass2",
+      "inventoryTier": "heavy",
+      "directClass": "direct-medium",
+      "projectedSceneBytes": 70123980,
+      "projectedSceneMB": 66.88,
+      "remainingAfterDirectBytes": 30539316,
+      "remainingAfterDirectMB": 29.12,
+      "decision": "selected-next-placement-proof",
+      "reason": "lowest-cost unplaced support utility detail; gives infrastructure read while staying inside the 96 MB scene guard"
+    },
+    {
+      "path": "assets/meshy/api/12-maintenance-drone.meshy.glb",
+      "role": "support",
+      "label": "Maintenance drone",
+      "value": "clear support role, but weaker static facility read per MB than the duct insert",
+      "fit": "service pocket or bay-adjacent maintenance perch after scale proof",
+      "inspection": {
+        "path": "assets/meshy/api/12-maintenance-drone.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 22705608,
+        "mb": 21.65,
+        "asset": {
+          "generator": "pygltflib@v1.16.5",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 1,
+        "textureCount": 1,
+        "imageCount": 1,
+        "accessorCount": 4,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "inventoryStatus": "promote-density-pass2",
+      "inventoryTier": "heavy",
+      "directClass": "direct-medium",
+      "projectedSceneBytes": 74085468,
+      "projectedSceneMB": 70.65,
+      "remainingAfterDirectBytes": 26577828,
+      "remainingAfterDirectMB": 25.35,
+      "decision": "eligible-backup",
+      "reason": "within direct placement budget, but lower scene-value-per-MB than the selected duct insert"
+    },
+    {
+      "path": "assets/meshy/api/08-operator-console-chair-cluster.meshy.glb",
+      "role": "control-support",
+      "label": "Operator console chair cluster",
+      "value": "usable control detail, but direct source is just over the increment guard",
+      "fit": "command interior only after proxy/decimation",
+      "inspection": {
+        "path": "assets/meshy/api/08-operator-console-chair-cluster.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 37612664,
+        "mb": 35.87,
+        "asset": {
+          "generator": "pygltflib@v1.16.5",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 1,
+        "textureCount": 1,
+        "imageCount": 1,
+        "accessorCount": 4,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "inventoryStatus": "promote-density-pass2",
+      "inventoryTier": "heavy",
+      "directClass": "proxy-preferred",
+      "projectedSceneBytes": 88992524,
+      "projectedSceneMB": 84.87,
+      "remainingAfterDirectBytes": 11670772,
+      "remainingAfterDirectMB": 11.13,
+      "decision": "proxy-before-placement",
+      "reason": "projected scene stays under 96 MB, but source exceeds the direct-medium increment guard"
+    },
+    {
+      "path": "assets/meshy/api/13-cargo-tool-pod.meshy.glb",
+      "role": "logistics-support",
+      "label": "Cargo tool pod",
+      "value": "large logistics detail, too expensive for this light/medium gate",
+      "fit": "defer or proxy before any placement test",
+      "inspection": {
+        "path": "assets/meshy/api/13-cargo-tool-pod.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 59709384,
+        "mb": 56.94,
+        "asset": {
+          "generator": "pygltflib@v1.16.5",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 1,
+        "textureCount": 1,
+        "imageCount": 1,
+        "accessorCount": 4,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "inventoryStatus": "promote-density-pass2",
+      "inventoryTier": "heavy",
+      "directClass": "defer-optimize-first",
+      "projectedSceneBytes": 111089244,
+      "projectedSceneMB": 105.94,
+      "remainingAfterDirectBytes": -10425948,
+      "remainingAfterDirectMB": 0.0,
+      "decision": "defer-optimize-first",
+      "reason": "direct placement would break the 96 MB scene guard"
+    }
+  ],
+  "selectedCandidate": {
+    "path": "assets/meshy/api/11-cable-pipe-duct-wall-insert.meshy.glb",
+    "role": "support-utility",
+    "label": "Cable / pipe duct wall insert",
+    "value": "adds believable infrastructure detail without another hero-scale production/power prop",
+    "fit": "right/rear utility wall or lower service spine after contact proof",
+    "inspection": {
+      "path": "assets/meshy/api/11-cable-pipe-duct-wall-insert.meshy.glb",
+      "exists": true,
+      "validGlbHeader": true,
+      "version": 2,
+      "totalLength": 18744120,
+      "mb": 17.88,
+      "asset": {
+        "generator": "pygltflib@v1.16.5",
+        "version": "2.0"
+      },
+      "sceneCount": 1,
+      "nodeCount": 1,
+      "meshCount": 1,
+      "materialCount": 1,
+      "textureCount": 1,
+      "imageCount": 1,
+      "accessorCount": 4,
+      "animationCount": 0,
+      "extensionsUsed": []
+    },
+    "inventoryStatus": "promote-density-pass2",
+    "inventoryTier": "heavy",
+    "directClass": "direct-medium",
+    "projectedSceneBytes": 70123980,
+    "projectedSceneMB": 66.88,
+    "remainingAfterDirectBytes": 30539316,
+    "remainingAfterDirectMB": 29.12,
+    "decision": "selected-next-placement-proof",
+    "reason": "lowest-cost unplaced support utility detail; gives infrastructure read while staying inside the 96 MB scene guard"
+  },
+  "decision": "selected-support-utility-detail-for-placement-proof",
+  "nextStep": "place the selected cable/pipe duct wall insert in Meshy-108 and prove contact/clearance before any more production/power heavy assets",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-meshy-108-light-support-signal-detail-selection.md",
+    "docs/visual-reviews/2026-05-21-meshy-108-light-support-signal-detail-selection.json",
+    "docs/visual-reviews/2026-05-21-meshy-108-light-support-signal-detail-selection-board.png",
+    "docs/visual-reviews/2026-05-21-meshy-108-light-support-signal-detail-selection-viewer.html",
+    "docs/visual-reviews/2026-05-21-meshy-108-light-support-signal-detail-selection-browser-smoke.png"
+  ]
+}

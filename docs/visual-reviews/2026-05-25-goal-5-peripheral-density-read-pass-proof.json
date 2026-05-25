@@ -1,0 +1,27 @@
+{
+  "id": "visual-review-goal-5-peripheral-density-read-pass-20260525",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-peripheral-density-read-pass",
+  "artifactId": "artifact-goal-5-peripheral-density-read-pass",
+  "createdAt": "2026-05-25T10:32:00.000Z",
+  "surface": "?overlay=1&console=overview",
+  "selectedGap": "Tighten the peripheral density read around the Command Table Core using selected-goal tasks, reviews, agents, artifacts, and events only.",
+  "verdict": "partial-match-improved",
+  "referenceComplete": false,
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-25-goal-5-peripheral-density-read-pass-proof.md",
+    "docs/visual-reviews/2026-05-25-goal-5-peripheral-density-read-pass-proof.json",
+    "docs/visual-reviews/2026-05-25-goal-5-peripheral-density-read-pass-desktop.png",
+    "docs/visual-reviews/2026-05-25-goal-5-peripheral-density-read-pass-mobile.png",
+    "tmp/goal-5-peripheral-density-read-pass-dom.html"
+  ],
+  "domSmokeMarkers": [
+    "reference-scale-peripheral-density-read-band",
+    "State-backed peripheral density read tightener",
+    "density read",
+    "agent pressure",
+    "proof spread",
+    "table tether"
+  ],
+  "nextStep": "Capture a fresh side-by-side reference proof after the peripheral density read pass."
+}

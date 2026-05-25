@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Meshy-108 Facility Support Candidate Gate After Portal Audit</title>
+<style>
+  body { margin: 0; background: #071016; color: #e8f7f4; font: 16px/1.45 system-ui, sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 32px; }
+  h1 { font-size: 28px; margin: 0 0 8px; }
+  .summary { color: #8bdde0; margin-bottom: 18px; }
+  .status { padding: 12px 14px; border: 1px solid #28525a; background: #0d1a22; margin-bottom: 22px; }
+  table { width: 100%; border-collapse: collapse; background: #0d1a22; border: 1px solid #24434a; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid #1f343b; vertical-align: top; }
+  th { color: #90f3ff; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  img { width: 100%; margin-top: 24px; border: 1px solid #24434a; background: #05080b; }
+  code { color: #ffd166; }
+</style>
+<main>
+  <h1>Meshy-108 Facility Support Candidate Gate After Portal Audit</h1>
+  <div class="summary">Selected <code>assets/meshy/api/65-embedded-ops-window-wall-bunker.meshy.glb</code>; direct projection <code>71.036 MB</code>; decision <code>selected-next-placement-proof</code>; no Meshy spend.</div>
+  <div id="glb-status" class="status">selected-glb-pending</div>
+  <table>
+    <thead><tr><th>Candidate</th><th>Role</th><th>Source MB</th><th>Projected MB</th><th>Remaining MB</th><th>Decision</th><th>Reason</th></tr></thead>
+    <tbody><tr><td>Hangar loading bay frame</td><td>hangar-logistics</td><td>63.072</td><td>133.841</td><td>-37.841</td><td>defer-optimize-first</td><td>direct placement exceeds the 96 MB scene guard</td></tr>
+<tr><td>Operator console chair cluster</td><td>control-support</td><td>35.87</td><td>106.639</td><td>-10.639</td><td>defer-optimize-first</td><td>direct placement exceeds the 96 MB scene guard</td></tr>
+<tr><td>Embedded ops window wall bunker</td><td>control-support</td><td>0.267</td><td>71.036</td><td>24.964</td><td>selected-next-placement-proof</td><td>best remaining facility support detail that preserves the next-increment guard</td></tr>
+<tr><td>Embedded control bay room insert</td><td>command-support</td><td>0.216</td><td>70.985</td><td>25.015</td><td>eligible-backup</td><td>direct placement is viable, but role value is lower than the selected ops wall bunker</td></tr></tbody>
+  </table>
+  <img src="./2026-05-22-meshy-108-facility-support-candidate-gate-after-portal-audit-board.png" alt="facility support candidate gate proof board">
+</main>
+<script>
+async function inspectSelectedGlb() {
+  const status = document.getElementById('glb-status');
+  const response = await fetch('../../assets/meshy/api/65-embedded-ops-window-wall-bunker.meshy.glb');
+  if (!response.ok) throw new Error('HTTP ' + response.status);
+  const buffer = await response.arrayBuffer();
+  const view = new DataView(buffer);
+  const magic = String.fromCharCode(...new Uint8Array(buffer.slice(0, 4)));
+  const version = view.getUint32(4, true);
+  const length = view.getUint32(8, true);
+  if (magic === 'glTF' && version === 2 && length === buffer.byteLength) {
+    status.textContent = 'selected-glb-ok ' + buffer.byteLength + ' bytes';
+  } else {
+    status.textContent = 'selected-glb-fail magic=' + magic + ' version=' + version + ' length=' + length + ' actual=' + buffer.byteLength;
+  }
+}
+inspectSelectedGlb().catch((error) => {
+  document.getElementById('glb-status').textContent = 'selected-glb-error ' + error.message;
+});
+</script>
+</html>

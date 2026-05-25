@@ -1,0 +1,32 @@
+{
+  "id": "visual-review-goal-5-command-lens-detail-panels-20260521",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-command-lens-detail-panels",
+  "artifactId": "artifact-goal-5-command-lens-detail-panels",
+  "createdAt": "2026-05-21T13:21:00.000Z",
+  "routes": [
+    "?overlay=1&console=overview",
+    "?overlay=1&console=tasks"
+  ],
+  "decision": "command-lens-detail-panels-improved-not-reference-complete",
+  "pickedGap": "Overview drill-down targets still looked like generic console cards.",
+  "change": "Added shared state-backed command-lens headers to the Mission Map, Task Board, Review Queue, and Telemetry target panels.",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-goal-5-command-lens-detail-panels-proof.md",
+    "docs/visual-reviews/2026-05-21-goal-5-command-lens-detail-panels-proof.json",
+    "docs/visual-reviews/2026-05-21-goal-5-command-lens-detail-panels-overview.png",
+    "docs/visual-reviews/2026-05-21-goal-5-command-lens-detail-panels-tasks.png",
+    "docs/visual-reviews/2026-05-21-goal-5-command-lens-detail-panels-mobile.png",
+    "tmp/goal-5-command-lens-detail-panels-dom.html"
+  ],
+  "criteria": [
+    "Overview overlay route still renders",
+    "Task drill-down route renders the command-lens header",
+    "Lens data is state-backed from goals, tasks, reviews, events, artifacts, and telemetry",
+    "No fake backend action is introduced",
+    "Desktop and mobile screenshots are nonblank",
+    "DOM smoke assertions pass"
+  ],
+  "isDemo": false
+}

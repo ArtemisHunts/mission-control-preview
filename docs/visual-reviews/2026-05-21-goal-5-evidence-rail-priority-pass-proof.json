@@ -1,0 +1,52 @@
+{
+  "id": "proof-goal-5-evidence-rail-priority-pass",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-evidence-rail-priority-pass",
+  "createdAt": "2026-05-21T20:51:00.000Z",
+  "scope": "Goal 5 overlay-only command-table overview at ?overlay=1&console=overview",
+  "gap": "The proof/status rail existed, but the strongest proof line could lose priority on narrow mobile screens and the rail could be overtaken by non-selected latest state.",
+  "changes": [
+    "Scoped proof/event counts to the selected command-table goal before falling back to global state.",
+    "Promoted the latest selected-goal proof row with an is-primary state for extra height and two-line title space.",
+    "Kept the rail read-only with no backend action affordances."
+  ],
+  "artifacts": {
+    "mobileScreenshot": "docs/visual-reviews/2026-05-21-goal-5-evidence-rail-priority-pass-mobile.png",
+    "desktopScreenshot": "docs/visual-reviews/2026-05-21-goal-5-evidence-rail-priority-pass-desktop.png",
+    "domSmoke": "tmp/goal-5-evidence-rail-priority-pass-dom.html"
+  },
+  "screenshotQa": {
+    "mobile": {
+      "width": 390,
+      "height": 1200,
+      "nonblank": true,
+      "primaryProofRowReadable": true,
+      "keyControlsVisible": true,
+      "noIncoherentOverlap": true
+    },
+    "desktop": {
+      "width": 1440,
+      "height": 1100,
+      "captured": true
+    }
+  },
+  "smokeMarkers": [
+    "Command Table Core",
+    "proof/status rail",
+    "Goal 5 proof count rendered",
+    "reference-scale-evidence-row tone-green is-primary",
+    "Open proof drill-down panel",
+    ".reference-scale-evidence-row.is-primary",
+    "-webkit-line-clamp: 2"
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "Headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM/CSS smoke for Goal 5 evidence priority markers",
+    "Mobile screenshot QA"
+  ],
+  "blocked": false,
+  "nextStep": "Tune the overview queue/gate bands so they use the same selected-goal scoping and mobile priority behavior as the proof rail."
+}

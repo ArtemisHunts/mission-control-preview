@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Goal 5 Next Weak-Point Decision After Density Read</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --panel: rgba(5, 14, 26, 0.94);
+      --cyan: #59f1ff;
+      --gold: #e6a93a;
+      --green: #74d99a;
+      --violet: #9d7cff;
+      --ink: rgba(246, 248, 255, 0.94);
+      --muted: rgba(231, 239, 255, 0.72);
+      --line: rgba(89, 241, 255, 0.2);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 18% 14%, rgba(89, 241, 255, 0.16), transparent 30%),
+        radial-gradient(circle at 82% 18%, rgba(157, 124, 255, 0.14), transparent 29%),
+        linear-gradient(180deg, rgba(3, 8, 18, 0.96), #01040a 72%);
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main { display: grid; gap: 16px; width: min(1880px, 100vw); margin: 0 auto; padding: 22px; }
+    header { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: end; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+    h1, h2, p { margin: 0; }
+    h1 { max-width: 1180px; font-size: 30px; line-height: 1.05; letter-spacing: 0; }
+    code { color: var(--cyan); }
+    .kicker, .stamp, .card span, .metric span, .tag { color: var(--gold); font-size: 11px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
+    .stamp { justify-self: end; padding: 10px 12px; border: 1px solid rgba(230, 169, 58, 0.25); border-radius: 8px; background: rgba(230, 169, 58, 0.08); text-align: right; }
+    .comparison { display: grid; grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.04fr) minmax(0, 1.04fr) minmax(0, 0.64fr); gap: 16px; align-items: stretch; }
+    .frame, .card, .metric { border: 1px solid var(--line); border-radius: 8px; background: var(--panel); box-shadow: inset 0 0 0 1px rgba(246, 248, 255, 0.035), 0 18px 60px rgba(0, 0, 0, 0.32); }
+    .frame { display: grid; gap: 10px; align-content: start; padding: 12px; }
+    .frame h2 { color: var(--cyan); font-size: 15px; line-height: 1.2; letter-spacing: 0; }
+    .frame p, .card p, .metric p { color: var(--muted); line-height: 1.32; }
+    .frame p, .metric p { font-size: 12px; }
+    img { display: block; width: 100%; border-radius: 8px; border: 1px solid rgba(89, 241, 255, 0.18); background: rgba(0, 0, 0, 0.38); }
+    .mobile-frame img { max-height: 980px; object-fit: cover; object-position: top; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { padding: 5px 7px; border: 1px solid rgba(230, 169, 58, 0.28); border-radius: 999px; background: rgba(230, 169, 58, 0.08); }
+    .matrix { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .card { display: grid; align-content: start; gap: 7px; min-height: 150px; padding: 12px; }
+    .card strong { font-size: 18px; line-height: 1.1; }
+    .card p { font-size: 12px; }
+    .card.selected { border-color: rgba(116, 217, 154, 0.42); background: linear-gradient(180deg, rgba(116, 217, 154, 0.11), rgba(5, 14, 26, 0.94)); }
+    .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .metric { display: grid; gap: 5px; padding: 12px; }
+    .metric strong { font-size: 18px; line-height: 1.1; }
+    .metric.pass { border-color: rgba(116, 217, 154, 0.28); }
+    .metric.warn { border-color: rgba(230, 169, 58, 0.28); }
+    .metric.next { border-color: rgba(157, 124, 255, 0.3); }
+    @media (max-width: 1180px) {
+      main { padding: 12px; }
+      header, .comparison, .matrix, .metrics { grid-template-columns: 1fr; }
+      .stamp { justify-self: start; text-align: left; }
+      .mobile-frame img { max-height: none; object-fit: contain; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="kicker">Goal 5 / Holo-table overlay</p>
+        <h1>Goal 5 Next Weak-Point Decision After Density Read</h1>
+      </div>
+      <div class="stamp">2026-05-25 13:32 UTC<br>Partial match, not complete</div>
+    </header>
+    <section class="comparison" aria-label="Reference, latest proof, current overview, and mobile comparison">
+      <article class="frame">
+        <h2>Reference direction</h2>
+        <p>Holographic command-table moodboard: motif lines and glow language should support the table, not compete with it.</p>
+        <img src="../moodboards/holographic-ui.png" alt="Holographic command-table reference moodboard">
+      </article>
+      <article class="frame">
+        <h2>Latest density-read proof board</h2>
+        <p>The latest board closed the density-read proof step and left a choice between table hierarchy, motif contrast, and peripheral density.</p>
+        <img src="2026-05-25-goal-5-peripheral-density-read-side-by-side-board.png" alt="Goal 5 peripheral density read side-by-side proof board">
+      </article>
+      <article class="frame">
+        <h2>Fresh overview after density proof</h2>
+        <p>Fresh overlay-only capture from <code>?overlay=1&amp;console=overview</code>. The next gap is visual motif contrast around the denser Command Table Core.</p>
+        <div class="tags" aria-label="Decision markers">
+          <span class="tag">motif contrast selected next</span>
+          <span class="tag">density proof complete</span>
+          <span class="tag">table hierarchy recently proved</span>
+          <span class="tag">visual motif contrast</span>
+        </div>
+        <img src="2026-05-25-goal-5-next-weak-point-decision-after-density-read-current-desktop.png" alt="Current Mission Control holo-table overview screenshot after density-read proof">
+      </article>
+      <article class="frame mobile-frame">
+        <h2>Mobile decision stack</h2>
+        <p>Fresh mobile capture keeps the density-read stack readable while the next pass focuses on contrast restraint.</p>
+        <img src="2026-05-25-goal-5-next-weak-point-decision-after-density-read-current-mobile.png" alt="Current Mission Control mobile overview screenshot after density-read proof">
+      </article>
+    </section>
+    <section class="matrix" aria-label="Next weak-point decision matrix">
+      <article class="card"><span>Recently proved</span><strong>Table hierarchy</strong><p>Recent decision band and proof board already keep the Command Table Core as the first-read object.</p></article>
+      <article class="card"><span>Recently improved</span><strong>Peripheral density</strong><p>Density read now has a state-backed band and fresh side-by-side proof.</p></article>
+      <article class="card selected"><span>Selected next</span><strong>Motif contrast</strong><p>The denser table field needs sharper motif restraint so glow, linework, and proof chips stay subordinate to the table.</p></article>
+    </section>
+    <section class="metrics" aria-label="Proof verdict metrics">
+      <article class="metric pass"><span>Decision recorded</span><strong>Motif contrast selected next</strong><p>Decision is backed by the latest proof board plus fresh desktop/mobile overlay captures.</p></article>
+      <article class="metric warn"><span>Honest status</span><strong>Partial-match-improved</strong><p>No reference-complete claim. This only records the next weak-point selection.</p></article>
+      <article class="metric next"><span>Next holo-table step</span><strong>Tighten motif contrast</strong><p>Tighten visual motif contrast around the denser Command Table Core using selected-goal tasks, reviews, agents, telemetry, artifacts, and events only.</p></article>
+    </section>
+  </main>
+</body>
+</html>

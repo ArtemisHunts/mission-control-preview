@@ -1,0 +1,51 @@
+{
+  "id": "visual-review-goal-5-reference-visual-motif-rail-20260520",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-reference-visual-motif-rail",
+  "title": "Goal 5 reference visual motif rail pass",
+  "status": "completed",
+  "decision": "visual-motif-zone-improved-not-reference-complete",
+  "url": "http://127.0.0.1:4177/?overlay=1&console=overview",
+  "screenshots": {
+    "desktop": {
+      "path": "docs/visual-reviews/2026-05-20-goal-5-reference-visual-motif-rail-desktop.png",
+      "width": 1440,
+      "height": 1180,
+      "bytes": 855972
+    },
+    "mobile": {
+      "path": "docs/visual-reviews/2026-05-20-goal-5-reference-visual-motif-rail-mobile.png",
+      "width": 390,
+      "height": 980,
+      "bytes": 346456
+    }
+  },
+  "domSmoke": {
+    "path": "tmp/goal-5-reference-visual-motif-rail-dom.html",
+    "motifChips": 3,
+    "requiredText": [
+      "Reference visual motif calibration",
+      "Visual Motif Layer",
+      "Fine-line grid",
+      "Depth rings",
+      "Contrast rails",
+      "instrumentation",
+      "layered holo depth",
+      "command-room contrast",
+      "Reference visual motifs",
+      "partial match improved"
+    ],
+    "missingText": [],
+    "pass": true
+  },
+  "checks": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop screenshot",
+    "headless Chrome mobile screenshot",
+    "headless Chrome DOM smoke"
+  ],
+  "createdAt": "2026-05-20T10:21:00.000Z",
+  "isDemo": false
+}

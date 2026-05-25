@@ -1,0 +1,51 @@
+{
+  "id": "proof-goal-5-evidence-rail-scan-pass",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-evidence-rail-scan-pass",
+  "createdAt": "2026-05-21T19:21:00.000Z",
+  "scope": "Goal 5 overlay-only command-table overview at ?overlay=1&console=overview",
+  "gap": "State-backed proof, events, and review status were visible but not grouped into one compact command-table proof/status scan surface.",
+  "changes": [
+    "Added a read-only proof/status rail inside the central command-table core.",
+    "Surfaced latest artifact, latest event, and review-gate status from canonical state.",
+    "Kept the rail non-actionable; existing drill-down controls remain the only overview navigation affordances."
+  ],
+  "artifacts": {
+    "mobileScreenshot": "docs/visual-reviews/2026-05-21-goal-5-evidence-rail-scan-pass-mobile.png",
+    "desktopScreenshot": "docs/visual-reviews/2026-05-21-goal-5-evidence-rail-scan-pass-desktop.png",
+    "domSmoke": "tmp/goal-5-evidence-rail-scan-pass-dom.html"
+  },
+  "screenshotQa": {
+    "mobile": {
+      "width": 390,
+      "height": 1200,
+      "nonblank": true,
+      "keyControlsVisible": true,
+      "evidenceRailVisible": true,
+      "noIncoherentOverlap": true
+    },
+    "desktop": {
+      "width": 1440,
+      "height": 1100,
+      "captured": true
+    }
+  },
+  "smokeMarkers": [
+    "Command Table Core",
+    "proof/status rail",
+    "State-backed proof and status evidence rail",
+    "Open proof drill-down panel",
+    ".reference-scale-evidence-rail",
+    ".reference-scale-evidence-row"
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "Headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM/CSS smoke for evidence rail markers",
+    "Mobile screenshot QA"
+  ],
+  "blocked": false,
+  "nextStep": "Tighten the evidence rail truncation/priority rules so the most important proof line survives the narrowest mobile viewport."
+}

@@ -1,0 +1,38 @@
+{
+  "id": "visual-review-goal-5-next-weak-point-decision-after-motif-tightener-20260525",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-next-weak-point-decision-after-motif-tightener",
+  "artifactId": "artifact-goal-5-next-weak-point-decision-after-motif-tightener",
+  "createdAt": "2026-05-25T18:09:00.000Z",
+  "surface": "?overlay=1&console=overview",
+  "selectedGap": "Tighten table hierarchy around the motif-tightened Command Table Core using selected-goal tasks, reviews, artifacts, events, and reference-match state only.",
+  "verdict": "partial-match-improved",
+  "referenceComplete": false,
+  "decision": "table-hierarchy-selected-next-after-motif-tightener-proof",
+  "comparison": [
+    "Reference moodboard",
+    "Latest motif contrast tightener side-by-side board",
+    "Fresh desktop overview after motif-tightener proof",
+    "Fresh mobile overview after motif-tightener proof",
+    "Next weak-point decision matrix"
+  ],
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-25-goal-5-next-weak-point-decision-after-motif-tightener-proof.md",
+    "docs/visual-reviews/2026-05-25-goal-5-next-weak-point-decision-after-motif-tightener-proof.json",
+    "docs/visual-reviews/2026-05-25-goal-5-next-weak-point-decision-after-motif-tightener-proof.html",
+    "docs/visual-reviews/2026-05-25-goal-5-next-weak-point-decision-after-motif-tightener-board.png",
+    "docs/visual-reviews/2026-05-25-goal-5-next-weak-point-decision-after-motif-tightener-current-desktop.png",
+    "docs/visual-reviews/2026-05-25-goal-5-next-weak-point-decision-after-motif-tightener-current-mobile.png",
+    "tmp/goal-5-next-weak-point-decision-after-motif-tightener-overview-dom.html",
+    "tmp/goal-5-next-weak-point-decision-after-motif-tightener-board-dom.html"
+  ],
+  "domSmokeMarkers": [
+    "Goal 5 Next Weak-Point Decision After Motif Tightener",
+    "table hierarchy selected next",
+    "motif contrast just tightened",
+    "density proof already recorded",
+    "table hierarchy",
+    "partial-match-improved"
+  ],
+  "nextStep": "Tighten table hierarchy around the motif-tightened Command Table Core using selected-goal tasks, reviews, artifacts, events, and reference-match state only."
+}

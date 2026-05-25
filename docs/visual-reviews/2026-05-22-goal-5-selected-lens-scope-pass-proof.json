@@ -1,0 +1,69 @@
+{
+  "id": "proof-goal-5-selected-lens-scope-pass",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-selected-lens-scope-pass",
+  "createdAt": "2026-05-22T05:51:00.000Z",
+  "scope": "Goal 5 overlay-only command-table overview at ?overlay=1&console=overview",
+  "gap": "The selected-lane trail opened existing detail lenses, but Task, Review, and Telemetry summaries could still read like global state instead of selected Goal 5 lane state.",
+  "changes": [
+    "Preserved the selected Goal 5 lane before trail controls open a detail lens.",
+    "Scoped Task Board lens metrics and rows to selected-lane open, active, queued, blocked, and completed tasks.",
+    "Scoped Review Queue lens metrics and rows to selected-lane reviews and proof artifacts.",
+    "Scoped Telemetry lens metrics and rows to selected-lane events and artifacts while keeping one global state row for context.",
+    "Kept the flow read-only with no backend actions or fake state."
+  ],
+  "artifacts": {
+    "mobileScreenshot": "docs/visual-reviews/2026-05-22-goal-5-selected-lens-scope-pass-mobile.png",
+    "desktopScreenshot": "docs/visual-reviews/2026-05-22-goal-5-selected-lens-scope-pass-desktop.png",
+    "domSmoke": "tmp/goal-5-selected-lens-scope-pass-dom.html"
+  },
+  "interactionSmoke": {
+    "method": "Chrome DevTools Protocol",
+    "clicked": "Open task detail lens",
+    "assertions": {
+      "taskLensOpened": true,
+      "laneOpenMetricVisible": true,
+      "selectedLaneCompletionVisible": true,
+      "goal5SelectionPreserved": true
+    }
+  },
+  "screenshotQa": {
+    "mobile": {
+      "width": 390,
+      "height": 2400,
+      "nonblank": true,
+      "trailReadable": true,
+      "trailTappable": true,
+      "noClipping": true,
+      "noOverlap": true
+    },
+    "desktop": {
+      "width": 1440,
+      "height": 1200,
+      "captured": true
+    }
+  },
+  "smokeMarkers": [
+    "Selected Lane Trail",
+    "Open task detail lens",
+    "Open gate detail lens",
+    "Open proof detail lens",
+    "Goal 5 trail drill-down controls pass proof",
+    "selectedConsoleGoalId = activeGoal.id",
+    "lane open",
+    "lane evidence",
+    "lane signals",
+    "lane artifact"
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "Headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM/JS smoke for selected-lane lens-scope markers",
+    "Chrome DevTools click smoke from trail control to Task Board lens",
+    "Mobile screenshot QA"
+  ],
+  "blocked": false,
+  "nextStep": "Add compact selected-lane summaries inside the Review and Telemetry lens bodies so the drill-down destinations carry the same dense Goal 5 read."
+}

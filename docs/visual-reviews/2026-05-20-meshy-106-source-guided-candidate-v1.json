@@ -1,0 +1,85 @@
+{
+  "candidate": "meshy-106-source-guided-broken-cshell-asteroid-v1",
+  "task": {
+    "id": "019e46c1-ee99-7611-9171-8f83fa18395c",
+    "type": "multi-image-to-3d",
+    "status": "SUCCEEDED",
+    "progress": 100,
+    "consumed_credits": 20,
+    "created_at": 1779303578686,
+    "started_at": 1779303578700,
+    "finished_at": 1779303726683,
+    "hasGlbUrl": true,
+    "hasThumbnailUrl": true
+  },
+  "rawGlb": "assets/meshy/api/106-source-guided-broken-cshell-asteroid-v1.meshy.glb",
+  "blend": "assets/blender/meshy-106-source-guided-cshell-candidate-v1.blend",
+  "normalizedGlb": "assets/blender/meshy-106-source-guided-cshell-candidate-v1.glb",
+  "renders": {
+    "front": "docs/visual-reviews/meshy-106-source-guided-cshell-candidate-v1/2026-05-20-meshy-106-source-guided-candidate-front.png",
+    "top": "docs/visual-reviews/meshy-106-source-guided-cshell-candidate-v1/2026-05-20-meshy-106-source-guided-candidate-top.png",
+    "side": "docs/visual-reviews/meshy-106-source-guided-cshell-candidate-v1/2026-05-20-meshy-106-source-guided-candidate-side.png",
+    "oblique": "docs/visual-reviews/meshy-106-source-guided-cshell-candidate-v1/2026-05-20-meshy-106-source-guided-candidate-oblique.png"
+  },
+  "glbInspection": {
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 804744,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v4.3.47",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 1,
+    "meshCount": 1,
+    "materialCount": 0,
+    "textureCount": 0,
+    "imageCount": 0,
+    "animationCount": 0,
+    "extensionsUsed": []
+  },
+  "blenderInspection": {
+    "meshObjectCount": 1,
+    "meshDataCount": 1,
+    "vertexCount": 19739,
+    "polygonCount": 28668,
+    "boundsMin": [
+      -2,
+      -1.9996,
+      -1.7882
+    ],
+    "boundsMax": [
+      2,
+      1.9996,
+      1.7882
+    ],
+    "dimensions": [
+      4,
+      3.9991,
+      3.5764
+    ],
+    "materialSlots": 1
+  },
+  "acceptanceTargets": [
+    "broken C-shaped negative space",
+    "large missing quadrant/open mouth",
+    "thin torn rim rather than thick tube",
+    "deep empty no-floor cavity",
+    "natural fractured rock only; no building/machinery read"
+  ],
+  "decision": "failed visual acceptance; not accepted baseline",
+  "visualDecision": {
+    "status": "failed",
+    "reason": "Source-guided generation still collapsed into a mostly closed circular bowl/tube. The top-view C-shell negative space and missing quadrant did not survive into the generated mesh.",
+    "passed": [
+      "natural rock only; no buildings or machinery visible",
+      "valid GLB imported/exported cleanly through Blender"
+    ],
+    "failed": [
+      "unmistakable broken C-shell negative space",
+      "large missing quadrant/open mouth",
+      "thin torn rim",
+      "deep empty no-floor cavity"
+    ]
+  }
+}

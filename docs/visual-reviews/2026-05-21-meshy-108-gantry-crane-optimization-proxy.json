@@ -1,0 +1,111 @@
+{
+  "candidate": "meshy-108-gantry-crane-optimization-proxy",
+  "gapPicked": "create optimized Meshy-108 gantry crane proxy before placement",
+  "createdAt": "2026-05-21T13:07:13Z",
+  "noMeshySpend": true,
+  "sourceAsset": {
+    "path": "assets/meshy/api/04-gantry-crane.meshy.glb",
+    "role": "production",
+    "label": "Gantry crane",
+    "bounds": {
+      "min": [
+        -0.9508,
+        -0.4156,
+        -0.7816
+      ],
+      "max": [
+        0.9488,
+        0.4221,
+        0.7789
+      ],
+      "dimensions": [
+        1.8996,
+        0.8377,
+        1.5605
+      ]
+    },
+    "inspection": {
+      "path": "assets/meshy/api/04-gantry-crane.meshy.glb",
+      "exists": true,
+      "validGlbHeader": true,
+      "version": 2,
+      "totalLength": 42506964,
+      "asset": {
+        "generator": "pygltflib@v1.16.5",
+        "version": "2.0"
+      },
+      "sceneCount": 1,
+      "nodeCount": 1,
+      "meshCount": 1,
+      "materialCount": 1,
+      "textureCount": 1,
+      "imageCount": 1,
+      "accessorCount": 4,
+      "animationCount": 0,
+      "extensionsUsed": []
+    }
+  },
+  "proxyAsset": {
+    "blend": "assets/blender/meshy-108-gantry-crane-optimization-proxy.blend",
+    "glb": "assets/blender/meshy-108-gantry-crane-optimization-proxy.glb",
+    "targetMaxDimension": 1.65,
+    "bounds": {
+      "min": [
+        -0.7893,
+        -0.3851,
+        0.006
+      ],
+      "max": [
+        0.7893,
+        0.3851,
+        1.3829
+      ],
+      "dimensions": [
+        1.5785,
+        0.7702,
+        1.3769
+      ]
+    },
+    "inspection": {
+      "path": "assets/blender/meshy-108-gantry-crane-optimization-proxy.glb",
+      "exists": true,
+      "validGlbHeader": true,
+      "version": 2,
+      "totalLength": 330564,
+      "asset": {
+        "generator": "Khronos glTF Blender I/O v5.1.19",
+        "version": "2.0"
+      },
+      "sceneCount": 1,
+      "nodeCount": 22,
+      "meshCount": 22,
+      "materialCount": 5,
+      "textureCount": 0,
+      "imageCount": 0,
+      "accessorCount": 71,
+      "animationCount": 0,
+      "extensionsUsed": [
+        "KHR_materials_emissive_strength"
+      ]
+    },
+    "byteReductionPercent": 99.22,
+    "withinDirectPlacementIncrementBudget": true,
+    "proxyObjectCount": 20
+  },
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-gantry-crane-optimization-proxy/2026-05-21-meshy-108-gantry-crane-optimization-proxy-top.png",
+    "front": "docs/visual-reviews/meshy-108-gantry-crane-optimization-proxy/2026-05-21-meshy-108-gantry-crane-optimization-proxy-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-gantry-crane-optimization-proxy/2026-05-21-meshy-108-gantry-crane-optimization-proxy-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-gantry-crane-optimization-proxy/2026-05-21-meshy-108-gantry-crane-optimization-proxy-detail.png"
+  },
+  "decision": "proxy-passed-runtime-footprint-gate-not-yet-placed",
+  "nextStep": "place the optimized gantry proxy on Meshy-108 and run contact/browser proof",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-meshy-108-gantry-crane-optimization-proxy.md",
+    "docs/visual-reviews/2026-05-21-meshy-108-gantry-crane-optimization-proxy.json",
+    "docs/visual-reviews/2026-05-21-meshy-108-gantry-crane-optimization-proxy-board.png",
+    "docs/visual-reviews/2026-05-21-meshy-108-gantry-crane-optimization-proxy-viewer.html",
+    "docs/visual-reviews/2026-05-21-meshy-108-gantry-crane-optimization-proxy-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-gantry-crane-optimization-proxy"
+  ]
+}

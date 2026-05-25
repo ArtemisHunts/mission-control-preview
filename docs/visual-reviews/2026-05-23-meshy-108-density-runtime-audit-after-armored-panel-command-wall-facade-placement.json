@@ -1,0 +1,164 @@
+{
+  "candidate": "meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement",
+  "gapPicked": "audit Meshy-108 density/runtime after armored panel command wall facade placement",
+  "createdAt": "2026-05-24T01:04:15Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "noNewFacilityAssetPlaced": true,
+  "sourceSceneGlb": "assets/blender/meshy-108-armored-panel-command-wall-facade-placement-contact-proof.glb",
+  "auditBlend": "assets/blender/meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement.blend",
+  "auditGlb": "assets/blender/meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement.glb",
+  "sourcePlacementMetrics": "docs/visual-reviews/2026-05-23-meshy-108-armored-panel-command-wall-facade-placement-contact-proof.json",
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-armored-panel-command-wall-facade-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 72963752,
+    "mb": 69.584,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 421,
+    "meshCount": 387,
+    "materialCount": 70,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1180,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "auditGlbInspection": {
+    "path": "assets/blender/meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 73862556,
+    "mb": 70.441,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 438,
+    "meshCount": 404,
+    "materialCount": 76,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1239,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 72963752,
+    "sourceSceneMB": 69.584,
+    "sourceRemainingBytes": 27699544,
+    "sourceRemainingMB": 26.416,
+    "sourceUsagePercent": 72.48,
+    "auditGlbBytes": 73862556,
+    "auditGlbMB": 70.441,
+    "auditRemainingBytes": 26800740,
+    "auditRemainingMB": 25.559,
+    "auditUsagePercent": 73.38,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "nextIncrementGuardMarginBytes": 2533720,
+    "nextIncrementGuardMarginMB": 2.416,
+    "nextIncrementHeadroomPass": true,
+    "status": "pass-density-runtime-audit"
+  },
+  "contactAudit": {
+    "pad": "armored panel command wall facade support pad",
+    "assetBounds": {
+      "min": [
+        2.0005,
+        0.7623,
+        0.9498
+      ],
+      "max": [
+        2.3595,
+        0.9977,
+        1.0902
+      ],
+      "dimensions": [
+        0.3589,
+        0.2355,
+        0.1403
+      ]
+    },
+    "padBounds": {
+      "min": [
+        1.9863,
+        0.7177,
+        0.9258
+      ],
+      "max": [
+        2.3737,
+        1.0423,
+        0.9498
+      ],
+      "dimensions": [
+        0.3873,
+        0.3246,
+        0.024
+      ]
+    },
+    "verticalGapAssetMinToPadTop": 0.0,
+    "xyOverlapRatio": 1.0,
+    "status": "accepted-contact-range"
+  },
+  "densityStatus": "pass-with-tight-guard-next-asset-needs-small-direct-or-proxy-gate",
+  "facilityBounds": {
+    "min": [
+      -3.8818,
+      -3.0368,
+      -1.8656
+    ],
+    "max": [
+      3.2963,
+      3.1295,
+      2.1056
+    ],
+    "dimensions": [
+      7.178,
+      6.1663,
+      3.9712
+    ]
+  },
+  "markers": {
+    "openMouthClear": true,
+    "commandHeroVisible": true,
+    "productionGantryVisible": true,
+    "supportDuctVisible": true,
+    "fabricationArmVisible": true,
+    "armoredPanelCommandWallFacadeVisible": true,
+    "nextAssetGateNeeded": true
+  },
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement/2026-05-23-meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement-top.png",
+    "front": "docs/visual-reviews/meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement/2026-05-23-meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement/2026-05-23-meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement/2026-05-23-meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement-detail.png"
+  },
+  "decision": "passed-density-runtime-audit-after-armored-panel-command-wall-facade-placement",
+  "nextStep": "gate the next tiny support/control candidate before placement; use proxy/optimization for anything that risks the 24 MB next-increment guard",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement.md",
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement.json",
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement-board.png",
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement-viewer.html",
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement/2026-05-23-meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement-top.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement/2026-05-23-meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement-front.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement/2026-05-23-meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement-oblique.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement/2026-05-23-meshy-108-density-runtime-audit-after-armored-panel-command-wall-facade-placement-detail.png"
+  ]
+}

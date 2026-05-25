@@ -1,0 +1,65 @@
+{
+  "id": "visual-review-goal-5-telemetry-event-log-density-pass-20260522",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-telemetry-event-log-density-pass",
+  "artifactId": "artifact-goal-5-telemetry-event-log-density-pass",
+  "createdAt": "2026-05-22T13:21:00.000Z",
+  "decision": "telemetry-drilldown-density-improved",
+  "verdict": "partial-match-improved",
+  "scope": [
+    "Telemetry drill-down",
+    "Recent Events operator-log rows",
+    "Goal 5 overlay-focus drill-down scoping",
+    "overlay-only preview at ?overlay=1&console=overview"
+  ],
+  "pickedGap": "The Telemetry drill-down still rendered recent events as plain list rows after the Review Queue chip-row pass.",
+  "changes": [
+    "Added addTelemetryEventRows() for compact read-only event-log rows.",
+    "Recent Events rows expose type, goal, task, proof count, and date as chips.",
+    "Added eventTone() so artifact/task/goal/review events carry compact visual priority.",
+    "Scoped overlay-focus drill-down URLs to Goal 5 unless an explicit goal query is provided."
+  ],
+  "screenshots": {
+    "mobileOverview": {
+      "path": "docs/visual-reviews/2026-05-22-goal-5-telemetry-event-log-density-pass-overview-mobile.png",
+      "viewport": "390x5600",
+      "status": "captured"
+    },
+    "desktopOverview": {
+      "path": "docs/visual-reviews/2026-05-22-goal-5-telemetry-event-log-density-pass-overview-desktop.png",
+      "viewport": "1440x1400",
+      "status": "captured"
+    },
+    "mobileTelemetry": {
+      "path": "docs/visual-reviews/2026-05-22-goal-5-telemetry-event-log-density-pass-telemetry-mobile.png",
+      "viewport": "390x6200",
+      "status": "captured"
+    }
+  },
+  "domSmoke": {
+    "overviewPath": "tmp/goal-5-telemetry-event-log-density-pass-overview-dom.html",
+    "telemetryPath": "tmp/goal-5-telemetry-event-log-density-pass-telemetry-dom.html",
+    "markers": [
+      "Command Table Core",
+      "Selected Lane Trail",
+      "Telemetry Proof Drill-Down",
+      "Command Center Design + Ops Surface",
+      "telemetry-event-row",
+      "telemetry-event-chip",
+      "<b>type</b>",
+      "<b>proof</b>"
+    ],
+    "status": "pass"
+  },
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "headless Chrome Telemetry screenshot for ?overlay=1&console=telemetry",
+    "DOM smoke for overview and Telemetry event-log markers",
+    "screenshot sanity: PASS - nonblank overview and Telemetry captures"
+  ],
+  "blocked": false,
+  "nextGoal5Step": "Capture a fresh side-by-side reference proof after the Telemetry event-log density pass before claiming stronger reference-match progress."
+}

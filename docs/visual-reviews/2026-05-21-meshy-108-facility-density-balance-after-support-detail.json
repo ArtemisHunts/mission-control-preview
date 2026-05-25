@@ -1,0 +1,113 @@
+{
+  "candidate": "meshy-108-facility-density-balance-after-support-detail",
+  "gapPicked": "audit Meshy-108 facility density balance after support utility detail placement",
+  "createdAt": "2026-05-21T20:31:46Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "sourceSceneBlend": "assets/blender/meshy-108-support-utility-detail-placement-contact-proof.blend",
+  "sourceSceneGlb": "assets/blender/meshy-108-support-utility-detail-placement-contact-proof.glb",
+  "sourcePlacementMetrics": "docs/visual-reviews/2026-05-21-meshy-108-support-utility-detail-placement-contact-proof.json",
+  "auditBlend": "assets/blender/meshy-108-facility-density-balance-after-support-detail.blend",
+  "auditGlb": "assets/blender/meshy-108-facility-density-balance-after-support-detail.glb",
+  "sceneBounds": {
+    "min": [
+      -3.8818,
+      -3.0368,
+      -1.8656
+    ],
+    "max": [
+      3.2963,
+      3.0966,
+      2.1056
+    ],
+    "dimensions": [
+      7.178,
+      6.1334,
+      3.9712
+    ]
+  },
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-support-utility-detail-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 70895848,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 345,
+    "meshCount": 321,
+    "materialCount": 35,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 996,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "auditGlbInspection": {
+    "path": "assets/blender/meshy-108-facility-density-balance-after-support-detail.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 71591320,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 357,
+    "meshCount": 333,
+    "materialCount": 40,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1037,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "currentBytes": 70895848,
+    "currentMB": 67.612,
+    "remainingBytes": 29767448,
+    "remainingMB": 28.388,
+    "usagePercent": 70.43,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "nextIncrementHeadroomPass": true,
+    "status": "pass-density-balance-audit"
+  },
+  "densityBalanceAudit": {
+    "commandHero": "pass-visible-upper-command-band",
+    "productionGantry": "pass-visible-lower-left-production-span",
+    "supportDuct": "pass-visible-right-lower-service-wall",
+    "supportContact": "accepted-contact-range",
+    "supportContactGap": 0.0,
+    "supportContactOverlap": 1.0,
+    "openMouthClearance": "pass-clearance-corridor-marked",
+    "roleReadability": "pass-command-production-hangar-power-signal-control-logistics-catwalk-support-utility-present",
+    "balance": "pass-with-caution-next-asset-needs-role-value-and-runtime-gate"
+  },
+  "decision": "passed-density-balance-after-support-detail",
+  "nextStep": "gate one next light/medium candidate or optimize a heavy support candidate before placement; do not add another direct heavy production/power asset without a cost gate",
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-facility-density-balance-after-support-detail/2026-05-21-meshy-108-facility-density-balance-after-support-detail-top.png",
+    "front": "docs/visual-reviews/meshy-108-facility-density-balance-after-support-detail/2026-05-21-meshy-108-facility-density-balance-after-support-detail-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-facility-density-balance-after-support-detail/2026-05-21-meshy-108-facility-density-balance-after-support-detail-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-facility-density-balance-after-support-detail/2026-05-21-meshy-108-facility-density-balance-after-support-detail-detail.png"
+  },
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-meshy-108-facility-density-balance-after-support-detail.md",
+    "docs/visual-reviews/2026-05-21-meshy-108-facility-density-balance-after-support-detail.json",
+    "docs/visual-reviews/2026-05-21-meshy-108-facility-density-balance-after-support-detail-board.png",
+    "docs/visual-reviews/2026-05-21-meshy-108-facility-density-balance-after-support-detail-viewer.html",
+    "docs/visual-reviews/2026-05-21-meshy-108-facility-density-balance-after-support-detail-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-facility-density-balance-after-support-detail"
+  ]
+}

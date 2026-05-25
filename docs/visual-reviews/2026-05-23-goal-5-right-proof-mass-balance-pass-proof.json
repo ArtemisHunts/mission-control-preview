@@ -1,0 +1,61 @@
+{
+  "id": "visual-review-goal-5-right-proof-mass-balance-pass-20260523",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-right-proof-mass-balance-pass",
+  "artifactId": "artifact-goal-5-right-proof-mass-balance-pass",
+  "createdAt": "2026-05-23T13:21:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match UI pass only.",
+  "decision": "right-proof-mass-balance-improved-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-23-goal-5-right-proof-mass-balance-pass-proof.md",
+    "docs/visual-reviews/2026-05-23-goal-5-right-proof-mass-balance-pass-proof.json",
+    "docs/visual-reviews/2026-05-23-goal-5-right-proof-mass-balance-pass-mobile.png",
+    "docs/visual-reviews/2026-05-23-goal-5-right-proof-mass-balance-pass-desktop.png",
+    "tmp/goal-5-right-proof-mass-balance-pass-dom.html"
+  ],
+  "uiMarkers": [
+    "reference-scale-proof-mass-balancer",
+    "right rail balance",
+    "proof mass",
+    "counterweight",
+    "rail source",
+    "Command Table Core"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The lower/right proof mass is now explicitly tied to the table core, but central-table completion is not claimed."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "Right rail balance, proof mass, and rail source state now sit in a dedicated counterweight rail under the tether."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "The right-weighted connector adds a proof-mass motif without hiding canonical state."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "The balancer reuses existing selected Goal 5 state and introduces no fake backend actions."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop/mobile overlay captures and DOM smoke are recorded after the right proof mass balance pass."
+    }
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM smoke for right proof mass balance markers",
+    "PNG sanity for desktop/mobile captures"
+  ],
+  "nextGoal5Step": "Capture a fresh side-by-side reference proof after the right proof mass balance pass before making a stronger reference-match claim."
+}

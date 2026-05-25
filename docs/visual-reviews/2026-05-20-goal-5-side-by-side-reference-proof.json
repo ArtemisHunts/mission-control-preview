@@ -1,0 +1,32 @@
+{
+  "id": "visual-review-goal-5-side-by-side-reference-proof-20260520",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-side-by-side-reference-proof",
+  "scope": "goal-5-overlay-reference-proof",
+  "createdAt": "2026-05-20T13:21:00.000Z",
+  "decision": "side-by-side-proof-recorded-not-reference-complete",
+  "zone": "zone-responsive-product-proof",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-20-goal-5-side-by-side-reference-proof.html",
+    "docs/visual-reviews/2026-05-20-goal-5-side-by-side-reference-board.png",
+    "docs/visual-reviews/2026-05-20-goal-5-side-by-side-reference-current-desktop.png",
+    "docs/visual-reviews/2026-05-20-goal-5-side-by-side-reference-current-mobile.png",
+    "tmp/goal-5-side-by-side-reference-current-dom.html"
+  ],
+  "zoneVerdicts": [
+    "central-command-table: partial-match-improved",
+    "peripheral-ops-bands: partial-match-improved",
+    "reference-visual-motifs: partial-match-improved",
+    "operational-density: partial-match-improved",
+    "responsive-proof: partial-match-improved"
+  ],
+  "remainingGap": "Next Goal 5 UI pass should reduce symmetrical/rectangular rhythm and push stronger asymmetric command-table hierarchy.",
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome overlay desktop/mobile screenshots",
+    "headless Chrome side-by-side board screenshot",
+    "DOM smoke for ?overlay=1&console=overview"
+  ]
+}

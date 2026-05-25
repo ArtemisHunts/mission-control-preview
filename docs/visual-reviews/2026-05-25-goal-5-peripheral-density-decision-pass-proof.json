@@ -1,0 +1,27 @@
+{
+  "id": "visual-review-goal-5-peripheral-density-decision-pass-20260525",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-peripheral-density-decision-pass",
+  "artifactId": "artifact-goal-5-peripheral-density-decision-pass",
+  "createdAt": "2026-05-25T00:02:00.000Z",
+  "surface": "?overlay=1&console=overview",
+  "selectedGap": "Use the table-first hierarchy tightener side-by-side board to choose whether peripheral density, visual motif contrast, or table hierarchy needs the next pass; this pass selects peripheral density.",
+  "verdict": "partial-match-improved",
+  "referenceComplete": false,
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-25-goal-5-peripheral-density-decision-pass-proof.md",
+    "docs/visual-reviews/2026-05-25-goal-5-peripheral-density-decision-pass-proof.json",
+    "docs/visual-reviews/2026-05-25-goal-5-peripheral-density-decision-pass-desktop.png",
+    "docs/visual-reviews/2026-05-25-goal-5-peripheral-density-decision-pass-mobile.png",
+    "tmp/goal-5-peripheral-density-decision-pass-dom.html"
+  ],
+  "domSmokeMarkers": [
+    "reference-scale-peripheral-decision-band",
+    "State-backed peripheral density decision band",
+    "selected band",
+    "live orbit",
+    "evidence field",
+    "table restraint"
+  ],
+  "nextStep": "Capture a fresh side-by-side reference proof after the peripheral density decision pass."
+}

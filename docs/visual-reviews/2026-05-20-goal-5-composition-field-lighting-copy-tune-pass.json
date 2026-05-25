@@ -1,0 +1,45 @@
+{
+  "id": "visual-review-goal-5-composition-field-lighting-copy-tune-20260520",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-composition-field-lighting-copy-tune",
+  "artifactId": "artifact-goal-5-composition-field-lighting-copy-tune-pass",
+  "createdAt": "2026-05-20T23:51:00.000Z",
+  "scope": "Goal 5 holo-table reference-scale composition lighting/copy tune",
+  "decision": "lighting-copy-density-improved-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-20-goal-5-composition-field-lighting-copy-tune-pass.md",
+    "docs/visual-reviews/2026-05-20-goal-5-composition-field-lighting-copy-tune-pass.json",
+    "docs/visual-reviews/2026-05-20-goal-5-composition-field-lighting-copy-tune-desktop.png",
+    "docs/visual-reviews/2026-05-20-goal-5-composition-field-lighting-copy-tune-mobile.png",
+    "tmp/goal-5-composition-field-lighting-copy-tune-dom.html"
+  ],
+  "zoneVerdicts": [
+    {
+      "id": "zone-central-command-table",
+      "status": "partial-match-improved",
+      "note": "The central command table now gets a faster table-first read through condensed plate labels and key-light tagging."
+    },
+    {
+      "id": "zone-peripheral-ops-bands",
+      "status": "partial-match-improved",
+      "note": "Left/right/horizon bands now use compact state-backed signal labels rather than long matrix excerpts."
+    },
+    {
+      "id": "zone-reference-visual-motifs",
+      "status": "partial-match-improved",
+      "note": "Light tags and a softer continuity band improve the command-room lighting read without claiming final reference match."
+    },
+    {
+      "id": "zone-operational-density",
+      "status": "partial-match-improved",
+      "note": "The field remains backed by canonical goals, tasks, reviews, agents, telemetry, artifacts, and events."
+    },
+    {
+      "id": "zone-responsive-product-proof",
+      "status": "partial-match-improved",
+      "note": "Desktop and mobile screenshots plus DOM smoke are required for this UI pass."
+    }
+  ],
+  "nextGoal5Step": "Capture a refreshed side-by-side reference board after the lighting/copy tune."
+}

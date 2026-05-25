@@ -1,0 +1,53 @@
+{
+  "id": "visual-review-goal-5-instrument-orbit-density-20260520",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-instrument-orbit-density-pass",
+  "artifactId": "artifact-goal-5-instrument-orbit-density-pass",
+  "createdAt": "2026-05-21T05:51:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match UI only.",
+  "decision": "instrument-orbit-density-improved-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-20-goal-5-instrument-orbit-density-pass.md",
+    "docs/visual-reviews/2026-05-20-goal-5-instrument-orbit-density-pass.json",
+    "docs/visual-reviews/2026-05-20-goal-5-instrument-orbit-density-desktop.png",
+    "docs/visual-reviews/2026-05-20-goal-5-instrument-orbit-density-mobile.png",
+    "tmp/goal-5-instrument-orbit-density-dom.html"
+  ],
+  "uiMarkers": [
+    "Command Table Core",
+    "queue",
+    "review",
+    "agents",
+    "proof",
+    "State-backed peripheral instrumentation orbit"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The table core now carries state-backed queue/review/agents/proof chips."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "Peripheral instrumentation is denser and reads closer to the reference orbiting-data target."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "Darker center contrast and the compact chip grid improve depth without hiding data."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "Chip values are derived from canonical goal/task/review/agent/proof state with no fake backend actions."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop and mobile overlay proof are captured after the instrument-orbit density pass."
+    }
+  ],
+  "nextGoal5Step": "Capture a fresh side-by-side proof board after this instrument-orbit density pass before claiming stronger reference progress."
+}

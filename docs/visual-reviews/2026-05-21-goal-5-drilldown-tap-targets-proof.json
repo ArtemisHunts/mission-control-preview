@@ -1,0 +1,28 @@
+{
+  "id": "visual-review-goal-5-drilldown-tap-targets-20260521",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-drilldown-tap-targets",
+  "artifactId": "artifact-goal-5-drilldown-tap-targets",
+  "createdAt": "2026-05-21T16:21:00.000Z",
+  "route": "?overlay=1&console=overview",
+  "decision": "mobile-drilldown-tap-targets-improved-not-reference-complete",
+  "pickedGap": "Mobile command-table drill-down controls were functional but too compact and visually quiet for touch.",
+  "change": "Added larger mobile hit areas, visible chevrons, touch-action handling, and focus/active styling to the command-table drill-down controls.",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-goal-5-drilldown-tap-targets-proof.md",
+    "docs/visual-reviews/2026-05-21-goal-5-drilldown-tap-targets-proof.json",
+    "docs/visual-reviews/2026-05-21-goal-5-drilldown-tap-targets-mobile.png",
+    "docs/visual-reviews/2026-05-21-goal-5-drilldown-tap-targets-desktop.png",
+    "tmp/goal-5-drilldown-tap-targets-dom.html"
+  ],
+  "criteria": [
+    "Overview overlay route renders on mobile and desktop",
+    "Command-table drill-down controls remain state-backed",
+    "Mobile controls expose 44px tap target styling",
+    "Visible affordance and focus/active states are present",
+    "No fake backend action is introduced",
+    "Screenshot QA shows visible, readable, non-overlapping controls"
+  ],
+  "isDemo": false
+}

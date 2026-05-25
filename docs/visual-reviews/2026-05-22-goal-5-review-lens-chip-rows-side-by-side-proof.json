@@ -1,0 +1,64 @@
+{
+  "id": "visual-review-goal-5-review-lens-chip-rows-side-by-side-proof-20260522",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-review-lens-chip-rows-side-by-side-proof",
+  "artifactId": "artifact-goal-5-review-lens-chip-rows-side-by-side-proof",
+  "createdAt": "2026-05-22T11:51:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match proof only.",
+  "decision": "side-by-side-proof-recorded-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-22-goal-5-review-lens-chip-rows-side-by-side-proof.md",
+    "docs/visual-reviews/2026-05-22-goal-5-review-lens-chip-rows-side-by-side-proof.json",
+    "docs/visual-reviews/2026-05-22-goal-5-review-lens-chip-rows-side-by-side-proof.html",
+    "docs/visual-reviews/2026-05-22-goal-5-review-lens-chip-rows-side-by-side-board.png",
+    "docs/visual-reviews/2026-05-22-goal-5-review-lens-chip-rows-side-by-side-current-desktop.png",
+    "docs/visual-reviews/2026-05-22-goal-5-review-lens-chip-rows-side-by-side-current-mobile.png",
+    "docs/visual-reviews/2026-05-22-goal-5-review-lens-chip-rows-pass-review-mobile.png",
+    "tmp/goal-5-review-lens-chip-rows-side-by-side-dom.html"
+  ],
+  "uiMarkers": [
+    "Command Table Core",
+    "Selected Lane Trail",
+    "Goal 5 proof",
+    "Review Queue",
+    "chip rows",
+    "partial-match-improved"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The latest Review Queue proof is table-attached in the core, selected-lane trail, proof rail, and artifacts panel."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "Selected-lane proof, event, review, and artifact bands read more like instrument surfaces than generic cards."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "Chip rows improve the fine-line terminal feel in the Review Queue, while full reference contrast and asymmetry remain open."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "Review, evidence, artifacts, tasks, events, and proof remain grounded in canonical state with no fake backend action."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop, mobile, drill-down, DOM, and side-by-side board proof are captured after the Review Queue chip-row pass."
+    }
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "headless Chrome side-by-side board screenshot",
+    "DOM smoke for overview proof markers"
+  ],
+  "nextGoal5Step": "Apply compact operator-log row density to the Telemetry drill-down event stream so proof/events read like the Review Queue chips instead of a flat list."
+}

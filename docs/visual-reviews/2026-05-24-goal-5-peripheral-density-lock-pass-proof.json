@@ -1,0 +1,32 @@
+{
+  "id": "visual-review-goal-5-peripheral-density-lock-pass-20260524",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-peripheral-density-lock-pass",
+  "artifactId": "artifact-goal-5-peripheral-density-lock-pass",
+  "createdAt": "2026-05-24T05:53:00.000Z",
+  "surface": "?overlay=1&console=overview",
+  "selectedGap": "Peripheral density was selected from the table-first hierarchy side-by-side proof next-step options.",
+  "verdict": "partial-match-improved",
+  "referenceComplete": false,
+  "changeSummary": [
+    "Added a read-only state-backed peripheral density lock inside the Command Table Core.",
+    "Exposed band density, agent orbit, evidence spread, and table tether chips.",
+    "Kept values tied to canonical Goal 5 tasks, reviews, agents, artifacts, events, active goal, and reference-zone status."
+  ],
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-24-goal-5-peripheral-density-lock-pass-proof.md",
+    "docs/visual-reviews/2026-05-24-goal-5-peripheral-density-lock-pass-proof.json",
+    "docs/visual-reviews/2026-05-24-goal-5-peripheral-density-lock-pass-desktop.png",
+    "docs/visual-reviews/2026-05-24-goal-5-peripheral-density-lock-pass-mobile.png",
+    "tmp/goal-5-peripheral-density-lock-pass-dom.html"
+  ],
+  "domSmokeMarkers": [
+    "reference-scale-peripheral-density-lock",
+    "band density",
+    "agent orbit",
+    "evidence spread",
+    "table tether",
+    "Command Table Core"
+  ],
+  "nextStep": "Capture a fresh side-by-side reference proof after the peripheral density lock pass."
+}

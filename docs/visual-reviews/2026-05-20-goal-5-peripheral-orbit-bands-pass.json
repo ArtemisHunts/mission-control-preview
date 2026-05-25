@@ -1,0 +1,49 @@
+{
+  "id": "visual-review-goal-5-peripheral-orbit-bands-20260520",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-peripheral-orbit-bands",
+  "title": "Goal 5 peripheral orbit bands pass",
+  "status": "completed",
+  "decision": "peripheral-zone-improved-not-reference-complete",
+  "url": "http://127.0.0.1:4177/?overlay=1&console=overview",
+  "screenshots": {
+    "desktop": {
+      "path": "docs/visual-reviews/2026-05-20-goal-5-peripheral-orbit-bands-desktop.png",
+      "width": 1440,
+      "height": 1180,
+      "bytes": 844018
+    },
+    "mobile": {
+      "path": "docs/visual-reviews/2026-05-20-goal-5-peripheral-orbit-bands-mobile.png",
+      "width": 390,
+      "height": 980,
+      "bytes": 334244
+    }
+  },
+  "domSmoke": {
+    "path": "tmp/goal-5-peripheral-orbit-bands-dom.html",
+    "orbitMarkers": 3,
+    "requiredText": [
+      "Execution Orbit",
+      "Pressure Orbit",
+      "Evidence Orbit",
+      "Open task flow circling the command table.",
+      "Agent load and review gates orbiting the table.",
+      "Events, proof, and artifacts locked to the table perimeter.",
+      "Peripheral ops bands",
+      "partial match improved"
+    ],
+    "missingText": [],
+    "pass": true
+  },
+  "checks": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop screenshot",
+    "headless Chrome mobile screenshot",
+    "headless Chrome DOM smoke"
+  ],
+  "createdAt": "2026-05-20T08:51:00.000Z",
+  "isDemo": false
+}

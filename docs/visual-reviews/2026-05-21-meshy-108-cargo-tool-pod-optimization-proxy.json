@@ -1,0 +1,126 @@
+{
+  "candidate": "meshy-108-cargo-tool-pod-optimization-proxy",
+  "gapPicked": "create optimized Meshy-108 cargo tool pod proxy before placement",
+  "createdAt": "2026-05-22T04:01:54Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "sourceGlb": "assets/meshy/api/13-cargo-tool-pod.meshy.glb",
+  "sourceGateMetrics": "docs/visual-reviews/2026-05-21-meshy-108-support-logistics-candidate-gate-after-drone-audit.json",
+  "outBlend": "assets/blender/meshy-108-cargo-tool-pod-optimization-proxy.blend",
+  "outGlb": "assets/blender/meshy-108-cargo-tool-pod-optimization-proxy.glb",
+  "sourceAsset": {
+    "path": "assets/meshy/api/13-cargo-tool-pod.meshy.glb",
+    "bounds": {
+      "min": [
+        -0.9507,
+        -0.6718,
+        -0.771
+      ],
+      "max": [
+        0.9488,
+        0.6732,
+        0.7688
+      ],
+      "dimensions": [
+        1.8995,
+        1.345,
+        1.5398
+      ]
+    },
+    "maxDimension": 1.8995,
+    "targetMaxDimension": 1.22,
+    "scaleToProxy": 0.642282,
+    "bytes": 59709384,
+    "mb": 56.943,
+    "directProjectedSceneBytes": 131514780,
+    "directProjectedSceneMB": 125.422,
+    "directRemainingAfterPlacementMB": -29.422
+  },
+  "proxyAsset": {
+    "bounds": {
+      "min": [
+        -0.4392,
+        -0.2629,
+        -0.1031
+      ],
+      "max": [
+        0.4392,
+        0.2629,
+        0.6589
+      ],
+      "dimensions": [
+        0.8783,
+        0.5258,
+        0.762
+      ]
+    },
+    "bytes": 426404,
+    "mb": 0.407,
+    "byteReduction": 59282980,
+    "byteReductionPercent": 99.29,
+    "projectedSceneBytes": 72231800,
+    "projectedSceneMB": 68.886,
+    "remainingAfterProxyBytes": 28431496,
+    "remainingAfterProxyMB": 27.114,
+    "incrementTargetBytes": 2097152,
+    "incrementTargetMB": 2.0
+  },
+  "sourceInspection": {
+    "path": "assets/meshy/api/13-cargo-tool-pod.meshy.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 59709384,
+    "asset": {
+      "generator": "pygltflib@v1.16.5",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 1,
+    "meshCount": 1,
+    "materialCount": 1,
+    "textureCount": 1,
+    "imageCount": 1,
+    "accessorCount": 4,
+    "animationCount": 0,
+    "extensionsUsed": []
+  },
+  "proxyInspection": {
+    "path": "assets/blender/meshy-108-cargo-tool-pod-optimization-proxy.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 426404,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 24,
+    "meshCount": 24,
+    "materialCount": 6,
+    "textureCount": 0,
+    "imageCount": 0,
+    "accessorCount": 78,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-cargo-tool-pod-optimization-proxy/2026-05-21-meshy-108-cargo-tool-pod-optimization-proxy-top.png",
+    "front": "docs/visual-reviews/meshy-108-cargo-tool-pod-optimization-proxy/2026-05-21-meshy-108-cargo-tool-pod-optimization-proxy-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-cargo-tool-pod-optimization-proxy/2026-05-21-meshy-108-cargo-tool-pod-optimization-proxy-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-cargo-tool-pod-optimization-proxy/2026-05-21-meshy-108-cargo-tool-pod-optimization-proxy-detail.png"
+  },
+  "decision": "cargo-tool-pod-proxy-passed-runtime-footprint-gate-not-yet-placed",
+  "nextStep": "place optimized cargo tool pod proxy in Meshy-108 and prove contact/clearance/runtime before adding another asset",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-meshy-108-cargo-tool-pod-optimization-proxy.md",
+    "docs/visual-reviews/2026-05-21-meshy-108-cargo-tool-pod-optimization-proxy.json",
+    "docs/visual-reviews/2026-05-21-meshy-108-cargo-tool-pod-optimization-proxy-board.png",
+    "docs/visual-reviews/2026-05-21-meshy-108-cargo-tool-pod-optimization-proxy-viewer.html",
+    "docs/visual-reviews/2026-05-21-meshy-108-cargo-tool-pod-optimization-proxy-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-cargo-tool-pod-optimization-proxy"
+  ]
+}

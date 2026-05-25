@@ -1,0 +1,53 @@
+{
+  "id": "proof-goal-5-queue-gate-priority-pass",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-queue-gate-priority-pass",
+  "createdAt": "2026-05-21T22:21:00.000Z",
+  "scope": "Goal 5 overlay-only command-table overview at ?overlay=1&console=overview",
+  "gap": "The evidence rail had selected-goal priority, but queue and gate bands could still read from global pressure instead of the selected command-table goal.",
+  "changes": [
+    "Scoped queue and gate counts and labels to the selected command-table goal.",
+    "Rendered clear selected-goal queue/gate states when Goal 5 has no open task or review pressure.",
+    "Kept drill-down controls read-only with no backend action affordances."
+  ],
+  "artifacts": {
+    "mobileScreenshot": "docs/visual-reviews/2026-05-21-goal-5-queue-gate-priority-pass-mobile.png",
+    "desktopScreenshot": "docs/visual-reviews/2026-05-21-goal-5-queue-gate-priority-pass-desktop.png",
+    "domSmoke": "tmp/goal-5-queue-gate-priority-pass-dom.html"
+  },
+  "screenshotQa": {
+    "mobile": {
+      "width": 390,
+      "height": 1400,
+      "nonblank": true,
+      "selectedQueueGateReadable": true,
+      "keyControlsVisible": true,
+      "noIncoherentOverlap": true
+    },
+    "desktop": {
+      "width": 1440,
+      "height": 1100,
+      "captured": true
+    }
+  },
+  "smokeMarkers": [
+    "Command Table Core",
+    "0 selected",
+    "No selected-goal queue pressure",
+    "No selected-goal review gate",
+    "Open queue drill-down panel",
+    "Open gate drill-down panel",
+    ".reference-scale-drilldown-row.tone-green",
+    ".reference-scale-evidence-row.is-primary"
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "Headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM/CSS smoke for selected-goal queue/gate markers",
+    "Mobile screenshot QA"
+  ],
+  "blocked": false,
+  "nextStep": "Tune lower command-center list panels so the global feed cannot visually overpower the selected Goal 5 command-table read."
+}

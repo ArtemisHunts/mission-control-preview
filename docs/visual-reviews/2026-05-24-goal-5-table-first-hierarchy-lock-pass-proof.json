@@ -1,0 +1,33 @@
+{
+  "id": "goal-5-table-first-hierarchy-lock-pass-20260524",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-table-first-hierarchy-lock-pass",
+  "title": "Goal 5 table-first hierarchy lock pass",
+  "createdAt": "2026-05-24T01:23:00.000Z",
+  "lane": "Goal 5 holo-table overlay reference-match",
+  "gapSelected": "Table-first hierarchy after the lower proof mass rebalance side-by-side proof.",
+  "verdict": "partial-match-improved",
+  "isReferenceComplete": false,
+  "stateBackedSignals": [
+    "referenceMatch.goal5.zones",
+    "active goal scoped artifacts",
+    "active goal scoped events",
+    "selected goal work count",
+    "selected goal review count"
+  ],
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-lock-pass-proof.md",
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-lock-pass-proof.json",
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-lock-pass-desktop.png",
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-lock-pass-mobile.png",
+    "tmp/goal-5-table-first-hierarchy-lock-pass-dom.html"
+  ],
+  "domMarkers": [
+    "reference-scale-table-first-hierarchy-lock",
+    "State-backed table-first hierarchy lock",
+    "first hierarchy",
+    "orbit restraint",
+    "proof anchor"
+  ],
+  "nextGoal5Step": "Capture a fresh side-by-side reference proof after the table-first hierarchy lock pass."
+}

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Goal 5 Motif Contrast Decision Side-by-Side Proof</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --panel: rgba(5, 14, 26, 0.94);
+      --cyan: #59f1ff;
+      --gold: #e6a93a;
+      --green: #74d99a;
+      --violet: #9d7cff;
+      --ink: rgba(246, 248, 255, 0.94);
+      --muted: rgba(231, 239, 255, 0.72);
+      --line: rgba(89, 241, 255, 0.2);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 18% 14%, rgba(89, 241, 255, 0.16), transparent 30%),
+        radial-gradient(circle at 82% 18%, rgba(157, 124, 255, 0.14), transparent 29%),
+        linear-gradient(180deg, rgba(3, 8, 18, 0.96), #01040a 72%);
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main { display: grid; gap: 16px; width: min(1880px, 100vw); margin: 0 auto; padding: 22px; }
+    header { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: end; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+    h1, h2, p { margin: 0; }
+    h1 { max-width: 1180px; font-size: 30px; line-height: 1.05; letter-spacing: 0; }
+    code { color: var(--cyan); }
+    .kicker, .stamp, .zone span, .metric span, .tag { color: var(--gold); font-size: 11px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
+    .stamp { justify-self: end; padding: 10px 12px; border: 1px solid rgba(230, 169, 58, 0.25); border-radius: 8px; background: rgba(230, 169, 58, 0.08); text-align: right; }
+    .comparison { display: grid; grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.2fr) minmax(0, 0.72fr); gap: 16px; align-items: stretch; }
+    .frame, .zone, .metric { border: 1px solid var(--line); border-radius: 8px; background: var(--panel); box-shadow: inset 0 0 0 1px rgba(246, 248, 255, 0.035), 0 18px 60px rgba(0, 0, 0, 0.32); }
+    .frame { display: grid; gap: 10px; align-content: start; padding: 12px; }
+    .frame h2 { color: var(--cyan); font-size: 15px; line-height: 1.2; letter-spacing: 0; }
+    .frame p, .zone p, .metric p { color: var(--muted); line-height: 1.32; }
+    .frame p, .metric p { font-size: 12px; }
+    img { display: block; width: 100%; border-radius: 8px; border: 1px solid rgba(89, 241, 255, 0.18); background: rgba(0, 0, 0, 0.38); }
+    .mobile-frame img { max-height: 980px; object-fit: cover; object-position: top; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { padding: 5px 7px; border: 1px solid rgba(230, 169, 58, 0.28); border-radius: 999px; background: rgba(230, 169, 58, 0.08); }
+    .matrix { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+    .zone { display: grid; align-content: start; gap: 7px; min-height: 174px; padding: 11px; }
+    .zone strong { font-size: 14px; line-height: 1.18; }
+    .zone p { font-size: 11px; }
+    .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .metric { display: grid; gap: 5px; padding: 12px; }
+    .metric strong { font-size: 18px; line-height: 1.1; }
+    .metric.pass { border-color: rgba(116, 217, 154, 0.28); }
+    .metric.warn { border-color: rgba(230, 169, 58, 0.28); }
+    .metric.next { border-color: rgba(157, 124, 255, 0.3); }
+    @media (max-width: 1100px) {
+      main { padding: 12px; }
+      header, .comparison, .matrix, .metrics { grid-template-columns: 1fr; }
+      .stamp { justify-self: start; text-align: left; }
+      .mobile-frame img { max-height: none; object-fit: contain; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="kicker">Goal 5 / Holo-table overlay</p>
+        <h1>Goal 5 Motif Contrast Decision Side-by-Side Proof</h1>
+      </div>
+      <div class="stamp">2026-05-25 04:32 UTC<br>Partial match, not complete</div>
+    </header>
+    <section class="comparison" aria-label="Reference, overview, and motif contrast decision comparison">
+      <article class="frame">
+        <h2>Reference direction</h2>
+        <p>Holographic command-table moodboard: fine-line contrast, table rim separation, and dense instruments reinforce the table without obscuring state.</p>
+        <img src="../moodboards/holographic-ui.png" alt="Holographic command-table reference moodboard">
+      </article>
+      <article class="frame">
+        <h2>Current overview after motif contrast decision band</h2>
+        <p>Fresh overlay-only capture from <code>?overlay=1&amp;console=overview</code>. The Command Table Core now exposes motif contrast as selected motif, contrast field, line restraint, and proof echo.</p>
+        <div class="tags" aria-label="Motif contrast decision markers">
+          <span class="tag">Command Table Core</span>
+          <span class="tag">reference-scale-motif-decision-band</span>
+          <span class="tag">selected motif</span>
+          <span class="tag">contrast field</span>
+          <span class="tag">line restraint</span>
+          <span class="tag">proof echo</span>
+        </div>
+        <img src="2026-05-25-goal-5-motif-contrast-decision-side-by-side-current-desktop.png" alt="Current Mission Control holo-table overview screenshot after motif contrast decision pass">
+      </article>
+      <article class="frame mobile-frame">
+        <h2>Mobile contrast stack</h2>
+        <p>Fresh mobile capture verifies the motif contrast decision band stacks without adding backend actions or replacing the command-table read.</p>
+        <img src="2026-05-25-goal-5-motif-contrast-decision-side-by-side-current-mobile.png" alt="Current Mission Control mobile overview screenshot after motif contrast decision pass">
+      </article>
+    </section>
+    <section class="matrix" aria-label="Reference zone verdicts">
+      <article class="zone"><span>Partial improved</span><strong>Central command table</strong><p>The contrast field stays tied to the table read instead of becoming decorative noise.</p></article>
+      <article class="zone"><span>Partial improved</span><strong>Peripheral ops bands</strong><p>Line restraint keeps motif density subordinate to selected-goal work and review pressure.</p></article>
+      <article class="zone"><span>Partial improved</span><strong>Visual motifs</strong><p>Selected motif and proof echo make the current motif contrast decision explicit.</p></article>
+      <article class="zone"><span>Partial improved</span><strong>Operational density</strong><p>The proof stays sourced from reference-match state, selected-goal work, reviews, artifacts, and events.</p></article>
+      <article class="zone"><span>Partial improved</span><strong>Responsive proof</strong><p>Fresh desktop/mobile overlay captures, overview DOM, board DOM, and this side-by-side board are recorded.</p></article>
+    </section>
+    <section class="metrics" aria-label="Proof verdict metrics">
+      <article class="metric pass"><span>Proof captured</span><strong>Reference + overview + mobile</strong><p>Board compares the reference moodboard, current motif-decision overview, mobile stack, and canonical zone verdicts.</p></article>
+      <article class="metric warn"><span>Honest status</span><strong>Partial-match-improved</strong><p>No reference-complete claim. This proof records the current visual read after the motif contrast decision pass.</p></article>
+      <article class="metric next"><span>Next gap</span><strong>Choose next holo-table weak point</strong><p>Use this board to decide whether table hierarchy, peripheral density, or motif contrast needs the next pass.</p></article>
+    </section>
+  </main>
+</body>
+</html>

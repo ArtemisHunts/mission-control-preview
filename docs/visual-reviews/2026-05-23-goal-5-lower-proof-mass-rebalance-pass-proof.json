@@ -1,0 +1,33 @@
+{
+  "id": "goal-5-lower-proof-mass-rebalance-pass-20260523",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-lower-proof-mass-rebalance-pass",
+  "title": "Goal 5 lower proof mass rebalance pass",
+  "createdAt": "2026-05-23T22:23:00.000Z",
+  "lane": "Goal 5 holo-table overlay reference-match",
+  "gapSelected": "Lower proof mass rebalance/compression after the motif contrast lock side-by-side proof.",
+  "verdict": "partial-match-improved",
+  "isReferenceComplete": false,
+  "stateBackedSignals": [
+    "referenceMatch.goal5.zones",
+    "active goal scoped artifacts",
+    "active goal scoped events",
+    "selected goal review pressure",
+    "selected goal proof count"
+  ],
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-23-goal-5-lower-proof-mass-rebalance-pass-proof.md",
+    "docs/visual-reviews/2026-05-23-goal-5-lower-proof-mass-rebalance-pass-proof.json",
+    "docs/visual-reviews/2026-05-23-goal-5-lower-proof-mass-rebalance-pass-desktop.png",
+    "docs/visual-reviews/2026-05-23-goal-5-lower-proof-mass-rebalance-pass-mobile.png",
+    "tmp/goal-5-lower-proof-mass-rebalance-pass-dom.html"
+  ],
+  "domMarkers": [
+    "reference-scale-proof-mass-rebalance-lock",
+    "State-backed lower proof mass rebalance lock",
+    "mass compression",
+    "core tie",
+    "next decision"
+  ],
+  "nextGoal5Step": "Capture a fresh side-by-side reference proof after the lower proof mass rebalance pass."
+}

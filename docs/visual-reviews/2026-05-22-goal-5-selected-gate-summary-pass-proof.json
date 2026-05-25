@@ -1,0 +1,70 @@
+{
+  "id": "proof-goal-5-selected-gate-summary-pass",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-selected-gate-summary-pass",
+  "createdAt": "2026-05-22T07:21:00.000Z",
+  "scope": "Goal 5 overlay-only command-table overview at ?overlay=1&console=overview",
+  "gap": "The selected-lane trail opened the Review Queue lens, but the destination still fell straight into global review/evidence/artifact panels before showing a compact selected Goal 5 gate summary.",
+  "changes": [
+    "Added a Selected Lane Gate Summary panel at the top of the Review Queue destination.",
+    "Filled the panel with selected Goal 5 review, proof, and event counts.",
+    "Added a compact Gate / Evidence / Event row stack using selected-lane state only.",
+    "Kept the existing global review/evidence/artifact panels below for context.",
+    "Added no backend actions and no fake state."
+  ],
+  "artifacts": {
+    "mobileScreenshot": "docs/visual-reviews/2026-05-22-goal-5-selected-gate-summary-pass-mobile.png",
+    "desktopScreenshot": "docs/visual-reviews/2026-05-22-goal-5-selected-gate-summary-pass-desktop.png",
+    "reviewMobileScreenshot": "docs/visual-reviews/2026-05-22-goal-5-selected-gate-summary-pass-review-mobile.png",
+    "domSmoke": "tmp/goal-5-selected-gate-summary-pass-dom.html"
+  },
+  "interactionSmoke": {
+    "method": "Chrome DevTools Protocol",
+    "clicked": "Open gate detail lens",
+    "assertions": {
+      "reviewLensOpened": true,
+      "selectedGateSummaryVisible": true,
+      "gateEvidenceEventRowsVisible": true,
+      "laneProofVisible": true,
+      "goal5SelectionVisible": true
+    }
+  },
+  "screenshotQa": {
+    "reviewMobile": {
+      "nonblank": true,
+      "selectedGateSummaryReadable": true,
+      "laneProofAndEventsVisible": true,
+      "noClipping": true,
+      "noSevereOverlap": true
+    },
+    "overviewMobile": {
+      "width": 390,
+      "height": 2400,
+      "captured": true
+    },
+    "overviewDesktop": {
+      "width": 1440,
+      "height": 1200,
+      "captured": true
+    }
+  },
+  "smokeMarkers": [
+    "Selected Lane Trail",
+    "Open gate detail lens",
+    "Selected Lane Gate Summary",
+    "Gate / Evidence / Event",
+    "Goal 5 selected gate summary pass proof",
+    "Command Table Core"
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "Headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM/JS smoke for selected-gate summary markers",
+    "Chrome DevTools click smoke from trail gate control to Review Queue lens",
+    "Review Queue mobile screenshot QA"
+  ],
+  "blocked": false,
+  "nextStep": "Add an equivalent compact selected-lane proof/event summary at the top of the Telemetry lens opened from the trail proof/event controls."
+}

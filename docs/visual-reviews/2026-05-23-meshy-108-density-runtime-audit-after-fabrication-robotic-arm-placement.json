@@ -1,0 +1,127 @@
+{
+  "candidate": "meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement",
+  "gapPicked": "audit Meshy-108 density/runtime after fabrication robotic arm placement",
+  "createdAt": "2026-05-23T10:05:53Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "noNewFacilityAssetPlaced": true,
+  "sourceSceneBlend": "assets/blender/meshy-108-fabrication-robotic-arm-placement-contact-proof.blend",
+  "sourceSceneGlb": "assets/blender/meshy-108-fabrication-robotic-arm-placement-contact-proof.glb",
+  "sourcePlacementMetrics": "docs/visual-reviews/2026-05-23-meshy-108-fabrication-robotic-arm-placement-contact-proof.json",
+  "auditBlend": "assets/blender/meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement.blend",
+  "auditGlb": "assets/blender/meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement.glb",
+  "sceneBounds": {
+    "min": [
+      -3.8818,
+      -3.0368,
+      -1.8656
+    ],
+    "max": [
+      3.2963,
+      3.1295,
+      2.1056
+    ],
+    "dimensions": [
+      7.178,
+      6.1663,
+      3.9712
+    ]
+  },
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-fabrication-robotic-arm-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 71764212,
+    "mb": 68.44,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 412,
+    "meshCount": 381,
+    "materialCount": 67,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1161,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "auditGlbInspection": {
+    "path": "assets/blender/meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 73058244,
+    "mb": 69.674,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 433,
+    "meshCount": 402,
+    "materialCount": 75,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1234,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 71764212,
+    "sourceSceneMB": 68.44,
+    "sourceRemainingBytes": 28899084,
+    "sourceRemainingMB": 27.56,
+    "sourceUsagePercent": 71.29,
+    "auditGlbBytes": 73058244,
+    "auditGlbMB": 69.674,
+    "auditRemainingBytes": 27605052,
+    "auditRemainingMB": 26.326,
+    "auditUsagePercent": 72.58,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "nextIncrementGuardMarginBytes": 3733260,
+    "nextIncrementGuardMarginMB": 3.56,
+    "nextIncrementHeadroomPass": true,
+    "status": "pass-density-runtime-audit"
+  },
+  "densityRuntimeAudit": {
+    "commandHero": "pass-visible-upper-command-band",
+    "productionGantry": "pass-visible-lower-left-production-span",
+    "supportDuct": "pass-visible-right-lower-service-wall",
+    "portalControlInsert": "pass-visible-lower-right-hangar-portal-support-wall",
+    "tightConsoleProxy": "pass-visible-lower-command-control-support-strip",
+    "lightHazardGantryProxy": "pass-visible-production-safety-support-detail",
+    "fabricationRoboticArm": "pass-visible-lower-production-workcell-support-strip",
+    "fabricationRoboticArmContact": "accepted-contact-range",
+    "fabricationRoboticArmContactGap": 0.0,
+    "fabricationRoboticArmContactOverlap": 0.9666,
+    "openMouthClearance": "pass-clearance-corridor-marked",
+    "roleReadability": "pass-command-production-hangar-power-signal-control-logistics-catwalk-support-utility-cargo-tool-pod-embedded-ops-wall-bunker-tight-console-proxy-light-hazard-gantry-proxy-fabrication-robotic-arm-present",
+    "balance": "pass-with-caution-next-asset-needs-role-value-and-runtime-gate"
+  },
+  "decision": "passed-density-runtime-audit-after-fabrication-robotic-arm-placement",
+  "nextStep": "gate the next Meshy-108 support/logistics candidate before placement; optimize first if direct placement would consume too much runtime headroom",
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement/2026-05-23-meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement-top.png",
+    "front": "docs/visual-reviews/meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement/2026-05-23-meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement/2026-05-23-meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement/2026-05-23-meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement-detail.png"
+  },
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement.md",
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement.json",
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement-board.png",
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement-viewer.html",
+    "docs/visual-reviews/2026-05-23-meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-fabrication-robotic-arm-placement"
+  ]
+}

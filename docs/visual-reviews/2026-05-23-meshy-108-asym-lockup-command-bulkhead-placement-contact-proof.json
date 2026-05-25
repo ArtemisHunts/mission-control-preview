@@ -1,0 +1,174 @@
+{
+  "candidate": "meshy-108-asym-lockup-command-bulkhead-placement-contact-proof",
+  "gapPicked": "place asym lockup command bulkhead and prove contact/runtime",
+  "createdAt": "2026-05-23T17:35:57Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "sourceSceneGlb": "assets/blender/meshy-108-control-window-spine-placement-contact-proof.glb",
+  "assetSourceGlb": "assets/meshy/api/79-asym-lockup-command-bulkhead.meshy.glb",
+  "outBlend": "assets/blender/meshy-108-asym-lockup-command-bulkhead-placement-contact-proof.blend",
+  "outGlb": "assets/blender/meshy-108-asym-lockup-command-bulkhead-placement-contact-proof.glb",
+  "placement": {
+    "role": "control-support",
+    "label": "Asym lockup command bulkhead",
+    "zone": "upper command/control support band, aft of control window spine",
+    "location": [
+      1.86,
+      1.22,
+      1.06
+    ],
+    "rotationZDegrees": -18,
+    "targetMaxDimension": 0.36
+  },
+  "contactAudit": {
+    "pad": "asym lockup command bulkhead support pad",
+    "assetBounds": {
+      "min": [
+        1.6645,
+        1.0895,
+        0.985
+      ],
+      "max": [
+        2.0555,
+        1.3505,
+        1.135
+      ],
+      "dimensions": [
+        0.391,
+        0.261,
+        0.1501
+      ]
+    },
+    "padBounds": {
+      "min": [
+        1.6518,
+        1.0502,
+        0.961
+      ],
+      "max": [
+        2.0682,
+        1.3898,
+        0.985
+      ],
+      "dimensions": [
+        0.4163,
+        0.3395,
+        0.024
+      ]
+    },
+    "verticalGapAssetMinToPadTop": 0.0,
+    "xyOverlapRatio": 1.0,
+    "status": "accepted-contact-range"
+  },
+  "acceptedContactCount": 1,
+  "needsReviewCount": 0,
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 72431960,
+    "sourceSceneMB": 69.076,
+    "outputBytes": 72712424,
+    "outputMB": 69.344,
+    "incrementBytes": 280464,
+    "incrementMB": 0.267,
+    "remainingBytes": 27950872,
+    "remainingMB": 26.656,
+    "usagePercent": 72.23,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "nextIncrementGuardMarginBytes": 2785048,
+    "nextIncrementGuardMarginMB": 2.656,
+    "nextIncrementHeadroomPass": true,
+    "status": "pass",
+    "assetSourceBytes": 86172,
+    "assetSourceMB": 0.082,
+    "gateProjectedSceneMB": 69.159,
+    "gateProjectedGuardMarginMB": 2.841
+  },
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-control-window-spine-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 72431960,
+    "mb": 69.076,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 415,
+    "meshCount": 383,
+    "materialCount": 68,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1168,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "assetSourceInspection": {
+    "path": "assets/meshy/api/79-asym-lockup-command-bulkhead.meshy.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 86172,
+    "mb": 0.082,
+    "asset": {
+      "generator": "libmeshy",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 1,
+    "meshCount": 1,
+    "materialCount": 0,
+    "textureCount": 0,
+    "imageCount": 0,
+    "accessorCount": 2,
+    "animationCount": 0,
+    "extensionsUsed": []
+  },
+  "placementGlbInspection": {
+    "path": "assets/blender/meshy-108-asym-lockup-command-bulkhead-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 72712424,
+    "mb": 69.344,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 418,
+    "meshCount": 385,
+    "materialCount": 69,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1174,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-asym-lockup-command-bulkhead-placement-contact-proof/2026-05-23-meshy-108-asym-lockup-command-bulkhead-placement-contact-proof-top.png",
+    "front": "docs/visual-reviews/meshy-108-asym-lockup-command-bulkhead-placement-contact-proof/2026-05-23-meshy-108-asym-lockup-command-bulkhead-placement-contact-proof-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-asym-lockup-command-bulkhead-placement-contact-proof/2026-05-23-meshy-108-asym-lockup-command-bulkhead-placement-contact-proof-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-asym-lockup-command-bulkhead-placement-contact-proof/2026-05-23-meshy-108-asym-lockup-command-bulkhead-placement-contact-proof-detail.png"
+  },
+  "decision": "asym-lockup-command-bulkhead-placement-contact-passed",
+  "nextStep": "run a Meshy-108 density/runtime audit after asym lockup command bulkhead placement before adding another asset",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-23-meshy-108-asym-lockup-command-bulkhead-placement-contact-proof.md",
+    "docs/visual-reviews/2026-05-23-meshy-108-asym-lockup-command-bulkhead-placement-contact-proof.json",
+    "docs/visual-reviews/2026-05-23-meshy-108-asym-lockup-command-bulkhead-placement-contact-proof-board.png",
+    "docs/visual-reviews/2026-05-23-meshy-108-asym-lockup-command-bulkhead-placement-contact-proof-viewer.html",
+    "docs/visual-reviews/2026-05-23-meshy-108-asym-lockup-command-bulkhead-placement-contact-proof-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-asym-lockup-command-bulkhead-placement-contact-proof/2026-05-23-meshy-108-asym-lockup-command-bulkhead-placement-contact-proof-top.png",
+    "docs/visual-reviews/meshy-108-asym-lockup-command-bulkhead-placement-contact-proof/2026-05-23-meshy-108-asym-lockup-command-bulkhead-placement-contact-proof-front.png",
+    "docs/visual-reviews/meshy-108-asym-lockup-command-bulkhead-placement-contact-proof/2026-05-23-meshy-108-asym-lockup-command-bulkhead-placement-contact-proof-oblique.png",
+    "docs/visual-reviews/meshy-108-asym-lockup-command-bulkhead-placement-contact-proof/2026-05-23-meshy-108-asym-lockup-command-bulkhead-placement-contact-proof-detail.png"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "visual-review-goal-5-motif-contrast-calibration-pass-20260524",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-motif-contrast-calibration-pass",
+  "artifactId": "artifact-goal-5-motif-contrast-calibration-pass",
+  "createdAt": "2026-05-24T10:23:00.000Z",
+  "surface": "?overlay=1&console=overview",
+  "selectedGap": "Visual motif contrast was selected from the peripheral density side-by-side proof next-step options.",
+  "verdict": "partial-match-improved",
+  "referenceComplete": false,
+  "changeSummary": [
+    "Added a read-only state-backed motif contrast calibration strip inside the Command Table Core.",
+    "Exposed contrast verdict, density echo, line language, and next proof chips.",
+    "Kept values tied to canonical Goal 5 reference status, tasks, reviews, agents, events, artifacts, active goal, and proof counts."
+  ],
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-24-goal-5-motif-contrast-calibration-pass-proof.md",
+    "docs/visual-reviews/2026-05-24-goal-5-motif-contrast-calibration-pass-proof.json",
+    "docs/visual-reviews/2026-05-24-goal-5-motif-contrast-calibration-pass-desktop.png",
+    "docs/visual-reviews/2026-05-24-goal-5-motif-contrast-calibration-pass-mobile.png",
+    "tmp/goal-5-motif-contrast-calibration-pass-dom.html"
+  ],
+  "domSmokeMarkers": [
+    "reference-scale-motif-contrast-calibration",
+    "contrast verdict",
+    "density echo",
+    "line language",
+    "next proof",
+    "Command Table Core"
+  ],
+  "nextStep": "Capture a fresh side-by-side reference proof after the motif contrast calibration pass."
+}

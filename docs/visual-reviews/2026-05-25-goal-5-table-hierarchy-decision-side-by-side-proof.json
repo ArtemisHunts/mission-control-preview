@@ -1,0 +1,36 @@
+{
+  "id": "visual-review-goal-5-table-hierarchy-decision-side-by-side-proof-20260525",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-table-hierarchy-decision-side-by-side-proof",
+  "artifactId": "artifact-goal-5-table-hierarchy-decision-side-by-side-proof",
+  "createdAt": "2026-05-25T07:32:00.000Z",
+  "surface": "?overlay=1&console=overview",
+  "selectedGap": "Fresh side-by-side reference proof after the table hierarchy decision pass.",
+  "verdict": "partial-match-improved",
+  "referenceComplete": false,
+  "comparison": [
+    "Reference moodboard",
+    "Fresh desktop overview after table hierarchy decision band",
+    "Fresh mobile overview after table hierarchy decision band",
+    "Canonical five-zone Goal 5 verdict matrix"
+  ],
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-decision-side-by-side-proof.md",
+    "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-decision-side-by-side-proof.json",
+    "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-decision-side-by-side-proof.html",
+    "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-decision-side-by-side-board.png",
+    "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-decision-side-by-side-current-desktop.png",
+    "docs/visual-reviews/2026-05-25-goal-5-table-hierarchy-decision-side-by-side-current-mobile.png",
+    "tmp/goal-5-table-hierarchy-decision-side-by-side-overview-dom.html",
+    "tmp/goal-5-table-hierarchy-decision-side-by-side-board-dom.html"
+  ],
+  "domSmokeMarkers": [
+    "reference-scale-table-hierarchy-decision-band",
+    "selected table",
+    "first read",
+    "orbit restraint",
+    "proof anchor",
+    "Goal 5 Table Hierarchy Decision Side-by-Side Proof"
+  ],
+  "nextStep": "Use this board to decide whether peripheral density, motif contrast, or table hierarchy needs the next pass."
+}

@@ -1,0 +1,97 @@
+{
+  "candidate": "meshy-108-runtime-scale-collision-proof-v1",
+  "visualGlb": "assets/blender/meshy-108-hifi-cshell-detail-v1.glb",
+  "collisionProxyGlb": "assets/blender/meshy-108-collision-proxy-v1.glb",
+  "blend": "assets/blender/meshy-108-runtime-scale-collision-proof-v1.blend",
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-runtime-scale-collision-proof-v1/2026-05-20-meshy-108-runtime-scale-collision-top.png",
+    "oblique": "docs/visual-reviews/meshy-108-runtime-scale-collision-proof-v1/2026-05-20-meshy-108-runtime-scale-collision-oblique.png",
+    "side": "docs/visual-reviews/meshy-108-runtime-scale-collision-proof-v1/2026-05-20-meshy-108-runtime-scale-collision-side.png"
+  },
+  "runtimeVariant": {
+    "variant": "?camera=detail&asteroid=108",
+    "path": "assets/blender/meshy-108-hifi-cshell-detail-v1.glb?v=meshy108-hifi-cshell-detail-v1",
+    "scale": 5.8,
+    "rotationY": 0.54,
+    "position": [
+      0,
+      -4.8,
+      -11.7
+    ]
+  },
+  "nativeBounds": {
+    "min": [
+      -3.8818,
+      -3.0368,
+      -0.9985
+    ],
+    "max": [
+      2.4378,
+      3.0538,
+      1.063
+    ],
+    "dimensions": [
+      6.3196,
+      6.0906,
+      2.0616
+    ]
+  },
+  "runtimeScaledDimensions": [
+    36.6535,
+    35.3255,
+    11.957
+  ],
+  "collisionProxy": {
+    "proxyCount": 16,
+    "arcSegments": 14,
+    "tornEndCaps": 2,
+    "coversVisualShell": true,
+    "leavesOpenMouthUnblocked": true,
+    "intendedUse": "coarse static collision/selection proxy for browser scene acceptance before facility population"
+  },
+  "visualGlbInspection": {
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 1690536,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 193,
+    "meshCount": 193,
+    "materialCount": 4,
+    "textureCount": 0,
+    "animationCount": 0,
+    "extensionsUsed": []
+  },
+  "collisionGlbInspection": {
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 25712,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 16,
+    "meshCount": 16,
+    "materialCount": 1,
+    "textureCount": 0,
+    "animationCount": 0,
+    "extensionsUsed": []
+  },
+  "decision": "passed runtime-scale/collision acceptance; facility population can begin",
+  "browserSmoke": {
+    "appVariant": "?camera=detail&asteroid=108",
+    "visualGlbHeadStatus": 200,
+    "collisionProxyGlbHeadStatus": 200,
+    "appScreenshot": "docs/visual-reviews/2026-05-20-meshy-108-runtime-scale-collision-browser-smoke.png",
+    "note": "Browser smoke proves visual GLB and collision proxy GLB are served locally, and the app variant requests Meshy-108 visual GLB."
+  },
+  "visualDecision": {
+    "status": "passed-runtime-scale-collision-acceptance",
+    "summary": "Collision QA passed: 16-box coarse proxy covers the Meshy-108 C-shell mass, leaves the open mouth/missing quadrant unblocked, and is acceptable for static collision/selection before facility population.",
+    "caveat": "Coarse static proxy only; not intended for fine-grain physical contact."
+  }
+}

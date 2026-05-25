@@ -1,0 +1,60 @@
+{
+  "id": "visual-review-goal-5-central-table-silhouette-lock-pass-20260523",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-central-table-silhouette-lock-pass",
+  "artifactId": "artifact-goal-5-central-table-silhouette-lock-pass",
+  "createdAt": "2026-05-23T16:21:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match UI pass only.",
+  "decision": "central-table-silhouette-lock-improved-not-reference-complete",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-23-goal-5-central-table-silhouette-lock-pass-proof.md",
+    "docs/visual-reviews/2026-05-23-goal-5-central-table-silhouette-lock-pass-proof.json",
+    "docs/visual-reviews/2026-05-23-goal-5-central-table-silhouette-lock-pass-mobile.png",
+    "docs/visual-reviews/2026-05-23-goal-5-central-table-silhouette-lock-pass-desktop.png",
+    "tmp/goal-5-central-table-silhouette-lock-pass-dom.html"
+  ],
+  "uiMarkers": [
+    "reference-scale-core-silhouette-lock",
+    "table silhouette",
+    "first read",
+    "rim lock",
+    "Command Table Core"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The table core now includes a dedicated silhouette lock between axis labels and the instrument orbit, but central-table completion is not claimed."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "The surrounding bands remain table-bound while the new central lock protects the table-first read."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "The oval silhouette lock adds a focused central-table motif without hiding canonical state."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "The lock reuses existing selected Goal 5 state and introduces no fake backend actions."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop/mobile overlay captures and DOM smoke are recorded after the central table silhouette lock pass."
+    }
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "DOM smoke for central table silhouette lock markers",
+    "PNG sanity for desktop/mobile captures"
+  ],
+  "nextGoal5Step": "Capture a fresh side-by-side reference proof after the central table silhouette lock pass before making a stronger reference-match claim."
+}

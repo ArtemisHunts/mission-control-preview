@@ -1,0 +1,369 @@
+{
+  "candidate": "meshy-108-small-support-candidate-gate-after-ops-wall-audit",
+  "gapPicked": "gate next Meshy-108 small support/control candidate after embedded ops wall bunker audit",
+  "createdAt": "2026-05-22T17:33:06Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "noNewFacilityAssetPlaced": true,
+  "currentScene": {
+    "path": "assets/blender/meshy-108-embedded-ops-wall-bunker-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 75012152,
+    "mb": 71.537,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 427,
+    "meshCount": 399,
+    "materialCount": 61,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1247,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "opsWallAuditSource": "meshy-108-density-runtime-audit-after-embedded-ops-wall-bunker",
+  "opsWallAuditDecision": "passed-density-runtime-audit-after-embedded-ops-wall-bunker",
+  "runtimeBudget": {
+    "sceneBudgetBytes": 100663296,
+    "sceneBudgetMB": 96.0,
+    "currentSceneBytes": 75012152,
+    "currentSceneMB": 71.537,
+    "currentRemainingBytes": 25651144,
+    "currentRemainingMB": 24.463,
+    "currentUsagePercent": 74.52,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "tightMarginBytes": 524288,
+    "tightMarginMB": 0.5
+  },
+  "alreadyUsedAssets": [
+    {
+      "path": "assets/meshy/api/02-command-control-spine.meshy.glb",
+      "reason": "placed as heavy command-spine hero/proxy composition"
+    },
+    {
+      "path": "assets/meshy/api/04-gantry-crane.meshy.glb",
+      "reason": "optimized and placed as production gantry proxy"
+    },
+    {
+      "path": "assets/meshy/api/09-modular-catwalk-deck-segment.meshy.glb",
+      "reason": "installed in density pass 2"
+    },
+    {
+      "path": "assets/meshy/api/10-modular-catwalk-recovery-long-bridge.meshy.glb",
+      "reason": "locked pass-1 catwalk"
+    },
+    {
+      "path": "assets/meshy/api/11-cable-pipe-duct-wall-insert.meshy.glb",
+      "reason": "installed as support utility detail"
+    },
+    {
+      "path": "assets/meshy/api/12-maintenance-drone.meshy.glb",
+      "reason": "optimized and placed as maintenance drone proxy"
+    },
+    {
+      "path": "assets/meshy/api/13-cargo-tool-pod.meshy.glb",
+      "reason": "optimized and placed as cargo tool pod proxy"
+    },
+    {
+      "path": "assets/meshy/api/15-docking-clamp-airlock-collar.meshy.glb",
+      "reason": "locked pass-1 logistics collar"
+    },
+    {
+      "path": "assets/meshy/api/22-hangar-airlock-portal-frame.meshy.glb",
+      "reason": "installed in density pass 2"
+    },
+    {
+      "path": "assets/meshy/api/23-control-console-bank.meshy.glb",
+      "reason": "locked pass-1 control console"
+    },
+    {
+      "path": "assets/meshy/api/24-communications-dish-mast.meshy.glb",
+      "reason": "locked pass-1 signal mast"
+    },
+    {
+      "path": "assets/meshy/api/25-hangar-airlock-portal-frame-v2.meshy.glb",
+      "reason": "locked pass-1 hangar portal"
+    },
+    {
+      "path": "assets/meshy/api/26-circular-observation-control-pod.meshy.glb",
+      "reason": "installed in density pass 2"
+    },
+    {
+      "path": "assets/meshy/api/27-radar-satellite-tower-v2.meshy.glb",
+      "reason": "already consumed by signal coverage pass"
+    },
+    {
+      "path": "assets/meshy/api/39-portal-adjacent-control-insert.meshy.glb",
+      "reason": "installed as portal-adjacent control insert"
+    },
+    {
+      "path": "assets/meshy/api/52-embedded-signal-control-booth.meshy.glb",
+      "reason": "already consumed by signal/control coverage pass"
+    },
+    {
+      "path": "assets/meshy/api/54-tight-panoramic-command-bunker-face.meshy.glb",
+      "reason": "locked pass-1 command facade"
+    },
+    {
+      "path": "assets/meshy/api/58-server-control-cabinet-cluster.meshy.glb",
+      "reason": "locked pass-1 power/server detail"
+    },
+    {
+      "path": "assets/meshy/api/65-embedded-ops-window-wall-bunker.meshy.glb",
+      "reason": "installed as embedded ops wall bunker"
+    }
+  ],
+  "candidates": [
+    {
+      "path": "assets/meshy/api/16-light-hazard-gantry.meshy.glb",
+      "role": "production-safety-support",
+      "label": "Light hazard gantry",
+      "fit": "small safety/production accent; viable but production role is already readable",
+      "inspection": {
+        "path": "assets/meshy/api/16-light-hazard-gantry.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 445572,
+        "mb": 0.425,
+        "asset": {
+          "generator": "libmeshy",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 0,
+        "textureCount": 0,
+        "imageCount": 0,
+        "accessorCount": 2,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "inventoryBucket": "promoteNextPass",
+      "inventoryStatus": "promote-density-pass2",
+      "inventoryReason": "curated next-pass asset with distinct role coverage",
+      "directClass": "direct-eligible-tight",
+      "projectedSceneBytes": 75457724,
+      "projectedSceneMB": 71.962,
+      "remainingAfterDirectBytes": 25205572,
+      "remainingAfterDirectMB": 24.038,
+      "guardMarginBytes": 39748,
+      "guardMarginMB": 0.038,
+      "decision": "eligible-tight-backup",
+      "reason": "direct placement fits, but the remaining guard margin is tighter or role value is lower"
+    },
+    {
+      "path": "assets/meshy/api/83-bottom-left-console-room-command-facade.meshy.glb",
+      "role": "control-support",
+      "label": "Bottom-left console room facade",
+      "fit": "reserve control facade; useful backup but more byte cost than the tight console bay",
+      "inspection": {
+        "path": "assets/meshy/api/83-bottom-left-console-room-command-facade.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 348984,
+        "mb": 0.333,
+        "asset": {
+          "generator": "libmeshy",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 0,
+        "textureCount": 0,
+        "imageCount": 0,
+        "accessorCount": 2,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "inventoryBucket": "reserve",
+      "inventoryStatus": "reserve",
+      "inventoryReason": "valid local facility asset, but not required in the next density slice",
+      "directClass": "direct-eligible-tight",
+      "projectedSceneBytes": 75361136,
+      "projectedSceneMB": 71.87,
+      "remainingAfterDirectBytes": 25302160,
+      "remainingAfterDirectMB": 24.13,
+      "guardMarginBytes": 136336,
+      "guardMarginMB": 0.13,
+      "decision": "eligible-tight-backup",
+      "reason": "direct placement fits, but the remaining guard margin is tighter or role value is lower"
+    },
+    {
+      "path": "assets/meshy/api/84-bottom-center-command-console-room-slice.meshy.glb",
+      "role": "control-support",
+      "label": "Bottom-center command console room slice",
+      "fit": "reserve console-room slice; viable backup for a lower command/control strip",
+      "inspection": {
+        "path": "assets/meshy/api/84-bottom-center-command-console-room-slice.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 278964,
+        "mb": 0.266,
+        "asset": {
+          "generator": "libmeshy",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 0,
+        "textureCount": 0,
+        "imageCount": 0,
+        "accessorCount": 2,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "inventoryBucket": "reserve",
+      "inventoryStatus": "reserve",
+      "inventoryReason": "valid local facility asset, but not required in the next density slice",
+      "directClass": "direct-eligible-tight",
+      "projectedSceneBytes": 75291116,
+      "projectedSceneMB": 71.803,
+      "remainingAfterDirectBytes": 25372180,
+      "remainingAfterDirectMB": 24.197,
+      "guardMarginBytes": 206356,
+      "guardMarginMB": 0.197,
+      "decision": "eligible-tight-backup",
+      "reason": "direct placement fits, but the remaining guard margin is tighter or role value is lower"
+    },
+    {
+      "path": "assets/meshy/api/93-tight-console-room-command-bay.meshy.glb",
+      "role": "control-support",
+      "label": "Tight console room command bay",
+      "fit": "smallest reserve control-support candidate with console-room semantics; best next direct-placement proof",
+      "inspection": {
+        "path": "assets/meshy/api/93-tight-console-room-command-bay.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 149292,
+        "mb": 0.142,
+        "asset": {
+          "generator": "libmeshy",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 0,
+        "textureCount": 0,
+        "imageCount": 0,
+        "accessorCount": 2,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "inventoryBucket": "reserve",
+      "inventoryStatus": "reserve",
+      "inventoryReason": "valid local facility asset, but not required in the next density slice",
+      "directClass": "direct-eligible-tight",
+      "projectedSceneBytes": 75161444,
+      "projectedSceneMB": 71.68,
+      "remainingAfterDirectBytes": 25501852,
+      "remainingAfterDirectMB": 24.32,
+      "guardMarginBytes": 336028,
+      "guardMarginMB": 0.32,
+      "decision": "selected-next-placement-proof",
+      "reason": "smallest reserve control-support candidate that preserves the next-increment guard"
+    },
+    {
+      "path": "assets/meshy/api/94-sealed-monitor-wall-command-bay.meshy.glb",
+      "role": "control-support",
+      "label": "Sealed monitor wall command bay",
+      "fit": "useful monitor wall accent but consumes most of the remaining next-guard margin",
+      "inspection": {
+        "path": "assets/meshy/api/94-sealed-monitor-wall-command-bay.meshy.glb",
+        "exists": true,
+        "validGlbHeader": true,
+        "version": 2,
+        "totalLength": 462480,
+        "mb": 0.441,
+        "asset": {
+          "generator": "libmeshy",
+          "version": "2.0"
+        },
+        "sceneCount": 1,
+        "nodeCount": 1,
+        "meshCount": 1,
+        "materialCount": 0,
+        "textureCount": 0,
+        "imageCount": 0,
+        "accessorCount": 2,
+        "animationCount": 0,
+        "extensionsUsed": []
+      },
+      "inventoryBucket": "reserve",
+      "inventoryStatus": "reserve",
+      "inventoryReason": "valid local facility asset, but not required in the next density slice",
+      "directClass": "direct-eligible-tight",
+      "projectedSceneBytes": 75474632,
+      "projectedSceneMB": 71.978,
+      "remainingAfterDirectBytes": 25188664,
+      "remainingAfterDirectMB": 24.022,
+      "guardMarginBytes": 22840,
+      "guardMarginMB": 0.022,
+      "decision": "eligible-tight-backup",
+      "reason": "direct placement fits, but the remaining guard margin is tighter or role value is lower"
+    }
+  ],
+  "selectedCandidate": {
+    "path": "assets/meshy/api/93-tight-console-room-command-bay.meshy.glb",
+    "role": "control-support",
+    "label": "Tight console room command bay",
+    "fit": "smallest reserve control-support candidate with console-room semantics; best next direct-placement proof",
+    "inspection": {
+      "path": "assets/meshy/api/93-tight-console-room-command-bay.meshy.glb",
+      "exists": true,
+      "validGlbHeader": true,
+      "version": 2,
+      "totalLength": 149292,
+      "mb": 0.142,
+      "asset": {
+        "generator": "libmeshy",
+        "version": "2.0"
+      },
+      "sceneCount": 1,
+      "nodeCount": 1,
+      "meshCount": 1,
+      "materialCount": 0,
+      "textureCount": 0,
+      "imageCount": 0,
+      "accessorCount": 2,
+      "animationCount": 0,
+      "extensionsUsed": []
+    },
+    "inventoryBucket": "reserve",
+    "inventoryStatus": "reserve",
+    "inventoryReason": "valid local facility asset, but not required in the next density slice",
+    "directClass": "direct-eligible-tight",
+    "projectedSceneBytes": 75161444,
+    "projectedSceneMB": 71.68,
+    "remainingAfterDirectBytes": 25501852,
+    "remainingAfterDirectMB": 24.32,
+    "guardMarginBytes": 336028,
+    "guardMarginMB": 0.32,
+    "decision": "selected-next-placement-proof",
+    "reason": "smallest reserve control-support candidate that preserves the next-increment guard"
+  },
+  "decision": "selected-tight-console-room-command-bay-placement-proof",
+  "nextStep": "place the tight console room command bay and prove contact/runtime; stop for optimization if contact/readability fails",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-22-meshy-108-small-support-candidate-gate-after-ops-wall-audit.md",
+    "docs/visual-reviews/2026-05-22-meshy-108-small-support-candidate-gate-after-ops-wall-audit.json",
+    "docs/visual-reviews/2026-05-22-meshy-108-small-support-candidate-gate-after-ops-wall-audit-board.png",
+    "docs/visual-reviews/2026-05-22-meshy-108-small-support-candidate-gate-after-ops-wall-audit-viewer.html",
+    "docs/visual-reviews/2026-05-22-meshy-108-small-support-candidate-gate-after-ops-wall-audit-browser-smoke.png"
+  ]
+}

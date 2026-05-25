@@ -1,0 +1,48 @@
+{
+  "id": "visual-review-goal-5-reference-matrix-20260520",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-reference-decomposition-matrix",
+  "title": "Goal 5 reference-match matrix pass",
+  "status": "completed",
+  "decision": "criteria-surfaced-not-reference-complete",
+  "url": "http://127.0.0.1:4177/?overlay=1&console=overview",
+  "screenshots": {
+    "desktop": {
+      "path": "docs/visual-reviews/2026-05-20-goal-5-reference-matrix-desktop.png",
+      "width": 1440,
+      "height": 1180,
+      "bytes": 671111
+    },
+    "mobile": {
+      "path": "docs/visual-reviews/2026-05-20-goal-5-reference-matrix-mobile.png",
+      "width": 390,
+      "height": 980,
+      "bytes": 342137
+    }
+  },
+  "domSmoke": {
+    "path": "tmp/goal-5-reference-matrix-dom.html",
+    "zoneCards": 5,
+    "requiredText": [
+      "Reference Match Matrix",
+      "Functional scaffold; reference match needs zone-by-zone iteration.",
+      "Central command table",
+      "Peripheral ops bands",
+      "Reference visual motifs",
+      "Operational density",
+      "Responsive proof"
+    ],
+    "missingText": [],
+    "pass": true
+  },
+  "checks": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop screenshot",
+    "headless Chrome mobile screenshot",
+    "headless Chrome DOM smoke"
+  ],
+  "createdAt": "2026-05-20T05:51:00.000Z",
+  "isDemo": false
+}

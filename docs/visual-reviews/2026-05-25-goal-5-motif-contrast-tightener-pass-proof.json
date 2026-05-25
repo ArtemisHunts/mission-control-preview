@@ -1,0 +1,27 @@
+{
+  "id": "visual-review-goal-5-motif-contrast-tightener-pass-20260525",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-motif-contrast-tightener-pass",
+  "artifactId": "artifact-goal-5-motif-contrast-tightener-pass",
+  "createdAt": "2026-05-25T15:09:00.000Z",
+  "surface": "?overlay=1&console=overview",
+  "selectedGap": "Tighten visual motif contrast around the denser Command Table Core using selected-goal tasks, reviews, agents, telemetry, artifacts, and events only.",
+  "verdict": "partial-match-improved",
+  "referenceComplete": false,
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-25-goal-5-motif-contrast-tightener-pass-proof.md",
+    "docs/visual-reviews/2026-05-25-goal-5-motif-contrast-tightener-pass-proof.json",
+    "docs/visual-reviews/2026-05-25-goal-5-motif-contrast-tightener-pass-desktop.png",
+    "docs/visual-reviews/2026-05-25-goal-5-motif-contrast-tightener-pass-mobile.png",
+    "tmp/goal-5-motif-contrast-tightener-pass-dom.html"
+  ],
+  "domSmokeMarkers": [
+    "reference-scale-motif-contrast-tightener",
+    "State-backed visual motif contrast tightener",
+    "tighten motif",
+    "density underlay",
+    "rim restraint",
+    "proof source"
+  ],
+  "nextStep": "Capture a fresh side-by-side reference proof after the motif contrast tightener pass."
+}

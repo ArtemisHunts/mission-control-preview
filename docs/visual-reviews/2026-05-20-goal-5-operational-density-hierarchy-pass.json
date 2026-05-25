@@ -1,0 +1,27 @@
+{
+  "id": "visual-review-goal-5-operational-density-hierarchy-20260520",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-operational-density-hierarchy",
+  "scope": "goal-5-overlay-only",
+  "createdAt": "2026-05-20T11:51:00.000Z",
+  "decision": "operational-density-zone-improved-not-reference-complete",
+  "zone": "zone-operational-density",
+  "changes": [
+    "Added state-backed command-flow-proof operational hierarchy to the overview",
+    "Bound hierarchy values to canonical goal/task/review/agent/event/artifact/telemetry state",
+    "Updated referenceMatch.goal5 operational-density zone to partial-match-improved"
+  ],
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-20-goal-5-operational-density-hierarchy-desktop.png",
+    "docs/visual-reviews/2026-05-20-goal-5-operational-density-hierarchy-mobile.png",
+    "tmp/goal-5-operational-density-hierarchy-dom.html"
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "google-chrome headless DOM smoke for ?overlay=1&console=overview",
+    "google-chrome headless desktop/mobile screenshots"
+  ],
+  "remainingGap": "Needs side-by-side reference proof and more asymmetric hierarchy before reference-complete claims."
+}

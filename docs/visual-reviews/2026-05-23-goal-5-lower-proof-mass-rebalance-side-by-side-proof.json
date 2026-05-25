@@ -1,0 +1,65 @@
+{
+  "id": "visual-review-goal-5-lower-proof-mass-rebalance-side-by-side-proof-20260523",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-lower-proof-mass-rebalance-side-by-side-proof",
+  "artifactId": "artifact-goal-5-lower-proof-mass-rebalance-side-by-side-proof",
+  "createdAt": "2026-05-23T23:53:00.000Z",
+  "scope": "Goal 5 holo-table / overlay / reference-match proof only.",
+  "decision": "lower-proof-mass-rebalance-side-by-side-proof-recorded",
+  "verdict": "partial-match-improved",
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-23-goal-5-lower-proof-mass-rebalance-side-by-side-proof.md",
+    "docs/visual-reviews/2026-05-23-goal-5-lower-proof-mass-rebalance-side-by-side-proof.json",
+    "docs/visual-reviews/2026-05-23-goal-5-lower-proof-mass-rebalance-side-by-side-proof.html",
+    "docs/visual-reviews/2026-05-23-goal-5-lower-proof-mass-rebalance-side-by-side-board.png",
+    "docs/visual-reviews/2026-05-23-goal-5-lower-proof-mass-rebalance-side-by-side-current-desktop.png",
+    "docs/visual-reviews/2026-05-23-goal-5-lower-proof-mass-rebalance-side-by-side-current-mobile.png",
+    "tmp/goal-5-lower-proof-mass-rebalance-side-by-side-overview-dom.html",
+    "tmp/goal-5-lower-proof-mass-rebalance-side-by-side-board-dom.html"
+  ],
+  "uiMarkers": [
+    "reference-scale-proof-mass-rebalance-lock",
+    "mass compression",
+    "core tie",
+    "next decision",
+    "Command Table Core",
+    "Goal 5 Lower Proof Mass Rebalance Side-by-Side Proof"
+  ],
+  "zoneVerdicts": [
+    {
+      "zoneId": "zone-central-command-table",
+      "verdict": "partial-match-improved",
+      "read": "The rebalance lock reduces proof-mass competition with the central table, but first-read table quality is still below reference-complete."
+    },
+    {
+      "zoneId": "zone-peripheral-ops-bands",
+      "verdict": "partial-match-improved",
+      "read": "Lower proof mass stays table-bound as counterweight rather than a detached proof rail."
+    },
+    {
+      "zoneId": "zone-reference-visual-motifs",
+      "verdict": "partial-match-improved",
+      "read": "The new lock tightens lower/right contrast while preserving the motif contrast and shadow-depth layers."
+    },
+    {
+      "zoneId": "zone-operational-density",
+      "verdict": "partial-match-improved",
+      "read": "The board confirms the lock stays read-only and state-backed, with no fake actions."
+    },
+    {
+      "zoneId": "zone-responsive-product-proof",
+      "verdict": "partial-match-improved",
+      "read": "Desktop/mobile overlay captures, overview DOM, board DOM, and this side-by-side board are recorded after the rebalance pass."
+    }
+  ],
+  "verification": [
+    "node scripts/validate-mission-state.mjs",
+    "node --check app.js",
+    "git diff --check",
+    "headless Chrome desktop/mobile screenshots for ?overlay=1&console=overview",
+    "headless Chrome side-by-side board screenshot",
+    "DOM smoke for overlay and board markers",
+    "PNG sanity for desktop/mobile/board captures"
+  ],
+  "nextGoal5Step": "Use this board to decide whether table-first hierarchy, peripheral density, or visual motif contrast is now weakest."
+}

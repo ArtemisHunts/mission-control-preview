@@ -1,0 +1,36 @@
+{
+  "id": "visual-review-goal-5-table-first-hierarchy-tightener-side-by-side-proof-20260524",
+  "goalId": "goal-5-holo-table-density-kanban",
+  "taskId": "task-goal-5-table-first-hierarchy-tightener-side-by-side-proof",
+  "artifactId": "artifact-goal-5-table-first-hierarchy-tightener-side-by-side-proof",
+  "createdAt": "2026-05-24T22:32:00.000Z",
+  "surface": "?overlay=1&console=overview",
+  "selectedGap": "Fresh side-by-side reference proof after the table-first hierarchy tightener pass.",
+  "verdict": "partial-match-improved",
+  "referenceComplete": false,
+  "comparison": [
+    "Reference moodboard",
+    "Fresh desktop overview after table-first hierarchy tightener",
+    "Fresh mobile overview after table-first hierarchy tightener",
+    "Canonical five-zone Goal 5 verdict matrix"
+  ],
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-tightener-side-by-side-proof.md",
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-tightener-side-by-side-proof.json",
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-tightener-side-by-side-proof.html",
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-tightener-side-by-side-board.png",
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-tightener-side-by-side-current-desktop.png",
+    "docs/visual-reviews/2026-05-24-goal-5-table-first-hierarchy-tightener-side-by-side-current-mobile.png",
+    "tmp/goal-5-table-first-hierarchy-tightener-side-by-side-overview-dom.html",
+    "tmp/goal-5-table-first-hierarchy-tightener-side-by-side-board-dom.html"
+  ],
+  "domSmokeMarkers": [
+    "reference-scale-table-hierarchy-tightener",
+    "selected table",
+    "orbit quiet",
+    "proof pressure",
+    "next lock",
+    "Goal 5 Table-First Hierarchy Tightener Side-by-Side Proof"
+  ],
+  "nextStep": "Use this board to decide whether peripheral density, visual motif contrast, or another table-first hierarchy pass is now weakest."
+}

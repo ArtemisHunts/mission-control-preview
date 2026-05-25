@@ -1,0 +1,120 @@
+{
+  "candidate": "meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy",
+  "gapPicked": "audit Meshy-108 density/runtime after cargo tool pod proxy placement",
+  "createdAt": "2026-05-22T07:00:45Z",
+  "noMeshySpend": true,
+  "acceptedAsteroidBaselineSourceUntouched": true,
+  "noNewFacilityAssetPlaced": true,
+  "sourceSceneBlend": "assets/blender/meshy-108-cargo-tool-pod-proxy-placement-contact-proof.blend",
+  "sourceSceneGlb": "assets/blender/meshy-108-cargo-tool-pod-proxy-placement-contact-proof.glb",
+  "sourcePlacementMetrics": "docs/visual-reviews/2026-05-21-meshy-108-cargo-tool-pod-proxy-placement-contact-proof.json",
+  "auditBlend": "assets/blender/meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy.blend",
+  "auditGlb": "assets/blender/meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy.glb",
+  "sceneBounds": {
+    "min": [
+      -3.8818,
+      -3.0368,
+      -1.8656
+    ],
+    "max": [
+      3.2963,
+      3.0966,
+      2.1056
+    ],
+    "dimensions": [
+      7.178,
+      6.1334,
+      3.9712
+    ]
+  },
+  "sourceSceneInspection": {
+    "path": "assets/blender/meshy-108-cargo-tool-pod-proxy-placement-contact-proof.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 72792232,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 414,
+    "meshCount": 388,
+    "materialCount": 55,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1210,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "auditGlbInspection": {
+    "path": "assets/blender/meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy.glb",
+    "exists": true,
+    "validGlbHeader": true,
+    "version": 2,
+    "totalLength": 73599516,
+    "asset": {
+      "generator": "Khronos glTF Blender I/O v5.1.19",
+      "version": "2.0"
+    },
+    "sceneCount": 1,
+    "nodeCount": 428,
+    "meshCount": 402,
+    "materialCount": 60,
+    "textureCount": 3,
+    "imageCount": 3,
+    "accessorCount": 1258,
+    "animationCount": 0,
+    "extensionsUsed": [
+      "KHR_materials_emissive_strength"
+    ]
+  },
+  "runtimeBudget": {
+    "budgetBytes": 100663296,
+    "budgetMB": 96.0,
+    "sourceSceneBytes": 72792232,
+    "sourceSceneMB": 69.42,
+    "sourceRemainingBytes": 27871064,
+    "sourceRemainingMB": 26.58,
+    "sourceUsagePercent": 72.31,
+    "auditGlbBytes": 73599516,
+    "auditGlbMB": 70.19,
+    "auditRemainingBytes": 27063780,
+    "auditRemainingMB": 25.81,
+    "auditUsagePercent": 73.11,
+    "nextIncrementGuardBytes": 25165824,
+    "nextIncrementGuardMB": 24.0,
+    "nextIncrementHeadroomPass": true,
+    "status": "pass-density-runtime-audit"
+  },
+  "densityRuntimeAudit": {
+    "commandHero": "pass-visible-upper-command-band",
+    "productionGantry": "pass-visible-lower-left-production-span",
+    "supportDuct": "pass-visible-right-lower-service-wall",
+    "cargoToolPodProxy": "pass-visible-lower-logistics-service-bay",
+    "cargoToolPodContact": "accepted-contact-range",
+    "cargoToolPodContactGap": 0.0,
+    "cargoToolPodContactOverlap": 1.0,
+    "openMouthClearance": "pass-clearance-corridor-marked",
+    "roleReadability": "pass-command-production-hangar-power-signal-control-logistics-catwalk-support-utility-cargo-tool-pod-present",
+    "balance": "pass-with-caution-next-asset-needs-role-value-and-runtime-gate"
+  },
+  "decision": "passed-density-runtime-audit-after-cargo-tool-pod-proxy",
+  "nextStep": "gate the next Meshy-108 support/logistics candidate before placement; optimize first if direct placement would consume too much runtime headroom",
+  "renders": {
+    "top": "docs/visual-reviews/meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy/2026-05-21-meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy-top.png",
+    "front": "docs/visual-reviews/meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy/2026-05-21-meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy-front.png",
+    "oblique": "docs/visual-reviews/meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy/2026-05-21-meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy-oblique.png",
+    "detail": "docs/visual-reviews/meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy/2026-05-21-meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy-detail.png"
+  },
+  "proofPaths": [
+    "docs/visual-reviews/2026-05-21-meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy.md",
+    "docs/visual-reviews/2026-05-21-meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy.json",
+    "docs/visual-reviews/2026-05-21-meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy-board.png",
+    "docs/visual-reviews/2026-05-21-meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy-viewer.html",
+    "docs/visual-reviews/2026-05-21-meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy-browser-smoke.png",
+    "docs/visual-reviews/meshy-108-density-runtime-audit-after-cargo-tool-pod-proxy"
+  ]
+}
